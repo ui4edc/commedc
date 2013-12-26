@@ -4,3 +4,13 @@
  * @author: Ricky
  */
 
+.index-wrap{text-align:center}
+.role{margin:0 auto; width:600px; height:120px; padding-left:130px; overflow:hidden; margin-bottom:15px}
+.phm{background:url(images/icon-phm.png) no-repeat}
+.crm{background:url(images/icon-crm.png) no-repeat}
+.dm{background:url(images/icon-dm.png) no-repeat}
+.role a{
+    float:left; width:140px; height:120px; line-height:120px; margin-right:15px;
+    text-align:center; text-decoration:none; background:#2980b9; color:#fff; font-size:14px; border-radius:10px
+}
+.role a:hover{background:#3498db}

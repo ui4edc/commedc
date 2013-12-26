@@ -1,0 +1,9 @@
+/*
+ * 登录
+ * 
+ * @author: Ricky
+ */
+
+body{margin:0; text-align:center; padding-top:30px; font-size:12px}
+.login-form{margin:0 auto; width:300px; height:400px; background-color:#2980b9; border-radius:10px}
+p{color:#666}

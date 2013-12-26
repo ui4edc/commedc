@@ -1,10 +1,10 @@
 /*
- * 首页
+ * 新建CRF
  * 
  * @author: Ricky
  */
 
-es.Views.Index = Backbone.View.extend({
+es.Views.NewCRF = Backbone.View.extend({
     el: "#Main",
     
     events: {
@@ -27,10 +27,5 @@ es.Views.Index = Backbone.View.extend({
     
     render: function() {
         this.renderNav();
-        
-        var me = this;
-        $.Mustache.load('../../asset/tpl/index.html').done(function() {
-            me.$el.mustache("tpl-index");
-        });
     }
 });

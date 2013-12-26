@@ -8,6 +8,8 @@ es.Router = Backbone.Router.extend({
     routes: {
         ""                 : "index",
         "index/*query"     : "index",
+        "newcrf/*query"    : "newCRF",
+        "newadr/*query"    : "newADR",
         "list/*query"      : "list",
         "supervise/*query" : "supervise",
         "dict/*query"      : "dict",
@@ -46,6 +48,14 @@ es.Router = Backbone.Router.extend({
     
     index: function(query) {
         this.startRout("首页", "Index", query);
+    },
+    
+    newCRF: function(query) {
+        this.startRout("新建CRF", "NewCRF", query);
+    },
+    
+    newADR: function(query) {
+        this.startRout("新建ADR", "NewADR", query);
     },
     
     list: function(query) {
