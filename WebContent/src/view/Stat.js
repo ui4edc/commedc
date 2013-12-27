@@ -27,5 +27,10 @@ es.Views.Stat = Backbone.View.extend({
     
     render: function() {
         this.renderNav();
+        
+        var me = this;
+        $.Mustache.load('../../asset/tpl/stat.html').done(function() {
+            me.$el.mustache("tpl-stat");
+        });
     }
 });

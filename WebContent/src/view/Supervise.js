@@ -27,5 +27,10 @@ es.Views.Supervise = Backbone.View.extend({
     
     render: function() {
         this.renderNav();
+        
+        var me = this;
+        $.Mustache.load('../../asset/tpl/supervise.html').done(function() {
+            me.$el.mustache("tpl-supervise");
+        });
     }
 });

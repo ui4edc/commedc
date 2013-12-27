@@ -27,5 +27,10 @@ es.Views.Data = Backbone.View.extend({
     
     render: function() {
         this.renderNav();
+        
+        var me = this;
+        $.Mustache.load('../../asset/tpl/data.html').done(function() {
+            me.$el.mustache("tpl-data");
+        });
     }
 });

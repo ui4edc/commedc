@@ -9,6 +9,7 @@ input{font-family:Arial}
 input.en{ime-mode:disabled}
 img{border:0}
 a{color:#06c}
+h1{font-size:14px; margin:0; padding:0 0 20px 40px; border-bottom:1px #ccc solid; color:#333}
 
 #Head{height:70px; overflow:hidden; color:#666}
 #Head .logo{float:left; width:440px; height:70px; background-image:url(images/logo.jpg)}
@@ -19,6 +20,6 @@ a{color:#06c}
 #Nav a:hover,
 #Nav a.active{background-color:#3498db}
 
-#Main{overflow:hidden; padding:20px}
+#Main{overflow:hidden; padding:20px 0}
 
 #Foot{padding:20px 0; line-height:20px; border-top:1px #ccc solid; color:#666; text-align:center}
