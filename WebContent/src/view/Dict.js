@@ -25,7 +25,7 @@ es.Views.Dict = Backbone.View.extend({
         es.widgets.nav.setActive("dict");
     },
     
-    render: function() {
+    render: function(query) {
         this.renderNav();
         
         var me = this;

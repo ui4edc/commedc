@@ -1,3 +1,4 @@
+document.write('<script src="../../src/config.js"></script>');
 document.write('<script src="../../src/util.js"></script>');
 document.write('<script src="../../src/es.js"></script>');
 document.write('<script src="../../src/router/Router.js"></script>');

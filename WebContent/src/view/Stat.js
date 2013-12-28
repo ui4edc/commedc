@@ -25,7 +25,7 @@ es.Views.Stat = Backbone.View.extend({
         es.widgets.nav.setActive("stat");
     },
     
-    render: function() {
+    render: function(query) {
         this.renderNav();
         
         var me = this;

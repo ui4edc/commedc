@@ -25,7 +25,7 @@ es.Views.Account = Backbone.View.extend({
         es.widgets.nav.setActive("account");
     },
     
-    render: function() {
+    render: function(query) {
         this.renderNav();
         
         var me = this;

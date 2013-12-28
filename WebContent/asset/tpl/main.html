@@ -8,3 +8,18 @@
 <script id="tpl-foot" type="text/html">
 Copyright &copy; {{year}}
 </script>
+
+<!--页码-->
+<script id="tpl-page" type="text/html">
+<div class="page">
+    <div class="page-size">
+        <span>每页显示</span>
+        <div ui="type:Select;id:PageSize;width:50"></div>
+        <span>条</span>
+        <span class="row-count"></span>
+    </div>
+    <div class="page-no">
+        <div ui="type:Pager;id:PageNo"></div>
+    </div>
+</div>
+</script>
