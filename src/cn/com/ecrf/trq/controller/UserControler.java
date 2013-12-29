@@ -1,5 +1,8 @@
 package cn.com.ecrf.trq.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.CipherUtil;
+import cn.com.ecrf.trq.utils.ReturnUtils;
 
 @Controller
 public class UserControler {
@@ -26,6 +30,14 @@ public class UserControler {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping("/")
+	public String home(HttpServletRequest request) {
+		Subject currentUser = SecurityUtils.getSubject();
+		if (currentUser.isAuthenticated())
+			return "index";
+		else
+			return "login";
+	}
 	
 	@RequestMapping("/form")
 	public String createForm(HttpServletRequest request) {
@@ -58,7 +70,7 @@ public class UserControler {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/tologin")
+	@RequestMapping("/login")
 	public String tologin(HttpServletRequest request, HttpServletResponse response, Model model){
 		logger.debug("client ip" + request.getRemoteHost() + "]");
 		return "login";
@@ -69,9 +81,11 @@ public class UserControler {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/login")
-	public String login(HttpServletRequest request) {
-		String result = "login";
+	@RequestMapping("/tologin")
+	@ResponseBody
+	public Map<String, Object> login(HttpServletRequest request) {
+		//String result = "login";
+		Map<String, Object> result = new HashMap<String, Object>();
 		// 姝ゅ榛樿鏈夊�
 		String username = request.getParameter("username");
 		//MD5鍔犲瘑
@@ -86,11 +100,10 @@ public class UserControler {
 				token.setRememberMe(true);
 				currentUser.login(token);
 			}
-			System.out.println("result: " + result);
-			result = "index";
+			result.put(ReturnUtils.success, true);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
-			result = "login";
+			result.put(ReturnUtils.success, false);
+			result.put(ReturnUtils.errorMsg, e.getMessage());
 		}
 		return result;
 	}

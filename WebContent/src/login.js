@@ -17,4 +17,15 @@ $("form").submit(function(e) {
         tip.text("请输入密码").show().fadeOut(1500);
         e.preventDefault();
     }
+    var token = {};
+    token.username = username;
+    token.password = password;
+    $.post('/tologin.do', token, function(data){
+    	if (data.success)
+    		document.location.href = '/index.do';
+    	else{
+    		tip.text("用户名或密码错误").show().fadeOut(1500);
+    		e.preventDefault();
+    	}
+    });
 });

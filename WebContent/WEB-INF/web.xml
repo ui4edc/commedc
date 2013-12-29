@@ -5,7 +5,7 @@
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	<welcome-file-list>
-		<welcome-file>/tologin.html</welcome-file>
+		<welcome-file>/login.html</welcome-file>
 	</welcome-file-list>
 	<display-name>commedc</display-name>
 	<context-param>
@@ -56,18 +56,18 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springMvc</servlet-name>
-		<url-pattern>*.html</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	<!-- 配置session超时时间，单位分钟 -->
 	<session-config>
 		<session-timeout>15</session-timeout>
 	</session-config>
-	<error-page>
+	<!--  <error-page>
 		<error-code>404</error-code>
 		<location>/WEB-INF/views/error/404.jsp</location>
 	</error-page>
 	<error-page>
 		<error-code>401</error-code>
 		<location>/WEB-INF/views/error/401.jsp</location>
-	</error-page>
+	</error-page>-->
 </web-app>
