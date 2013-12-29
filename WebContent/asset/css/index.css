@@ -5,7 +5,7 @@
  */
 
 .index-wrap{text-align:center; padding-top:20px}
-.role{margin:0 auto; width:600px; height:120px; padding-left:130px; overflow:hidden; margin-bottom:15px}
+.role{margin:0 auto; width:600px; height:120px; padding:0 0 15px 130px; overflow:hidden}
 .phm{background:url(images/icon-phm.png) no-repeat}
 .crm{background:url(images/icon-crm.png) no-repeat}
 .dm{background:url(images/icon-dm.png) no-repeat}

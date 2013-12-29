@@ -1,13 +1,17 @@
 <!--数据管理-->
 <script id="tpl-data" type="text/html">
 <div class="data-wrap">
-    <h1 class="tab">数据管理</h1>
+    <h1 class="no-bottom no-border">数据管理</h1>
     <div class="tabbar">
         <a href="javascript:void(0)" hidefocus="true" type="6" class="active">未审核</a>
         <a href="javascript:void(0)" hidefocus="true" type="7">质疑记录</a>
     </div>
     <div class="no-result" style="display:none">暂无查询结果。</div>
     <div class="data" style="display:none">
+        <div class="toolbar">
+            <div ui="type:Button;id:DownloadXLS;" class="link"><a href="#">导出Excel</a></div>
+            <div ui="type:Button;id:DownloadCSV;" class="link"><a href="#">导出CSV</a></div>
+        </div>
         <div ui="type:Table;id:Grid"></div>
     </div>
 </div>

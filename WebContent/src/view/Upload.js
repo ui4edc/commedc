@@ -16,6 +16,7 @@ es.Views.Upload = Backbone.View.extend({
     },
     
     destroy: function() {
+        this.$("#UploadContainer").pluploadQueue().destroy();
         this.model.unbind();
         this.$el.unbind();
         this.$el.empty();
@@ -31,6 +32,23 @@ es.Views.Upload = Backbone.View.extend({
         var me = this;
         $.Mustache.load("asset/tpl/upload.html").done(function() {
             me.$el.mustache("tpl-upload");
+            me.initUpload();
+        });
+    },
+    
+    initUpload: function() {
+        this.$("#UploadContainer").pluploadQueue({
+            runtimes: 'flash',
+            flash_swf_url: 'asset/swf/Moxie.swf',
+            url: '../upload.php',
+            chunk_size: '1mb',
+            unique_names: true,
+            filters: {
+                max_file_size: '10mb',
+                mime_types: [
+                    {title: "Image files", extensions : "jpg,jpeg,bmp,gif,png"}
+                ]
+            }
         });
     }
 });
