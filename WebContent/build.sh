@@ -13,10 +13,10 @@ fi
 svnRev=$(cat "$svnFile")
 
 # add svn revision for css
-sed -i "s/all.css/all.css?v=$svnRev/g" ./WEB-INF/views/index.jsp
+sed -i "s/all.css/all.css?v=$svnRev/g" ./index.jsp
 
 # add svn revision for js
-sed -i "s/app.js/app.js?v=$svnRev/g" ./WEB-INF/views/index.jsp
+sed -i "s/app.js/app.js?v=$svnRev/g" ./index.jsp
 
 # add svn revision for tpl
 sed -i "s/svnRev/$svnRev/g" ./src/lib/jquery.mustache.js

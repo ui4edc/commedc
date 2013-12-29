@@ -29,7 +29,7 @@ es.Views.Index = Backbone.View.extend({
         this.renderNav();
         
         var me = this;
-        $.Mustache.load('../../asset/tpl/index.html').done(function() {
+        $.Mustache.load("asset/tpl/index.html").done(function() {
             me.$el.mustache("tpl-index");
         });
     }

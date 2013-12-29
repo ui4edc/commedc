@@ -29,7 +29,7 @@ es.Views.Upload = Backbone.View.extend({
         this.renderNav();
         
         var me = this;
-        $.Mustache.load('../../asset/tpl/upload.html').done(function() {
+        $.Mustache.load("asset/tpl/upload.html").done(function() {
             me.$el.mustache("tpl-upload");
         });
     }

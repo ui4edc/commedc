@@ -29,7 +29,7 @@ es.Views.Dict = Backbone.View.extend({
         this.renderNav();
         
         var me = this;
-        $.Mustache.load('../../asset/tpl/dict.html').done(function() {
+        $.Mustache.load("asset/tpl/dict.html").done(function() {
             me.$el.mustache("tpl-dict");
         });
     }

@@ -28,8 +28,6 @@ var es = {
         es.router = new es.Router();
         
         //开始监听hash
-        Backbone.history.start({
-            root: "./WEB-INF/views/"
-        });
+        Backbone.history.start();
     }
 };

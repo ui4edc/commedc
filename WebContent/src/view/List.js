@@ -30,7 +30,7 @@ es.Views.List = Backbone.View.extend({
         this.renderNav();
         
         var me = this;
-        $.Mustache.load('../../asset/tpl/list.html').done(function() {
+        $.Mustache.load("asset/tpl/list.html").done(function() {
             //填充html
             me.$el.mustache("tpl-list");
             me.$(".data").append($.Mustache.render("tpl-page"));

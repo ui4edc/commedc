@@ -29,7 +29,7 @@ es.Views.Account = Backbone.View.extend({
         this.renderNav();
         
         var me = this;
-        $.Mustache.load('../../asset/tpl/account.html').done(function() {
+        $.Mustache.load("asset/tpl/account.html").done(function() {
             me.$el.mustache("tpl-account");
         });
     }
