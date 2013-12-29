@@ -1,6 +1,20 @@
 <!--病例列表-->
 <script id="tpl-list" type="text/html">
+<p class="notify" style="display:none"></p>
 <div class="list-wrap">
-    <h1>病例列表</h1>
+    <h1 class="tab">病例列表</h1>
+    <div class="tabbar">
+        <a href="javascript:void(0)" hidefocus="true" type="1" class="active">草稿</a>
+        <a href="javascript:void(0)" hidefocus="true" type="2">已提交</a>
+        <a href="javascript:void(0)" hidefocus="true" type="3">被质疑</a>
+    </div>
+    <div class="no-result" style="display:none">暂无查询结果。</div>
+    <div class="data" style="display:none">
+        <div ui="type:Table;id:Grid"></div>
+    </div>
 </div>
+</script>
+
+<script id="tpl-list-notify" type="text/html">
+您有 <strong>{{n}}</strong> 例被质疑
 </script>

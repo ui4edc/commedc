@@ -25,7 +25,7 @@ es.Views.NewCRF = Backbone.View.extend({
         es.widgets.nav.setActive("index");
     },
     
-    render: function() {
+    render: function(query) {
         this.renderNav();
     }
 });
