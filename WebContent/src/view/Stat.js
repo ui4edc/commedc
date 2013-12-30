@@ -8,8 +8,7 @@ es.Views.Stat = Backbone.View.extend({
     el: "#Main",
     
     events: {
-        "click .menu-title": "fold",
-        "click .menu-item": "switchChart"
+        
     },
     
     initialize: function() {
@@ -18,6 +17,7 @@ es.Views.Stat = Backbone.View.extend({
     
     destroy: function() {
         this.destroyChart();
+        this.menu && this.menu.destroy();
         this.model.unbind();
         this.$el.unbind();
         this.$el.empty();
@@ -39,36 +39,20 @@ es.Views.Stat = Backbone.View.extend({
         $.Mustache.load("asset/tpl/stat.html").done(function() {
             me.$el.mustache("tpl-stat");
             
-            //查询
-            me.$(".menu-item:first").addClass("menu-item-active");
-            me.renderChart();
+            //创建菜单
+            me.menu = new Tree({
+                container: ".sidebar",
+                data: STAT_MENU,
+                onClick: me.onMenuClick,
+                defaultId: 1
+            });
         });
     },
-        
-    /*
-     * 折叠菜单
-     */
-    fold: function(e) {
-        var me = $(e.target);
-        me.toggleClass("menu-title-collapse");
-        me.next().toggle(100);
-    },
     
-    /*
-     * 切换Chart
-     */
-    switchChart: function(e) {
-        var me = $(e.target);
-        if (me.hasClass("menu-item-active")) {
-            return;
-        }
-        
-        //设置激活样式
-        this.$(".menu-item").removeClass("menu-item-active");
-        me.addClass("menu-item-active");
-        
-        //查询
-        this.renderChart();
+    onMenuClick: function(id) {
+        var view = es.main;
+        view.statType = id;
+        view.model.getData({statType: id});
     },
     
     /*
@@ -77,8 +61,7 @@ es.Views.Stat = Backbone.View.extend({
     renderChart: function(model, data) {
         this.destroyChart();
         
-        var type = parseInt(this.$(".sidebar .menu-item-active").attr("type"));
-        switch (type) {
+        switch (this.statType) {
             case 1: this.renderValueChart(data); break;
             case 2: this.renderAgeChart(data); break;
             case 3: this.renderSexChart(data); break;

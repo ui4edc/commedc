@@ -23,3 +23,18 @@ Copyright &copy; {{year}}
     </div>
 </div>
 </script>
+
+<!--树形菜单-->
+<script id="tpl-tree" type="text/html">
+<div class="menu-title">{{data.name}}</div>
+<div>
+    {{#data.children}}
+    <a class="menu-item" href="javascript:void(0)" hidefocus="true" id="TreeNode{{id}}">{{name}}</a>
+    {{/data.children}}
+</div>
+</script>
+<script id="tpl-tree-standalone" type="text/html">
+<div class="menu-title-standalone">
+    <a href="javascript:void(0)" hidefocus="true" id="TreeNode{{data.id}}">{{data.name}}</a>
+</div>
+</script>

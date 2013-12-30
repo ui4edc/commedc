@@ -7,13 +7,21 @@
 var util = {};
 
 /*
- * 使IE6缓存背景
+ * 兼容旧浏览器
  */
-util.enableBgCache = function(e) {
+util.fixOld = function() {
+    //使IE6缓存背景
     if (T.ie == 6) {
         try {
             document.execCommand("BackgroundImageCache", false, true);
         } catch(e) {}
+    }
+    
+    //兼容调试
+    if (!window.console) {
+        window.console = {
+            log: function() {}
+        };
     }
 };
 
@@ -112,4 +120,3 @@ util.ajax = {
         });
     }
 };
-

@@ -79,7 +79,8 @@ es.Views.Account = Backbone.View.extend({
     /*
      * 发起请求
      */
-    query: function(args) {console.log(args)
+    query: function(args) {
+        console.log(args);
         this.model.getData(args);
     },
     
@@ -87,6 +88,7 @@ es.Views.Account = Backbone.View.extend({
      * 渲染列表
      */
     renderGrid: function(model, data) {
+        console.log(data);
         if (data.total == 0) {
             this.$(".no-result").show();
             this.$(".data").hide();

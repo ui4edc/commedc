@@ -8,8 +8,12 @@ es.Router = Backbone.Router.extend({
     routes: {
         ""                 : "index",
         "index/*query"     : "index",
-        "newcrf/*query"    : "newCRF",
-        "newadr/*query"    : "newADR",
+        "crf/create/*query": "crf",
+        "crf/update/*query": "crf",
+        "crf/doubt/*query" : "crf",
+        "adr/create/*query": "adr",
+        "adr/update/*query": "adr",
+        "adr/doubt/*query" : "adr",
         "list/*query"      : "list",
         "supervise/*query" : "supervise",
         "dict/*query"      : "dict",
@@ -50,12 +54,12 @@ es.Router = Backbone.Router.extend({
         this.startRout("首页", "Index", query);
     },
     
-    newCRF: function(query) {
-        this.startRout("新建CRF", "NewCRF", query);
+    crf: function(query) {
+        this.startRout("CRF", "CRF", query);
     },
     
-    newADR: function(query) {
-        this.startRout("新建ADR", "NewADR", query);
+    adr: function(query) {
+        this.startRout("ADR", "ADR", query);
     },
     
     list: function(query) {

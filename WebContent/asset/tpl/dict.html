@@ -1,6 +1,24 @@
 <!--数据字典-->
 <script id="tpl-dict" type="text/html">
 <div class="dict-wrap">
-    <h1>数据字典</h1>
+    <h1 class="no-bottom">数据字典</h1>
+    <div class="main">
+        <div class="sidebar dict-bar"></div>
+        <div class="content dict-content">
+            <div class="dict-item">
+                <div class="dict-item-list">
+                    <div class="dict-title">
+                        <input ui="type:TextInput;id:Item;width:195" type="text" />
+                        <div ui="type:Button;id:AddItem;">添加到底层字典</div>
+                    </div>
+                    <div ui="type:Table;id:Items"></div>
+                </div>
+                <div class="dict-base">
+                    <div class="dict-title"><p>底层字典</p></div>
+                    <div ui="type:Table;id:Base"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </script>

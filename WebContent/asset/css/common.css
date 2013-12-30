@@ -19,7 +19,7 @@ a{color:#06c}
 #Nav a:hover,
 #Nav a.active{background-color:#3498db}
 #Main{overflow:hidden}
-#Foot{padding:20px 0; line-height:20px; border-top:1px #ddd solid; color:#666; text-align:center}
+#Foot{padding:20px 0; line-height:20px; border-top:1px #ddd solid; color:#666; text-align:center; clear:both}
 
 /*页面标题*/
 h1{font-size:14px; margin:0; padding:20px 0 20px 40px; margin-bottom:20px; border-bottom:1px #a6c0d1 solid; color:#333}
@@ -32,13 +32,13 @@ h1.no-border{border-bottom:0}
 .content{margin-left:200px; border-left:1px #ccc solid}
 
 /*菜单*/
-.menu-title{height:30px; line-height:30px; padding-left:30px; border-bottom:1px #ddd solid; color:#666; font-size:14px; background:#f6f7f9 url(images/minus.png) 15px center no-repeat}
+.menu-title{height:30px; line-height:30px; padding-left:30px; border-bottom:1px #ddd solid; color:#666; font-size:12px; background:#f6f7f9 url(images/minus.png) 15px center no-repeat}
 .menu-title-collapse{background:#f6f7f9 url(images/plus.png) 15px center no-repeat}
 .menu-item{display:block; height:30px; line-height:30px; padding-left:45px; border-bottom:1px #ddd solid; color:#666; text-decoration:none}
 .menu-item:hover,
 .menu-item-active{background:#fff9ee}
 .menu-title-standalone{height:30px; line-height:30px; border-bottom:1px #ddd solid; background:#f6f7f9}
-.menu-title-standalone a{display:block; height:30px; line-height:30px; padding-left:30px; color:#666; font-size:14px; text-decoration:none}
+.menu-title-standalone a{display:block; height:30px; line-height:30px; padding-left:30px; color:#666; font-size:12px; text-decoration:none}
 .menu-title-standalone a:hover,
 .menu-title-standalone a.active{background:#e9e9e9}
 
@@ -63,7 +63,7 @@ h1.no-border{border-bottom:0}
 .toolbar{height:22px; line-height:22px; margin-bottom:20px; padding-left:30px}
 .toolbar .ui-button{margin-right:10px}
 .toolbar .link .ui-button-label{padding:0}
-.toolbar .link .ui-button-label a{text-decoration:none; color:#333; display:block; height:20px; padding:0 10px}
+.toolbar .link .ui-button-label a{text-decoration:none; color:#333; display:block; width:60px; _width:80px; height:20px; padding:0 10px}
 
 /*通知*/
 p.notify{margin:0; padding:10px 0 10px 30px; color:#666; background:#fdf8d0; border-bottom:1px #d3d2d0 solid}

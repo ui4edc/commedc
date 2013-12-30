@@ -16,7 +16,7 @@ es.Views.Supervise = Backbone.View.extend({
     },
     
     destroy: function() {
-    	    esui.dispose();
+    	esui.dispose();
         this.model.unbind();
         this.$el.unbind();
         this.$el.empty();
@@ -80,7 +80,8 @@ es.Views.Supervise = Backbone.View.extend({
     /*
      * 发起请求
      */
-    query: function(args) {console.log(args)
+    query: function(args) {
+        console.log(args);
         this.model.getData(args);
     },
     
@@ -106,6 +107,7 @@ es.Views.Supervise = Backbone.View.extend({
      * 渲染列表
      */
     renderGrid: function(model, data) {
+        console.log(data);
         if (data.total == 0) {
             this.$(".no-result").show();
             this.$(".data").hide();
@@ -118,7 +120,10 @@ es.Views.Supervise = Backbone.View.extend({
             table.datasource = data.data;
             table.fields = [
                 {field: "id", title: "ID", content: function(item) {return item.id;}},
-                {field: "name", title: "名称", content: function(item) {return item.name;}}
+                {field: "name", title: "名称", content: function(item) {return item.name;}},
+                {field: "op", title: "操作", content: function(item) {
+                    return $.Mustache.render("tpl-supervise-doubt", {id: item.id});
+                }}
             ];
             table.render();
             
