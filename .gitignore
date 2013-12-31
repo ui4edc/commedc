@@ -217,3 +217,4 @@ pip-log.txt
 
 #java
 WebContent/WEB-INF/lib/*.jar
+.tomcatplugin
