@@ -35,12 +35,12 @@ h1.no-border{border-bottom:0}
 .menu-title{height:30px; line-height:30px; padding-left:30px; border-bottom:1px #ddd solid; color:#666; font-size:12px; background:#f6f7f9 url(images/minus.png) 15px center no-repeat}
 .menu-title-collapse{background:#f6f7f9 url(images/plus.png) 15px center no-repeat}
 .menu-item{display:block; height:30px; line-height:30px; padding-left:45px; border-bottom:1px #ddd solid; color:#666; text-decoration:none}
-.menu-item:hover,
-.menu-item-active{background:#fff9ee}
+.menu-item:hover{background-color:#fff9ee}
+.menu-item-active{background-color:#fff9ee; background-image:url(images/icon-arrow.png); background-position:right center; background-repeat:no-repeat}
 .menu-title-standalone{height:30px; line-height:30px; border-bottom:1px #ddd solid; background:#f6f7f9}
 .menu-title-standalone a{display:block; height:30px; line-height:30px; padding-left:30px; color:#666; font-size:12px; text-decoration:none}
-.menu-title-standalone a:hover,
-.menu-title-standalone a.active{background:#e9e9e9}
+.menu-title-standalone a:hover{background:#e9e9e9}
+.menu-title-standalone a.active{background-color:#e9e9e9; background-image:url(images/icon-arrow.png); background-position:right center; background-repeat:no-repeat}
 
 /*Ajax提示*/
 #Mask{z-index:100; position:absolute; top:0; left:0; width:100%; height:100%; background:#000; filter:alpha(opacity=20); -moz-opacity:0.2; opacity:0.2}
