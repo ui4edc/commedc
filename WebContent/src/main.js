@@ -10,6 +10,7 @@ $(document).ready(function() {
         util.fixOld();
         
         //session信息
+        es.roleName = $("#RoleName").val();
         es.userName = $("#UserName").val();
         es.userId = $("#UserId").val();
         

@@ -1,24 +1,55 @@
-<!--病例列表-->
+<!--观察表-->
 <script id="tpl-list" type="text/html">
-<p class="notify" style="display:none"></p>
+<div class="notify" style="display:none">
+    <div ui="type:Button;id:Close;">我知道了</div>
+</div>
 <div class="list-wrap">
-    <h1 class="no-bottom no-border">病例列表</h1>
+    <h1 class="no-bottom no-border">
+        <span>观察表</span>
+        <input type="radio" title="CRF" name="type" hidefocus="true" ui="type:Radio;id:CRF" checked />
+        <input type="radio" title="ADR" name="type" hidefocus="true" ui="type:Radio;id:ADR" />
+    </h1>
+    <!--tab-->
     <div class="tabbar">
         <a href="javascript:void(0)" hidefocus="true" type="1" class="active">草稿</a>
         <a href="javascript:void(0)" hidefocus="true" type="2">已提交</a>
         <a href="javascript:void(0)" hidefocus="true" type="3">被质疑</a>
     </div>
+    <!--查询条件-->
+    <div class="query-form">
+        <span>观察表编号：</span>
+        <input ui="type:TextInput;id:No;width:80" type="text" />
+        <span>姓名缩写：</span>
+        <input ui="type:TextInput;id:Abbr;width:80" type="text" />
+        <span>完成度：</span>
+        <div ui="type:Select;id:ProgressType;width:100" class="close-next"></div>
+        <input ui="type:TextInput;id:Progress;width:80" type="text" style="display:none" />
+    </div>
+    <div class="query-form">
+        <span>创建时间范围：</span>
+        <div ui="type:Select;id:CreateRangeType;width:80" class="close-next"></div>
+        <div ui="type:MultiCalendar;id:CreateRange" style="display:none"></div>
+        <span style="margin-left:10px">最后修改时间范围：</span>
+        <div ui="type:Select;id:LastModifyRangeType;width:80" class="close-next"></div>
+        <div ui="type:MultiCalendar;id:LastModifyRange" style="display:none"></div>
+    </div>
+    <div class="query-btn"><div ui="type:Button;id:Query;skin:largeem">查 询</div></div>
+    <!--查询结果-->
     <div class="no-result" style="display:none">暂无查询结果。</div>
     <div class="data" style="display:none">
-        <div ui="type:Table;id:Grid;select:multi"></div>
+        <div class="toolbar">
+            <div ui="type:Button;id:Del;">批量删除</div>
+            <div ui="type:Button;id:Submit;">批量提交</div>
+        </div>
+        <div ui="type:Table;id:Grid;select:multi;sortable:1"></div>
     </div>
 </div>
 </script>
 
 <script id="tpl-list-notify" type="text/html">
-您有 <strong>{{n}}</strong> 例被质疑
+<span>您有 <strong>{{doubtNumber}}</strong> 例被质疑，请检查后修改；有 <strong>{{toDoNumber}}</strong> 例必须于 7 日内填报完成，逾期将被取消。</span>
 </script>
 
-<script id="tpl-list-update" type="text/html">
-<a href="#crf/update/{{id}}">修改</a>
+<script id="tpl-list-detail" type="text/html">
+<a href="#crf/update/{{id}}">{{no}}</a>
 </script>

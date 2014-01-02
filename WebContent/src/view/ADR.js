@@ -56,12 +56,15 @@ es.Views.ADR = Backbone.View.extend({
         $.Mustache.load("asset/tpl/adr.html").done(function() {
             me.$el.mustache("tpl-adr", {title: title});
             
+            esui.init();
+            esui.get("SubmitAll").setDisabled(true);
+            
             //右侧表单view实例
             me.form = null;
             
             //创建菜单
             me.menu = new Tree({
-                container: ".sidebar",
+                container: ".sidenav",
                 data: C_MENU,
                 onClick: me.onMenuClick,
                 defaultId: 12

@@ -4,6 +4,23 @@
  * @author: Ricky
  */
 
+var TIME_TYPE = {
+    datasource: [
+        {name: "全部", value: 1},
+        {name: "自定义", value: 2}
+    ],
+    value: 1
+};
+
+var PROGRESS_TYPE = {
+    datasource: [
+        {name: "不限制", value: 1},
+        {name: "大于等于", value: 2},
+        {name: "小于等于", value: 3}
+    ],
+    value: 1
+};
+
 var PAGE_SIZE = {
     datasource: [
         {name: "20", value: 20},

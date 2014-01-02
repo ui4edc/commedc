@@ -63,7 +63,7 @@ es.Router = Backbone.Router.extend({
     },
     
     list: function(query) {
-        this.startRout("病例列表", "List", query);
+        this.startRout("观察表", "List", query);
     },
     
     supervise: function(query) {

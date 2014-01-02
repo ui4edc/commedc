@@ -17,6 +17,7 @@ es.Views.Head = Backbone.View.extend({
     
     render: function() {
         this.$el.html($.Mustache.render("tpl-head", {
+            roleName: es.roleName,
             userName: es.userName
         }));
     }

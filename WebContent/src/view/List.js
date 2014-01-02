@@ -39,7 +39,11 @@ es.Views.List = Backbone.View.extend({
             me.initCtrl();
             
             //初始查询
-            me.args = {pageSize: 20};
+            me.args = {
+                pageSize: 20,
+                orderBy: "lastModified",
+                desc: true
+            };
             me.getArgs();
             me.queryFirstPage();
             
@@ -53,17 +57,81 @@ es.Views.List = Backbone.View.extend({
      */
     initCtrl: function() {
         esui.init(this.el, {
-            PageSize: PAGE_SIZE
+            CreateRangeType: TIME_TYPE,
+            LastModifyRangeType: TIME_TYPE,
+            ProgressType: PROGRESS_TYPE,
+            PageSize: PAGE_SIZE,
+            CreateRange: {
+                range: {
+                    begin: new Date(2014, 0, 1),
+                    end: new Date()
+                },
+                valueAsObject: {
+                    begin: new Date(2014, 0, 1),
+                    end: new Date()
+                }
+            },
+            LastModifyRange: {
+                range: {
+                    begin: new Date(2014, 0, 1),
+                    end: new Date()
+                },
+                valueAsObject: {
+                    begin: new Date(2014, 0, 1),
+                    end: new Date()
+                }
+            }
         });
-            
+        
         var me = this;
-        esui.get("PageSize").onchange = function(value, item) {
-            me.args.pageSize = value;
+        esui.get("Close").onclick = function() {
+            me.$(".notify").remove();
+        };
+        esui.get("CreateRangeType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrlmcalCreateRange").hide();
+            } else {
+                $("#ctrlmcalCreateRange").show();
+            }
+        };
+        esui.get("LastModifyRangeType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrlmcalLastModifyRange").hide();
+            } else {
+                $("#ctrlmcalLastModifyRange").show();
+            }
+        };
+        esui.get("ProgressType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrltextProgress").hide();
+            } else {
+                $("#ctrltextProgress").show();
+            }
+        };
+        esui.get("PageSize").onchange = function(size) {
+            me.args.pageSize = size;
             me.queryFirstPage();
         };
         esui.get("PageNo").onchange = function(page) {
             me.args.pageNo = page + 1;
             me.query(me.args);
+        };
+        esui.get("Query").onclick = function() {
+            me.getArgs();
+            me.queryFirstPage();
+        };
+        esui.get("CRF").onclick = function() {
+            me.args.crf = true;
+            me.queryFirstPage();
+        };
+        esui.get("ADR").onclick = function() {
+            me.args.crf = false;
+            me.queryFirstPage();
+        };
+        esui.get("Grid").onsort = function (field, order) {
+            me.args.orderBy = field.field;
+            me.args.desc = order == "desc" ? true : false;
+            me.queryFirstPage();
         };
     },
     
@@ -71,8 +139,35 @@ es.Views.List = Backbone.View.extend({
      * 获取参数
      */
     getArgs: function() {
+        this.args.crf = esui.get("CRF").isChecked();
         var type = parseInt(this.$(".tabbar .active").attr("type"));
         this.args.type = type;
+        this.args.no = $.trim(esui.get("No").getValue());
+        this.args.abbr = $.trim(esui.get("Abbr").getValue());
+        if (esui.get("CreateRangeType").value == 1) {
+            this.args.createDate = null;
+        } else {
+            var date = esui.get("CreateRange").getValue().split(",");
+            this.args.createDate = {
+                begin: date[0],
+                end: date[1]
+            };
+        }
+        if (esui.get("LastModifyRangeType").value == 1) {
+            this.args.lastModified = null;
+        } else {
+            var date = esui.get("LastModifyRange").getValue().split(",");
+            this.args.lastModified = {
+                begin: date[0],
+                end: date[1]
+            };
+        }
+        this.args.progressType = esui.get("ProgressType").value;
+        if (esui.get("ProgressType").value == 1) {
+            this.args.progress = null;
+        } else {
+            this.args.progress = $.trim(esui.get("Progress").getValue());
+        }
     },
     
     /*
@@ -88,7 +183,7 @@ es.Views.List = Backbone.View.extend({
      * 发起请求
      */
     query: function(args) {
-        console.log(args);
+        console.log("请求参数:", args);
         this.model.getData(args);
     },
     
@@ -108,13 +203,19 @@ es.Views.List = Backbone.View.extend({
         //查询
         this.getArgs();
         this.queryFirstPage();
+        
+        if (this.args.type == 2) {
+            this.$("#ctrlbuttonSubmit").hide();
+        } else {
+            this.$("#ctrlbuttonSubmit").show();
+        }
     },
     
     /*
      * 渲染列表
      */
     renderGrid: function(model, data) {
-        console.log(data);
+        console.log("返回数据:", data);
         if (data.total == 0) {
             this.$(".no-result").show();
             this.$(".data").hide();
@@ -126,12 +227,42 @@ es.Views.List = Backbone.View.extend({
             var table = esui.get("Grid");
             table.datasource = data.data;
             table.fields = [
-                {field: "id", title: "ID", content: function(item) {return item.id;}},
-                {field: "name", title: "名称", content: function(item) {return item.name;}},
-                {field: "op", title: "操作", content: function(item) {
-                    return $.Mustache.render("tpl-list-update", {id: item.id});
-                }}
+                {
+                    field: "no",
+                    title: "观察表编号",
+                    sortable: true,
+                    content: function(item) {
+                        return $.Mustache.render("tpl-list-detail", {id: item.id, no: item.no});
+                    }
+                },
+                {
+                    field: "abbr",
+                    title: "姓名缩写",
+                    sortable: true,
+                    content: function(item) {return item.abbr;}
+                },
+                {
+                    field: "createDate",
+                    title: "创建时间",
+                    sortable: true,
+                    content: function(item) {return item.createDate;}
+                },
+                {
+                    field: "lastModified",
+                    title: this.args.type == 2 ? "提交时间" : "最后修改时间",
+                    sortable: true,
+                    content: function(item) {return item.lastModified;}
+                },
+                {
+                    field: "progress",
+                    title: "完成度",
+                    sortable: true,
+                    content: function(item) {return item.progress;}
+                }
             ];
+            if (this.args.type) {
+                
+            }
             table.render();
             
             //页码
@@ -157,8 +288,9 @@ es.Views.List = Backbone.View.extend({
      * 获取通知
      */
     getNotify: function() {
-        this.$(".notify").html($.Mustache.render("tpl-list-notify", {
-            n: 12
+        this.$(".notify").prepend($.Mustache.render("tpl-list-notify", {
+            doubtNumber: 12,
+            toDoNumber: 9
         })).fadeIn(1000);
     }
 });
