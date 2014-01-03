@@ -4,8 +4,8 @@
  * @author: Ricky
  */
 
-.index-wrap{text-align:center; padding-top:20px}
-.role{margin:0 auto; width:600px; height:120px; padding-left:130px; margin-bottom:15px; overflow:hidden}
+.index-wrap{padding:20px 0 0 30px}
+.role{height:120px; padding-left:130px; margin-bottom:15px; overflow:hidden}
 .phm{background:url(images/icon-phm.png) no-repeat}
 .crm{background:url(images/icon-crm.png) no-repeat}
 .dm{background:url(images/icon-dm.png) no-repeat}
@@ -23,4 +23,5 @@
 .role .crm3{background-image:url(images/icon-crm3.png)}
 .role .dm1{background-image:url(images/icon-dm1.png)}
 .role .dm2{background-image:url(images/icon-dm2.png)}
-.role .dm3{background-image:url(images/icon-dm3.png)}
+.role .dm3{background-image:url(images/icon-crm3.png)}
+.role .dm4{background-image:url(images/icon-dm3.png)}

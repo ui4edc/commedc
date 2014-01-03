@@ -50,9 +50,9 @@ es.Views.Stat = Backbone.View.extend({
     },
     
     onMenuClick: function(id) {
-        var view = es.main;
-        view.statType = id;
-        view.model.getData({statType: id});
+        var me = es.main;
+        me.statType = id;
+        me.model.getData();
     },
     
     /*

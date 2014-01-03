@@ -12,6 +12,17 @@ var TIME_TYPE = {
     value: 1
 };
 
+var RANGE = {
+    range: {
+        begin: new Date(2014, 0, 1),
+        end: new Date()
+    },
+    valueAsObject: {
+        begin: new Date(2014, 0, 1),
+        end: new Date()
+    }
+};
+
 var PROGRESS_TYPE = {
     datasource: [
         {name: "不限制", value: 1},
@@ -62,12 +73,6 @@ var STAT_MENU = [
             {name: "各值统计", id: 1},
             {name: "年龄", id: 2},
             {name: "性别", id: 3}
-        ]
-    },
-    {
-        name: "XXX",
-        children: [
-            {name: "xxx", id: 4}
         ]
     }
 ];

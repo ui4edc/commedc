@@ -14,12 +14,13 @@ a{color:#06c}
 #Head{height:70px; overflow:hidden; color:#666}
 #Head .logo{float:left; width:440px; height:70px; background-image:url(images/logo.jpg)}
 #Head .info{float:right; line-height:70px; margin-right:40px}
-#Nav{height:30px; overflow:hidden; padding-left:20px; background-color:#2980b9}
-#Nav a{float:left; height:30px; line-height:30px; padding:0 10px; margin-right:20px; font-size:14px; color:#fff; text-decoration:none}
+#Nav{height:30px; overflow:hidden; background-color:#2980b9}
+#Nav a{float:left; height:30px; line-height:30px; padding:0 10px; margin-left:20px; font-size:14px; color:#fff; text-decoration:none}
 #Nav a:hover,
 #Nav a.active{background-color:#3498db}
 #Main{overflow:hidden}
 #Foot{padding:20px 0; line-height:20px; border-top:1px #ddd solid; color:#666; text-align:center; clear:both}
+#Head, #Nav, #Main, #Foot{min-width:1000px}
 
 /*页面标题*/
 h1{font-size:14px; margin:0; padding:20px 0 20px 40px; margin-bottom:20px; border-bottom:1px #a6c0d1 solid; color:#333}
@@ -88,3 +89,7 @@ h1.no-border{border-bottom:0}
 /*图表*/
 .chart{padding:30px; height:400px}
 
+/*esui*/
+.ui-dialog{border:2px solid #2980b9}
+.ui-dialog-head{background:#2980b9}
+.ui-dialog-foot{text-align:right}

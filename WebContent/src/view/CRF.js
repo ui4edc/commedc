@@ -73,8 +73,8 @@ es.Views.CRF = Backbone.View.extend({
     },
     
     onMenuClick: function(id) {
-        var view = es.main;
-        view.destroyForm();
+        var me = es.main;
+        me.destroyForm();
         
         switch (id) {
             case 1: formName = "A"; break;
@@ -82,7 +82,7 @@ es.Views.CRF = Backbone.View.extend({
             case 3: formName = "C";
         }
         
-        view.form = new es.Views[formName]({
+        me.form = new es.Views[formName]({
             model: new es.Models[formName],
             status: view.status,
             crfId: view.crfId

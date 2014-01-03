@@ -34,9 +34,13 @@ es.Views.List = Backbone.View.extend({
             //填充html
             me.$el.mustache("tpl-list");
             me.$(".data").append($.Mustache.render("tpl-page"));
+            me.$(".list-wrap").append($.Mustache.render("tpl-new-crf-dialog"));
             
             //初始化控件
             me.initCtrl();
+            
+            //获取通知
+            me.getNotify();
             
             //初始查询
             me.args = {
@@ -46,9 +50,6 @@ es.Views.List = Backbone.View.extend({
             };
             me.getArgs();
             me.queryFirstPage();
-            
-            //获取通知
-            me.getNotify();
         });
     },
     
@@ -59,28 +60,12 @@ es.Views.List = Backbone.View.extend({
         esui.init(this.el, {
             CreateRangeType: TIME_TYPE,
             LastModifyRangeType: TIME_TYPE,
+            DoubtRangeType: TIME_TYPE,
+            CreateRange: RANGE,
+            LastModifyRange: RANGE,
+            DoubtRange: RANGE,
             ProgressType: PROGRESS_TYPE,
-            PageSize: PAGE_SIZE,
-            CreateRange: {
-                range: {
-                    begin: new Date(2014, 0, 1),
-                    end: new Date()
-                },
-                valueAsObject: {
-                    begin: new Date(2014, 0, 1),
-                    end: new Date()
-                }
-            },
-            LastModifyRange: {
-                range: {
-                    begin: new Date(2014, 0, 1),
-                    end: new Date()
-                },
-                valueAsObject: {
-                    begin: new Date(2014, 0, 1),
-                    end: new Date()
-                }
-            }
+            PageSize: PAGE_SIZE
         });
         
         var me = this;
@@ -99,6 +84,13 @@ es.Views.List = Backbone.View.extend({
                 $("#ctrlmcalLastModifyRange").hide();
             } else {
                 $("#ctrlmcalLastModifyRange").show();
+            }
+        };
+        esui.get("DoubtRangeType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrlmcalDoubtRange").hide();
+            } else {
+                $("#ctrlmcalDoubtRange").show();
             }
         };
         esui.get("ProgressType").onchange = function(value) {
@@ -133,6 +125,10 @@ es.Views.List = Backbone.View.extend({
             me.args.desc = order == "desc" ? true : false;
             me.queryFirstPage();
         };
+        esui.get("OpenNewCRF").onclick = this.openNewCRF;
+        esui.get("DelCRF").onclick = this.delCRF;
+        esui.get("SubmitCRF").onclick = this.submitCRF;
+        esui.get("NewCRFOK").onclick = this.newCRF;
     },
     
     /*
@@ -140,8 +136,7 @@ es.Views.List = Backbone.View.extend({
      */
     getArgs: function() {
         this.args.crf = esui.get("CRF").isChecked();
-        var type = parseInt(this.$(".tabbar .active").attr("type"));
-        this.args.type = type;
+        this.args.type = parseInt(this.$(".tabbar .active").attr("type"));
         this.args.no = $.trim(esui.get("No").getValue());
         this.args.abbr = $.trim(esui.get("Abbr").getValue());
         if (esui.get("CreateRangeType").value == 1) {
@@ -167,6 +162,18 @@ es.Views.List = Backbone.View.extend({
             this.args.progress = null;
         } else {
             this.args.progress = $.trim(esui.get("Progress").getValue());
+        }
+        this.args.undealed = esui.get("Undealed").isChecked();
+        this.args.doubter = $.trim(esui.get("Doubter").getValue());
+        this.args.doubtField = $.trim(esui.get("DoubtField").getValue());
+        if (esui.get("DoubtRangeType").value == 1) {
+            this.args.doubtDate = null;
+        } else {
+            var date = esui.get("DoubtRange").getValue().split(",");
+            this.args.doubtDate = {
+                begin: date[0],
+                end: date[1]
+            };
         }
     },
     
@@ -204,10 +211,19 @@ es.Views.List = Backbone.View.extend({
         this.getArgs();
         this.queryFirstPage();
         
+        //已提交Tab
         if (this.args.type == 2) {
-            this.$("#ctrlbuttonSubmit").hide();
+            this.$("#ctrlbuttonSubmitCRF").hide();
+            this.$(".time-label").text("提交时间范围：");
         } else {
-            this.$("#ctrlbuttonSubmit").show();
+            this.$("#ctrlbuttonSubmitCRF").show();
+            this.$(".time-label").text("最后修改时间范围：");
+        }
+        //被质疑Tab
+        if (this.args.type == 3) {
+            this.$(".doubt-form").show();
+        } else {
+            this.$(".doubt-form").hide();
         }
     },
     
@@ -224,7 +240,8 @@ es.Views.List = Backbone.View.extend({
             this.$(".data").show();
             
             //表格
-            var table = esui.get("Grid");
+            var table = esui.get("Grid"),
+                me = this;
             table.datasource = data.data;
             table.fields = [
                 {
@@ -232,7 +249,11 @@ es.Views.List = Backbone.View.extend({
                     title: "观察表编号",
                     sortable: true,
                     content: function(item) {
-                        return $.Mustache.render("tpl-list-detail", {id: item.id, no: item.no});
+                        return $.Mustache.render("tpl-list-detail", {
+                            id: item.id,
+                            no: item.no,
+                            rount: me.args.crf ? "update" : "update/adr"
+                        });
                     }
                 },
                 {
@@ -260,8 +281,32 @@ es.Views.List = Backbone.View.extend({
                     content: function(item) {return item.progress;}
                 }
             ];
-            if (this.args.type) {
-                
+            //被质疑Tab增加4列
+            if (this.args.type == 3) {
+                table.fields.splice(2, 0,
+                {
+                    field: "doubter",
+                    title: "质疑人",
+                    sortable: true,
+                    content: function(item) {return item.doubter;}
+                },
+                {
+                    field: "doubtField",
+                    title: "质疑字段",
+                    sortable: true,
+                    content: function(item) {return item.doubtField;}
+                },
+                {
+                    field: "description",
+                    title: "说明",
+                    content: function(item) {return item.description;}
+                },
+                {
+                    field: "doubtDate",
+                    title: "质疑时间",
+                    sortable: true,
+                    content: function(item) {return item.doubtDate;}
+                });
             }
             table.render();
             
@@ -288,9 +333,125 @@ es.Views.List = Backbone.View.extend({
      * 获取通知
      */
     getNotify: function() {
-        this.$(".notify").prepend($.Mustache.render("tpl-list-notify", {
-            doubtNumber: 12,
-            toDoNumber: 9
-        })).fadeIn(1000);
+        var me = this;
+        util.ajax.run({
+            url: "",
+            data: {},
+            success: function(response) {
+                console.log("通知:", response);
+                me.$(".notify").prepend($.Mustache.render("tpl-list-notify", {
+                    doubtNumber: response.doubtNumber,
+                    toDoNumber: response.toDoNumber
+                })).fadeIn(1000);
+            },
+            mock: true,
+            mockData: {
+                success: true,
+                errorMsg: "errorMsg",
+                doubtNumber: 12,
+                toDoNumber: 1
+            }
+        });
+    },
+    
+    /*
+     * 打开对话框
+     */
+    openNewCRF: function() {
+        esui.get("NewNo").setValue("");
+        esui.get("NewAbbr").setValue("");
+        esui.get("NewCRFDialog").show();
+    },
+    
+    /*
+     * 新建CRF
+     */
+    newCRF: function() {
+        var no = $.trim(esui.get("NewNo").getValue()),
+            abbr = $.trim(esui.get("NewAbbr").getValue());
+        
+        util.ajax.run({
+            url: "",
+            data: {no: no, abbr: abbr},
+            success: function(response) {
+                esui.get("NewCRFDialog").hide();
+                if (es.main.args.type == 1) { //草稿
+                    es.main.queryFirstPage();
+                }
+            },
+            mock: true,
+            mockData: {
+                success: true,
+                errorMsg: "errorMsg"
+            }
+        });
+    },
+    
+    /*
+     * 批量删除
+     */
+    delCRF: function() {
+        var selected = $(".ui-table-row-selected .detail");
+        if (selected.length == 0) {
+            esui.Dialog.alert({
+                title: "批量删除",
+                content: "请选择要删除的观察表。"
+            });
+        } else {
+            esui.Dialog.confirm({
+                title: "批量删除",
+                content: "确定删除吗？",
+                onok: function () {
+                    var id = [];
+                    $.each(selected, function(index, val) {
+                        id.push(parseInt(val.id));
+                    });
+                    
+                    util.ajax.run({
+                        url: "",
+                        data: {id: id.join(",")},
+                        success: function(response) {
+                            es.main.queryFirstPage();
+                        },
+                        mock: true,
+                        mockData: {
+                            success: true,
+                            errorMsg: "errorMsg"
+                        }
+                    });
+                }
+            });
+        }
+    },
+    
+    /*
+     * 批量提交
+     */
+    submitCRF: function() {
+        var selected = $(".ui-table-row-selected .detail");
+        if (selected.length == 0) {
+            esui.Dialog.alert({
+                title: "批量提交",
+                content: "请选择要提交的观察表。"
+            });
+        } else {
+            var id = [];
+            $.each(selected, function(index, val) {
+                id.push(parseInt(val.id));
+            });
+            
+            util.ajax.run({
+                url: "",
+                data: {id: id.join(",")},
+                success: function(response) {
+                    es.main.queryFirstPage();
+                },
+                mock: true,
+                mockData: {
+                    success: true,
+                    errorMsg: "errorMsg"
+                }
+            });
+        }
     }
 });

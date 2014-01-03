@@ -31,7 +31,11 @@ es.Models.List = Backbone.Model.extend({
                         abbr: "XM",
                         createDate: "2014-01-01 00:00:00",
                         lastModified : "2014-01-02 00:00:00",
-                        progress: "30%"
+                        progress: "30%",
+                        doubter: "doubter",
+                        doubtField: "身高",
+                        description: "非人类",
+                        doubtDate: "2014-01-03 00:00:00"
                     },
                     {
                         id: 2,
@@ -39,7 +43,11 @@ es.Models.List = Backbone.Model.extend({
                         abbr: "XH",
                         createDate: "2014-01-01 00:00:00",
                         lastModified : "2014-01-02 00:00:00",
-                        progress: "30%"
+                        progress: "30%",
+                        doubter: "doubter",
+                        doubtField: "身高",
+                        description: "非人类",
+                        doubtDate: "2014-01-03 00:00:00"
                     }
                 ]
             }

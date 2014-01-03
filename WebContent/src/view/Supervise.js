@@ -31,11 +31,19 @@ es.Views.Supervise = Backbone.View.extend({
         
         var me = this;
         $.Mustache.load("asset/tpl/supervise.html").done(function() {
+            //填充html
             me.$el.mustache("tpl-supervise");
             me.$(".data").append($.Mustache.render("tpl-page"));
+            
+            //初始化控件
             me.initCtrl();
+            
             //初始查询
-            me.args = {pageSize: 20};
+            me.args = {
+                pageSize: 20,
+                orderBy: "lastModified",
+                desc: true
+            };
             me.getArgs();
             me.queryFirstPage();
         });
@@ -46,26 +54,118 @@ es.Views.Supervise = Backbone.View.extend({
      */
     initCtrl: function() {
         esui.init(this.el, {
+            CreateRangeType: TIME_TYPE,
+            LastModifyRangeType: TIME_TYPE,
+            DoubtRangeType: TIME_TYPE,
+            CreateRange: RANGE,
+            LastModifyRange: RANGE,
+            DoubtRange: RANGE,
+            ProgressType: PROGRESS_TYPE,
             PageSize: PAGE_SIZE
         });
-            
+        
         var me = this;
-        esui.get("PageSize").onchange = function(value, item) {
-            me.args.pageSize = value;
+        esui.get("CreateRangeType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrlmcalCreateRange").hide();
+            } else {
+                $("#ctrlmcalCreateRange").show();
+            }
+        };
+        esui.get("LastModifyRangeType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrlmcalLastModifyRange").hide();
+            } else {
+                $("#ctrlmcalLastModifyRange").show();
+            }
+        };
+        esui.get("DoubtRangeType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrlmcalDoubtRange").hide();
+            } else {
+                $("#ctrlmcalDoubtRange").show();
+            }
+        };
+        esui.get("ProgressType").onchange = function(value) {
+            if (value == 1) {
+                $("#ctrltextProgress").hide();
+            } else {
+                $("#ctrltextProgress").show();
+            }
+        };
+        esui.get("PageSize").onchange = function(size) {
+            me.args.pageSize = size;
             me.queryFirstPage();
         };
         esui.get("PageNo").onchange = function(page) {
             me.args.pageNo = page + 1;
             me.query(me.args);
         };
+        esui.get("Query").onclick = function() {
+            me.getArgs();
+            me.queryFirstPage();
+        };
+        esui.get("CRF").onclick = function() {
+            me.args.crf = true;
+            me.queryFirstPage();
+        };
+        esui.get("ADR").onclick = function() {
+            me.args.crf = false;
+            me.queryFirstPage();
+        };
+        esui.get("Grid").onsort = function (field, order) {
+            me.args.orderBy = field.field;
+            me.args.desc = order == "desc" ? true : false;
+            me.queryFirstPage();
+        };
+        esui.get("DelCRF").onclick = this.delCRF;
+        esui.get("SubmitCRF").onclick = this.submitCRF;
     },
     
     /*
      * 获取参数
      */
     getArgs: function() {
-        var type = parseInt(this.$(".tabbar .active").attr("type"));
-        this.args.type = type;
+        this.args.crf = esui.get("CRF").isChecked();
+        this.args.type = parseInt(this.$(".tabbar .active").attr("type"));
+        this.args.no = $.trim(esui.get("No").getValue());
+        this.args.abbr = $.trim(esui.get("Abbr").getValue());
+        if (esui.get("CreateRangeType").value == 1) {
+            this.args.createDate = null;
+        } else {
+            var date = esui.get("CreateRange").getValue().split(",");
+            this.args.createDate = {
+                begin: date[0],
+                end: date[1]
+            };
+        }
+        if (esui.get("LastModifyRangeType").value == 1) {
+            this.args.lastModified = null;
+        } else {
+            var date = esui.get("LastModifyRange").getValue().split(",");
+            this.args.lastModified = {
+                begin: date[0],
+                end: date[1]
+            };
+        }
+        this.args.progressType = esui.get("ProgressType").value;
+        if (esui.get("ProgressType").value == 1) {
+            this.args.progress = null;
+        } else {
+            this.args.progress = $.trim(esui.get("Progress").getValue());
+        }
+        this.args.undealed = esui.get("Undealed").isChecked();
+        this.args.doubter = $.trim(esui.get("Doubter").getValue());
+        this.args.doubtField = $.trim(esui.get("DoubtField").getValue());
+        if (esui.get("DoubtRangeType").value == 1) {
+            this.args.doubtDate = null;
+        } else {
+            var date = esui.get("DoubtRange").getValue().split(",");
+            this.args.doubtDate = {
+                begin: date[0],
+                end: date[1]
+            };
+        }
     },
     
     /*
@@ -81,7 +181,7 @@ es.Views.Supervise = Backbone.View.extend({
      * 发起请求
      */
     query: function(args) {
-        console.log(args);
+        console.log("请求参数:", args);
         this.model.getData(args);
     },
     
@@ -101,13 +201,26 @@ es.Views.Supervise = Backbone.View.extend({
         //查询
         this.getArgs();
         this.queryFirstPage();
+        
+        //已提交Tab
+        if (this.args.type == 6) {
+            this.$("#ctrlbuttonSubmitCRF").hide();
+        } else {
+            this.$("#ctrlbuttonSubmitCRF").show();
+        }
+        //质疑记录Tab
+        if (this.args.type == 5) {
+            this.$(".doubt-form").show();
+        } else {
+            this.$(".doubt-form").hide();
+        }
     },
     
     /*
      * 渲染列表
      */
     renderGrid: function(model, data) {
-        console.log(data);
+        console.log("返回数据:", data);
         if (data.total == 0) {
             this.$(".no-result").show();
             this.$(".data").hide();
@@ -116,15 +229,74 @@ es.Views.Supervise = Backbone.View.extend({
             this.$(".data").show();
             
             //表格
-            var table = esui.get("Grid");
+            var table = esui.get("Grid"),
+                me = this;
             table.datasource = data.data;
             table.fields = [
-                {field: "id", title: "ID", content: function(item) {return item.id;}},
-                {field: "name", title: "名称", content: function(item) {return item.name;}},
-                {field: "op", title: "操作", content: function(item) {
-                    return $.Mustache.render("tpl-supervise-doubt", {id: item.id});
-                }}
+                {
+                    field: "no",
+                    title: "观察表编号",
+                    sortable: true,
+                    content: function(item) {
+                        return $.Mustache.render("tpl-supervise-detail", {
+                            id: item.id,
+                            no: item.no,
+                            rount: me.args.crf ? "doubt" : "doubt/adr"
+                        });
+                    }
+                },
+                {
+                    field: "abbr",
+                    title: "姓名缩写",
+                    sortable: true,
+                    content: function(item) {return item.abbr;}
+                },
+                {
+                    field: "createDate",
+                    title: "创建时间",
+                    sortable: true,
+                    content: function(item) {return item.createDate;}
+                },
+                {
+                    field: "lastModified",
+                    title: "提交时间",
+                    sortable: true,
+                    content: function(item) {return item.lastModified;}
+                },
+                {
+                    field: "progress",
+                    title: "完成度",
+                    sortable: true,
+                    content: function(item) {return item.progress;}
+                }
             ];
+            //质疑记录Tab增加4列
+            if (this.args.type == 5) {
+                table.fields.splice(2, 0,
+                {
+                    field: "doubter",
+                    title: "质疑人",
+                    sortable: true,
+                    content: function(item) {return item.doubter;}
+                },
+                {
+                    field: "doubtField",
+                    title: "质疑字段",
+                    sortable: true,
+                    content: function(item) {return item.doubtField;}
+                },
+                {
+                    field: "description",
+                    title: "说明",
+                    content: function(item) {return item.description;}
+                },
+                {
+                    field: "doubtDate",
+                    title: "质疑时间",
+                    sortable: true,
+                    content: function(item) {return item.doubtDate;}
+                });
+            }
             table.render();
             
             //页码
@@ -144,5 +316,73 @@ es.Views.Supervise = Backbone.View.extend({
             this.pageRendered = true;
         }
         this.$(".row-count").text("共 " + total + " 条");
+    },
+    
+    /*
+     * 批量删除
+     */
+    delCRF: function() {
+        var selected = $(".ui-table-row-selected .detail");
+        if (selected.length == 0) {
+            esui.Dialog.alert({
+                title: "批量删除",
+                content: "请选择要删除的观察表。"
+            });
+        } else {
+            esui.Dialog.confirm({
+                title: "批量删除",
+                content: "确定删除吗？",
+                onok: function () {
+                    var id = [];
+                    $.each(selected, function(index, val) {
+                        id.push(parseInt(val.id));
+                    });
+                    
+                    util.ajax.run({
+                        url: "",
+                        data: {id: id.join(",")},
+                        success: function(response) {
+                            es.main.queryFirstPage();
+                        },
+                        mock: true,
+                        mockData: {
+                            success: true,
+                            errorMsg: "errorMsg"
+                        }
+                    });
+                }
+            });
+        }
+    },
+    
+    /*
+     * 批量提交
+     */
+    submitCRF: function() {
+        var selected = $(".ui-table-row-selected .detail");
+        if (selected.length == 0) {
+            esui.Dialog.alert({
+                title: "批量提交",
+                content: "请选择要提交的观察表。"
+            });
+        } else {
+            var id = [];
+            $.each(selected, function(index, val) {
+                id.push(parseInt(val.id));
+            });
+            
+            util.ajax.run({
+                url: "",
+                data: {id: id.join(",")},
+                success: function(response) {
+                    es.main.queryFirstPage();
+                },
+                mock: true,
+                mockData: {
+                    success: true,
+                    errorMsg: "errorMsg"
+                }
+            });
+        }
     }
 });

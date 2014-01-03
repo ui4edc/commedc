@@ -1,7 +1,9 @@
 <!--头部-->
 <script id="tpl-head" type="text/html">
 <div class="logo"></div>
-<span class="info">您好，{{roleName}} - {{userName}}&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">修改密码</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">退出</a></span>
+<span class="info">您好，{{roleName}} - {{userName}}（{{hospitalName}}）
+&nbsp;&nbsp;|&nbsp;&nbsp;<a href="password.html" target="_blank">修改密码</a>
+&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">退出</a></span>
 </script>
 
 <!--底部-->
@@ -36,5 +38,24 @@ Copyright &copy; {{year}}
 <script id="tpl-tree-standalone" type="text/html">
 <div class="menu-title-standalone">
     <a href="javascript:void(0)" hidefocus="true" id="TreeNode{{data.id}}">{{data.name}}</a>
+</div>
+</script>
+
+<!--新建CRF对话框-->
+<script id="tpl-new-crf-dialog" type="text/html">
+<div ui="type:Dialog;id:NewCRFDialog;top:170;width:450;mask:0">
+    <div>新建CRF</div>
+    <div>
+        <div class="query-form">
+            <span>观察表编号：</span>
+            <input ui="type:TextInput;id:NewNo;width:80" type="text" class="en" />
+            <span>患者姓名缩写：</span>
+            <input ui="type:TextInput;id:NewAbbr;width:80" type="text" class="en" />
+        </div>
+    </div>
+    <div>
+        <div ui="type:Button;id:NewCRFOK">新建</div>
+        <div ui="type:Button;id:NewCRFClose">取消</div>
+    </div>
 </div>
 </script>

@@ -11,8 +11,10 @@ $(document).ready(function() {
         
         //session信息
         es.roleName = $("#RoleName").val();
+        es.roleId = $("#RoleId").val();
         es.userName = $("#UserName").val();
         es.userId = $("#UserId").val();
+        es.hospitalName = $("#HospitalName").val();
         
         es.init();
     });

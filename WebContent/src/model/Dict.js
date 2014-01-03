@@ -26,12 +26,22 @@ es.Models.Dict = Backbone.Model.extend({
                 success: true,
                 errorMsg: "errorMsg",
                 data: [
-                    {id: 1, name: "药品名称字典", undeal: 10},
-                    {id: 2, name: "科室名称字典", undeal: 0},
-                    {id: 2, name: "用药类别字典", undeal: 0}
+                    {id: 1, name: "药品名称字典", undealed: 10},
+                    {id: 2, name: "科室名称字典", undealed: 0},
+                    {id: 3, name: "用药类别字典", undealed: 0}
                 ]
             }
         });
+    },
+    
+    formatDict: function(response) {
+        $.each(response.data, function(index, val) {
+            if (val.undealed != 0) {
+                val.name = val.name + " (" + val.undealed + "个未处理)";
+            }
+        });
+        
+        return response;
     },
     
     getItem: function(args) {
@@ -50,11 +60,11 @@ es.Models.Dict = Backbone.Model.extend({
                 success: true,
                 errorMsg: "errorMsg",
                 data: [
-                    {id: 1, name: "高血压", abbr: "gxy"},
-                    {id: 2, name: "糖尿病", abbr: "tnb"},
-                    {id: 2, name: "心肌梗塞", abbr: "xjgs"},
-                    {id: 2, name: "心肌梗死", abbr: "xjgs"},
-                    {id: 2, name: "心梗", abbr: "xg"}
+                    {id: 11, name: "高血压", abbr: "gxy"},
+                    {id: 12, name: "糖尿病", abbr: "tnb"},
+                    {id: 13, name: "心肌梗塞", abbr: "xjgs"},
+                    {id: 14, name: "心肌梗死", abbr: "xjgs"},
+                    {id: 15, name: "心梗", abbr: "xg"}
                 ]
             }
         });
@@ -68,24 +78,24 @@ es.Models.Dict = Backbone.Model.extend({
             url: "",
             data: args,
             success: function(response) {
-                me.set({base: response});
+                me.set({base: me.formatBase(response)});
             },
             mock: true,
             mockData: {
                 success: true,
                 errorMsg: "errorMsg",
                 data: [
-                    {id: 1, name: "高血压", abbr: "gxy"},
-                    {id: 2, name: "糖尿病", abbr: "tnb"},
-                    {id: 2, name: "心肌梗塞", abbr: "xjgs"}
+                    {id: 21, name: "高血压", abbr: "gxy"},
+                    {id: 22, name: "糖尿病", abbr: "tnb"},
+                    {id: 23, name: "心肌梗塞", abbr: "xjgs"}
                 ]
             }
         });
     },
     
-    formatDict: function(response) {
+    formatBase: function(response) {
         $.each(response.data, function(index, val) {
-            val.name = val.name + (val.undeal == 0 ? "" : " (" + val.undeal +　"个未处理)");
+            val.value = val.name + " " + val.abbr;
         });
         
         return response;

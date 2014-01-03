@@ -13,3 +13,4 @@ body{margin:0; text-align:center; padding-top:70px; font-size:14px; background:u
 p{color:#666; margin:20px 0}
 .tip{position:absolute; left:150px; top:0; width:200px; height:30px; line-height:30px; background:#fff799; border-bottom-left-radius:10px; border-bottom-right-radius:10px}
 .icon{width:128px; height:128px; background:url(images/icon-login.png); position:absolute; left:0; top:150px}
+.password-form{height:220px}

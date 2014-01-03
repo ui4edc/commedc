@@ -9,7 +9,7 @@
                 <div class="dict-item-list">
                     <div class="dict-title">
                         <input ui="type:TextInput;id:Item;width:195" type="text" />
-                        <div ui="type:Button;id:AddItem;">添加到底层字典</div>
+                        <div ui="type:Button;id:AddToDict;">添加到底层字典</div>
                     </div>
                     <div ui="type:Table;id:Items;select:multi"></div>
                 </div>
@@ -21,4 +21,8 @@
         </div>
     </div>
 </div>
+</script>
+
+<script id="tpl-dict-item" type="text/html">
+<span id="{{id}}">{{name}}</span>
 </script>

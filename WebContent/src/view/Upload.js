@@ -32,7 +32,20 @@ es.Views.Upload = Backbone.View.extend({
         var me = this;
         $.Mustache.load("asset/tpl/upload.html").done(function() {
             me.$el.mustache("tpl-upload");
+            me.initCtrl();
             me.initUpload();
+        });
+    },
+    
+    /*
+     * 初始化控件
+     */
+    initCtrl: function() {
+        esui.init(this.el, {
+            UploadType: {
+                datasource: [{name: "请选择", value: 0}],
+                value: 0
+            }
         });
     },
     
