@@ -1,0 +1,11 @@
+/*
+ * CRF表单
+ * 
+ * @author: Ricky
+ */
+
+.crf-form h2{margin:0 0 10px 0}
+.crf-form .row{height:36px; line-height:36px; overflow:hidden}
+.crf-form .row .label{float:left; width:100px; font-weight:bold}
+.crf-form .row .ui-cal{float:left; margin-top:7px}
+.crf-form .bottom{padding-top:10px; height:26px; line-height:26px}

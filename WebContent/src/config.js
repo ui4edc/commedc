@@ -41,29 +41,28 @@ var PAGE_SIZE = {
     value: 20
 };
 
-var C_MENU = [
+var CRF_MENU = [
     {
-        name: "患者基本信息",
+        name: "患者信息",
         children: [
-            {name: "基本情况", id: 1},
-            {name: "个人既往史", id: 2}
+            {name: "基本情况", id: 11},
+            {name: "个人史 + 过敏史", id: 12},
+            {name: "既往史", id: 13}
         ]
     },
-    {name: "病症情况", id: 3},
-    {name: "用药情况", id: 4},
-    {name: "合并用药", id: 5},
+    {name: "病症情况", id: 20},
+    {name: "用药情况", id: 30},
+    {name: "合并用药", id: 40},
     {
-        name: "查体检测",
+        name: "实验检查",
         children: [
-            {name: "入院检查", id: 6},
-            {name: "用药中检查", id: 7},
-            {name: "出院检查", id: 8}
+            {name: "入院检查", id: 51},
+            {name: "用药中检查", id: 52},
+            {name: "出院检查", id: 53}
         ]
     },
-    {name: "出院情况", id: 9},
-    {name: "药师干预", id: 10},
-    {name: "经济学指标", id: 11},
-    {name: "ADR", id: 12}
+    {name: "用药小结", id: 60},
+    {name: "ADR", id: 70}
 ];
 
 var STAT_MENU = [

@@ -1,10 +1,10 @@
 /*
- * CRF
+ * 患者信息-个人史 + 过敏史
  * 
  * @author: Ricky
  */
 
-es.Models.CRF = Backbone.Model.extend({
+es.Models.Form12 = Backbone.Model.extend({
     defaults: {
         data: null
     },
@@ -23,9 +23,7 @@ es.Models.CRF = Backbone.Model.extend({
             mockData: {
                 success: true,
                 errorMsg: "errorMsg",
-                no: "333-1234",
-                abbr: "XM",
-                progress: "10%"
+                data: {}
             }
         });
     }

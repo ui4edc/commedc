@@ -234,7 +234,7 @@ es.Views.Data = Backbone.View.extend({
                         return $.Mustache.render("tpl-data-detail", {
                             id: item.id,
                             no: item.no,
-                            rount: me.args.crf ? "doubt" : "doubt/adr"
+                            rount: me.args.crf ? "doubt" : "doubtadr"
                         });
                     }
                 },

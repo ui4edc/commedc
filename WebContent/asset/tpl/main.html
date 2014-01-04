@@ -43,7 +43,7 @@ Copyright &copy; {{year}}
 
 <!--新建CRF对话框-->
 <script id="tpl-new-crf-dialog" type="text/html">
-<div ui="type:Dialog;id:NewCRFDialog;top:170;width:450;mask:0">
+<div ui="type:Dialog;id:NewCRFDialog;top:120;width:450;mask:0">
     <div>新建CRF</div>
     <div>
         <div class="query-form">
@@ -54,8 +54,25 @@ Copyright &copy; {{year}}
         </div>
     </div>
     <div>
-        <div ui="type:Button;id:NewCRFOK">新建</div>
+        <div ui="type:Button;id:NewCRFOK">确定</div>
         <div ui="type:Button;id:NewCRFClose">取消</div>
+    </div>
+</div>
+</script>
+
+<!--新建ADR对话框-->
+<script id="tpl-new-adr-dialog" type="text/html">
+<div ui="type:Dialog;id:NewADRDialog;top:120;width:450;mask:0">
+    <div>新建ADR</div>
+    <div>
+        <div class="query-form">
+            <span>请输入对应观察表编号：</span>
+            <input ui="type:TextInput;id:No;width:80" type="text" class="en" />
+        </div>
+    </div>
+    <div>
+        <div ui="type:Button;id:NewADROK">确定</div>
+        <div ui="type:Button;id:NewADRClose">取消</div>
     </div>
 </div>
 </script>

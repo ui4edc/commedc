@@ -6,21 +6,19 @@
 
 es.Router = Backbone.Router.extend({
     routes: {
-        ""                 : "index",
-        "index/*query"     : "index",
-        "crf/create/*query": "crf",
-        "crf/update/*query": "crf",
-        "crf/doubt/*query" : "crf",
-        "adr/create/*query": "adr",
-        "adr/update/*query": "adr",
-        "adr/doubt/*query" : "adr",
-        "list/*query"      : "list",
-        "supervise/*query" : "supervise",
-        "dict/*query"      : "dict",
-        "upload/*query"    : "upload",
-        "stat/*query"      : "stat",
-        "data/*query"      : "data",
-        "account/*query"   : "account"
+        ""                    : "index",
+        "index/*query"        : "index",
+        "crf/update/*query"   : "crf",
+        "crf/updateadr/*query": "crf",
+        "crf/doubt/*query"    : "crf",
+        "crf/doubtadr/*query" : "crf",
+        "list/*query"         : "list",
+        "supervise/*query"    : "supervise",
+        "dict/*query"         : "dict",
+        "upload/*query"       : "upload",
+        "stat/*query"         : "stat",
+        "data/*query"         : "data",
+        "account/*query"      : "account"
     },
     
     /*
@@ -56,10 +54,6 @@ es.Router = Backbone.Router.extend({
     
     crf: function(query) {
         this.startRout("CRF", "CRF", query);
-    },
-    
-    adr: function(query) {
-        this.startRout("ADR", "ADR", query);
     },
     
     list: function(query) {

@@ -8,11 +8,11 @@ es.Views.CRF = Backbone.View.extend({
     el: "#Main",
     
     events: {
-        
+        "click .submit-crf": "onSubmitCRF"
     },
     
     initialize: function() {
-        
+        this.model.bind("change:data", this.renderInfo, this);
     },
     
     destroy: function() {
@@ -29,7 +29,7 @@ es.Views.CRF = Backbone.View.extend({
     },
     
     renderNav: function() {
-        es.widgets.nav.setActive("index");
+        es.widgets.nav.clearActive();
     },
     
     render: function(query) {
@@ -38,54 +38,119 @@ es.Views.CRF = Backbone.View.extend({
         //状态判断
         var hash = window.location.hash,
             title = "";
-        if (hash.indexOf("create") > 0) {
-            title = "新建CRF";
-            this.status = "create";
-            this.crfId = null;
-        } else if (hash.indexOf("update") > 0) {
-            title = "修改CRF";
-            this.status = "update";
-            this.crfId = parseInt(query);
-        } else if (hash.indexOf("doubt") > 0) {
+        this.crfId = parseInt(query);
+        var isCRM = $("#RoleId").val() == "2" ? true : false;
+        
+        if (/^#crf\/update\/\d+$/.test(hash)) {
+            title = "填写CRF";
+            this.editable = true;
+            this.selectADR = false;
+            this.canSubmit = true;
+        } else if (/^#crf\/updateadr\/\d+$/.test(hash)) {
+            title = "填写CRF";
+            this.editable = true;
+            this.selectADR = true;
+            this.canSubmit = true;
+        } else if (/^#crf\/doubt\/\d+$/.test(hash)) {
             title = "质疑CRF";
-            this.status = "doubt";
-            this.crfId = parseInt(query);
+            this.editable = false;
+            this.selectADR = false;
+            this.canSubmit = isCRM;
+        } else if(/^#crf\/doubtadr\/\d+$/.test(hash)) {
+            title = "质疑CRF";
+            this.editable = false;
+            this.selectADR = true;
+            this.canSubmit = isCRM;
         }
         
         var me = this;
         $.Mustache.load("asset/tpl/crf.html").done(function() {
             me.$el.mustache("tpl-crf", {title: title});
-            
-            esui.init();
-            esui.get("SubmitAll").setDisabled(true);
-            
-            //右侧表单view实例
-            me.form = null;
-            
-            //创建菜单
-            me.menu = new Tree({
-                container: ".sidenav",
-                data: C_MENU,
-                onClick: me.onMenuClick,
-                defaultId: 1
-            });
+            me.model.getData({id: me.crfId});
         });
     },
     
+    renderInfo: function(model, data) {
+        console.log(data);
+        this.$("h1").append($.Mustache.render("tpl-crf-title", {
+            no: data.no,
+            abbr: data.abbr,
+            submitBtn: this.canSubmit ? [1] : []
+        }));
+        this.$(".progressbar .progress").text("完成度：" + data.progress);
+        this.$(".progressbar .bar").css({width: data.progress});
+        this.progress = data.progress;
+        
+        //右侧表单view实例
+        this.form = null;
+       
+        //创建菜单
+        this.menu = new Tree({
+            container: ".sidenav",
+            data: CRF_MENU,
+            onClick: this.onMenuClick,
+            defaultId: this.selectADR ? 70 : 11
+        });
+    },
+    
+    /*
+     * 更新完成度
+     */
+    updateProgress: function(progress) {
+        this.$(".progressbar .progress").text("完成度：" + progress);
+        this.$(".progressbar .bar").css({width: progress});
+        this.progress = progress;
+    },
+    
+    /*
+     * 切换表单
+     */
     onMenuClick: function(id) {
         var me = es.main;
         me.destroyForm();
         
-        switch (id) {
-            case 1: formName = "A"; break;
-            case 2: formName = "B"; break;
-            case 3: formName = "C";
-        }
-        
+        var formName = "Form" + id;
         me.form = new es.Views[formName]({
             model: new es.Models[formName],
-            status: view.status,
-            crfId: view.crfId
+            parentView: me,
+            editable: me.editable,
+            crfId: me.crfId
+        });
+    },
+    
+    /*
+     * 全部提交
+     */
+    onSubmitCRF: function() {
+        var me = this;
+        if (this.progress != "100%") {
+            esui.Dialog.confirm({
+                title: "全部提交",
+                content: "CRF未填写完整，是否确定提交？",
+                onok: function () {
+                    me.submitCRF();
+                }
+            });
+        } else {
+            me.submitCRF();
+        }
+    },
+    
+    submitCRF: function() {
+        util.ajax.run({
+            url: "",
+            data: {id: this.crfId},
+            success: function(response) {
+                esui.Dialog.alert({
+                    title: "全部提交",
+                    content: "提交成功！"
+                });
+            },
+            mock: true,
+            mockData: {
+                success: true,
+                errorMsg: "errorMsg"
+            }
         });
     }
 });

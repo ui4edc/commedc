@@ -252,7 +252,7 @@ es.Views.List = Backbone.View.extend({
                         return $.Mustache.render("tpl-list-detail", {
                             id: item.id,
                             no: item.no,
-                            rount: me.args.crf ? "update" : "update/adr"
+                            rount: me.args.crf ? "update" : "updateadr"
                         });
                     }
                 },
@@ -375,14 +375,13 @@ es.Views.List = Backbone.View.extend({
             data: {no: no, abbr: abbr},
             success: function(response) {
                 esui.get("NewCRFDialog").hide();
-                if (es.main.args.type == 1) { //草稿
-                    es.main.queryFirstPage();
-                }
+                es.router.navigate("crf/update/" + response.id, true);
             },
             mock: true,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg"
+                errorMsg: "errorMsg",
+                id: 1
             }
         });
     },

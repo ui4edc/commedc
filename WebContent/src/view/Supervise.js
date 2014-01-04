@@ -241,7 +241,7 @@ es.Views.Supervise = Backbone.View.extend({
                         return $.Mustache.render("tpl-supervise-detail", {
                             id: item.id,
                             no: item.no,
-                            rount: me.args.crf ? "doubt" : "doubt/adr"
+                            rount: me.args.crf ? "doubt" : "doubtadr"
                         });
                     }
                 },

@@ -4,10 +4,18 @@
     <h1 class="no-bottom">{{title}}</h1>
     <div class="main">
         <div class="sidebar">
-            <div class="sideinfo"><div ui="type:Button;id:SubmitAll;skin:large">全部提交</div></div>
+            <div class="progressbar">
+                <div class="progress"></div>
+                <div class="bar"></div>
+            </div>
             <div class="sidenav"></div>
         </div>
-        <div class="content"></div>
+        <div class="content"><div class="crf-form"></div></div>
     </div>
 </div>
+</script>
+
+<script id="tpl-crf-title" type="text/html">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;观察表编号：{{no}}，患者姓名缩写：{{abbr}}
+{{#submitBtn}}<a href="javascript:void(0)" class="submit-crf">全部提交</a>{{/submitBtn}}
 </script>

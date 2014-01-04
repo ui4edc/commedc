@@ -22,5 +22,9 @@ es.Views.Nav = Backbone.View.extend({
     setActive: function(className) {
         this.$("a").removeClass("active");
         this.$("." + className).addClass("active");
+    },
+    
+    clearActive: function() {
+        this.$("a").removeClass("active");
     }
 });
