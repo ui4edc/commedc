@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.ecrf.trq.model.User;
-import cn.com.ecrf.trq.utils.ReturnUtils;
+import cn.com.ecrf.trq.utils.AjaxReturnValue;
 
 @Controller
 public class CRFController {
@@ -21,15 +21,15 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getPatientList(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put(ReturnUtils.success, true);
-		result.put(ReturnUtils.errorMsg, "");
-		result.put(ReturnUtils.total, 100);
+		result.put(AjaxReturnValue.success, true);
+		result.put(AjaxReturnValue.errorMsg, "");
+		result.put(AjaxReturnValue.total, 100);
 		List<User> users = new ArrayList<User>();
 		for (int i=0;i<20;i++){
 			User user = new User();
 			user.setUserName("username"+i);
 			users.add(user);
-			result.put(ReturnUtils.data, users);
+			result.put(AjaxReturnValue.data, users);
 		}
 		return result;
 	}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.com.ecrf.trq.repository.OrganizationMapper" >
+  
+  <resultMap id="OrganizationResultMap" type="cn.com.ecrf.trq.model.Organization" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+    <result column="organization_desc" property="organizationDesc" jdbcType="VARCHAR" />
+    <result column="parent_organization" property="parentOrganization" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- organization -->
+  <sql id="Base_Column_List" >
+    id, organization_name, organization_desc, create_time, update_time, update_time, update_by
+  </sql>
+  <insert id="insertOrganization" parameterType="cn.com.ecrf.trq.model.Organization">
+	<selectKey resultType="Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+  	insert into ac_organization(id, organization_name, organization_desc, create_time, create_by)
+  	values(#{id}, #{organizationName}, #{organizationDesc}, now(), #{createBy})
+  </insert>
+  <update id="updateOrganization" parameterType="cn.com.ecrf.trq.model.Organization">
+  	update ac_organization set organization_name=#{organizationName}, organization_desc=#{organizationDesc}, update_time=now(),
+  	update_by=#{updateBy} where id=#{id}
+  </update>
+  <delete id="deleteOrganizationById" parameterType="int">
+  	delete from ac_organization where id=#{id}
+  </delete>
+   <select id="getOrganizationById" parameterType="int" resultMap="OrganizationResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from ac_organization where id=#{id}
+  </select>
+  <select id="findOrganizationByName" parameterType="string" resultMap="OrganizationResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from ac_organization where id=#{organizationName}
+  </select>
+  <select id="findOrganizations" resultMap="OrganizationResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from ac_organization
+     LIMIT #{limitStart},#{limitSize} 
+  </select>
+</mapper>

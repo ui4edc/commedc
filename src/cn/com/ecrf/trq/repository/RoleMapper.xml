@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.com.ecrf.trq.repository.RoleMapper" >
+  
+  <resultMap id="RoleResultMap" type="cn.com.ecrf.trq.model.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_desc" property="roleDesc" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- role -->
+  <sql id="Base_Column_List" >
+    id, role_name, role_desc, create_time, update_time, update_time, update_by
+  </sql>
+  <insert id="insertRole" parameterType="cn.com.ecrf.trq.model.Role">
+	<selectKey resultType="Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+  	insert into ac_role(id, role_name, role_desc, create_time, create_by)
+  	values(#{id}, #{roleName}, #{roleDesc}, now(), #{createBy})
+  </insert>
+  <update id="updateRole" parameterType="cn.com.ecrf.trq.model.Role">
+  	update ac_role set role_name=#{roleName}, role_desc=#{roleDesc}, update_time=now(),
+  	update_by=#{updateBy} where id=#{id}
+  </update>
+  <delete id="deleteRoleById" parameterType="int">
+  	delete from ac_role where id=#{id}
+  </delete>
+   <select id="getRoleById" parameterType="int" resultMap="RoleResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from ac_role where id=#{id}
+  </select>
+  <select id="findRoleByName" parameterType="string" resultMap="RoleResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from ac_role where id=#{roleName}
+  </select>
+  <select id="findRoles" resultMap="RoleResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from ac_role
+     LIMIT #{limitStart},#{limitSize} 
+  </select>
+</mapper>

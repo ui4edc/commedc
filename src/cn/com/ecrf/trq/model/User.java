@@ -15,6 +15,8 @@ public class User {
     
     private String organizationName;
     
+    private String roleName;
+    
     private String emailAddress;
     
     private Date createTime;
@@ -101,6 +103,14 @@ public class User {
 
 	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
     

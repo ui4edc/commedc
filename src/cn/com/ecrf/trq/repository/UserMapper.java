@@ -1,5 +1,8 @@
 package cn.com.ecrf.trq.repository;
 
+import java.util.List;
+import java.util.Map;
+
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
 
@@ -26,4 +29,14 @@ public interface UserMapper {
 	Role getRoleById(Integer id);
 
 	Role findRoleByName(String roleName);
+
+	void addUser(User user);
+
+	void addUserRole(Map<String, Object> condition);
+
+	void deleteUserById(int userId);
+
+	User getUserById(int userId);
+
+	List<User> findUsers(Map<String, Object> condition);
 }

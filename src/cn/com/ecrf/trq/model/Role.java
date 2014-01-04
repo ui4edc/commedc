@@ -16,6 +16,8 @@ public class Role {
     private Date updateTime;
     
     private String updateBy;
+    
+    private String createBy;
 
 	public int getId() {
 		return id;
@@ -73,5 +75,14 @@ public class Role {
 		this.updateBy = updateBy;
 	}
 
+	public String getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+
+	
     
 }

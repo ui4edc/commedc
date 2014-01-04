@@ -22,7 +22,7 @@ public class PatientInfoCase {
 	//患者姓名
 	private String name;
 	//姓名缩写
-	private String xmsx;
+	private String abbr;
 	//出生年月
 	private Date birthday;
 	//年龄
@@ -30,7 +30,7 @@ public class PatientInfoCase {
 	//体重
 	private double weight;
 	//体重单位:kg
-	private String weightU;
+	private String weightu;
 	//性别
 	private String sex;
 	//怀孕史：妊娠期，怀孕期，无
@@ -38,7 +38,7 @@ public class PatientInfoCase {
 	//身高
 	private int height;
 	//身高单位:cm
-	private int heightU;
+	private int heightu;
 	//用药科室
 	private String yyks;
 	//入院日期

@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class PhaseSignPage {
 	private String blbh;
-	private int lockStatus;
+	private String lockStatus;
 	private Date croCreateTime;
 	private Date croSignTime;
 	private String croName;
@@ -24,10 +24,10 @@ public class PhaseSignPage {
 	public void setBlbh(String blbh) {
 		this.blbh = blbh;
 	}
-	public int getLockStatus() {
+	public String getLockStatus() {
 		return lockStatus;
 	}
-	public void setLockStatus(int lockStatus) {
+	public void setLockStatus(String lockStatus) {
 		this.lockStatus = lockStatus;
 	}
 	public Date getCroCreateTime() {

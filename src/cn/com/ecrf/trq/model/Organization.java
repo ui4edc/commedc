@@ -6,12 +6,12 @@ public class Organization {
 	private int id;
 	private String organizationName;
 	private String code;
-	private String createOrganization;
+	private String parentOrganization;
 	private String createBy;
 	private Date createTime;
 	private String updateBy;
 	private Date updateTime;
-	private String description;
+	private String organizationDesc;
 	private String location;
 	private String mailAddress;
 	public int getId() {
@@ -32,11 +32,11 @@ public class Organization {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public String getCreateOrganization() {
-		return createOrganization;
+	public String getParentOrganization() {
+		return parentOrganization;
 	}
-	public void setCreateOrganization(String createOrganization) {
-		this.createOrganization = createOrganization;
+	public void setParentOrganization(String parentOrganization) {
+		this.parentOrganization = parentOrganization;
 	}
 	public String getCreateBy() {
 		return createBy;
@@ -62,11 +62,11 @@ public class Organization {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	public String getDescription() {
-		return description;
+	public String getOrganizationDesc() {
+		return organizationDesc;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setOrganizationDesc(String organizationDesc) {
+		this.organizationDesc = organizationDesc;
 	}
 	public String getLocation() {
 		return location;

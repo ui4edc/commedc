@@ -2,6 +2,8 @@ package cn.com.ecrf.trq.test.base;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +21,8 @@ import cn.com.ecrf.trq.utils.CipherUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:/spring.xml","classpath:/spring-mybatis.xml", "classpath:/spring-shiro.xml" })
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)    
-@Transactional
+//@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)    
+//@Transactional
 public class SpringControllerTest {
 
 	@Autowired
@@ -32,45 +34,46 @@ public class SpringControllerTest {
 		User user = userService.findUserByLoginName("1");
 		Assert.notNull(user);
 	}
-	
+	@Ignore
 	@Test 
 	public void testInsertUser(){
 		User user = new User();
 		user.setUserName("zhangsan1");
-		user.setDisplayName("ÕÅÈý");
+		user.setDisplayName("å¼ ä¸‰");
 		user.setPassword(CipherUtil.generatePassword("123456"));
 		user.setStatus(1);
-		user.setOrganizationName("ÉÏº£XXÒ½Ôº");
+		user.setOrganizationName("XXåŒ»é™¢");
 		int id = userService.saveUser(user);
 		User user2 = userService.getUserById(id);
 		System.out.println("id="+id);
 		org.junit.Assert.assertEquals(user.getUserName(), user2.getUserName());
 	}
 	
+	@Ignore
 	@Test
 	public void testUpdateUser(){
 		User user = new User();
 		user.setUserName("zhangsan1");
-		user.setDisplayName("ÕÅÈý");
+		user.setDisplayName("å¼ ä¸‰");
 		user.setPassword(CipherUtil.generatePassword("123456"));
 		user.setStatus(1);
-		user.setOrganizationName("ÉÏº£XXÒ½Ôº");
+		user.setOrganizationName("XXåŒ»é™¢");
 		int id = userService.saveUser(user);
-		user.setDisplayName("ÀîËÄ");
+		user.setDisplayName("å¼ ä¸‰");
 		userService.saveUser(user);
 		User user2 = userService.getUserById(user.getId());
 		org.junit.Assert.assertEquals(user.getUserName(), user2.getUserName());
-		org.junit.Assert.assertNotEquals("ÕÅÈý", user2.getUserName());
+		org.junit.Assert.assertNotEquals("å¼ ä¸‰", user2.getUserName());
 	}
-	
+	@Ignore
 	@Test
 	public void testDeleteUser(){
 		User user = new User();
 		user.setUserName("zhangsan1");
-		user.setDisplayName("ÕÅÈý");
+		user.setDisplayName("å¼ ä¸‰");
 		user.setPassword(CipherUtil.generatePassword("123456"));
 		user.setStatus(1);
-		user.setOrganizationName("ÉÏº£XXÒ½Ôº");
+		user.setOrganizationName("XXåŒ»é™¢");
 		userService.saveUser(user);
 		userService.deleteUserById(user.getId());
 		User user2 = userService.getUserById(user.getId());
@@ -78,12 +81,12 @@ public class SpringControllerTest {
 		
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testInsertRole(){
 		Role role = new Role();
 		role.setRoleName("cro");
-		role.setRoleDesc("Â¼ÈëÔ±");
+		role.setRoleDesc("å½•å…¥å‘˜");
 		role.setCode("00");
 		userService.saveRole(role);
 		Role role2 = userService.getRoleById(role.getId());
@@ -92,6 +95,20 @@ public class SpringControllerTest {
 		org.junit.Assert.assertEquals(role.getRoleName(), role3.getRoleName());
 		userService.deleteRoleById(role.getId());
 		
+	}
+	
+	@Test
+	public void findUsers(){
+		for (int i=0;i<20;i++){
+			User user = new User();
+			user.setUserName("user"+i);
+			user.setPassword("2");
+			userService.saveUser(user);
+		}
+		List<User> users = userService.findUsers(1, 10);
+		for (int i=0;i<users.size();i++){
+			System.out.println(""+users.get(i).getId()+":"+users.get(i).getUserName());
+		}
 	}
 	
 	

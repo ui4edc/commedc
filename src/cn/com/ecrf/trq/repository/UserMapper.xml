@@ -41,14 +41,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insertUser" parameterType="cn.com.ecrf.trq.model.User"  >
-  	<selectKey resultType="int" keyProperty="id" order="BEFORE">
-      SELECT AC_USER_SEQ.NEXTVAL FROM DUAL
-      </selectKey>
+  	<selectKey resultType="Integer" order="AFTER" keyProperty="id">
+	SELECT LAST_INSERT_ID()
+	</selectKey>
     insert into ac_user (id, user_name, status, 
       password, display_name, organization_name, email_address, create_time)
     values (#{id}, #{userName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{password,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR},#{organizationName,jdbcType=VARCHAR},
-      #{emailAddress,jdbcType=VARCHAR},sysdate)
+      #{emailAddress,jdbcType=VARCHAR},current_timestamp())
   </insert>
   <insert id="insertSelective" parameterType="cn.com.ecrf.trq.model.User" >
     insert into ac_user
@@ -85,12 +85,12 @@
     select 
     <include refid="Base_Column_List" />
     from ac_user
-    where user_name = #{userName,jdbcType=VARCHAR}
+    where user_name = #{userName}
   </select>
   <update id="updateUser" parameterType="cn.com.ecrf.trq.model.User">
   		update ac_user set
 		user_name=#{userName}, password=#{password}, display_name=#{displayName},
-		status=#{status}, update_time= sysdate
+		status=#{status}, update_time= now()
 		<if test="organizationName != null" >
         	,organization_name=#{organizationName}
       	</if>
@@ -102,8 +102,14 @@
       	</if>
   		where id=#{id}
   </update>
+  <select id="findUsers" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from ac_user
+     LIMIT #{limitStart},#{limitSize} 
+  </select>
   <!-- role -->
-  <sql id="Role_Column_List" >
+  <!--<sql id="Role_Column_List" >
     id, role_name, role_desc, create_time, update_time, update_time, update_by
   </sql>
   <insert id="insertRole" parameterType="cn.com.ecrf.trq.model.Role">
@@ -111,10 +117,10 @@
       SELECT AC_ROLE_SEQ.NEXTVAL FROM DUAL
       </selectKey>
   	insert into ac_role(id, role_name, role_desc, create_time, create_by)
-  	values(#{id}, #{roleName}, #{roleDesc}, sysdate, #{createBy})
+  	values(#{id}, #{roleName}, #{roleDesc}, now(), #{createBy})
   </insert>
-  <!--<update id="updateRole" parameterType="cn.com.ecrf.trq.model.Role">
-  	update ac_role set role_name=#{roleName}, role_desc=#{roleDesc}, update_time=sysdate,
+  <update id="updateRole" parameterType="cn.com.ecrf.trq.model.Role">
+  	update ac_role set role_name=#{roleName}, role_desc=#{roleDesc}, update_time=now(),
   	update_by=#{updateBy} where id=#{id}
   </update>
   <delete id="deleteRoleById" parameterType="int">

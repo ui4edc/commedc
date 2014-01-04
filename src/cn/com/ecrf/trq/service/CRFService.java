@@ -27,6 +27,11 @@ public class CRFService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public int getCRFTotal(ListConditionVo condition){
+		int total = 0;
+		return total;
+	}
 
 	
 }
