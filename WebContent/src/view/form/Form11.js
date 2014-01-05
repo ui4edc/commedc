@@ -55,21 +55,11 @@ es.Views.Form11 = Backbone.View.extend({
         });
         
         var me = this;
-        esui.get("Birthday").onchange = function(value) {
-            esui.get("Birthday").setValueAsDate(value);
-        };
-        esui.get("InDate").onchange = function(value) {
-            esui.get("InDate").setValueAsDate(value);
-        };
-        esui.get("OutDate").onchange = function(value) {
-            esui.get("OutDate").setValueAsDate(value);
-        };
-        esui.get("Male").onclick = function() {
-            me.$(".female-period").hide();
-        };
-        esui.get("Female").onclick = function() {
-            me.$(".female-period").show();
-        };
+        esui.get("Birthday").onchange = function(value) {esui.get("Birthday").setValueAsDate(value);};
+        esui.get("InDate").onchange = function(value) {esui.get("InDate").setValueAsDate(value);};
+        esui.get("OutDate").onchange = function(value) {esui.get("OutDate").setValueAsDate(value);};
+        esui.get("Male").onclick = function() {me.$(".female-period").hide();};
+        esui.get("Female").onclick = function() {me.$(".female-period").show();};
     },
     
     renderForm: function(model, data) {

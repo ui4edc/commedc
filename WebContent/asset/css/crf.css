@@ -4,8 +4,12 @@
  * @author: Ricky
  */
 
-.crf-form h2{margin:0 0 10px 0}
+.crf-form h2{margin:0 0 10px 0; font-size:14px}
+.crf-form h3{margin:; padding:5px 0; font-size:12px; border-bottom:1px #ddd solid}
 .crf-form .row{height:36px; line-height:36px; overflow:hidden}
 .crf-form .row .label{float:left; width:100px; font-weight:bold}
 .crf-form .row .ui-cal{float:left; margin-top:7px}
+.crf-form .sub{padding-left:100px}
+.crf-form .sub2{padding-left:130px}
+.crf-form .auto{height:auto}
 .crf-form .bottom{padding-top:10px; height:26px; line-height:26px}

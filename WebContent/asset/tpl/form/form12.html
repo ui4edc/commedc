@@ -1,4 +1,120 @@
 <!--患者信息-个人史 + 过敏史-->
 <script id="tpl-form12" type="text/html">
 <h2>患者信息-个人史、过敏史</h2>
+<h3>个人史</h3>
+<div class="row">
+    <span class="label">吸烟史</span>
+    <input type="radio" hidefocus="true" title="有" name="smoke" value="1" ui="type:Radio;id:Smoke1" />
+    <input type="radio" hidefocus="true" title="无" name="smoke" value="2" ui="type:Radio;id:Smoke2" />
+</div>
+<div class="row">
+    <span class="label">饮酒史</span>
+    <input type="radio" hidefocus="true" title="有" name="drink" value="1" ui="type:Radio;id:Drink1" />
+    <input type="radio" hidefocus="true" title="无" name="drink" value="2" ui="type:Radio;id:Drink2" />
+</div>
+<h3>过敏史</h3>
+<div class="row">
+    <span class="label">食物过敏史</span>
+    <input type="radio" hidefocus="true" title="有" name="food" value="1" ui="type:Radio;id:Food1" />
+    <input type="radio" hidefocus="true" title="无" name="food" value="2" ui="type:Radio;id:Food2" />
+</div>
+<div class="row sub auto food">
+    <div><strong>具体名称/疑似过敏物</strong></div>
+    <div ui="type:TextLine;id:FoodName;width:400;height:60;"></div>
+    <div><strong>过敏表现</strong></div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="特应性皮炎" name="food-allergy" value="1" ui="type:CheckBox;id:FoodAllergy1" />
+        <input type="checkbox" hidefocus="true" title="过敏性鼻炎" name="food-allergy" value="2" ui="type:CheckBox;id:FoodAllergy2" />
+        <input type="checkbox" hidefocus="true" title="哮喘" name="food-allergy" value="3" ui="type:CheckBox;id:FoodAllergy3" />
+        <input type="checkbox" hidefocus="true" title="喉头水肿" name="food-allergy" value="4" ui="type:CheckBox;id:FoodAllergy4" />
+        <input type="checkbox" hidefocus="true" title="过敏性休克" name="food-allergy" value="5" ui="type:CheckBox;id:FoodAllergy5" />
+        <input type="checkbox" hidefocus="true" title="消化系统症状" name="food-allergy" value="6" ui="type:CheckBox;id:FoodAllergy6" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="其他" name="food-allergy" value="0" ui="type:CheckBox;id:OtherFoodAllergy" />
+        <input type="text" ui="type:TextInput;id:FoodAllergy;width:200" />
+    </div>
+</div>
+
+<div class="row">
+    <span class="label">药物过敏史</span>
+    <input type="radio" hidefocus="true" title="有" name="drug" value="1" ui="type:Radio;id:Drug1" />
+    <input type="radio" hidefocus="true" title="无" name="drug" value="2" ui="type:Radio;id:Drug2" />
+</div>
+<div class="row sub auto drug">
+    <div><strong>1. 抗生素类</strong></div>
+    <div ui="type:TextLine;id:Drug1Name;width:400;height:60;"></div>
+    <div><strong>过敏表现</strong></div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="皮试阳性" name="drug1-allergy" value="1" ui="type:CheckBox;id:Drug1Allergy1" />
+        <input type="checkbox" hidefocus="true" title="特应性皮炎" name="drug1-allergy" value="2" ui="type:CheckBox;id:Drug1Allergy2" />
+        <input type="checkbox" hidefocus="true" title="过敏性鼻炎" name="drug1-allergy" value="3" ui="type:CheckBox;id:Drug1Allergy3" />
+        <input type="checkbox" hidefocus="true" title="哮喘" name="drug1-allergy" value="4" ui="type:CheckBox;id:Drug1Allergy4" />
+        <input type="checkbox" hidefocus="true" title="喉头水肿" name="drug1-allergy" value="5" ui="type:CheckBox;id:Drug1Allergy5" />
+        <input type="checkbox" hidefocus="true" title="过敏性休克" name="drug1-allergy" value="6" ui="type:CheckBox;id:Drug1Allergy6" />
+        <input type="checkbox" hidefocus="true" title="消化系统症状" name="drug1-allergy" value="7" ui="type:CheckBox;id:Drug1Allergy7" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="其他" name="drug1-allergy" value="0" ui="type:CheckBox;id:OtherDrug1Allergy" />
+        <input type="text" ui="type:TextInput;id:Drug1Allergy;width:200" />
+    </div>
+    
+    <div><strong>2. 中药注射剂</strong></div>
+    <div ui="type:TextLine;id:Drug2Name;width:400;height:60;"></div>
+    <div><strong>过敏表现</strong></div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="特应性皮炎" name="drug2-allergy" value="1" ui="type:CheckBox;id:Drug2Allergy1" />
+        <input type="checkbox" hidefocus="true" title="过敏性鼻炎" name="drug2-allergy" value="2" ui="type:CheckBox;id:Drug2Allergy2" />
+        <input type="checkbox" hidefocus="true" title="哮喘" name="drug2-allergy" value="3" ui="type:CheckBox;id:Drug2Allergy3" />
+        <input type="checkbox" hidefocus="true" title="喉头水肿" name="drug2-allergy" value="4" ui="type:CheckBox;id:Drug2Allergy4" />
+        <input type="checkbox" hidefocus="true" title="过敏性休克" name="drug2-allergy" value="5" ui="type:CheckBox;id:Drug2Allergy5" />
+        <input type="checkbox" hidefocus="true" title="消化系统症状" name="drug2-allergy" value="6" ui="type:CheckBox;id:Drug2Allergy6" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="其他" name="drug2-allergy" value="0" ui="type:CheckBox;id:OtherDrug2Allergy" />
+        <input type="text" ui="type:TextInput;id:Drug2Allergy;width:200" />
+    </div>
+    
+    <div><strong>3. 其他药物</strong></div>
+    <div ui="type:TextLine;id:Drug3Name;width:400;height:60;"></div>
+    <div><strong>过敏表现</strong></div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="特应性皮炎" name="drug3-allergy" value="1" ui="type:CheckBox;id:Drug3Allergy1" />
+        <input type="checkbox" hidefocus="true" title="过敏性鼻炎" name="drug3-allergy" value="2" ui="type:CheckBox;id:Drug3Allergy2" />
+        <input type="checkbox" hidefocus="true" title="哮喘" name="drug3-allergy" value="3" ui="type:CheckBox;id:Drug3Allergy3" />
+        <input type="checkbox" hidefocus="true" title="喉头水肿" name="drug3-allergy" value="4" ui="type:CheckBox;id:Drug3Allergy4" />
+        <input type="checkbox" hidefocus="true" title="过敏性休克" name="drug3-allergy" value="5" ui="type:CheckBox;id:Drug3Allergy5" />
+        <input type="checkbox" hidefocus="true" title="消化系统症状" name="drug3-allergy" value="6" ui="type:CheckBox;id:Drug3Allergy6" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="其他" name="drug3-allergy" value="0" ui="type:CheckBox;id:OtherDrug3Allergy" />
+        <input type="text" ui="type:TextInput;id:Drug3Allergy;width:200" />
+    </div>
+</div>
+
+<div class="row">
+    <span class="label">其他物质</span>
+    <input type="radio" hidefocus="true" title="有" name="material" value="1" ui="type:Radio;id:Material1" />
+    <input type="radio" hidefocus="true" title="无" name="material" value="2" ui="type:Radio;id:Material2" />
+</div>
+<div class="row sub auto material">
+    <div><strong>具体名称/疑似过敏物</strong></div>
+    <div ui="type:TextLine;id:MaterialName;width:400;height:60;"></div>
+    <div><strong>过敏表现</strong></div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="特应性皮炎" name="material-allergy" value="1" ui="type:CheckBox;id:MaterialAllergy1" />
+        <input type="checkbox" hidefocus="true" title="过敏性鼻炎" name="material-allergy" value="2" ui="type:CheckBox;id:MaterialAllergy2" />
+        <input type="checkbox" hidefocus="true" title="哮喘" name="material-allergy" value="3" ui="type:CheckBox;id:MaterialAllergy3" />
+        <input type="checkbox" hidefocus="true" title="喉头水肿" name="material-allergy" value="4" ui="type:CheckBox;id:MaterialAllergy4" />
+        <input type="checkbox" hidefocus="true" title="过敏性休克" name="material-allergy" value="5" ui="type:CheckBox;id:MaterialAllergy5" />
+        <input type="checkbox" hidefocus="true" title="消化系统症状" name="material-allergy" value="6" ui="type:CheckBox;id:MaterialAllergy6" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="其他" name="drug3-allergy" value="0" ui="type:CheckBox;id:OtherMaterialAllergy" />
+        <input type="text" ui="type:TextInput;id:MaterialAllergy;width:200" />
+    </div>
+</div>
+<div class="bottom">
+    <div ui="type:Button;id:Save;skin:largeem">保 存</div>
+</div>
 </script>

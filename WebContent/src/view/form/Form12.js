@@ -31,6 +31,13 @@ es.Views.Form12 = Backbone.View.extend({
     
     initCtrl: function() {
         esui.init();
+        var me = this;
+        esui.get("Food1").onclick = function() {me.$(".food").show();};
+        esui.get("Food2").onclick = function() {me.$(".food").hide();};
+        esui.get("Drug1").onclick = function() {me.$(".drug").show();};
+        esui.get("Drug2").onclick = function() {me.$(".drug").hide();};
+        esui.get("Material1").onclick = function() {me.$(".material").show();};
+        esui.get("Material2").onclick = function() {me.$(".material").hide();};
     },
     
     renderForm: function(model, data) {

@@ -5,7 +5,7 @@
  */
 
 body{margin:0; font-size:12px; font-family:Arial; background:#fff; cursor:default; height:100%}
-input{font-family:Arial}
+input{font-family:Arial; font-size:12px}
 input.en{ime-mode:disabled}
 img{border:0}
 a{color:#06c}
