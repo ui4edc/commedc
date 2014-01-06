@@ -57,9 +57,9 @@ es.Views.Data = Backbone.View.extend({
             CreateRangeType: TIME_TYPE,
             LastModifyRangeType: TIME_TYPE,
             DoubtRangeType: TIME_TYPE,
-            CreateRange: RANGE,
-            LastModifyRange: RANGE,
-            DoubtRange: RANGE,
+            CreateRange: QUERY_RANGE,
+            LastModifyRange: QUERY_RANGE,
+            DoubtRange: QUERY_RANGE,
             ProgressType: PROGRESS_TYPE,
             PageSize: PAGE_SIZE
         });
@@ -180,7 +180,6 @@ es.Views.Data = Backbone.View.extend({
      * 发起请求
      */
     query: function(args) {
-        console.log("请求参数:", args);
         this.model.getData(args);
     },
     
@@ -213,7 +212,6 @@ es.Views.Data = Backbone.View.extend({
      * 渲染列表
      */
     renderGrid: function(model, data) {
-        console.log("返回数据:", data);
         if (data.total == 0) {
             this.$(".no-result").show();
             this.$(".data").hide();
@@ -330,17 +328,23 @@ es.Views.Data = Backbone.View.extend({
                     $.each(selected, function(index, val) {
                         id.push(parseInt(val.id));
                     });
+                    var data = {
+                        id: id.join(",")
+                    };
+                    
+                    console.log("批量删除-请求", data);
                     
                     util.ajax.run({
                         url: "",
-                        data: {id: id.join(",")},
+                        data: data,
                         success: function(response) {
+                            console.log("批量删除-响应", response);
+                            
                             es.main.queryFirstPage();
                         },
-                        mock: true,
+                        mock: MOCK,
                         mockData: {
-                            success: true,
-                            errorMsg: "errorMsg"
+                            success: true
                         }
                     });
                 }

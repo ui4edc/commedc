@@ -13,16 +13,19 @@ es.Models.Account = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
+        console.log("获取列表-请求", args);
+        
         util.ajax.run({
             url: "",
             data: args,
             success: function(response) {
+                console.log("获取列表-响应", response);
+                
                 me.set({data: response});
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg",
                 total: 100,
                 data: [
                     {id: 1, name: "小明", admin: "小明爸爸", contact: "13500112233", auth: "管理员"},

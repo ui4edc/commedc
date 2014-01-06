@@ -13,17 +13,22 @@ es.Models.Form40 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
+        console.log("获取表单-请求", args);
+        
         util.ajax.run({
             url: "",
             data: args,
             success: function(response) {
+                console.log("获取表单-响应", response);
+                
                 me.set({data: response});
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg",
-                data: {}
+                data: [
+                    {name: "", start: "", end: "", dose: "", unit: "", way: "", frequency: ""}
+                ]
             }
         });
     }

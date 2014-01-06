@@ -4,6 +4,10 @@
  * @author: Ricky
  */
 
+var DEBUG = true;
+
+var MOCK = true;
+
 var TIME_TYPE = {
     datasource: [
         {name: "全部", value: 1},
@@ -12,7 +16,7 @@ var TIME_TYPE = {
     value: 1
 };
 
-var RANGE = {
+var QUERY_RANGE = {
     range: {
         begin: new Date(2014, 0, 1),
         end: new Date()
@@ -21,6 +25,22 @@ var RANGE = {
         begin: new Date(2014, 0, 1),
         end: new Date()
     }
+};
+
+var BIRTHDAY_RANGE = {
+    range: {
+        begin: new Date(1900, 0, 1),
+        end: new Date()
+    },
+    valueAsDate: new Date()
+};
+
+var CRF_RANGE = {
+    range: {
+        begin: new Date(2000, 0, 1),
+        end: new Date()
+    },
+    valueAsDate: new Date()
 };
 
 var PROGRESS_TYPE = {
@@ -56,7 +76,7 @@ var CRF_MENU = [
     {
         name: "实验检查",
         children: [
-            {name: "入院检查", id: 51},
+            {name: "入组检查", id: 51},
             {name: "用药中检查", id: 52},
             {name: "出院检查", id: 53}
         ]

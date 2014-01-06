@@ -8,8 +8,17 @@
 .crf-form h3{margin:; padding:5px 0; font-size:12px; border-bottom:1px #ddd solid}
 .crf-form .row{height:36px; line-height:36px; overflow:hidden}
 .crf-form .row .label{float:left; width:100px; font-weight:bold}
+.crf-form .row .wlabel{width:auto; margin-right:10px}
 .crf-form .row .ui-cal{float:left; margin-top:7px}
 .crf-form .sub{padding-left:100px}
 .crf-form .sub2{padding-left:130px}
+.crf-form .sub3{padding-left:150px}
 .crf-form .auto{height:auto}
+.crf-form .f{float:left; margin-right:5px}
+.crf-form .mt7{margin-top:7px}
 .crf-form .bottom{padding-top:10px; height:26px; line-height:26px}
+
+#ctrltableExam1 .ui-table-hcell-text,
+#ctrltableExam3 .ui-table-hcell-text,
+#ctrltableExam4 .ui-table-hcell-text,
+#ctrltableDrug .ui-table-hcell-text{height:auto; overflow:visible}

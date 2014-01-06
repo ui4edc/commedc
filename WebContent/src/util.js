@@ -23,6 +23,9 @@ util.fixOld = function() {
             log: function() {}
         };
     }
+    if (!DEBUG) {
+        window.console.log = function() {};
+    }
 };
 
 /*

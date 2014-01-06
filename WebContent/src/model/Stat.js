@@ -19,10 +19,9 @@ es.Models.Stat = Backbone.Model.extend({
             success: function(response) {
                 me.set({data: response});
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg",
                 total: 100,
                 data: []
             }

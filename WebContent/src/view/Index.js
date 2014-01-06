@@ -59,20 +59,25 @@ es.Views.Index = Backbone.View.extend({
      * 新建CRF
      */
     newCRF: function() {
-        var no = $.trim(esui.get("NewNo").getValue()),
-            abbr = $.trim(esui.get("NewAbbr").getValue());
+        var data = {
+            no: $.trim(esui.get("NewNo").getValue()),
+            abbr: $.trim(esui.get("NewAbbr").getValue())
+        };
+        
+        console.log("新建CRF-请求", data);
         
         util.ajax.run({
             url: "",
-            data: {no: no, abbr: abbr},
+            data: data,
             success: function(response) {
+                console.log("新建CRF-响应", response);
+                
                 esui.get("NewCRFDialog").hide();
                 es.router.navigate("crf/update/" + response.id, true);
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg",
                 id: 1
             }
         });
@@ -90,19 +95,24 @@ es.Views.Index = Backbone.View.extend({
      * 新建ADR
      */
     newADR: function() {
-        var no = $.trim(esui.get("No").getValue());
+        var data = {
+            no: $.trim(esui.get("No").getValue())
+        };
+        
+        console.log("新建ADR-请求", data);
         
         util.ajax.run({
             url: "",
-            data: {no: no},
+            data: data,
             success: function(response) {
+                console.log("新建ADR-响应", response);
+                
                 esui.get("NewADRDialog").hide();
                 es.router.navigate("crf/updateadr/" + response.id, true);
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg",
                 id: 1
             }
         });

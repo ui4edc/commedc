@@ -1,5 +1,5 @@
 /*
- * 病例列表
+ * 观察表
  * 
  * @author: Ricky
  */
@@ -61,9 +61,9 @@ es.Views.List = Backbone.View.extend({
             CreateRangeType: TIME_TYPE,
             LastModifyRangeType: TIME_TYPE,
             DoubtRangeType: TIME_TYPE,
-            CreateRange: RANGE,
-            LastModifyRange: RANGE,
-            DoubtRange: RANGE,
+            CreateRange: QUERY_RANGE,
+            LastModifyRange: QUERY_RANGE,
+            DoubtRange: QUERY_RANGE,
             ProgressType: PROGRESS_TYPE,
             PageSize: PAGE_SIZE
         });
@@ -190,7 +190,6 @@ es.Views.List = Backbone.View.extend({
      * 发起请求
      */
     query: function(args) {
-        console.log("请求参数:", args);
         this.model.getData(args);
     },
     
@@ -231,7 +230,6 @@ es.Views.List = Backbone.View.extend({
      * 渲染列表
      */
     renderGrid: function(model, data) {
-        console.log("返回数据:", data);
         if (data.total == 0) {
             this.$(".no-result").show();
             this.$(".data").hide();
@@ -333,21 +331,25 @@ es.Views.List = Backbone.View.extend({
      * 获取通知
      */
     getNotify: function() {
-        var me = this;
+        var data = {},
+            me = this;
+            
+        console.log("获取通知-请求", data);
+        
         util.ajax.run({
             url: "",
-            data: {},
+            data: data,
             success: function(response) {
-                console.log("通知:", response);
+                console.log("获取通知-响应", response);
+                
                 me.$(".notify").prepend($.Mustache.render("tpl-list-notify", {
                     doubtNumber: response.doubtNumber,
                     toDoNumber: response.toDoNumber
                 })).fadeIn(1000);
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg",
                 doubtNumber: 12,
                 toDoNumber: 1
             }
@@ -367,20 +369,25 @@ es.Views.List = Backbone.View.extend({
      * 新建CRF
      */
     newCRF: function() {
-        var no = $.trim(esui.get("NewNo").getValue()),
-            abbr = $.trim(esui.get("NewAbbr").getValue());
+        var data = {
+            no: $.trim(esui.get("NewNo").getValue()),
+            abbr: $.trim(esui.get("NewAbbr").getValue())
+        };
+        
+        console.log("新建CRF-请求", data);
         
         util.ajax.run({
             url: "",
-            data: {no: no, abbr: abbr},
+            data: data,
             success: function(response) {
+                console.log("新建CRF-响应", response);
+                
                 esui.get("NewCRFDialog").hide();
                 es.router.navigate("crf/update/" + response.id, true);
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
                 success: true,
-                errorMsg: "errorMsg",
                 id: 1
             }
         });
@@ -405,17 +412,23 @@ es.Views.List = Backbone.View.extend({
                     $.each(selected, function(index, val) {
                         id.push(parseInt(val.id));
                     });
+                    var data = {
+                        id: id.join(",")
+                    };
+                    
+                    console.log("批量删除-请求", data);
                     
                     util.ajax.run({
                         url: "",
-                        data: {id: id.join(",")},
+                        data: data,
                         success: function(response) {
+                            console.log("批量删除-响应", response);
+                            
                             es.main.queryFirstPage();
                         },
-                        mock: true,
+                        mock: MOCK,
                         mockData: {
-                            success: true,
-                            errorMsg: "errorMsg"
+                            success: true
                         }
                     });
                 }
@@ -438,17 +451,23 @@ es.Views.List = Backbone.View.extend({
             $.each(selected, function(index, val) {
                 id.push(parseInt(val.id));
             });
+            var data = {
+                id: id.join(",")
+            };
+            
+            console.log("批量提交-请求", data);
             
             util.ajax.run({
                 url: "",
-                data: {id: id.join(",")},
+                data: data,
                 success: function(response) {
+                    console.log("批量提交-响应", response);
+                    
                     es.main.queryFirstPage();
                 },
-                mock: true,
+                mock: MOCK,
                 mockData: {
-                    success: true,
-                    errorMsg: "errorMsg"
+                    success: true
                 }
             });
         }

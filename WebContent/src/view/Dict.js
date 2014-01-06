@@ -37,7 +37,7 @@ es.Views.Dict = Backbone.View.extend({
         $.Mustache.load("asset/tpl/dict.html").done(function() {
             me.$el.mustache("tpl-dict");
             me.initCtrl();
-            me.model.getDict();
+            me.model.getDict({});
         });
     },
     
@@ -54,7 +54,6 @@ es.Views.Dict = Backbone.View.extend({
      * 创建字典
      */
     renderDict: function(model, dict) {
-        console.log("字典：", dict);
         this.menu = new Tree({
             container: ".sidebar",
             data: dict.data,
@@ -73,7 +72,6 @@ es.Views.Dict = Backbone.View.extend({
      * 创建条目
      */
     renderItem: function(model, item) {
-        console.log("条目：", item);
         var table = esui.get("Items");
         table.datasource = item.data;
         table.fields = [
@@ -92,7 +90,6 @@ es.Views.Dict = Backbone.View.extend({
      * 创建底层字典
      */
     renderBase: function(model, base) {
-        console.log("底层字典：", base);
         var table = esui.get("Base");
         table.datasource = base.data;
         table.fields = [
@@ -163,19 +160,22 @@ es.Views.Dict = Backbone.View.extend({
             baseItemId: baseItemId,
             baseItemName: baseItemName
 		};
-		console.log(data);
+		
+		console.log("添加字典-请求", data);
+		
 		util.ajax.run({
 			url: "",
 			data: data,
 			success: function(response) {
+			    console.log("添加字典-响应", response);
+			    
 				if (baseItemId == null) { //新建
 					me.model.getBase({dictId: me.dictId});
 				}
 			},
-			mock: true,
+			mock: MOCK,
 			mockData: {
-				success: true,
-				errorMsg: "errorMsg"
+				success: true
 			}
 		});
     }

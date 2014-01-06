@@ -1,7 +1,72 @@
 <!--用药小结-->
 <script id="tpl-form60" type="text/html">
 <h2>用药小结</h2>
-
+<div class="row">
+    <span class="label wlabel">病程首次用药时间</span>
+    <div ui="type:Calendar;id:Start"></div>
+</div>
+<div class="row">
+    <span class="label wlabel">病程末次用药时间</span>
+    <div ui="type:Calendar;id:End"></div>
+</div>
+<div class="row">
+    <span class="label wlabel">痰热清注射液用药结局</span>
+</div>
+<div class="row sub">
+    <input type="radio" hidefocus="true" title="痊愈" name="ending" value="1" ui="type:Radio;id:Ending1" />
+    <input type="radio" hidefocus="true" title="好转" name="ending" value="2" ui="type:Radio;id:Ending2" />
+    <input type="radio" hidefocus="true" title="无变化" name="ending" value="3" ui="type:Radio;id:Ending3" />
+    <input type="radio" hidefocus="true" title="加重" name="ending" value="4" ui="type:Radio;id:Ending4" />
+</div>
+<div class="row sub">
+    <input type="radio" hidefocus="true" title="死亡" name="ending" value="5" ui="type:Radio;id:Ending5" />，直接死因：
+    <input type="text" ui="type:TextInput;id:Reason;width:100" />
+</div>
+<div class="row sub">
+    <span class="f">死亡时间：</span>
+    <div ui="type:Calendar;id:Dead"></div>
+</div>
+<div class="row sub">
+    <input type="radio" hidefocus="true" title="因经济原因停药" name="ending" value="6" ui="type:Radio;id:Ending6" />
+    <input type="radio" hidefocus="true" title="因ADR停药" name="ending" value="7" ui="type:Radio;id:Ending7" />
+</div>
+<div class="row">
+    <span class="label">是否出现ADR</span>
+    <input type="radio" hidefocus="true" title="是" name="adr" value="1" ui="type:Radio;id:ADR1" />
+    <input type="radio" hidefocus="true" title="否" name="adr" value="2" ui="type:Radio;id:ADR2" />
+</div>
+<div class="row">
+    <span class="label">药师干预</span>
+    <span>有无痰热清注射液用药不合理的现象</span>
+    <input type="radio" hidefocus="true" title="有" name="phm1" value="1" ui="type:Radio;id:Phm1_1" />
+    <input type="radio" hidefocus="true" title="无" name="phm1" value="2" ui="type:Radio;id:Phm1_2" />
+</div>
+<div class="row sub">
+    <span>药师是否进行相关干预</span>
+    <input type="radio" hidefocus="true" title="是" name="phm2" value="1" ui="type:Radio;id:Phm2_1" />
+    <input type="radio" hidefocus="true" title="否" name="phm2" value="2" ui="type:Radio;id:Phm2_2" />
+</div>
+<div class="row sub">
+    <span>药师如何进行干预</span>
+    <input type="text" ui="type:TextInput;id:How;width:200" />
+</div>
+<div class="row">
+    <span class="label">经济学指标</span>
+    <span>治疗总费用</span>
+    <input type="text" ui="type:TextInput;id:Index1;width:100" /> 元
+</div>
+<div class="row sub">
+    <span>药品总费用</span>
+    <input type="text" ui="type:TextInput;id:Index2;width:100" /> 元
+</div>
+<div class="row sub">
+    <span>痰热清注射液费用</span>
+    <input type="text" ui="type:TextInput;id:Index3;width:100" /> 元
+</div>
+<div class="row auto">
+    <span class="label">备注</span>
+    <textarea ui="type:TextInput;id:Remark;width:400;height:100"></textarea>
+</div>
 <div class="bottom">
     <div ui="type:Button;id:Save;skin:largeem">保 存</div>
 </div>

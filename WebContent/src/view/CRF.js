@@ -8,7 +8,8 @@ es.Views.CRF = Backbone.View.extend({
     el: "#Main",
     
     events: {
-        "click .submit-crf": "onSubmitCRF"
+        "click .submit-crf": "onSubmitCRF",
+        "click .doubt-crf": "openDoubtCRF"
     },
     
     initialize: function() {
@@ -46,36 +47,41 @@ es.Views.CRF = Backbone.View.extend({
             this.editable = true;
             this.selectADR = false;
             this.canSubmit = true;
+            this.canDoubt = false;
         } else if (/^#crf\/updateadr\/\d+$/.test(hash)) {
             title = "填写CRF";
             this.editable = true;
             this.selectADR = true;
             this.canSubmit = true;
+            this.canDoubt = false;
         } else if (/^#crf\/doubt\/\d+$/.test(hash)) {
             title = "质疑CRF";
             this.editable = false;
             this.selectADR = false;
             this.canSubmit = isCRM;
+            this.canDoubt = true;
         } else if(/^#crf\/doubtadr\/\d+$/.test(hash)) {
             title = "质疑CRF";
             this.editable = false;
             this.selectADR = true;
             this.canSubmit = isCRM;
+            this.canDoubt = true;
         }
         
         var me = this;
         $.Mustache.load("asset/tpl/crf.html").done(function() {
             me.$el.mustache("tpl-crf", {title: title});
+            //获取基本信息
             me.model.getData({id: me.crfId});
         });
     },
     
     renderInfo: function(model, data) {
-        console.log(data);
         this.$("h1").append($.Mustache.render("tpl-crf-title", {
             no: data.no,
             abbr: data.abbr,
-            submitBtn: this.canSubmit ? [1] : []
+            submitBtn: this.canSubmit ? [1] : [],
+            doubtBtn: this.canDoubt ? [1] : []
         }));
         this.$(".progressbar .progress").text("完成度：" + data.progress);
         this.$(".progressbar .bar").css({width: data.progress});
@@ -137,19 +143,65 @@ es.Views.CRF = Backbone.View.extend({
     },
     
     submitCRF: function() {
+        var data = {id: this.crfId};
+        
+        console.log("全部提交-请求", data);
+        
         util.ajax.run({
             url: "",
-            data: {id: this.crfId},
+            data: data,
             success: function(response) {
-                esui.Dialog.alert({
-                    title: "全部提交",
-                    content: "提交成功！"
-                });
+                console.log("全部提交-响应", response);
+                
+                setTimeout(function() {
+                    esui.Dialog.alert({
+                        title: "全部提交",
+                        content: "提交成功！"
+                    });
+                }, 500);
             },
-            mock: true,
+            mock: MOCK,
             mockData: {
-                success: true,
-                errorMsg: "errorMsg"
+                success: true
+            }
+        });
+    },
+    
+    /*
+     * 质疑
+     */
+    openDoubtCRF: function() {
+        esui.get("Field").setValue("");
+        esui.get("Description").setValue("");
+        esui.get("DoubtDialog").show();
+    },
+    
+    doubtCRF: function() {
+        var data = {
+            field: $.trim(esui.get("Field").getValue()),
+            description: $.trim(esui.get("Description").getValue())
+        };
+        
+        console.log("质疑-请求", data);
+        
+        util.ajax.run({
+            url: "",
+            data: data,
+            success: function(response) {
+                console.log("质疑-响应", response);
+                
+                esui.get("DoubtDialog").hide();
+                
+                setTimeout(function() {
+                    esui.Dialog.alert({
+                        title: "提出质疑",
+                        content: "提交成功！"
+                    });
+                }, 500);
+            },
+            mock: MOCK,
+            mockData: {
+                success: true
             }
         });
     }
