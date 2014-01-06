@@ -27,7 +27,9 @@ public class ListController {
 	@ResponseBody
 	public Map<String, Object> notify(HttpServletRequest request) {
 		ListNotifyVo notify = cRFService.getNotifyInfo();
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, notify);
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		result.put("doubtNumber", notify.getQuestionNum());
+		result.put("toDoNumber", notify.getDeadlineNum());
 		return result;
 	}
 	

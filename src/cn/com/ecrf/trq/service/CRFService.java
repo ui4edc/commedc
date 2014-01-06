@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import cn.com.ecrf.trq.vo.ListConditionVo;
 import cn.com.ecrf.trq.vo.ListNotifyVo;
 import cn.com.ecrf.trq.vo.ListReturnVo;
+import cn.com.ecrf.trq.vo.PatientInfoVo;
 
 @Service
 public class CRFService {
@@ -31,6 +32,12 @@ public class CRFService {
 	public int getCRFTotal(ListConditionVo condition){
 		int total = 0;
 		return total;
+	}
+
+	public PatientInfoVo getPatientInfo(int id) {
+		// TODO Auto-generated method stub
+		
+		return null;
 	}
 
 	

@@ -7,16 +7,25 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.ecrf.trq.model.User;
+import cn.com.ecrf.trq.service.CRFService;
+import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
+import cn.com.ecrf.trq.vo.PatientInfoVo;
 
 @Controller
 public class CRFController {
 
+	@Autowired
+	private CRFService cRFService;
+	
 	@RequestMapping("/rest/crf/getPatientList")
 	@ResponseBody
 	public Map<String, Object> getPatientList(HttpServletRequest request) {
@@ -33,4 +42,13 @@ public class CRFController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value="/crf/update/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getPatientInfo(@PathVariable int id, HttpServletRequest request) {
+		PatientInfoVo patientInfoVo = cRFService.getPatientInfo(id);
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
+		return result;
+	}
+	
 }

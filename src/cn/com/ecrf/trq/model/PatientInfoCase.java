@@ -14,7 +14,7 @@ public class PatientInfoCase {
 	//患者病例号
 	private String hzblh;
 	//首次填表时间
-	private String sctbsj;
+	private Date sctbsj;
 	//观察表编号
 	private String blbh;
 	//审批状态

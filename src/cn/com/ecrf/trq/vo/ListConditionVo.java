@@ -13,6 +13,7 @@ public class ListConditionVo {
 	private String progress;
 	private int progressType;
 	private int type;
+	private boolean undealed;
 	
 	public boolean isCrf() {
 		return crf;
@@ -85,6 +86,12 @@ public class ListConditionVo {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public boolean isUndealed() {
+		return undealed;
+	}
+	public void setUndealed(boolean undealed) {
+		this.undealed = undealed;
 	}
 	
 	
