@@ -30,18 +30,31 @@ es.Views.Form40 = Backbone.View.extend({
         this.$el.empty();
     },
     
+    renderForm: function(model, data) {
+        //插入质疑对话框
+        if (es.main.canDoubt) {
+            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        
+        var me = this;
+        $.Mustache.load("asset/tpl/form/form40.html").done(function() {
+            me.$el.mustache("tpl-form40");
+            me.initCtrl(data.data);
+        });
+    },
+    
     initCtrl: function(data) {
         esui.init();
         var me = this;
         esui.get("Save").onclick = this.save;
-        if (es.main.canDoubt) {
-            esui.get("DoubtOK").onclick = es.main.doubtCRF;
-        }
         esui.get("Merge").onedit = function (value, options, editor) {
             this.datasource[options.rowIndex][options.field.field] = $.trim(value);
             this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
             editor.stop();
         };
+        if (es.main.canDoubt) {
+            esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        }
         
         var table = esui.get("Merge");
         table.datasource = data;
@@ -102,19 +115,6 @@ es.Views.Form40 = Backbone.View.extend({
             }
         ];
         table.render();
-    },
-    
-    renderForm: function(model, data) {
-        var me = this;
-        $.Mustache.load("asset/tpl/form/form40.html").done(function() {
-            me.$el.mustache("tpl-form40");
-            me.initCtrl(data.data);
-        });
-        
-        //插入质疑对话框
-        if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
-        }
     },
     
     addRow: function() {

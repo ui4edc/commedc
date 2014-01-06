@@ -29,6 +29,19 @@ es.Views.Form20 = Backbone.View.extend({
         this.$el.empty();
     },
     
+    renderForm: function(model, data) {
+        //插入质疑对话框
+        if (es.main.canDoubt) {
+            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        
+        var me = this;
+        $.Mustache.load("asset/tpl/form/form20.html").done(function() {
+            me.$el.mustache("tpl-form20", {data: data.data});
+            me.initCtrl();
+        });
+    },
+    
     initCtrl: function() {
         esui.init();
         esui.get("Save").onclick = this.save;
@@ -36,20 +49,7 @@ es.Views.Form20 = Backbone.View.extend({
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
     },
-    
-    renderForm: function(model, data) {
-        var me = this;
-        $.Mustache.load("asset/tpl/form/form20.html").done(function() {
-            me.$el.mustache("tpl-form20", {data: data.data});
-            me.initCtrl();
-        });
         
-        //插入质疑对话框
-        if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
-        }
-    },
-    
     save: function() {
        var me = es.main;
        

@@ -30,16 +30,16 @@ es.Views.Form52 = Backbone.View.extend({
     },
     
     renderForm: function(model, data) {
+        //插入质疑对话框
+        if (es.main.canDoubt) {
+            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        
         var me = this;
         $.Mustache.load("asset/tpl/form/form52.html").done(function() {
             me.$el.mustache("tpl-form52");
             me.initCtrl(data.data);
         });
-        
-        //插入质疑对话框
-        if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
-        }
     },
     
     initCtrl: function(data) {
@@ -49,6 +49,7 @@ es.Views.Form52 = Backbone.View.extend({
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
+        
         esui.get("Exam1").onedit = function (value, options, editor) {
             this.datasource[options.rowIndex][options.field.field] = $.trim(value);
             this.setCellText($.trim(value), options.rowIndex, options.columnIndex);

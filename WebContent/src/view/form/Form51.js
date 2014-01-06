@@ -30,20 +30,20 @@ es.Views.Form51 = Backbone.View.extend({
     },
     
     renderForm: function(model, data) {
+        //插入质疑对话框
+        if (es.main.canDoubt) {
+            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        
         var me = this;
         $.Mustache.load("asset/tpl/form/form51.html").done(function() {
             me.$el.mustache("tpl-form51");
             me.initCtrl(data.data);
         });
-        
-        //插入质疑对话框
-        if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
-        }
     },
     
     initCtrl: function(data) {
-        esui.init(this.el, {
+        esui.init(es.main.el, {
             ExamDay: CRF_RANGE
         });
         
@@ -52,6 +52,7 @@ es.Views.Form51 = Backbone.View.extend({
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
+        
         esui.get("Exam0").onedit = function (value, options, editor) {
             this.datasource[options.rowIndex][options.field.field] = $.trim(value);
             this.setCellText($.trim(value), options.rowIndex, options.columnIndex);

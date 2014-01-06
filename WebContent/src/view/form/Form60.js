@@ -29,24 +29,24 @@ es.Views.Form60 = Backbone.View.extend({
         this.$el.empty();
     },
     
-    initCtrl: function() {
-        esui.init();
-        esui.get("Save").onclick = this.save;
-        if (es.main.canDoubt) {
-            esui.get("DoubtOK").onclick = es.main.doubtCRF;
-        }
-    },
-    
     renderForm: function(model, data) {
+        //插入质疑对话框
+        if (es.main.canDoubt) {
+            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        
         var me = this;
         $.Mustache.load("asset/tpl/form/form60.html").done(function() {
             me.$el.mustache("tpl-form60", {data: data.data});
             me.initCtrl();
         });
-        
-        //插入质疑对话框
+    },
+    
+    initCtrl: function() {
+        esui.init();
+        esui.get("Save").onclick = this.save;
         if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+            esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
     },
     

@@ -29,31 +29,31 @@ es.Views.Form12 = Backbone.View.extend({
         this.$el.empty();
     },
     
+    renderForm: function(model, data) {
+        //插入质疑对话框
+        if (es.main.canDoubt) {
+            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        
+        var me = this;
+        $.Mustache.load("asset/tpl/form/form12.html").done(function() {
+            me.$el.mustache("tpl-form12", {data: data.data});
+            me.initCtrl();
+        });
+    },
+    
     initCtrl: function() {
         esui.init();
         var me = this;
         esui.get("Save").onclick = this.save;
-        if (es.main.canDoubt) {
-            esui.get("DoubtOK").onclick = es.main.doubtCRF;
-        }
         esui.get("Food1").onclick = function() {me.$(".food").show();};
         esui.get("Food2").onclick = function() {me.$(".food").hide();};
         esui.get("Drug1").onclick = function() {me.$(".drug").show();};
         esui.get("Drug2").onclick = function() {me.$(".drug").hide();};
         esui.get("Material1").onclick = function() {me.$(".material").show();};
         esui.get("Material2").onclick = function() {me.$(".material").hide();};
-    },
-    
-    renderForm: function(model, data) {
-        var me = this;
-        $.Mustache.load("asset/tpl/form/form12.html").done(function() {
-            me.$el.mustache("tpl-form12", {data: data.data});
-            me.initCtrl();
-        });
-        
-        //插入质疑对话框
         if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+            esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
     },
     

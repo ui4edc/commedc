@@ -29,16 +29,26 @@ es.Views.Form30 = Backbone.View.extend({
         this.$el.empty();
     },
     
+    renderForm: function(model, data) {
+        //插入质疑对话框
+        if (es.main.canDoubt) {
+            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        
+        var me = this;
+        $.Mustache.load("asset/tpl/form/form30.html").done(function() {
+            me.$el.mustache("tpl-form30", {data: data.data});
+            me.initCtrl();
+        });
+    },
+    
     initCtrl: function() {
-        esui.init(this.el, {
+        esui.init(es.main.el, {
             Start: CRF_RANGE,
             End: CRF_RANGE
         });
         var me = this;
         esui.get("Save").onclick = this.save;
-        if (es.main.canDoubt) {
-            esui.get("DoubtOK").onclick = es.main.doubtCRF;
-        }
         esui.get("History1").onclick = function() {me.$(".history").show();};
         esui.get("History2").onclick = function() {me.$(".history").hide();};
         esui.get("Bottle1").onclick = function() {me.$(".bottle").show();};
@@ -49,21 +59,11 @@ es.Views.Form30 = Backbone.View.extend({
         esui.get("Ban2").onclick = function() {me.$(".ban").hide();};
         esui.get("HaveFood1").onclick = function() {me.$(".have-food").show();};
         esui.get("HaveFood2").onclick = function() {me.$(".have-food").hide();};
-    },
-    
-    renderForm: function(model, data) {
-        var me = this;
-        $.Mustache.load("asset/tpl/form/form30.html").done(function() {
-            me.$el.mustache("tpl-form30", {data: data.data});
-            me.initCtrl();
-        });
-        
-        //插入质疑对话框
         if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+            esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
     },
-    
+        
     save: function() {
        var me = es.main;
        
