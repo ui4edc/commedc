@@ -1,25 +1,15 @@
 #!/bin/sh
 
-source /etc/profile
+version=$(date +%s)
 
-svnFile="./WEB-INF/classes/.svnrev"
+# add version for css
+sed -i "s/all.css/all.css?v=$version/g" ./index.jsp
 
-if [ ! -e "$svnFile" ]; then
-   echo "svn file doesn't exist"; exit
-else
-   echo "svn file exists"
-fi
+# add version for js
+sed -i "s/app.js/app.js?v=$version/g" ./index.jsp
 
-svnRev=$(cat "$svnFile")
-
-# add svn revision for css
-sed -i "s/all.css/all.css?v=$svnRev/g" ./index.jsp
-
-# add svn revision for js
-sed -i "s/app.js/app.js?v=$svnRev/g" ./index.jsp
-
-# add svn revision for tpl
-sed -i "s/svnRev/$svnRev/g" ./src/lib/jquery.mustache.js
+# add version for tpl
+sed -i "s/version/$version/g" ./src/lib/jquery.mustache.js
 
 # merge css
 for file in $(ls ./asset/css/all.css)
@@ -33,7 +23,7 @@ done
 # merge and compress js
 for file in $(ls ./asset/js/*.js)
 do
-    cat "${file}" | awk -F '"' '{print substr($2,7)}' | xargs cat > "${file}.merge"
+    cat "${file}" | awk -F '"' '{print substr($2,1)}' | xargs cat > "${file}.merge"
     rm "${file}"
     mv "${file}.merge" "${file}"
     echo "${file} merged"

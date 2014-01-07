@@ -147,7 +147,7 @@
 	 *						ready for use.
 	 */
 	function load(url, onComplete) {
-		return $.get(url + "?v=svnRev")
+		return $.get(url + "?v=version")
 				.done(function (templates) {
 					$(templates).filter('script').each(function () {
 						if (this.id) {
