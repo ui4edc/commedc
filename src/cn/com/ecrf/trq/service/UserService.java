@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,9 @@ import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.repository.OrganizationMapper;
 import cn.com.ecrf.trq.repository.RoleMapper;
 import cn.com.ecrf.trq.repository.UserMapper;
+import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
+import cn.com.ecrf.trq.utils.CipherUtil;
 
 
 
@@ -78,6 +82,8 @@ public class UserService {
 
 	public void addUser(User user) {
 		// TODO Auto-generated method stub
+		String password = CipherUtil.generatePassword(user.getPassword());
+		user.setPassword(password);
 		userMapper.addUser(user);
 		Role role = userMapper.findRoleByName(user.getRoleName());
 		Map<String, Object> condition = new HashMap<String, Object>();
@@ -168,6 +174,29 @@ public class UserService {
 		condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize+1);
 		condition.put(AjaxReturnValue.limitSize, pageSize);
 		return roleMapper.findRoles(condition);
+	}
+
+	public Map<String, Object> changePassword(String oldPassword, String newPassword) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = new HashMap<String, Object>();
+        Subject currentUser = SecurityUtils.getSubject();  
+        String username = (String)currentUser.getPrincipal();
+		User user = userMapper.findUserByLoginName(username);
+		if (oldPassword == null || newPassword == null){
+			result = AjaxReturnUtils.generateAjaxReturn(false, "密码不能为空");
+			return result;
+		}else{
+			oldPassword = CipherUtil.generatePassword(oldPassword);
+			if (!oldPassword.equals(user.getPassword())){
+				result = AjaxReturnUtils.generateAjaxReturn(false, "原始密码错误");
+			}else{
+				newPassword = CipherUtil.generatePassword(newPassword);
+				user.setPassword(newPassword);
+				userMapper.updatePassword(user);
+				result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			}	
+		}
+		return result;
 	}
 
 }

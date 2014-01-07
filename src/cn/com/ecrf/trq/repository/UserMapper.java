@@ -39,4 +39,6 @@ public interface UserMapper {
 	User getUserById(int userId);
 
 	List<User> findUsers(Map<String, Object> condition);
+
+	void updatePassword(User user);
 }

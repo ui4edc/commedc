@@ -113,18 +113,32 @@ public class UserControler {
 	}
   
     /**
-     * 鐧诲嚭
+     * logout
      * @return
      */
     @RequestMapping(value = "/logout")  
     @ResponseBody  
-    public String logout() {  
-  
+    public Map<String, Object> logout() {  
+		Map<String, Object> result = new HashMap<String, Object>();
         Subject currentUser = SecurityUtils.getSubject();  
-        String result = "logout";  
         currentUser.logout();  
+        result.put(AjaxReturnValue.success, true);
         return result;  
     }  
+    
+    /**
+     * change password
+     * @return
+     */
+    @RequestMapping(value = "/changePassword")  
+    @ResponseBody  
+    public Map<String, Object> changePassword(HttpServletRequest request) {  
+		Map<String, Object> result = new HashMap<String, Object>();
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        result = userService.changePassword(oldPassword, newPassword);
+        return result;  
+    }
     
     /**
      * 妫�煡
@@ -165,7 +179,6 @@ public class UserControler {
     	}catch(Exception e){
     		logger.error(e.getMessage());
     		result = AjaxReturnUtils.generateAjaxReturn(false, "修改用户失败");
-
     	}
     	return result;
     }

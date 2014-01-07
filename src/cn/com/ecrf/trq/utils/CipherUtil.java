@@ -85,7 +85,7 @@ public class CipherUtil {
 	}
 	
 	public static void main(String[] args) {
-		String pwd1 = "1";
+		String pwd1 = "admin";
 		String pwd2 = "";
 		CipherUtil cipher = new CipherUtil();
 		System.out.println("org:" + pwd1);

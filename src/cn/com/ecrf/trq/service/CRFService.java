@@ -7,6 +7,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.vo.ListConditionVo;
 import cn.com.ecrf.trq.vo.ListNotifyVo;
 import cn.com.ecrf.trq.vo.ListReturnVo;
@@ -35,6 +36,12 @@ public class CRFService {
 	}
 
 	public PatientInfoVo getPatientInfo(int id) {
+		// TODO Auto-generated method stub
+		
+		return null;
+	}
+
+	public PhaseSignPage getPhaseSignInfo(int id) {
 		// TODO Auto-generated method stub
 		
 		return null;

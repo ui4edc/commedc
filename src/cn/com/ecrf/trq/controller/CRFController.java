@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
@@ -45,8 +46,17 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/update/{id}", method = RequestMethod.POST)
 	@ResponseBody
+	public Map<String, Object> getCRFBasic(@PathVariable int id, HttpServletRequest request) {
+		PatientInfoVo patientInfoVo = cRFService.getPatientInfo(id);
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/update/{id}", method = RequestMethod.POST)
+	@ResponseBody
 	public Map<String, Object> getPatientInfo(@PathVariable int id, HttpServletRequest request) {
 		PatientInfoVo patientInfoVo = cRFService.getPatientInfo(id);
+		PhaseSignPage phaseSignPage = cRFService.getPhaseSignInfo(id);
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
 		return result;
 	}
