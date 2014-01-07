@@ -3,64 +3,66 @@
 <h2>患者信息-基本情况</h2>
 <div class="row">
     <span class="label">出生日期</span>
-    <div ui="type:Calendar;id:Birthday"></div>
+    <div ui="type:Calendar;id:Birthday;{{disabled}}"></div>
 </div>
 <div class="row">
     <span class="label">年龄</span>
-    <input type="text" class="en" maxlength="3" ui="type:TextInput;id:Age;width:100" />
+    <input type="text" class="en" maxlength="3" ui="type:TextInput;id:Age;width:100;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">民族</span>
-    <input type="radio" hidefocus="true" title="汉" name="nation" value="1" ui="type:Radio;id:Han" />
-    <input type="radio" hidefocus="true" title="其他" name="nation" value="0" ui="type:Radio;id:OtherNation" />
-    <input type="text" ui="type:TextInput;id:Nation;width:100" />
+    <input type="radio" hidefocus="true" title="汉" name="nation" value="1" ui="type:Radio;id:Han;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="nation" value="0" ui="type:Radio;id:OtherNation;{{disabled}}" />
+    <input type="text" ui="type:TextInput;id:Nation;width:100;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">性别</span>
-    <input type="radio" hidefocus="true" title="男" name="sex" value="1" ui="type:Radio;id:Male" />
-    <input type="radio" hidefocus="true" title="女" name="sex" value="2" ui="type:Radio;id:Female" />
+    <input type="radio" hidefocus="true" title="男" name="sex" value="1" ui="type:Radio;id:Male;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="女" name="sex" value="2" ui="type:Radio;id:Female;{{disabled}}" />
     <span class="female-period">
-        <input type="radio" hidefocus="true" title="妊娠期" name="period" value="1" ui="type:Radio;id:Period1" />
-        <input type="radio" hidefocus="true" title="哺乳期" name="period" value="2" ui="type:Radio;id:Period2" />
-        <input type="radio" hidefocus="true" title="无" name="period" value="3" ui="type:Radio;id:Period3" />
+        <input type="radio" hidefocus="true" title="妊娠期" name="period" value="1" ui="type:Radio;id:Period1;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="哺乳期" name="period" value="2" ui="type:Radio;id:Period2;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="无" name="period" value="3" ui="type:Radio;id:Period3;{{disabled}}" />
     </span>
 </div>
 <div class="row">
     <span class="label">体重</span>
-    <input type="text" class="en" ui="type:TextInput;id:Weight;width:100" /> kg
+    <input type="text" class="en" ui="type:TextInput;id:Weight;width:100;{{disabled}}" /> kg
 </div>
 <div class="row">
     <span class="label">身高</span>
-    <input type="text" class="en" ui="type:TextInput;id:Tall;width:100" /> cm
+    <input type="text" class="en" ui="type:TextInput;id:Tall;width:100;{{disabled}}" /> cm
 </div>
 <div class="row">
     <span class="label">用药科室</span>
-    <input type="checkbox" hidefocus="true" title="呼吸科" name="dep" value="1" ui="type:CheckBox;id:Dep1" />
-    <input type="checkbox" hidefocus="true" title="急诊科" name="dep" value="2" ui="type:CheckBox;id:Dep2" />
-    <input type="checkbox" hidefocus="true" title="儿科" name="dep" value="3" ui="type:CheckBox;id:Dep3" />
-    <input type="checkbox" hidefocus="true" title="感染科" name="dep" value="4" ui="type:CheckBox;id:Dep4" />
-    <input type="checkbox" hidefocus="true" title="ICU" name="dep" value="5" ui="type:CheckBox;id:Dep5" />
-    <input type="checkbox" hidefocus="true" title="其他" name="dep" value="0" ui="type:CheckBox;id:OtherDep" />
-    <input type="text" ui="type:TextInput;id:Dep;width:100" />
+    <input type="checkbox" hidefocus="true" title="呼吸科" name="dep" value="1" ui="type:CheckBox;id:Dep1;{{disabled}}" />
+    <input type="checkbox" hidefocus="true" title="急诊科" name="dep" value="2" ui="type:CheckBox;id:Dep2;{{disabled}}" />
+    <input type="checkbox" hidefocus="true" title="儿科" name="dep" value="3" ui="type:CheckBox;id:Dep3;{{disabled}}" />
+    <input type="checkbox" hidefocus="true" title="感染科" name="dep" value="4" ui="type:CheckBox;id:Dep4;{{disabled}}" />
+    <input type="checkbox" hidefocus="true" title="ICU" name="dep" value="5" ui="type:CheckBox;id:Dep5;{{disabled}}" />
+    <input type="checkbox" hidefocus="true" title="其他" name="dep" value="0" ui="type:CheckBox;id:OtherDep;{{disabled}}" />
+    <input type="text" ui="type:TextInput;id:Dep;width:100;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">入院日期</span>
-    <div ui="type:Calendar;id:InDate"></div>
+    <div ui="type:Calendar;id:InDate;{{disabled}}"></div>
 </div>
 <div class="row">
     <span class="label">出院日期</span>
-    <div ui="type:Calendar;id:OutDate"></div>
+    <div ui="type:Calendar;id:OutDate;{{disabled}}"></div>
 </div>
 <div class="row">
     <span class="label">医疗费用方式</span>
-    <input type="radio" hidefocus="true" title="公费" name="pay" value="1" ui="type:Radio;id:Pay1" />
-    <input type="radio" hidefocus="true" title="医保" name="pay" value="2" ui="type:Radio;id:Pay2" />
-    <input type="radio" hidefocus="true" title="自费" name="pay" value="3" ui="type:Radio;id:Pay3" />
-    <input type="radio" hidefocus="true" title="新农合" name="pay" value="4" ui="type:Radio;id:Pay4" />
-    <input type="radio" hidefocus="true" title="其他" name="pay" value="0" ui="type:Radio;id:OtherPay" />
-    <input type="text" ui="type:TextInput;id:Pay;width:100" />
+    <input type="radio" hidefocus="true" title="公费" name="pay" value="1" ui="type:Radio;id:Pay1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="医保" name="pay" value="2" ui="type:Radio;id:Pay2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="自费" name="pay" value="3" ui="type:Radio;id:Pay3;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="新农合" name="pay" value="4" ui="type:Radio;id:Pay4;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="pay" value="0" ui="type:Radio;id:OtherPay;{{disabled}}" />
+    <input type="text" ui="type:TextInput;id:Pay;width:100;{{disabled}}" />
 </div>
+{{#save}}
 <div class="bottom">
     <div ui="type:Button;id:Save;skin:largeem">保 存</div>
 </div>
+{{/save}}
 </script>

@@ -9,7 +9,8 @@ es.Views.CRF = Backbone.View.extend({
     
     events: {
         "click .submit-crf": "onSubmitCRF",
-        "click .doubt-crf": "openDoubtCRF"
+        "click .doubt-crf": "openDoubtCRF",
+        "click .check-doubt": "openCheckDoubt"
     },
     
     initialize: function() {
@@ -71,16 +72,19 @@ es.Views.CRF = Backbone.View.extend({
         var me = this;
         $.Mustache.load("asset/tpl/crf.html").done(function() {
             me.$el.mustache("tpl-crf", {title: title});
+            
             //获取基本信息
             me.model.getData({id: me.crfId});
         });
     },
     
     renderInfo: function(model, data) {
+        this.hasDoubt = data.hasDoubt;
         this.$("h1").append($.Mustache.render("tpl-crf-title", {
             no: data.no,
             abbr: data.abbr,
             submitBtn: this.canSubmit ? [1] : [],
+            hasDoubt: this.hasDoubt ? [1] : [],
             doubtBtn: this.canDoubt ? [1] : []
         }));
         this.$(".progressbar .progress").text("完成度：" + data.progress);
@@ -89,7 +93,7 @@ es.Views.CRF = Backbone.View.extend({
         
         //右侧表单view实例
         this.form = null;
-       
+        
         //创建菜单
         this.menu = new Tree({
             container: ".sidenav",
@@ -117,15 +121,12 @@ es.Views.CRF = Backbone.View.extend({
         
         var formName = "Form" + id;
         me.form = new es.Views[formName]({
-            model: new es.Models[formName],
-            parentView: me,
-            editable: me.editable,
-            crfId: me.crfId
+            model: new es.Models[formName]
         });
     },
     
     /*
-     * 全部提交
+     * 提交验证
      */
     onSubmitCRF: function() {
         var me = this;
@@ -142,6 +143,9 @@ es.Views.CRF = Backbone.View.extend({
         }
     },
     
+    /*
+     * 全部提交
+     */
     submitCRF: function() {
         var data = {id: this.crfId};
         
@@ -168,7 +172,7 @@ es.Views.CRF = Backbone.View.extend({
     },
     
     /*
-     * 质疑
+     * 打开对话框
      */
     openDoubtCRF: function() {
         esui.get("Field").setValue("");
@@ -176,8 +180,12 @@ es.Views.CRF = Backbone.View.extend({
         esui.get("DoubtDialog").show();
     },
     
+    /*
+     * 提交质疑
+     */
     doubtCRF: function() {
         var data = {
+            id: es.main.crfId,
             field: $.trim(esui.get("Field").getValue()),
             description: $.trim(esui.get("Description").getValue())
         };
@@ -194,7 +202,7 @@ es.Views.CRF = Backbone.View.extend({
                 
                 setTimeout(function() {
                     esui.Dialog.alert({
-                        title: "提出质疑",
+                        title: "提交质疑",
                         content: "提交成功！"
                     });
                 }, 500);
@@ -204,5 +212,77 @@ es.Views.CRF = Backbone.View.extend({
                 success: true
             }
         });
+    },
+    
+    /*
+     * 查看质疑
+     */
+    openCheckDoubt: function() {
+        var data = {
+            id: es.main.crfId
+        };
+        
+        console.log("查看质疑-请求", data);
+        
+        util.ajax.run({
+            url: "",
+            data: data,
+            success: function(response) {
+                console.log("查看质疑-响应", response);
+                
+                es.main.renderDoubtList(response.data);
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: [
+                    {
+                        doubter: "doubter",
+                        doubtField: "身高",
+                        description: "非人类",
+                        doubtDate: "2014-01-03 00:00:00"
+                    },
+                    {
+                        doubter: "doubter",
+                        doubtField: "身高",
+                        description: "非人类",
+                        doubtDate: "2014-01-03 00:00:00"
+                    }
+                ]
+            }
+        });
+    },
+    
+    renderDoubtList: function(data) {
+        var table = esui.get("Doubtlist");
+        table.datasource = data;
+        table.fields = [
+            {
+                field: "doubter",
+                title: "质疑人",
+                sortable: true,
+                content: function(item) {return item.doubter;}
+            },
+            {
+                field: "doubtField",
+                title: "质疑字段",
+                sortable: true,
+                content: function(item) {return item.doubtField;}
+            },
+            {
+                field: "description",
+                title: "说明",
+                content: function(item) {return item.description;}
+            },
+            {
+                field: "doubtDate",
+                title: "质疑时间",
+                sortable: true,
+                content: function(item) {return item.doubtDate;}
+            }
+        ];
+        table.render();
+        
+        esui.get("CheckDoubtDialog").show();
     }
 });

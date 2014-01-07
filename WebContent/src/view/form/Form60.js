@@ -13,13 +13,7 @@ es.Views.Form60 = Backbone.View.extend({
     
     initialize: function() {
         this.model.bind("change:data", this.renderForm, this);
-        
-        var args = arguments[0];
-        this.parentView = args.parentView;
-        this.editable = args.editable;
-        this.crfId = args.crfId;
-        
-        this.model.getData({id: this.crfId});
+        this.model.getData({id: es.main.crfId});
     },
     
     destroy: function() {
@@ -32,21 +26,46 @@ es.Views.Form60 = Backbone.View.extend({
     renderForm: function(model, data) {
         //插入质疑对话框
         if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+            es.main.$el.append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        if (es.main.hasDoubt) {
+            es.main.$el.append($.Mustache.render("tpl-check-doubt-dialog"));
         }
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form60.html").done(function() {
-            me.$el.mustache("tpl-form60", {data: data.data});
+            me.$el.mustache("tpl-form60", {
+                data: data.data,
+                disabled: es.main.editable ? "" : "disabled:true",
+                save: es.main.editable ? [1] : []
+            });
             me.initCtrl();
         });
     },
     
     initCtrl: function() {
-        esui.init();
-        esui.get("Save").onclick = this.save;
+        esui.init(es.main.el, {
+            Start: CRF_RANGE,
+            End: CRF_RANGE,
+            Dead: CRF_RANGE
+        });
+        
+        var me = this;
+        
+        esui.get("Start").onchange = function(value) {esui.get("Start").setValueAsDate(value);};
+        esui.get("End").onchange = function(value) {esui.get("End").setValueAsDate(value);};
+        esui.get("Dead").onchange = function(value) {esui.get("Dead").setValueAsDate(value);};
+        
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        }
+        if (es.main.editable) {
+            esui.get("Save").onclick = this.save;
+        }
+        if (!es.main.editable) {
+            esui.get("Start").disable();
+            esui.get("End").disable();
+            esui.get("Dead").disable();
         }
     },
     

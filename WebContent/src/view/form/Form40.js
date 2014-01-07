@@ -14,13 +14,7 @@ es.Views.Form40 = Backbone.View.extend({
     
     initialize: function() {
         this.model.bind("change:data", this.renderForm, this);
-        
-        var args = arguments[0];
-        this.parentView = args.parentView;
-        this.editable = args.editable;
-        this.crfId = args.crfId;
-        
-        this.model.getData({id: this.crfId});
+        this.model.getData({id: es.main.crfId});
     },
     
     destroy: function() {
@@ -33,28 +27,40 @@ es.Views.Form40 = Backbone.View.extend({
     renderForm: function(model, data) {
         //插入质疑对话框
         if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+            es.main.$el.append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        if (es.main.hasDoubt) {
+            es.main.$el.append($.Mustache.render("tpl-check-doubt-dialog"));
         }
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form40.html").done(function() {
-            me.$el.mustache("tpl-form40");
+            me.$el.mustache("tpl-form40", {
+                save: es.main.editable ? [1] : []
+            });
             me.initCtrl(data.data);
         });
     },
     
     initCtrl: function(data) {
         esui.init();
+        
         var me = this;
-        esui.get("Save").onclick = this.save;
+        
+        if (es.main.canDoubt) {
+            esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        }
+        if (es.main.editable) {
+            esui.get("Save").onclick = this.save;
+        }
+        
         esui.get("Merge").onedit = function (value, options, editor) {
             this.datasource[options.rowIndex][options.field.field] = $.trim(value);
             this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
             editor.stop();
         };
-        if (es.main.canDoubt) {
-            esui.get("DoubtOK").onclick = es.main.doubtCRF;
-        }
+        
+        var editable = es.main.editable;
         
         var table = esui.get("Merge");
         table.datasource = data;
@@ -62,58 +68,60 @@ es.Views.Form40 = Backbone.View.extend({
             {
                 field: "name",
                 title: "通用名",
-                editable: 1,
+                editable: editable,
                 edittype: "string",
                 content: function(item) {return item.name;}
             },
             {
                 field: "start",
                 title: "开始日期",
-                editable: 1,
+                editable: editable,
                 edittype: "string",
                 content: function(item) {return item.start;}
             },
             {
                 field: "end",
                 title: "停止日期",
-                editable: 1,
+                editable: editable,
                 edittype: "string",
                 content: function(item) {return item.end;}
             },
             {
                 field: "dose",
                 title: "单次用药剂量",
-                editable: 1,
+                editable: editable,
                 edittype: "string",
                 content: function(item) {return item.dose;}
             },
             {
                 field: "unit",
                 title: "剂量单位",
-                editable: 1,
+                editable: editable,
                 edittype: "string",
                 content: function(item) {return item.unit;}
             },
             {
                 field: "way",
                 title: "给药途径",
-                editable: 1,
+                editable: editable,
                 edittype: "string",
                 content: function(item) {return item.way;}
             },
             {
                 field: "frequency",
                 title: "给药频次",
-                editable: 1,
+                editable: editable,
                 edittype: "string",
                 content: function(item) {return item.frequency;}
-            },
-            {
+            }
+        ];
+        if (editable) {
+            table.fields.push({
                 field: "op",
                 title: "操作",
                 content: function(item) {return '<a href="javascript:void(0)" class="del">删除</a>';}
-            }
-        ];
+            });
+        }
         table.render();
     },
     

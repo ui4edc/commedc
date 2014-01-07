@@ -13,13 +13,7 @@ es.Views.Form12 = Backbone.View.extend({
     
     initialize: function() {
         this.model.bind("change:data", this.renderForm, this);
-        
-        var args = arguments[0];
-        this.parentView = args.parentView;
-        this.editable = args.editable;
-        this.crfId = args.crfId;
-        
-        this.model.getData({id: this.crfId});
+        this.model.getData({id: es.main.crfId});
     },
     
     destroy: function() {
@@ -32,28 +26,47 @@ es.Views.Form12 = Backbone.View.extend({
     renderForm: function(model, data) {
         //插入质疑对话框
         if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+            es.main.$el.append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        if (es.main.hasDoubt) {
+            es.main.$el.append($.Mustache.render("tpl-check-doubt-dialog"));
         }
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form12.html").done(function() {
-            me.$el.mustache("tpl-form12", {data: data.data});
+            me.$el.mustache("tpl-form12", {
+                data: data.data,
+                disabled: es.main.editable ? "" : "disabled:true",
+                save: es.main.editable ? [1] : []
+            });
             me.initCtrl();
         });
     },
     
     initCtrl: function() {
         esui.init();
+        
         var me = this;
-        esui.get("Save").onclick = this.save;
+        
         esui.get("Food1").onclick = function() {me.$(".food").show();};
         esui.get("Food2").onclick = function() {me.$(".food").hide();};
         esui.get("Drug1").onclick = function() {me.$(".drug").show();};
         esui.get("Drug2").onclick = function() {me.$(".drug").hide();};
         esui.get("Material1").onclick = function() {me.$(".material").show();};
         esui.get("Material2").onclick = function() {me.$(".material").hide();};
+        
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        }
+        if (es.main.editable) {
+            esui.get("Save").onclick = this.save;
+        }
+        if (!es.main.editable) {
+            esui.get("ctrltextlineFoodNametext").disable();
+            esui.get("ctrltextlineDrug1Nametext").disable();
+            esui.get("ctrltextlineDrug2Nametext").disable();
+            esui.get("ctrltextlineDrug3Nametext").disable();
+            esui.get("ctrltextlineMaterialNametext").disable();
         }
     },
     

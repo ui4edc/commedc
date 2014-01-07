@@ -13,13 +13,7 @@ es.Views.Form13 = Backbone.View.extend({
     
     initialize: function() {
         this.model.bind("change:data", this.renderForm, this);
-        
-        var args = arguments[0];
-        this.parentView = args.parentView;
-        this.editable = args.editable;
-        this.crfId = args.crfId;
-        
-        this.model.getData({id: this.crfId});
+        this.model.getData({id: es.main.crfId});
     },
     
     destroy: function() {
@@ -32,26 +26,38 @@ es.Views.Form13 = Backbone.View.extend({
     renderForm: function(model, data) {
         //插入质疑对话框
         if (es.main.canDoubt) {
-            es.main.$(".crf-wrap").append($.Mustache.render("tpl-doubt-dialog"));
+            es.main.$el.append($.Mustache.render("tpl-doubt-dialog"));
+        }
+        if (es.main.hasDoubt) {
+            es.main.$el.append($.Mustache.render("tpl-check-doubt-dialog"));
         }
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form13.html").done(function() {
-            me.$el.mustache("tpl-form13", {data: data.data});
+            me.$el.mustache("tpl-form13", {
+                data: data.data,
+                disabled: es.main.editable ? "" : "disabled:true",
+                save: es.main.editable ? [1] : []
+            });
             me.initCtrl();
         });
     },
     
     initCtrl: function() {
         esui.init();
+        
         var me = this;
-        esui.get("Save").onclick = this.save;
+        
         esui.get("Disease1").onclick = function() {me.$(".disease").show();};
         esui.get("Disease2").onclick = function() {me.$(".disease").hide();};
         esui.get("ADisease1").onclick = function() {me.$(".a-disease").show();};
         esui.get("ADisease2").onclick = function() {me.$(".a-disease").hide();};
+        
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        }
+        if (es.main.editable) {
+            esui.get("Save").onclick = this.save;
         }
     },
     
