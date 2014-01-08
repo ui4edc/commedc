@@ -165,7 +165,6 @@ es.Views.List = Backbone.View.extend({
         }
         this.args.undealed = esui.get("Undealed").isChecked();
         this.args.doubter = $.trim(esui.get("Doubter").getValue());
-        this.args.doubtField = $.trim(esui.get("DoubtField").getValue());
         if (esui.get("DoubtRangeType").value == 1) {
             this.args.doubtDate = null;
         } else {
