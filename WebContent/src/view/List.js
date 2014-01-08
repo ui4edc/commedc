@@ -8,7 +8,8 @@ es.Views.List = Backbone.View.extend({
     el: "#Main",
     
     events: {
-        "click .tabbar a": "switchList"
+        "click .tabbar a": "switchList",
+        "click .new-crf": "openNewCRF"
     },
     
     initialize: function() {
@@ -125,7 +126,6 @@ es.Views.List = Backbone.View.extend({
             me.args.desc = order == "desc" ? true : false;
             me.queryFirstPage();
         };
-        esui.get("OpenNewCRF").onclick = this.openNewCRF;
         esui.get("DelCRF").onclick = this.delCRF;
         esui.get("SubmitCRF").onclick = this.submitCRF;
         esui.get("NewCRFOK").onclick = this.newCRF;
@@ -210,7 +210,7 @@ es.Views.List = Backbone.View.extend({
         this.getArgs();
         this.queryFirstPage();
         
-        //已提交Tab
+        //已提交待审核
         if (this.args.type == 2) {
             this.$("#ctrlbuttonSubmitCRF").hide();
             this.$(".time-label").text("提交时间范围：");
@@ -218,7 +218,7 @@ es.Views.List = Backbone.View.extend({
             this.$("#ctrlbuttonSubmitCRF").show();
             this.$(".time-label").text("最后修改时间范围：");
         }
-        //被质疑Tab
+        //被质疑
         if (this.args.type == 3) {
             this.$(".doubt-form").show();
         } else {
@@ -279,7 +279,7 @@ es.Views.List = Backbone.View.extend({
                     content: function(item) {return item.progress;}
                 }
             ];
-            //被质疑Tab增加4列
+            //被质疑
             if (this.args.type == 3) {
                 table.fields.splice(2, 0,
                 {
@@ -289,15 +289,10 @@ es.Views.List = Backbone.View.extend({
                     content: function(item) {return item.doubter;}
                 },
                 {
-                    field: "doubtField",
-                    title: "质疑字段",
+                    field: "doubtNumber",
+                    title: "质疑数",
                     sortable: true,
-                    content: function(item) {return item.doubtField;}
-                },
-                {
-                    field: "description",
-                    title: "说明",
-                    content: function(item) {return item.description;}
+                    content: function(item) {return item.doubtNumber;}
                 },
                 {
                     field: "doubtDate",

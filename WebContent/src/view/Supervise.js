@@ -201,17 +201,17 @@ es.Views.Supervise = Backbone.View.extend({
         this.getArgs();
         this.queryFirstPage();
         
-        //已提交Tab
+        //质疑记录
         if (this.args.type == 6) {
-            this.$("#ctrlbuttonSubmitCRF").hide();
-        } else {
-            this.$("#ctrlbuttonSubmitCRF").show();
-        }
-        //质疑记录Tab
-        if (this.args.type == 5) {
             this.$(".doubt-form").show();
         } else {
             this.$(".doubt-form").hide();
+        }
+        //已提交
+        if (this.args.type == 7) {
+            this.$("#ctrlbuttonSubmitCRF").hide();
+        } else {
+            this.$("#ctrlbuttonSubmitCRF").show();
         }
     },
     
@@ -268,8 +268,8 @@ es.Views.Supervise = Backbone.View.extend({
                     content: function(item) {return item.progress;}
                 }
             ];
-            //质疑记录Tab增加4列
-            if (this.args.type == 5) {
+            //质疑记录
+            if (this.args.type == 6) {
                 table.fields.splice(2, 0,
                 {
                     field: "doubter",
@@ -278,15 +278,10 @@ es.Views.Supervise = Backbone.View.extend({
                     content: function(item) {return item.doubter;}
                 },
                 {
-                    field: "doubtField",
-                    title: "质疑字段",
+                    field: "doubtNumber",
+                    title: "质疑数",
                     sortable: true,
-                    content: function(item) {return item.doubtField;}
-                },
-                {
-                    field: "description",
-                    title: "说明",
-                    content: function(item) {return item.description;}
+                    content: function(item) {return item.doubtNumber;}
                 },
                 {
                     field: "doubtDate",

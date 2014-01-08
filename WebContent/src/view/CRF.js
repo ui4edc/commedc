@@ -175,9 +175,40 @@ es.Views.CRF = Backbone.View.extend({
      * 打开对话框
      */
     openDoubtCRF: function() {
-        esui.get("Field").setValue("");
+        esui.init(this.el, {
+            Field: {
+                datasource: [{name: "请选择", value: 0}],
+                value: 0
+            }
+        });
         esui.get("Description").setValue("");
         esui.get("DoubtDialog").show();
+        
+        var data = {};
+        
+        console.log("获取质疑字段-请求", data);
+        
+        util.ajax.run({
+            url: "",
+            data: data,
+            success: function(response) {
+                console.log("获取质疑字段-响应", response);
+                
+                var field = esui.get("Field");
+                field.datasource = response.data;
+                field.datasource.unshift({name: "请选择", value: 0});
+                field.render();
+                field.setValue(0);
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: [
+                    {name: "出生日期", value: 1},
+                    {name: "身高", value: 2}
+                ]
+            }
+        });
     },
     
     /*
@@ -186,7 +217,7 @@ es.Views.CRF = Backbone.View.extend({
     doubtCRF: function() {
         var data = {
             id: es.main.crfId,
-            field: $.trim(esui.get("Field").getValue()),
+            field: esui.get("Field").value,
             description: $.trim(esui.get("Description").getValue())
         };
         

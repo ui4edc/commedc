@@ -36,8 +36,7 @@ es.Models.Supervise = Backbone.Model.extend({
                         lastModified : "2014-01-02 00:00:00",
                         progress: "30%",
                         doubter: "doubter",
-                        doubtField: "身高",
-                        description: "非人类",
+                        doubtNumber: 10,
                         doubtDate: "2014-01-03 00:00:00"
                     },
                     {
@@ -48,8 +47,7 @@ es.Models.Supervise = Backbone.Model.extend({
                         lastModified : "2014-01-02 00:00:00",
                         progress: "30%",
                         doubter: "doubter",
-                        doubtField: "身高",
-                        description: "非人类",
+                        doubtNumber: 10,
                         doubtDate: "2014-01-03 00:00:00"
                     }
                 ]

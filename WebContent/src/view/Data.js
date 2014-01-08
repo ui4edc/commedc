@@ -200,8 +200,8 @@ es.Views.Data = Backbone.View.extend({
         this.getArgs();
         this.queryFirstPage();
         
-        //质疑记录Tab
-        if (this.args.type == 8) {
+        //质疑记录
+        if (this.args.type == 9) {
             this.$(".doubt-form").show();
         } else {
             this.$(".doubt-form").hide();
@@ -261,8 +261,8 @@ es.Views.Data = Backbone.View.extend({
                     content: function(item) {return item.progress;}
                 }
             ];
-            //质疑记录Tab增加4列
-            if (this.args.type == 8) {
+            //质疑记录
+            if (this.args.type == 9) {
                 table.fields.splice(2, 0,
                 {
                     field: "doubter",
@@ -271,15 +271,10 @@ es.Views.Data = Backbone.View.extend({
                     content: function(item) {return item.doubter;}
                 },
                 {
-                    field: "doubtField",
-                    title: "质疑字段",
+                    field: "doubtNumber",
+                    title: "质疑数",
                     sortable: true,
-                    content: function(item) {return item.doubtField;}
-                },
-                {
-                    field: "description",
-                    title: "说明",
-                    content: function(item) {return item.description;}
+                    content: function(item) {return item.doubtNumber;}
                 },
                 {
                     field: "doubtDate",
