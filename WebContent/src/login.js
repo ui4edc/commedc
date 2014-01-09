@@ -27,7 +27,7 @@ $("#login").click(function() {
         },
         success: function(data) {
             if (data.success) {
-                window.location.href = '/index.do';
+                window.location.href = "http://" + window.location.host + '/' + $("#BasePath").val() + "index.do";
             } else {
                 tip.text("用户名或密码错误").show().fadeOut(1500);
             }
