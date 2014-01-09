@@ -25,7 +25,7 @@ $("#change").click(function() {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "",
+        url: $("#BasePath").val() + "",
         data : {
             oldPassword: oldPassword,
             newPassword: newPassword

@@ -94,7 +94,7 @@ util.ajax = {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: $("#BasePath") + option.url,
+            url: $("#BasePath").val() + option.url,
             data : option.data,
             
             beforeSend: function(jqXHR, settings) {

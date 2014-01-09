@@ -20,7 +20,7 @@ $("#login").click(function() {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "tologin.do",
+        url: $("#BasePath").val() + "tologin.do",
         data : {
             username: username,
             password: password
