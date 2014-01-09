@@ -56,8 +56,8 @@ es.Views.Form11 = Backbone.View.extend({
         esui.get("InDate").onchange = function(value) {esui.get("InDate").setValueAsDate(value);};
         esui.get("OutDate").onchange = function(value) {esui.get("OutDate").setValueAsDate(value);};
         
-        esui.get("Male").onclick = function() {me.$(".female-period").hide();};
-        esui.get("Female").onclick = function() {me.$(".female-period").show();};
+        esui.get("Male").onclick = function() {me.$(".female").hide();};
+        esui.get("Female").onclick = function() {me.$(".female").show();};
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
