@@ -7,7 +7,7 @@ public class PatientInfoVo {
 		//id
 		private int id;
 		//观察表编号
-		private String blbh;
+		private String no;
 		//患者姓名
 		private String name;
 		//姓名缩写
@@ -17,13 +17,17 @@ public class PatientInfoVo {
 		//年龄
 		private String age;
 		//体重
-		private double weight;
+		private String weight;
 		//性别
 		private int sex;
+		//民族
+		private int ethic;
+		//民族其他
+		private String ethictxt;
 		//怀孕史：妊娠期，怀孕期，无
 		private int hys;
 		//身高
-		private int height;
+		private String height;
 		//用药科室
 		private List<CheckBoxVo> yyks;
 		//入院日期
@@ -39,11 +43,12 @@ public class PatientInfoVo {
 		public void setId(int id) {
 			this.id = id;
 		}
-		public String getBlbh() {
-			return blbh;
+		
+		public String getNo() {
+			return no;
 		}
-		public void setBlbh(String blbh) {
-			this.blbh = blbh;
+		public void setNo(String no) {
+			this.no = no;
 		}
 		public String getName() {
 			return name;
@@ -69,10 +74,10 @@ public class PatientInfoVo {
 		public void setAge(String age) {
 			this.age = age;
 		}
-		public double getWeight() {
+		public String getWeight() {
 			return weight;
 		}
-		public void setWeight(double weight) {
+		public void setWeight(String weight) {
 			this.weight = weight;
 		}
 		public int getSex() {
@@ -87,10 +92,10 @@ public class PatientInfoVo {
 		public void setHys(int hys) {
 			this.hys = hys;
 		}
-		public int getHeight() {
+		public String getHeight() {
 			return height;
 		}
-		public void setHeight(int height) {
+		public void setHeight(String height) {
 			this.height = height;
 		}
 		public List<CheckBoxVo> getYyks() {
@@ -117,6 +122,19 @@ public class PatientInfoVo {
 		public void setYlfyfs(String ylfyfs) {
 			this.ylfyfs = ylfyfs;
 		}
+		public int getEthic() {
+			return ethic;
+		}
+		public void setEthic(int ethic) {
+			this.ethic = ethic;
+		}
+		public String getEthictxt() {
+			return ethictxt;
+		}
+		public void setEthictxt(String ethictxt) {
+			this.ethictxt = ethictxt;
+		}
+		
 		
 		
 		

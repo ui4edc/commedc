@@ -4,7 +4,7 @@ public class CheckBoxVo {
 
 	private int id;
 	private boolean seleced;
-	private String othText;
+	private String other;
 	
 	public int getId() {
 		return id;
@@ -18,12 +18,13 @@ public class CheckBoxVo {
 	public void setSeleced(boolean seleced) {
 		this.seleced = seleced;
 	}
-	public String getOthText() {
-		return othText;
+	public String getOther() {
+		return other;
 	}
-	public void setOthText(String othText) {
-		this.othText = othText;
+	public void setOther(String other) {
+		this.other = other;
 	}
+	
 	
 	
 	
