@@ -60,10 +60,12 @@ es.Views.Form30 = Backbone.View.extend({
         esui.get("Bottle2").onclick = function() {me.$(".bottle").hide();};
         esui.get("Group1").onclick = function() {me.$(".group").show();};
         esui.get("Group2").onclick = function() {me.$(".group").hide();};
-        esui.get("Ban1").onclick = function() {me.$(".ban").show();};
-        esui.get("Ban2").onclick = function() {me.$(".ban").hide();};
-        esui.get("HaveFood1").onclick = function() {me.$(".have-food").show();};
-        esui.get("HaveFood2").onclick = function() {me.$(".have-food").hide();};
+        esui.get("HasInjection1").onclick = function() {me.$(".has-injection").show();};
+        esui.get("HasInjection2").onclick = function() {me.$(".has-injection").hide();};
+        esui.get("HasBan1").onclick = function() {me.$(".has-ban").show();};
+        esui.get("HasBan2").onclick = function() {me.$(".has-ban").hide();};
+        esui.get("HasFood1").onclick = function() {me.$(".has-food").show();};
+        esui.get("HasFood2").onclick = function() {me.$(".has-food").hide();};
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;

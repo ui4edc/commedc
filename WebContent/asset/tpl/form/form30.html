@@ -45,7 +45,7 @@
 <div class="row sub">
     <input type="radio" hidefocus="true" title="葡萄糖注射液(5%)" name="solvent" value="1" ui="type:Radio;id:Solvent1;{{disabled}}" />
     <input type="radio" hidefocus="true" title="氯化钠注射液(0.9%)" name="solvent" value="2" ui="type:Radio;id:Solvent2;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="其他" name="solvent" value="3" ui="type:Radio;id:Solvent3;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="solvent" value="0" ui="type:Radio;id:OtherSolvent;{{disabled}}" />
     <input type="text" ui="type:TextInput;id:SolventName;width:100;{{disabled}}" />，
     <input type="text" ui="type:TextInput;id:SolventPercent;width:50;{{disabled}}" /> %
 </div>
@@ -72,9 +72,10 @@
     <input type="text" ui="type:TextInput;id:MLPerH;width:50;{{disabled}}" /> ml/小时
 </div>
 <div class="row sub">
-    <input type="radio" hidefocus="true" title="其他途径" name="way" value="3" ui="type:Radio;id:Way3;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他途径" name="way" value="0" ui="type:Radio;id:OtherWay;{{disabled}}" />
     <input type="text" ui="type:TextInput;id:Way;width:100;{{disabled}}" /> ，输注速度：
-    <input type="text" ui="type:TextInput;id:Speed;width:50;{{disabled}}" />（单位：<input type="text" ui="type:TextInput;id:Unit;width:50;{{disabled}}" />）
+    <input type="text" ui="type:TextInput;id:Speed;width:50;{{disabled}}" />（单位：
+    <input type="text" ui="type:TextInput;id:Unit;width:50;{{disabled}}" />）
 </div>
 <div class="row">
     <span class="label">是否同瓶用药</span>
@@ -102,53 +103,55 @@
         <input type="text" ui="type:TextInput;id:Gp2Dose;width:50;{{disabled}}" />
     </div>
     <div>
-        <input type="radio" hidefocus="true" title="其他" name="gp" value="3" ui="type:Radio;id:Gp3;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="其他" name="gp" value="0" ui="type:Radio;id:OtherGp;{{disabled}}" />
         <input type="text" ui="type:TextInput;id:GpName;width:100;{{disabled}}" />，
         <input type="text" ui="type:TextInput;id:GpPercent;width:50;{{disabled}}" /> %
     </div>
 </div>
 <div class="row">
     <span class="label wlabel">静滴期间是否同时使用其他注射剂</span>
+    <input type="radio" hidefocus="true" title="是" name="has-injection" value="1" ui="type:Radio;id:HasInjection1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="否" name="has-injection" value="2" ui="type:Radio;id:HasInjection2;{{disabled}}" />
 </div>
-<div class="row sub">
-注射剂1：<input type="text" ui="type:TextInput;id:Injection1;width:100;{{disabled}}" />
-剂量1：<input type="text" ui="type:TextInput;id:Injection1Dose;width:50;{{disabled}}" />
-（单位1：<input type="text" ui="type:TextInput;id:Injection1Unit;width:50;{{disabled}}" />）
-</div>
-<div class="row sub">
-注射剂2：<input type="text" ui="type:TextInput;id:Injection2;width:100;{{disabled}}" />
-剂量2：<input type="text" ui="type:TextInput;id:Injection2Dose;width:50;{{disabled}}" />
-（单位2：<input type="text" ui="type:TextInput;id:Injection2Unit;width:50;{{disabled}}" />）
+<div class="row sub has-injection">
+    <div>注射剂1：<input type="text" ui="type:TextInput;id:Injection1;width:100;{{disabled}}" />剂量1：
+        <input type="text" ui="type:TextInput;id:Injection1Dose;width:50;{{disabled}}" />（单位1：
+        <input type="text" ui="type:TextInput;id:Injection1Unit;width:50;{{disabled}}" />）
+    </div>
+    <div>注射剂2：<input type="text" ui="type:TextInput;id:Injection2;width:100;{{disabled}}" />剂量2：
+        <input type="text" ui="type:TextInput;id:Injection2Dose;width:50;{{disabled}}" />（单位2：
+        <input type="text" ui="type:TextInput;id:Injection2Unit;width:50;{{disabled}}" />）
+    </div>
 </div>
 <div class="row">
     <span class="label">配伍禁忌现象</span>
-    <input type="radio" hidefocus="true" title="有" name="ban" value="1" ui="type:Radio;id:Ban1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="无" name="ban" value="2" ui="type:Radio;id:Ban2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="有" name="has-ban" value="1" ui="type:Radio;id:HasBan1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="无" name="has-ban" value="2" ui="type:Radio;id:HasBan2;{{disabled}}" />
 </div>
-<div class="row sub auto ban">
+<div class="row sub auto has-ban">
     <div>产生：</div>
-    <input type="radio" hidefocus="true" title="沉淀" name="ban1" value="1" ui="type:Radio;id:Ban1_1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="浑浊" name="ban1" value="2" ui="type:Radio;id:Ban1_2;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="仍澄清" name="ban1" value="3" ui="type:Radio;id:Ban1_3;{{disabled}}" />，变 <input type="text" ui="type:TextInput;id:Color;width:30;{{disabled}}" /> 色
-    <input type="radio" hidefocus="true" title="其他" name="ban1" value="4" ui="type:Radio;id:Ban1_4;{{disabled}}" />，<input type="text" ui="type:TextInput;id:BanName;width:100;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="沉淀" name="ban" value="1" ui="type:Radio;id:Ban1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="浑浊" name="ban" value="2" ui="type:Radio;id:Ban2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="仍澄清" name="ban" value="3" ui="type:Radio;id:Ban3;{{disabled}}" />，变
+    <input type="text" ui="type:TextInput;id:Color;width:30;{{disabled}}" /> 色
+    <input type="radio" hidefocus="true" title="其他" name="ban" value="0" ui="type:Radio;id:OtherBan;{{disabled}}" />
+    <input type="text" ui="type:TextInput;id:Ban;width:100;{{disabled}}" />
     <div>产生配伍禁忌药品：</div>
-    <div>
-药品名称1：<input type="text" ui="type:TextInput;id:Medicine1;width:100;{{disabled}}" />
-剂量1：<input type="text" ui="type:TextInput;id:Medicine1Dose;width:50;{{disabled}}" />
-（单位1：<input type="text" ui="type:TextInput;id:Medicine1Unit;width:50;{{disabled}}" />）
+    <div>药品名称1：<input type="text" ui="type:TextInput;id:Medicine1;width:100;{{disabled}}" />剂量1：
+        <input type="text" ui="type:TextInput;id:Medicine1Dose;width:50;{{disabled}}" />（单位1：
+        <input type="text" ui="type:TextInput;id:Medicine1Unit;width:50;{{disabled}}" />）
     </div>
-    <div>
-药品名称2：<input type="text" ui="type:TextInput;id:Medicine2;width:100;{{disabled}}" />
-剂量2：<input type="text" ui="type:TextInput;id:Medicine2Dose;width:50;{{disabled}}" />
-（单位2：<input type="text" ui="type:TextInput;id:Medicine2Unit;width:50;{{disabled}}" />）
+    <div>药品名称2：<input type="text" ui="type:TextInput;id:Medicine2;width:100;{{disabled}}" />剂量2：
+        <input type="text" ui="type:TextInput;id:Medicine2Dose;width:50;{{disabled}}" />（单位2：
+        <input type="text" ui="type:TextInput;id:Medicine2Unit;width:50;{{disabled}}" />）
     </div>
 </div>
 <div class="row">
     <span class="label wlabel">静滴前后24小时内是否进食易致敏物质</span>
-    <input type="radio" hidefocus="true" title="是" name="have-food" value="1" ui="type:Radio;id:HaveFood1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="否" name="have-food" value="2" ui="type:Radio;id:HaveFood2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="是" name="has-food" value="1" ui="type:Radio;id:HasFood1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="否" name="has-food" value="2" ui="type:Radio;id:HasFood2;{{disabled}}" />
 </div>
-<div class="row sub have-food">
+<div class="row sub has-food">
     <input type="checkbox" hidefocus="true" title="海鲜" name="food" value="1" ui="type:CheckBox;id:Food1;{{disabled}}" />
     <input type="checkbox" hidefocus="true" title="鸡蛋" name="food" value="2" ui="type:CheckBox;id:Food2;{{disabled}}" />
     <input type="checkbox" hidefocus="true" title="花粉" name="food" value="3" ui="type:CheckBox;id:Food3;{{disabled}}" />
