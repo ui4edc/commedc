@@ -13,7 +13,11 @@ public class User {
 
     private int status;
     
+    private int organizationId;
+    
     private String organizationName;
+    
+    private int roleId;
     
     private String roleName;
     
@@ -112,6 +116,24 @@ public class User {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+
+	public int getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(int organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
+	
+	
 
     
 }

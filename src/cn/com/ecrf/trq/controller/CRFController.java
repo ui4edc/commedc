@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,13 +53,26 @@ public class CRFController {
 		return result;
 	}
 	
-	@RequestMapping(value="/crf/update/{id}", method = RequestMethod.POST)
+	
+	/**
+	 * 
+	 * @param patientInfoVo
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/crf/saveBasicInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getPatientInfo(@PathVariable int id, HttpServletRequest request) {
+	public Map<String, Object> saveBasicInfo(@RequestBody PatientInfoVo patientInfoVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.savePatientInfo(patientInfoVo);
+		return result;
+	}
+	
+/*	@RequestMapping(value="/crf/saveBasicInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveBasicInfo(@RequestBody PatientInfoVo patientInfoVo, HttpServletRequest request) {
 		PatientInfoVo patientInfoVo = cRFService.getPatientInfo(id);
 		PhaseSignPage phaseSignPage = cRFService.getPhaseSignInfo(id);
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
 		return result;
-	}
-	
+	}*/
 }

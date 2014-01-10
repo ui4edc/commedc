@@ -47,4 +47,11 @@
     from ac_role
      LIMIT #{limitStart},#{limitSize} 
   </select>
+    <select id="getRoleByUserName" parameterType="string" resultMap="RoleResultMap">
+  	select 
+  	 r.id, role_name, role_desc, r.create_time, r.update_time, r.update_time, r.update_by
+    from ac_role r, ac_user_role ur, ac_user u where u.user_name=#{userName}
+     and r.id=ur.role_id and ur.user_id=u.id
+  </select>
+  
 </mapper>

@@ -1,44 +1,36 @@
 package cn.com.ecrf.trq.model;
 
 import java.util.Date;
+import java.util.List;
+
+import cn.com.ecrf.trq.vo.CheckBoxVo;
 /**
  * 包含患者基本情况和痰热清注射液用药史
  * @author user
  *
  */
 public class PatientInfoCase {
-	//研究单位
-	private String yjdw;
-	//研究单位编号
-	private String yjdwcd;
-	//患者病例号
-	private String hzblh;
-	//首次填表时间
-	private Date sctbsj;
+	private int id;
 	//观察表编号
-	private String blbh;
-	//审批状态
-	private String lockStatus;
+	private String no;
 	//患者姓名
 	private String name;
 	//姓名缩写
 	private String abbr;
 	//出生年月
-	private Date birthday;
+	private Date birthday; //YYYY-MM-DD
 	//年龄
-	private String age;
+	private int age;
 	//体重
-	private double weight;
-	//体重单位:kg
-	private String weightu;
+	private float weight;
 	//性别
 	private String sex;
+	//民族
+	private String ethic;
 	//怀孕史：妊娠期，怀孕期，无
 	private String hys;
 	//身高
 	private int height;
-	//身高单位:cm
-	private int heightu;
 	//用药科室
 	private String yyks;
 	//入院日期
@@ -47,13 +39,98 @@ public class PatientInfoCase {
 	private Date cyrq;
 	//医疗费用方式
 	private String ylfyfs;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAbbr() {
+		return abbr;
+	}
+	public void setAbbr(String abbr) {
+		this.abbr = abbr;
+	}
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public float getWeight() {
+		return weight;
+	}
+	public void setWeight(float weight) {
+		this.weight = weight;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getEthic() {
+		return ethic;
+	}
+	public void setEthic(String ethic) {
+		this.ethic = ethic;
+	}
+	public String getHys() {
+		return hys;
+	}
+	public void setHys(String hys) {
+		this.hys = hys;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public String getYyks() {
+		return yyks;
+	}
+	public void setYyks(String yyks) {
+		this.yyks = yyks;
+	}
+	public Date getRyrq() {
+		return ryrq;
+	}
+	public void setRyrq(Date ryrq) {
+		this.ryrq = ryrq;
+	}
+	public Date getCyrq() {
+		return cyrq;
+	}
+	public void setCyrq(Date cyrq) {
+		this.cyrq = cyrq;
+	}
+	public String getYlfyfs() {
+		return ylfyfs;
+	}
+	public void setYlfyfs(String ylfyfs) {
+		this.ylfyfs = ylfyfs;
+	}
 	
-	//痰热清注射用药史:是，否
-	private String trqzsyysyn;
-	//是否有不良反应:是，否
-	private String blfyyn;
-	//不良反应表现
-	private String blfybx;
+	
 	
 	
 	

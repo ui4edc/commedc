@@ -30,11 +30,11 @@
 <div id="Message" style="display:none"></div>
 
 <input type="hidden" id="BasePath" value="<%=basePath %>/" />
-<input type="hidden" id="RoleName" value="角色名称" />
-<input type="hidden" id="RoleId" value="2" />
-<input type="hidden" id="UserName" value="用户名称" />
-<input type="hidden" id="UserId" value="1" />
-<input type="hidden" id="HospitalName" value="医院名称" />
+<input type="hidden" id="RoleName" value="${role}" />
+<input type="hidden" id="RoleId" value="${roleId} }" />
+<input type="hidden" id="UserName" value="${user}" />
+<input type="hidden" id="UserId" value="${userId}" />
+<input type="hidden" id="HospitalName" value="${organization}" />
 
 <script src="asset/js/lib.js"></script>
 <script src="asset/js/app.js"></script>

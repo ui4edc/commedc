@@ -14,6 +14,7 @@ public class Organization {
 	private String organizationDesc;
 	private String location;
 	private String mailAddress;
+	private int instanceNumber;
 	public int getId() {
 		return id;
 	}
@@ -79,6 +80,12 @@ public class Organization {
 	}
 	public void setMailAddress(String mailAddress) {
 		this.mailAddress = mailAddress;
+	}
+	public int getInstanceNumber() {
+		return instanceNumber;
+	}
+	public void setInstanceNumber(int instanceNumber) {
+		this.instanceNumber = instanceNumber;
 	}
 	
 	

@@ -19,13 +19,13 @@ public class UserAuthenticationTest extends SpringControllerTest {
 	@Autowired
 	private UserService userService;
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testFindUsers(){
 		User user = userService.findUserByLoginName("1");
 		Assert.notNull(user);
 	}
-	@Ignore
+	//@Ignore
 	@Test 
 	public void testInsertUser(){
 		User user = new User();
@@ -40,7 +40,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		org.junit.Assert.assertEquals(user.getUserName(), user2.getUserName());
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testUpdateUser(){
 		User user = new User();
@@ -56,7 +56,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		org.junit.Assert.assertEquals(user.getUserName(), user2.getUserName());
 		org.junit.Assert.assertNotEquals("张三", user2.getUserName());
 	}
-	@Ignore
+	//@Ignore
 	@Test
 	public void testDeleteUser(){
 		User user = new User();
@@ -72,7 +72,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testInsertRole(){
 		Role role = new Role();
@@ -87,7 +87,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		userService.deleteRoleById(role.getId());
 		
 	}
-	
+	//@Ignore
 	@Test
 	public void findUsers(){
 		for (int i=0;i<20;i++){
@@ -100,6 +100,30 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		for (int i=0;i<users.size();i++){
 			System.out.println(""+users.get(i).getId()+":"+users.get(i).getUserName());
 		}
+	}
+	
+	//@Ignore
+	@Test
+	public void findUser(){
+		try{
+			User user = userService.findUserByLoginName("admin");
+			List<Role> roles = userService.getRoleByUser("admin");
+			
+			System.out.println(user.getId());
+			System.out.println(roles.get(0));
+			System.out.println(user.getRoleName());
+			System.out.println(user.getOrganizationName());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	@Test
+	public void findRoleByUser(){
+		List<Role> roles = userService.getRoleByUser("admin");
+		System.out.println(roles);
 	}
 
 }

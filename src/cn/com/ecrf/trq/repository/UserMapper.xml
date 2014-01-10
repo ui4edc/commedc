@@ -10,7 +10,7 @@
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="display_name" property="displayName" jdbcType="VARCHAR" />
-    <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+    <result column="fk_organization_id" property="organizationId" jdbcType="INTEGER" />
     <result column="email_address" property="emailAddress" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -28,7 +28,7 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-    id, user_name, status, password, display_name, organization_name, email_address, create_time, update_time, update_by
+    id, user_name, status, password, display_name, fk_organization_id, email_address, create_time, update_time, update_by
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int" >
     select 
@@ -45,9 +45,9 @@
 	SELECT LAST_INSERT_ID()
 	</selectKey>
     insert into ac_user (id, user_name, status, 
-      password, display_name, organization_name, email_address, create_time)
+      password, display_name, fk_organization_id, email_address, create_time)
     values (#{id}, #{userName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{password,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR},#{organizationName,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR},#{organizationId,jdbcType=VARCHAR},
       #{emailAddress,jdbcType=VARCHAR},current_timestamp())
   </insert>
   <insert id="insertSelective" parameterType="cn.com.ecrf.trq.model.User" >
@@ -91,8 +91,8 @@
   		update ac_user set
 		user_name=#{userName}, password=#{password}, display_name=#{displayName},
 		status=#{status}, update_time= now()
-		<if test="organizationName != null" >
-        	,organization_name=#{organizationName}
+		<if test="organizationId != null" >
+        	,fk_organization_id=#{organizationId}
       	</if>
       	<if test="emailAddress != null" >
         	,email_address=#{emailAddress}

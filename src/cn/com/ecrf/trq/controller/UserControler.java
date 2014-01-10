@@ -34,14 +34,7 @@ public class UserControler {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("/")
-	public String home(HttpServletRequest request) {
-		Subject currentUser = SecurityUtils.getSubject();
-		if (currentUser.isAuthenticated())
-			return "index";
-		else
-			return "login";
-	}
+	
 	
 	@RequestMapping("/test")
 	public String createForm(HttpServletRequest request) {
@@ -49,10 +42,50 @@ public class UserControler {
 		return "test";
 	}
 	
-	@RequestMapping("/index")
-	public String showIndex(HttpServletRequest request) {
+	
+	//@RequestMapping("/index")
+	public String showIndex(HttpServletRequest request, Map<String, Object> model) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String username = request.getParameter("username");
+		//MD5鍔犲瘑
+		String password = CipherUtil.generatePassword(request.getParameter("password"));
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 		
-		return "index";
+		String errorMsg = "";
+		/*if (username == "")
+			errorMsg = "请输入用户名";
+		if (password == "")
+			errorMsg = "请输入密码";*/
+		Subject currentUser = SecurityUtils.getSubject();
+		try {
+			if (!currentUser.isAuthenticated()){
+				return "redirect:/login.do";
+			}else{
+				result.put(AjaxReturnValue.success, true);
+				currentUser = SecurityUtils.getSubject();  
+				String userName = (String)currentUser.getPrincipal();
+				User user = userService.findUserByLoginName(userName);
+				model.put("user", userName);
+				model.put("userId", user.getId());
+				model.put("organization", user.getOrganizationName());
+				List<Role> roles = userService.getRoleByUser(userName);
+				if (roles != null && roles.size() > 0){
+					model.put("role", roles.get(0).getRoleName());
+					model.put("roleId", roles.get(0).getId());
+				}
+				return "index";
+			}
+
+		} catch (Exception e) {
+			result.put(AjaxReturnValue.success, false);
+			result.put(AjaxReturnValue.errorMsg, e.getMessage());
+			errorMsg = "用户或密码错误";
+		}
+		//model.put("errorMsg", errorMsg);
+		return "/login";
+		
+		
+		
 	}
 	
 	/**
@@ -61,7 +94,7 @@ public class UserControler {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/{id}/showUser")
+	//@RequestMapping("/{id}/showUser")
 	public String showUser(@PathVariable int id, HttpServletRequest request) {
 		User user = userService.getUserById(id);
 		System.out.println(user.getUserName());
@@ -74,7 +107,7 @@ public class UserControler {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/login")
+	//@RequestMapping("/login")
 	public String tologin(HttpServletRequest request, HttpServletResponse response, Model model){
 		logger.debug("client ip" + request.getRemoteHost() + "]");
 		return "login";
@@ -85,9 +118,9 @@ public class UserControler {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/tologin")
-	@ResponseBody
-	public Map<String, Object> login(HttpServletRequest request) {
+	//@RequestMapping("/tologin")
+	//@ResponseBody
+	public String login(HttpServletRequest request) {
 		//String result = "login";
 		Map<String, Object> result = new HashMap<String, Object>();
 		// 姝ゅ榛樿鏈夊�
@@ -105,19 +138,21 @@ public class UserControler {
 				currentUser.login(token);
 			}
 			result.put(AjaxReturnValue.success, true);
+			return "redirect:/index.do";
 		} catch (Exception e) {
 			result.put(AjaxReturnValue.success, false);
 			result.put(AjaxReturnValue.errorMsg, e.getMessage());
 		}
-		return result;
+		return "redirect:/login.do";
+		//return result;
 	}
   
     /**
      * logout
      * @return
      */
-    @RequestMapping(value = "/logout")  
-    @ResponseBody  
+    //@RequestMapping(value = "/logout")  
+    //@ResponseBody  
     public Map<String, Object> logout() {  
 		Map<String, Object> result = new HashMap<String, Object>();
         Subject currentUser = SecurityUtils.getSubject();  
@@ -144,8 +179,8 @@ public class UserControler {
      * 妫�煡
      * @return
      */
-    @RequestMapping(value = "/chklogin", method = RequestMethod.POST)  
-    @ResponseBody  
+    //@RequestMapping(value = "/chklogin", method = RequestMethod.GET)  
+    //@ResponseBody  
     public String chkLogin() {  
         Subject currentUser = SecurityUtils.getSubject();  
         if (!currentUser.isAuthenticated()) {  

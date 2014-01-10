@@ -20,4 +20,6 @@ public interface RoleMapper {
 	Role findRoleByName(String roleName);
 
 	List<Role> findRoles(Map<String, Object> condition);
+	
+	List<Role> getRoleByUserName(String userName);
 }

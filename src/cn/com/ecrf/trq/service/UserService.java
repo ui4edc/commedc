@@ -67,12 +67,12 @@ public class UserService {
 
 	public Role getRoleById(Integer id) {
 		// TODO Auto-generated method stub
-		return userMapper.getRoleById(id);
+		return roleMapper.getRoleById(id);
 	}
 
 	public Role findRoleByName(String roleName) {
 		// TODO Auto-generated method stub
-		return userMapper.findRoleByName(roleName);
+		return roleMapper.findRoleByName(roleName);
 	}
 
 	public void deleteRoleById(Integer id) {
@@ -197,6 +197,12 @@ public class UserService {
 			}	
 		}
 		return result;
+	}
+
+	public List<Role> getRoleByUser(String userName) {
+		// TODO Auto-generated method stub
+		List<Role> roles = roleMapper.getRoleByUserName(userName);
+		return roles;
 	}
 
 }

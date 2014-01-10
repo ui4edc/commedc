@@ -3,7 +3,7 @@ package cn.com.ecrf.trq.model;
 import java.util.Date;
 import java.util.List;
 
-import cn.com.ecrf.trq.vo.SameBottleObject;
+import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.SameGroupObject;
 
 /**
@@ -51,7 +51,7 @@ public class DrugUseCase {
 	//是否同瓶用药
 	private String exsuppbottomyn;
 	//同瓶用药列表
-	private List<SameBottleObject> exsuppbottomlb; 
+	private List<DrugInstanceObject> exsuppbottomlb; 
 	//是否同组用药
 	private String exsuppgroupyn;
 	//同组用药列表
@@ -59,7 +59,7 @@ public class DrugUseCase {
 	//是否有其他注射剂
 	private String exsuppqtzsjyn;
 	//其他注射剂列表
-	private List<SameBottleObject> exsuppqtzsjlb; 
+	private List<DrugInstanceObject> exsuppqtzsjlb; 
 	//是否有配伍禁忌现象
 	private String exsupppwjjxxyn;
 	//配伍禁忌现象名称
@@ -67,7 +67,7 @@ public class DrugUseCase {
 	//配伍禁忌现象颜色
 	private String exsuppwjjxxcolor;
 	//配伍禁忌药品列表
-	private List<SameBottleObject> exsupppwjjyplb;
+	private List<DrugInstanceObject> exsupppwjjyplb;
 	//静滴前后24小时内是否进食易致敏物质
 	private String exsuppjsyzmwzyn;
 	//静滴前后24小时内进食易致敏物质名称

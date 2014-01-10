@@ -10,7 +10,7 @@ public class PersonAllergicHistoryCase {
 	//食物过敏史
 	private String swgmsyn;
 	//疑似过敏物
-	private String ysgmw;
+	private String swysgmw;
 	//食物过敏表现
 	private String swgmbx;
 	//药物过敏史
@@ -54,11 +54,12 @@ public class PersonAllergicHistoryCase {
 	public void setSwgmsyn(String swgmsyn) {
 		this.swgmsyn = swgmsyn;
 	}
-	public String getYsgmw() {
-		return ysgmw;
+	
+	public String getSwysgmw() {
+		return swysgmw;
 	}
-	public void setYsgmw(String ysgmw) {
-		this.ysgmw = ysgmw;
+	public void setSwysgmw(String swysgmw) {
+		this.swysgmw = swysgmw;
 	}
 	public String getSwgmbx() {
 		return swgmbx;
