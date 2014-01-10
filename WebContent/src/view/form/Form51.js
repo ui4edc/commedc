@@ -61,11 +61,6 @@ es.Views.Form51 = Backbone.View.extend({
             esui.get("ExamDay").disable();
         }
         
-        esui.get("Exam0").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
         esui.get("Exam1").onedit = function (value, options, editor) {
             this.datasource[options.rowIndex][options.field.field] = $.trim(value);
             this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
@@ -344,7 +339,7 @@ es.Views.Form51 = Backbone.View.extend({
             },
             {
                 field: "f2",
-                title: "是否正常",
+                title: "是否正常（是/否）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f2;}

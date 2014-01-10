@@ -27,7 +27,6 @@ es.Models.Form51 = Backbone.Model.extend({
             mockData: {
                 success: true,
                 data: {
-                    data0: {},
                     data1: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
                     data2: [{f1:"",f2:"",f3:""}],
                     data3: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:""}],

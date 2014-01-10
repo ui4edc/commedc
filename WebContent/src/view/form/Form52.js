@@ -331,7 +331,7 @@ es.Views.Form52 = Backbone.View.extend({
             },
             {
                 field: "f2",
-                title: "是否正常",
+                title: "是否正常（是/否）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f2;}

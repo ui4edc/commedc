@@ -10,8 +10,8 @@
     <span class="label">送检样本</span>
     <input type="radio" hidefocus="true" title="血液" name="sample" value="1" ui="type:Radio;id:Sample1;{{disabled}}" />
     <input type="radio" hidefocus="true" title="痰液" name="sample" value="2" ui="type:Radio;id:Sample2;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="其他" name="sample" value="0" ui="type:Radio;id:OtherSample;{{disabled}}" />
-    <input type="text" ui="type:TextInput;id:Sample;width:100;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="sample" value="0" ui="type:Radio;id:CustomSample;{{disabled}}" />
+    <input type="text" ui="type:TextInput;id:CustomSampleName;width:100;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">病原学结果</span>
@@ -26,7 +26,6 @@
     <input type="checkbox" hidefocus="true" title="病毒咽拭子" name="result" value="3" ui="type:CheckBox;id:Result3;{{disabled}}" />
     <input type="text" ui="type:TextInput;id:Result3Content;width:200;{{disabled}}" />
 </div>
-<div ui="type:Table;id:Exam0;editable:1"></div>
 <h3>体格检查</h3>
 <div ui="type:Table;id:Exam1;editable:1"></div>
 <h3>血糖测定</h3>
