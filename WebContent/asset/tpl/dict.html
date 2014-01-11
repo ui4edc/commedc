@@ -8,14 +8,11 @@
             <div class="dict-item">
                 <div class="dict-item-list">
                     <div class="dict-title">
-                        <input ui="type:TextInput;id:Item;width:195" type="text" />
-                        <div ui="type:Button;id:AddToDict;">添加到底层字典</div>
+                        <span>底层字典条目：</span>
+                        <input ui="type:TextInput;id:Item;width:240" type="text" />
+                        <div ui="type:Button;id:AddToDict;">关联选中条目</div>
                     </div>
-                    <div ui="type:Table;id:Items;select:multi"></div>
-                </div>
-                <div class="dict-base">
-                    <div class="dict-title"><p>底层字典</p></div>
-                    <div ui="type:Table;id:Base"></div>
+                    <div ui="type:Table;id:Items;select:multi;sortable:1"></div>
                 </div>
             </div>
         </div>
@@ -24,5 +21,5 @@
 </script>
 
 <script id="tpl-dict-item" type="text/html">
-<span id="{{id}}">{{name}}</span>
+<span id="{{id}}">{{name}}（{{abbr}}）</span>
 </script>

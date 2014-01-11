@@ -37,17 +37,69 @@ es.Views.Dict = Backbone.View.extend({
         $.Mustache.load("asset/tpl/dict.html").done(function() {
             me.$el.mustache("tpl-dict");
             me.initCtrl();
-            me.model.getDict({});
+            me.model.getDict();
         });
     },
     
     initCtrl: function() {
         esui.init();
-        this.$("#ctrltextItem").autocomplete({
-            source: [],
-            select: this.onSelectBaseItem
-        });
+        
         esui.get("AddToDict").onclick = this.addToDict;
+        esui.get("Items").onsort = function(field, order) {
+            var orderBy = field.field,
+                listData = baidu.object.clone(esui.get("Items").datasource);
+            
+            listData.sort(function(a, b) {
+                var compareResult;
+                switch (orderBy) {
+                    case "name":
+                        compareResult = a.name.localeCompare(b.name);
+                        break;
+                    case "baseItemName":
+                        compareResult = a.baseItemName.localeCompare(b.baseItemName);
+                }
+                if (order == 'desc') {
+                    compareResult = -compareResult;
+                }
+                return compareResult;
+            });
+            
+            this.datasource = listData;
+            this.render();
+        };
+        
+        this.$("#ctrltextItem").autocomplete({
+            source: function(request, response) {
+                util.ajax.run({
+                    url: "dict/getBaseList.do",
+                    data: {keyword: $.trim(request.term)},
+                    success: function(data) {
+                        console.log("dict/getBaseList.do", data);
+                        
+                        response($.map(data.data, function(item) {
+                            return {
+                                label: item.baseItemName + "（" + item.baseItemAbbr + "）",
+                                value: item.baseItemName,
+                                id: item.baseItemId
+                            };
+                        }));
+                    },
+                    mock: MOCK,
+                    mockData: {
+                        success: true,
+                        data: [
+                            {baseItemName: "高血压", baseItemAbbr: "gxy", baseItemId: 1},
+                            {baseItemName: "心肌梗死", baseItemAbbr: "xjgs", baseItemId: 2}
+                        ]
+                    }
+                });
+            },
+            select: function(event, ui) {
+                var me = es.main;
+                me.baseItemId = ui.item.id;
+                me.baseItemName = ui.item.value;
+            }
+        });
     },
     
     /*
@@ -65,7 +117,7 @@ es.Views.Dict = Backbone.View.extend({
     onDictClick: function(id) {
         var me = es.main;
         me.dictId = id;
-        me.model.getItem({dictId: id});
+        me.model.getItem({id: id});
     },
     
     /*
@@ -75,40 +127,22 @@ es.Views.Dict = Backbone.View.extend({
         var table = esui.get("Items");
         table.datasource = item.data;
         table.fields = [
-            {field: "name", title: "条目名称", content: function(item) {
+            {field: "name", title: "条目名称", sortable: true, content: function(item) {
                 return $.Mustache.render("tpl-dict-item", {
                     id: item.id,
-                    name: item.name
+                    name: item.name,
+                    abbr: item.abbr
                 });
             }},
-            {field: "abbr", title: "缩写", content: function(item) {return item.abbr;}}
+            {field: "baseItemName", title: "底层字典", sortable: true, content: function(item) {
+                return !item.baseItemId ? "--" : $.Mustache.render("tpl-dict-item", {
+                    id: item.baseItemId,
+                    name: item.baseItemName,
+                    abbr: item.baseItemAbbr
+                });
+            }}
         ];
         table.render();
-    },
-    
-    /*
-     * 创建底层字典
-     */
-    renderBase: function(model, base) {
-        var table = esui.get("Base");
-        table.datasource = base.data;
-        table.fields = [
-            {field: "name", title: "条目名称", content: function(item) {return item.name;}},
-            {field: "abbr", title: "缩写", content: function(item) {return item.abbr;}}
-        ];
-        table.render();
-        
-        //添加autocomplete数据
-        $("#ctrltextItem").autocomplete("option", "source", base.data);
-    },
-    
-    onSelectBaseItem: function(evt, ui) {
-        var me = es.main;
-        me.baseItemId = ui.item.id;
-        me.baseItemName = ui.item.name;
-        setTimeout(function() {
-            esui.get("Item").setValue(ui.item.name);
-        }, 10);
     },
     
     addToDict: function() {
@@ -120,15 +154,15 @@ es.Views.Dict = Backbone.View.extend({
         
         if (item == "") {
             esui.Dialog.alert({
-                title: "添加到底层字典",
-                content: "请填写底层字典条目。"
+                title: "关联",
+                content: "请填写或从下拉列表中选择底层字典条目。"
             });
             return;
         }
         
         if (selected.length == 0) {
             esui.Dialog.alert({
-                title: "添加到底层字典",
+                title: "关联",
                 content: "请选择条目。"
             });
             return;
@@ -137,17 +171,7 @@ es.Views.Dict = Backbone.View.extend({
 		if (me.baseItemId && me.baseItemName == item) { //从autocomplete选择
 			baseItemId = me.baseItemId;
 		} else {
-		    var tempId;
-		    $.each(me.model.get("base").data, function(index, val) {
-		        if (val.name == item) {
-		            tempId = val.id;
-		        }
-		    });
-		    if (tempId) { //输入在底层字典中
-		        baseItemId = tempId;
-		    } else {
-			    baseItemName = item;
-			}
+		    baseItemName = item;
 		}
 		
 		var selectedItemId = [];
@@ -161,17 +185,15 @@ es.Views.Dict = Backbone.View.extend({
             baseItemName: baseItemName
 		};
 		
-		console.log("添加字典-请求", data);
+		console.log("dict/addItemToBase.do-请求", data);
 		
 		util.ajax.run({
-			url: "",
+			url: "dict/addItemToBase.do",
 			data: data,
 			success: function(response) {
-			    console.log("添加字典-响应", response);
+			    console.log("dict/addItemToBase.do-响应", response);
 			    
-				if (baseItemId == null) { //新建
-					me.model.getBase({dictId: me.dictId});
-				}
+				me.model.getItem({id: me.dictId});
 			},
 			mock: MOCK,
 			mockData: {
