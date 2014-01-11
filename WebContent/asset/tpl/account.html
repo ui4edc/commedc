@@ -20,24 +20,36 @@
     </div>
     
     <!--添加账户对话框-->
-    <div ui="type:Dialog;id:NewAccountDialog;top:170;mask:0">
+    <div ui="type:Dialog;id:NewAccountDialog;top:110;mask:0">
         <div>添加账户</div>
         <div>
             <div class="query-form">
-                <span>账户名称：</span>
-                <input ui="type:TextInput;id:Name;width:200" type="text" />
+                <span class="label">账户名称：</span>
+                <input ui="type:TextInput;id:UserName;width:200" type="text" />
             </div>
             <div class="query-form">
-                <span>实际管理员：</span>
-                <div ui="type:Select;id:Admin;width:100"></div>
+                <span class="label">真实姓名：</span>
+                <input ui="type:TextInput;id:DisplayName;width:200" type="text" />
             </div>
             <div class="query-form">
-                <span>联系方式：</span>
-                <input ui="type:TextInput;id:Contact;width:200" type="text" />
+                <span class="label">密码：</span>
+                <input ui="type:TextInput;id:Password;width:200" type="password" />
             </div>
             <div class="query-form">
-                <span>权限：</span>
-                <div ui="type:Select;id:Auth;width:100"></div>
+                <span class="label">实际管理员：</span>
+                <div ui="type:Select;id:AdminUser;width:200"></div>
+            </div>
+            <div class="query-form">
+                <span class="label">权限：</span>
+                <div ui="type:Select;id:Role;width:200"></div>
+            </div>
+            <div class="query-form">
+                <span class="label">中心名称：</span>
+                <div ui="type:Select;id:Organization;width:200"></div>
+            </div>
+            <div class="query-form">
+                <span class="label">联系方式：</span>
+                <input ui="type:TextInput;id:Contact;width:200" type="text" class="en" />
             </div>
         </div>
         <div>
@@ -47,24 +59,36 @@
     </div>
     
     <!--编辑账户对话框-->
-    <div ui="type:Dialog;id:EditAccountDialog;top:170;mask:0">
+    <div ui="type:Dialog;id:EditAccountDialog;top:110;mask:0">
         <div>编辑账户</div>
         <div>
             <div class="query-form">
-                <span>账户名称：</span>
-                <input ui="type:TextInput;id:EName;width:200" type="text" />
+                <span class="label">账户名称：</span>
+                <input ui="type:TextInput;id:EUserName;width:200" type="text" />
             </div>
             <div class="query-form">
-                <span>实际管理员：</span>
-                <div ui="type:Select;id:EAdmin;width:100"></div>
+                <span class="label">真实姓名：</span>
+                <input ui="type:TextInput;id:EDisplayName;width:200" type="text" />
             </div>
             <div class="query-form">
-                <span>联系方式：</span>
-                <input ui="type:TextInput;id:EContact;width:200" type="text" />
+                <span class="label">密码：</span>
+                <input ui="type:TextInput;id:EPassword;width:200" type="password" />
             </div>
             <div class="query-form">
-                <span>权限：</span>
-                <div ui="type:Select;id:EAuth;width:100"></div>
+                <span class="label">实际管理员：</span>
+                <div ui="type:Select;id:EAdminUser;width:200"></div>
+            </div>
+            <div class="query-form">
+                <span class="label">权限：</span>
+                <div ui="type:Select;id:ERole;width:200"></div>
+            </div>
+            <div class="query-form">
+                <span class="label">中心名称：</span>
+                <div ui="type:Select;id:EOrganization;width:200"></div>
+            </div>
+            <div class="query-form">
+                <span class="label">联系方式：</span>
+                <input ui="type:TextInput;id:EContact;width:200" type="text" class="en" />
             </div>
         </div>
         <div>
@@ -78,12 +102,16 @@
         <div>添加中心</div>
         <div>
             <div class="query-form">
-                <span>中心名称：</span>
-                <input ui="type:TextInput;id:CenterName;width:200" type="text" />
+                <span class="label">中心名称：</span>
+                <input ui="type:TextInput;id:Name;width:200" type="text" />
             </div>
             <div class="query-form">
-                <span>中心编码：</span>
-                <input ui="type:TextInput;id:Code;width:200" type="text" />
+                <span class="label">中心编码：</span>
+                <input ui="type:TextInput;id:Code;width:200" type="text" class="en" />
+            </div>
+            <div class="query-form">
+                <span class="label">合同数：</span>
+                <input ui="type:TextInput;id:InstanceNumber;width:200" type="text" class="en" />
             </div>
         </div>
         <div>
@@ -97,12 +125,16 @@
         <div>编辑中心</div>
         <div>
             <div class="query-form">
-                <span>中心名称：</span>
-                <input ui="type:TextInput;id:ECenterName;width:200" type="text" />
+                <span class="label">中心名称：</span>
+                <input ui="type:TextInput;id:EName;width:200" type="text" />
             </div>
             <div class="query-form">
-                <span>中心编码：</span>
-                <input ui="type:TextInput;id:ECode;width:200" type="text" />
+                <span class="label">中心编码：</span>
+                <input ui="type:TextInput;id:ECode;width:200" type="text" class="en" />
+            </div>
+            <div class="query-form">
+                <span class="label">合同数：</span>
+                <input ui="type:TextInput;id:EInstanceNumber;width:200" type="text" class="en" />
             </div>
         </div>
         <div>
@@ -114,7 +146,7 @@
 </script>
 
 <script id="tpl-account-name" type="text/html">
-<a id="{{id}}" href="javascript:void(0)" title="修改" class="edit-account">{{name}}</a>
+<a id="{{id}}" href="javascript:void(0)" title="修改" class="edit-account">{{userName}}</a>
 </script>
 
 <script id="tpl-center-name" type="text/html">

@@ -70,6 +70,7 @@ h1.no-border{border-bottom:0}
 /*表单*/
 .query-form{height:30px; margin-bottom:10px; padding-left:30px}
 .query-form span{float:left; line-height:30px; margin-right:5px}
+.query-form .label{width:75px}
 .query-form .ui-text, .query-form .ui-select{float:left; margin-top:4px; margin-right:20px}
 .query-form .ui-mcal{float:left; margin-right:20px}
 .query-form .close-next{margin-right:5px}

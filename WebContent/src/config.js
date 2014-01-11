@@ -52,6 +52,11 @@ var PROGRESS_TYPE = {
     value: 1
 };
 
+var DEFAULT_OPTION = {
+    datasource: [{name: "请选择", value: 0}],
+    value: 0
+};
+
 var PAGE_SIZE = {
     datasource: [
         {name: "20", value: 20},

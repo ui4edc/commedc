@@ -4603,6 +4603,7 @@ esui.Dialog.alert = (function () {
                               closeButton   : 0,
                               title         : '', 
                               width         : 440,
+                              top           : 110,
                               mask          : {level: 3 || args.level},
                               footContent   : esui.util.format( footTpl, buttonPrefix + index, esui.Dialog.OK_TEXT )
                           });
@@ -4678,6 +4679,7 @@ esui.Dialog.confirm = (function () {
                               closeButton   : 0,
                               title         : '', 
                               width         : 440,
+                              top           : 110,
                               mask          : {level: 3 || args.level},
                               footContent   : esui.util.format( footTpl, 
                                                                 okPrefix + index, 

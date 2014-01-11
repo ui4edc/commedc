@@ -51,32 +51,12 @@ es.Views.Account = Backbone.View.extend({
     initCtrl: function() {
         esui.init(this.el, {
             PageSize: PAGE_SIZE,
-            Admin: {
-                datasource: [{name: "请选择", value: 0}],
-                value: 0
-            },
-            Auth: {
-                datasource: [
-                    {name: "请选择", value: 0},
-                    {name: "药师", value: 1},
-                    {name: "CRM", value: 2},
-                    {name: "DM", value: 3}
-                ],
-                value: 0
-            },
-            EAdmin: {
-                datasource: [{name: "请选择", value: 0}],
-                value: 0
-            },
-            EAuth: {
-                datasource: [
-                    {name: "请选择", value: 0},
-                    {name: "药师", value: 1},
-                    {name: "CRM", value: 2},
-                    {name: "DM", value: 3}
-                ],
-                value: 0
-            }
+            AdminUser: DEFAULT_OPTION,
+            Role: DEFAULT_OPTION,
+            Organization: DEFAULT_OPTION,
+            EAdminUser: DEFAULT_OPTION,
+            ERole: DEFAULT_OPTION,
+            EOrganization: DEFAULT_OPTION
         });
         
         var me = this;
@@ -168,15 +148,17 @@ es.Views.Account = Backbone.View.extend({
             table.datasource = data.data;
             if (this.args.type == 1) {
                 table.fields = [
-                    {field: "name", title: "账户名称", content: function(item) {
+                    {field: "userName", title: "账户名称", content: function(item) {
                         return $.Mustache.render("tpl-account-name", {
                             id: item.id,
-                            name: item.name
+                            userName: item.userName
                         });
                     }},
-                    {field: "admin", title: "实际管理员", content: function(item) {return item.admin;}},
-                    {field: "contact", title: "联系方式", content: function(item) {return item.contact;}},
-                    {field: "auth", title: "权限说明", content: function(item) {return item.auth;}}
+                    {field: "displayName", title: "真实姓名", content: function(item) {return item.displayName;}},
+                    {field: "adminUserName", title: "实际管理员", content: function(item) {return item.adminUserName;}},
+                    {field: "roleName", title: "权限", content: function(item) {return item.roleName;}},
+                    {field: "organizationName", title: "中心名称", content: function(item) {return item.organizationName;}},
+                    {field: "contact", title: "联系方式", content: function(item) {return item.contact;}}
                 ];
             } else {
                 table.fields = [
@@ -187,8 +169,8 @@ es.Views.Account = Backbone.View.extend({
                         });
                     }},
                     {field: "code", title: "中心编码", content: function(item) {return item.code;}},
-                    {field: "contractNumber", title: "合同数", content: function(item) {return item.contractNumber;}},
-                    {field: "supervisor", title: "监察员", content: function(item) {return item.supervisor;}}
+                    {field: "instanceNumber", title: "合同数", content: function(item) {return item.instanceNumber;}},
+                    {field: "adminUserName", title: "监察员", content: function(item) {return item.adminUserName;}}
                 ];
             }
             table.render();
@@ -235,13 +217,13 @@ es.Views.Account = Backbone.View.extend({
                         id: id.join(",")
                     };
                     
-                    console.log("批量删除账户-请求", data);
+                    console.log("account/deleteUser.do-请求", data);
                     
                     util.ajax.run({
-                        url: "",
+                        url: "account/deleteUser.do",
                         data: data,
                         success: function(response) {
-                            console.log("批量删除账户-响应", response);
+                            console.log("account/deleteUser.do-响应", response);
                             
                             es.main.queryFirstPage();
                         },
@@ -259,10 +241,15 @@ es.Views.Account = Backbone.View.extend({
      * 打开添加账户对话框
      */
     openNewAccount: function() {
-        esui.get("Name").setValue("");
-        esui.get("Admin").setValue(0);
+        esui.get("UserName").setValue("");
+        esui.get("DisplayName").setValue("");
+        esui.get("Password").setValue("");
         esui.get("Contact").setValue("");
-        esui.get("Auth").setValue(0);
+        
+        es.main.getAdminUserList("AdminUser", 0);
+        es.main.getRoleList("Role", 0);
+        es.main.getOrganizationList("Organization", 0);
+        
         esui.get("NewAccountDialog").show();
     },
     
@@ -271,19 +258,22 @@ es.Views.Account = Backbone.View.extend({
      */
     newAccount: function() {
         var data = {
-            name: $.trim(esui.get("Name").getValue()),
-            admin: esui.get("Admin").value,
-            contact: $.trim(esui.get("Contact").getValue()),
-            auth: esui.get("Auth").value
+            userName: $.trim(esui.get("UserName").getValue()),
+            displayName: $.trim(esui.get("DisplayName").getValue()),
+            password: $.trim(esui.get("Password").getValue()),
+            adminUserId: esui.get("AdminUser").value,
+            roleId: esui.get("Role").value,
+            organizationId: esui.get("Organization").value,
+            contact: $.trim(esui.get("Contact").getValue())
         };
         
-        console.log("添加账户-请求:", data);
+        console.log("account/saveUser.do-请求:", data);
         
         util.ajax.run({
-            url: "",
+            url: "account/saveUser.do",
             data: data,
             success: function(response) {
-                console.log("添加账户-响应:", response);
+                console.log("account/saveUser.do-响应:", response);
                 
                 esui.get("NewAccountDialog").hide();
                 es.main.queryFirstPage();
@@ -299,27 +289,41 @@ es.Views.Account = Backbone.View.extend({
      * 打开编辑账户对话框
      */
     openEditAccount: function(e) {
-        var data = {id: e.target.id};
-        es.main.curAccountId = data.id;
+        var data = {id: parseInt(e.target.id)};
+        es.main.curUserId = data.id;
         
-        console.log("获取账户信息-请求:", data);
+        console.log("account/getUser.do-请求:", data);
         
         util.ajax.run({
-            url: "",
+            url: "account/getUser.do",
             data: data,
             success: function(response) {
-                console.log("获取账户信息-响应:", response);
+                console.log("account/getUser.do-响应:", response);
                 
-                esui.get("EName").setValue(response.data.name);
-                esui.get("EAdmin").setValue(response.data.admin);
-                esui.get("EContact").setValue(response.data.contact);
-                esui.get("EAuth").setValue(response.data.auth);
+                var data = response.data;
+                esui.get("EUserName").setValue(data.userName);
+                esui.get("EDisplayName").setValue(data.displayName);
+                esui.get("EPassword").setValue(data.password);
+                esui.get("EContact").setValue(data.contact);
+                
+                es.main.getAdminUserList("EAdminUser", data.adminUserId);
+                es.main.getRoleList("ERole", data.roleId);
+                es.main.getOrganizationList("EOrganization", data.organizationId);
+                
                 esui.get("EditAccountDialog").show();
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {id: 1, name: "小明", admin: 0, contact: "13500112233", auth: 1}
+                data: {
+                    userName: "userName",
+                    displayName: "displayName",
+                    password: "password",
+                    adminUserId: 1,
+                    roleId: 1,
+                    organizationId: 1,
+                    contact: "contact"
+                }
             }
         });
     },
@@ -329,20 +333,23 @@ es.Views.Account = Backbone.View.extend({
      */
     editAccount: function() {
         var data = {
-            id: es.main.curAccountId,
-            name: $.trim(esui.get("EName").getValue()),
-            admin: esui.get("EAdmin").value,
-            contact: $.trim(esui.get("EContact").getValue()),
-            auth: esui.get("EAuth").value
+            id: es.main.curUserId,
+            userName: $.trim(esui.get("EUserName").getValue()),
+            displayName: $.trim(esui.get("EDisplayName").getValue()),
+            password: $.trim(esui.get("EPassword").getValue()),
+            adminUserId: esui.get("EAdminUser").value,
+            roleId: esui.get("ERole").value,
+            organizationId: esui.get("EOrganization").value,
+            contact: $.trim(esui.get("EContact").getValue())
         };
         
-        console.log("编辑账户-请求:", data);
+        console.log("account/saveUser.do-请求:", data);
         
         util.ajax.run({
-            url: "",
+            url: "account/saveUser.do",
             data: data,
             success: function(response) {
-                console.log("编辑账户-响应:", response);
+                console.log("account/saveUser.do-响应:", response);
                 
                 esui.get("EditAccountDialog").hide();
                 es.main.query(es.main.args);
@@ -377,13 +384,13 @@ es.Views.Account = Backbone.View.extend({
                         id: id.join(",")
                     };
                     
-                    console.log("批量删除中心-请求", data);
+                    console.log("account/deleteOrganization.do-请求", data);
                     
                     util.ajax.run({
-                        url: "",
+                        url: "account/deleteOrganization.do",
                         data: data,
                         success: function(response) {
-                            console.log("批量删除中心-响应", response);
+                            console.log("account/deleteOrganization.do-响应", response);
                             
                             es.main.queryFirstPage();
                         },
@@ -401,8 +408,10 @@ es.Views.Account = Backbone.View.extend({
      * 打开添加中心对话框
      */
     openNewCenter: function() {
-        esui.get("CenterName").setValue("");
+        esui.get("Name").setValue("");
         esui.get("Code").setValue("");
+        esui.get("InstanceNumber").setValue("");
+        
         esui.get("NewCenterDialog").show();
     },
     
@@ -411,17 +420,18 @@ es.Views.Account = Backbone.View.extend({
      */
     newCenter: function() {
         var data = {
-            name: $.trim(esui.get("CenterName").getValue()),
-            code: $.trim(esui.get("Code").getValue())
+            name: $.trim(esui.get("Name").getValue()),
+            code: parseInt($.trim(esui.get("Code").getValue())),
+            instanceNumber: parseInt($.trim(esui.get("InstanceNumber").getValue()))
         };
         
-        console.log("添加中心-请求:", data);
+        console.log("account/saveOrganization.do-请求:", data);
         
         util.ajax.run({
-            url: "",
+            url: "account/saveOrganization.do",
             data: data,
             success: function(response) {
-                console.log("添加中心-响应:", response);
+                console.log("account/saveOrganization.do-响应:", response);
                 
                 esui.get("NewCenterDialog").hide();
                 es.main.queryFirstPage();
@@ -437,25 +447,28 @@ es.Views.Account = Backbone.View.extend({
      * 打开编辑中心对话框
      */
     openEditCenter: function(e) {
-        var data = {id: e.target.id};
+        var data = {id: parseInt(e.target.id)};
         es.main.curCenterId = data.id;
         
-        console.log("获取中心信息-请求:", data);
+        console.log("account/getOrganization.do-请求:", data);
         
         util.ajax.run({
-            url: "",
+            url: "account/getOrganization.do",
             data: data,
             success: function(response) {
-                console.log("获取中心信息-响应:", response);
+                console.log("account/getOrganization.do-响应:", response);
                 
-                esui.get("ECenterName").setValue(response.data.name);
-                esui.get("ECode").setValue(response.data.code);
+                var data = response.data;
+                esui.get("EName").setValue(data.name);
+                esui.get("ECode").setValue(data.code);
+                esui.get("EInstanceNumber").setValue(data.instanceNumber);
+                
                 esui.get("EditCenterDialog").show();
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {id: 1, name: "北医", code: "333"}
+                data: {name: "name", code: 333, instanceNumber: 20}
             }
         });
     },
@@ -466,17 +479,18 @@ es.Views.Account = Backbone.View.extend({
     editCenter: function() {
         var data = {
             id: es.main.curCenterId,
-            name: $.trim(esui.get("ECenterName").getValue()),
-            code: $.trim(esui.get("ECode").getValue())
+            name: $.trim(esui.get("EName").getValue()),
+            code: parseInt($.trim(esui.get("ECode").getValue())),
+            instanceNumber: parseInt($.trim(esui.get("EInstanceNumber").getValue()))
         };
         
-        console.log("编辑中心-请求:", data);
+        console.log("account/saveOrganization.do-请求:", data);
         
         util.ajax.run({
-            url: "",
+            url: "account/saveOrganization.do",
             data: data,
             success: function(response) {
-                console.log("编辑中心-响应:", response);
+                console.log("account/saveOrganization.do-响应:", response);
                 
                 esui.get("EditCenterDialog").hide();
                 es.main.query(es.main.args);
@@ -484,6 +498,78 @@ es.Views.Account = Backbone.View.extend({
             mock: MOCK,
             mockData: {
                 success: true
+            }
+        });
+    },
+    
+    getRoleList: function(id, value) {
+        util.ajax.run({
+            url: "account/getRoleList.do",
+            data: {},
+            success: function(response) {
+                console.log("account/getRoleList.do-响应:", response);
+                
+                var roleList = esui.get(id),
+                    datasource = [{name: "请选择", value: 0}];
+                $.each(response.data, function(index, val) {
+                    datasource.push({value: val.id, name: val.description});
+                });
+                roleList.datasource = datasource;
+                roleList.render();
+                roleList.setValue(value);
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: [{id: 1, description: "description1"}, {id: 2, description: "description2"}]
+            }
+        });
+    },
+    
+    getAdminUserList: function(id, value) {
+        util.ajax.run({
+            url: "account/getAdminList.do",
+            data: {},
+            success: function(response) {
+                console.log("account/getAdminList.do-响应:", response);
+                
+                var adminUserList = esui.get(id),
+                    datasource = [{name: "请选择", value: 0}];
+                $.each(response.data, function(index, val) {
+                    datasource.push({value: val.id, name: val.description});
+                });
+                adminUserList.datasource = datasource;
+                adminUserList.render();
+                adminUserList.setValue(value);
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: [{id: 1, description: "description1"}, {id: 2, description: "description2"}]
+            }
+        });
+    },
+    
+    getOrganizationList: function(id, value) {
+        util.ajax.run({
+            url: "account/getOrganizationList.do",
+            data: {},
+            success: function(response) {
+                console.log("account/getOrganizationList.do-响应:", response);
+                
+                var organizationList = esui.get(id),
+                    datasource = [{name: "请选择", value: 0}];
+                $.each(response.data, function(index, val) {
+                    datasource.push({value: val.id, name: val.name});
+                });
+                organizationList.datasource = datasource;
+                organizationList.render();
+                organizationList.setValue(value);
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: [{id: 1, name: "name1"}, {id: 2, name: "name2"}]
             }
         });
     }
