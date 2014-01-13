@@ -44,7 +44,10 @@ es.Views.Form51 = Backbone.View.extend({
     
     initCtrl: function(data) {
         esui.init(es.main.el, {
-            ExamDay: CRF_RANGE
+            ExamDay: {
+                range: CRF_RANGE,
+                valueAsDate: new Date()
+            }
         });
         
         var me = this;

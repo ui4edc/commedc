@@ -9,6 +9,8 @@ es.Views.Account = Backbone.View.extend({
     
     events: {
         "click .tabbar a": "switchList",
+        "click .new-account": "openNewAccount",
+        "click .new-center": "openNewCenter",
         "click .edit-account": "openEditAccount",
         "click .edit-center": "openEditCenter"
     },
@@ -69,12 +71,10 @@ es.Views.Account = Backbone.View.extend({
             me.query(me.args);
         };
         esui.get("DelAccount").onclick = this.delAccount;
-        esui.get("OpenNewAccount").onclick = this.openNewAccount;
         esui.get("NewAccountOK").onclick = this.newAccount;
         esui.get("EditAccountOK").onclick = this.editAccount;
         
         esui.get("DelCenter").onclick = this.delCenter;
-        esui.get("OpenNewCenter").onclick = this.openNewCenter;
         esui.get("NewCenterOK").onclick = this.newCenter;
         esui.get("EditCenterOK").onclick = this.editCenter;
     },
@@ -120,14 +120,14 @@ es.Views.Account = Backbone.View.extend({
         this.queryFirstPage();
         
         if (this.args.type == 1) { //账户管理
-            this.$("#ctrlbuttonOpenNewAccount").show();
+            this.$(".new-account").show();
             this.$("#ctrlbuttonDelAccount").show();
-            this.$("#ctrlbuttonOpenNewCenter").hide();
+            this.$(".new-center").hide();
             this.$("#ctrlbuttonDelCenter").hide();
         } else { //中心管理
-            this.$("#ctrlbuttonOpenNewAccount").hide();
+            this.$(".new-account").hide();
             this.$("#ctrlbuttonDelAccount").hide();
-            this.$("#ctrlbuttonOpenNewCenter").show();
+            this.$(".new-center").show();
             this.$("#ctrlbuttonDelCenter").show();
         }
     },

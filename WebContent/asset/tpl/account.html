@@ -1,7 +1,11 @@
 <!--账户管理-->
 <script id="tpl-account" type="text/html">
 <div class="account-wrap">
-    <h1 class="no-bottom no-border">账户管理</h1>
+    <h1 class="no-bottom no-border">
+        <span>账户管理</span>
+        <a class="btn new-account" href="javascript:void(0)">添加账户</a>
+        <a class="btn new-center" href="javascript:void(0)" style="display:none">添加中心</a>
+    </h1>
     <!--tab-->
     <div class="tabbar">
         <a href="javascript:void(0)" hidefocus="true" type="1" class="active">账户管理</a>
@@ -11,9 +15,7 @@
     <div class="no-result" style="display:none">暂无查询结果。</div>
     <div class="data" style="display:none">
         <div class="toolbar">
-            <div ui="type:Button;id:OpenNewAccount;">添加账户</div>
             <div ui="type:Button;id:DelAccount;">批量删除</div>
-            <div ui="type:Button;id:OpenNewCenter;" style="display:none">添加中心</div>
             <div ui="type:Button;id:DelCenter;" style="display:none">批量删除</div>
         </div>
         <div ui="type:Table;id:Grid;select:multi"></div>

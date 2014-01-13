@@ -28,19 +28,13 @@ var QUERY_RANGE = {
 };
 
 var BIRTHDAY_RANGE = {
-    range: {
-        begin: new Date(1900, 0, 1),
-        end: new Date()
-    },
-    valueAsDate: new Date()
+    begin: new Date(1900, 0, 1),
+    end: new Date()
 };
 
 var CRF_RANGE = {
-    range: {
-        begin: new Date(2000, 0, 1),
-        end: new Date()
-    },
-    valueAsDate: new Date()
+    begin: new Date(2000, 0, 1),
+    end: new Date()
 };
 
 var PROGRESS_TYPE = {

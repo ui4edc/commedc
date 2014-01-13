@@ -45,9 +45,18 @@ es.Views.Form60 = Backbone.View.extend({
     
     initCtrl: function() {
         esui.init(es.main.el, {
-            Start: CRF_RANGE,
-            End: CRF_RANGE,
-            Dead: CRF_RANGE
+            Start: {
+                range: CRF_RANGE,
+                valueAsDate: new Date()
+            },
+            End: {
+                range: CRF_RANGE,
+                valueAsDate: new Date()
+            },
+            Dead: {
+                range: CRF_RANGE,
+                valueAsDate: new Date()
+            }
         });
         
         var me = this;

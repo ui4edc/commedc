@@ -4,15 +4,12 @@
  * @author: Ricky
  */
 
-h1 .btn{display:inline-block; font-weight:normal; width:100px; height:26px; line-height:26px; margin-left:20px; color:#fff; text-align:center; text-decoration:none; border-radius:5px}
 h1 .submit-crf{background:#27ae60}
 h1 .submit-crf:hover{background:#2ecc71}
 h1 .doubt-crf{background:#f39c12}
 h1 .doubt-crf:hover{background:#f1c40f}
 h1 .check-doubt{background:#c0392b}
 h1 .check-doubt:hover{background:#e74c3c}
-h1 .new-crf{background:#2980b9}
-h1 .new-crf:hover{background:#3498db}
 
 .crf-form h2{margin:0 0 10px 0; font-size:14px}
 .crf-form h3{margin:; padding:5px 0; font-size:12px; border-bottom:1px #ddd solid}

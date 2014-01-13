@@ -39,16 +39,51 @@ es.Views.Form11 = Backbone.View.extend({
                 disabled: es.main.editable ? "" : "disabled:true",
                 save: es.main.editable ? [1] : []
             });
-            me.initCtrl();
+            me.initCtrl(data.data);
         });
     },
     
-    initCtrl: function() {
+    initCtrl: function(data) {
         esui.init(es.main.el, {
-            Birthday: BIRTHDAY_RANGE,
-            InDate: CRF_RANGE,
-            OutDate: CRF_RANGE
+            Birthday: {
+                range: BIRTHDAY_RANGE,
+                value: data.birthday
+            },
+            InDate: {
+                range: CRF_RANGE,
+                value: data.indate
+            },
+            OutDate: {
+                range: CRF_RANGE,
+                value: data.outdate
+            }
         });
+        if (data.ethic == 1) {
+            esui.get("HanNation").setChecked(true);
+        } else {
+            esui.get("CustomNation").setChecked(true);
+        }
+        if (data.sex == 1) {
+            esui.get("Male").setChecked(true);
+            $(".female").hide();
+        } else {
+            esui.get("Female").setChecked(true);
+            switch (data.hys) {
+                case 1: esui.get("Female1").setChecked(true); break;
+                case 2: esui.get("Female2").setChecked(true); break;
+                case 3: esui.get("Female3").setChecked(true);
+            }
+        }
+        if (data.yykstext != "") {
+            esui.get("CustomDep").setChecked(true);
+        }
+        switch (data.feemode) {
+            case 1: esui.get("Pay1").setChecked(true); break;
+            case 2: esui.get("Pay2").setChecked(true); break;
+            case 3: esui.get("Pay3").setChecked(true); break;
+            case 4: esui.get("Pay4").setChecked(true); break;
+            case 5: esui.get("CustomPay").setChecked(true);
+        }
         
         var me = this;
         
@@ -76,16 +111,30 @@ es.Views.Form11 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           
+           id: es.main.crfId,
+           birthday: esui.get("Birthday").getValue(),
+           age: parseInt($.trim(esui.get("Age").getValue())),
+           ethic: parseInt(esui.get("HanNation").getGroup().getValue()),
+           ethictxt: $.trim(esui.get("CustomNationName").getValue()),
+           sex: parseInt(esui.get("Male").getGroup().getValue()),
+           hys: parseInt(esui.get("Female1").getGroup().getValue()),
+           weight: $.trim(esui.get("Weight").getValue()),
+           height: $.trim(esui.get("Height").getValue()),
+           yyks: esui.get("CustomDep").getGroup().getValue(),
+           yykstext: $.trim(esui.get("CustomDepName").getValue()),
+           indate: esui.get("InDate").getValue(),
+           outdate: esui.get("OutDate").getValue(),
+           feemode: parseInt(esui.get("CustomPay").getGroup().getValue()),
+           feemodetxt: $.trim(esui.get("CustomPayName").getValue())
        };
        
-       console.log("保存表单-请求", data);
+       console.log("crf/saveBasicInfo.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/saveBasicInfo.do",
             data: data,
             success: function(response) {
-                console.log("保存表单-响应:", response);
+                console.log("crf/saveBasicInfo.do-响应:", response);
                 
                 esui.Dialog.alert({
                     title: "保存",

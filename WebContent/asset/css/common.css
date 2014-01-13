@@ -26,6 +26,8 @@ a{color:#06c}
 h1{font-size:14px; margin:0; padding:20px 0 20px 40px; margin-bottom:20px; border-bottom:1px #a6c0d1 solid; color:#333}
 h1.no-bottom{margin-bottom:0}
 h1.no-border{border-bottom:0}
+h1 .btn{display:inline-block; background:#2980b9; font-weight:normal; width:100px; height:26px; line-height:26px; margin-left:20px; color:#fff; text-align:center; text-decoration:none; border-radius:5px}
+h1 .btn:hover{background:#3498db}
 
 /*左右栏*/
 .main{overflow:hidden}
