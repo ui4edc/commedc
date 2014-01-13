@@ -58,7 +58,9 @@ es.Views.Account = Backbone.View.extend({
             Organization: DEFAULT_OPTION,
             EAdminUser: DEFAULT_OPTION,
             ERole: DEFAULT_OPTION,
-            EOrganization: DEFAULT_OPTION
+            EOrganization: DEFAULT_OPTION,
+            Superviser: DEFAULT_OPTION,
+            ESuperviser: DEFAULT_OPTION
         });
         
         var me = this;
@@ -155,7 +157,7 @@ es.Views.Account = Backbone.View.extend({
                         });
                     }},
                     {field: "displayName", title: "真实姓名", content: function(item) {return item.displayName;}},
-                    {field: "adminUserName", title: "实际管理员", content: function(item) {return item.adminUserName;}},
+                    {field: "adminUserName", title: "直属管理员", content: function(item) {return item.adminUserName;}},
                     {field: "roleName", title: "权限", content: function(item) {return item.roleName;}},
                     {field: "organizationName", title: "中心名称", content: function(item) {return item.organizationName;}},
                     {field: "contact", title: "联系方式", content: function(item) {return item.contact;}}
@@ -412,6 +414,8 @@ es.Views.Account = Backbone.View.extend({
         esui.get("Code").setValue("");
         esui.get("InstanceNumber").setValue("");
         
+        es.main.getSuperviserList("Superviser", 0);
+        
         esui.get("NewCenterDialog").show();
     },
     
@@ -422,7 +426,8 @@ es.Views.Account = Backbone.View.extend({
         var data = {
             name: $.trim(esui.get("Name").getValue()),
             code: parseInt($.trim(esui.get("Code").getValue())),
-            instanceNumber: parseInt($.trim(esui.get("InstanceNumber").getValue()))
+            instanceNumber: parseInt($.trim(esui.get("InstanceNumber").getValue())),
+            adminUserId: esui.get("Superviser").value
         };
         
         console.log("account/saveOrganization.do-请求:", data);
@@ -463,12 +468,14 @@ es.Views.Account = Backbone.View.extend({
                 esui.get("ECode").setValue(data.code);
                 esui.get("EInstanceNumber").setValue(data.instanceNumber);
                 
+                es.main.getSuperviserList("ESuperviser", data.adminUserId);
+                
                 esui.get("EditCenterDialog").show();
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {name: "name", code: 333, instanceNumber: 20}
+                data: {name: "name", code: 333, instanceNumber: 20, adminUserId: 1}
             }
         });
     },
@@ -481,7 +488,8 @@ es.Views.Account = Backbone.View.extend({
             id: es.main.curCenterId,
             name: $.trim(esui.get("EName").getValue()),
             code: parseInt($.trim(esui.get("ECode").getValue())),
-            instanceNumber: parseInt($.trim(esui.get("EInstanceNumber").getValue()))
+            instanceNumber: parseInt($.trim(esui.get("EInstanceNumber").getValue())),
+            adminUserId: esui.get("ESuperviser").value
         };
         
         console.log("account/saveOrganization.do-请求:", data);
@@ -570,6 +578,30 @@ es.Views.Account = Backbone.View.extend({
             mockData: {
                 success: true,
                 data: [{id: 1, name: "name1"}, {id: 2, name: "name2"}]
+            }
+        });
+    },
+    
+    getSuperviserList: function(id, value) {
+        util.ajax.run({
+            url: "account/getCRMList.do",
+            data: {},
+            success: function(response) {
+                console.log("account/getCRMList.do-响应:", response);
+                
+                var superviserList = esui.get(id),
+                    datasource = [{name: "请选择", value: 0}];
+                $.each(response.data, function(index, val) {
+                    datasource.push({value: val.id, name: val.description});
+                });
+                superviserList.datasource = datasource;
+                superviserList.render();
+                superviserList.setValue(value);
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: [{id: 1, description: "description1"}, {id: 2, description: "description2"}]
             }
         });
     }

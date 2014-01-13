@@ -5,7 +5,7 @@
  */
 
 if (errorMsg != "") {
-    $(".tip").text("errorMsg").show();
+    $(".tip").text(errorMsg).show();
 }
 
 $("form").submit(function(e) {
