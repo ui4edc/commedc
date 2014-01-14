@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -18,12 +19,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
 import cn.com.ecrf.trq.utils.CipherUtil;
+import cn.com.ecrf.trq.utils.StringUtils;
 
 
 @Controller
@@ -69,8 +72,18 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/login")
-	public String tologin(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String tologin(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model/*Model model*/){
 		logger.debug("来自IP[" + request.getRemoteHost() + "]的访问");
+		String errorId = request.getParameter("errorId");
+		String errorMsg = "";
+		if ("1".equals(errorId))
+			errorMsg = "用户名不能为空";
+		if ("2".equals(errorId))
+			errorMsg = "密码不能为空";
+		if ("3".equals(errorId))
+			errorMsg = "用户或密码错误";
+		if (StringUtils.isNotBlank(errorMsg))
+			model.put("errorMsg", errorMsg);
 		return "login";
 	}
 	
@@ -106,14 +119,21 @@ public class LoginController {
   	public String login(HttpServletRequest request) {
   		String result = "login";
   		// 此处默认有值
-  		String username = request.getParameter("username");
-  		//MD5加密
-  		String password = CipherUtil.generatePassword(request.getParameter("password"));
-  		//String password = request.getParameter("password");
-  		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+  		String errorId = "";
   		
-  		Subject currentUser = SecurityUtils.getSubject();
   		try {
+  			String username = request.getParameter("username");
+  	  		if (!StringUtils.isNotBlank(username))
+  	  			errorId = "1";
+  	  		//MD5加密
+  	  		String plainPassword = request.getParameter("password");
+  	  		if (!StringUtils.isNotBlank(plainPassword))
+  	  			errorId = "2";
+  	  		String password = CipherUtil.generatePassword(plainPassword);
+  	  		//String password = request.getParameter("password");
+  	  		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+  	  		
+  	  		Subject currentUser = SecurityUtils.getSubject();
   			System.out.println("----------------------------");
   			if (!currentUser.isAuthenticated()){
   				token.setRememberMe(true);
@@ -129,8 +149,9 @@ public class LoginController {
   			return "redirect:/index.do";
   		} catch (Exception e) {
   			logger.error(e.getMessage());
+  			errorId = "3";
   		}
-  		return "redirect:/login.do";
+  		return "redirect:/login.do?errorId="+errorId;
   	}
 	
 }

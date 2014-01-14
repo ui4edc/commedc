@@ -18,6 +18,7 @@ import cn.com.ecrf.trq.repository.UserMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
 import cn.com.ecrf.trq.utils.CipherUtil;
+import cn.com.ecrf.trq.utils.StringUtils;
 
 
 
@@ -42,6 +43,11 @@ public class UserService {
 	
 	public int saveUser(User user){
 		int id = 0;
+		int organizaitonId = user.getOrganizationId();
+		if (organizaitonId > 0){
+			Organization organization = organizationMapper.getOrganizationById(id);
+			user.setOrganizationName(organization.getName());
+		}
 		if (user.getId() <= 0){
 			userMapper.insertUser(user);
 		}else{
@@ -57,9 +63,9 @@ public class UserService {
 	public int saveRole(Role role) {
 		// TODO Auint id = 0;
 		if (role.getId() <= 0){
-			userMapper.insertRole(role);
+			roleMapper.insertRole(role);
 		}else{
-			userMapper.updateRole(role);
+			roleMapper.updateRole(role);
 		}
 		return role.getId();
 		
@@ -98,9 +104,13 @@ public class UserService {
 		userMapper.updateUser(user);
 	}
 
-	public void deleteUser(User user) {
+	public void deleteUser(int[] idArray) {
 		// TODO Auto-generated method stub
-		userMapper.deleteUserById(user.getId());
+		if (idArray != null && idArray.length > 0){
+			for (int id : idArray){
+				userMapper.deleteUserById(id);
+			}	
+		}
 	}
 
 	public User getUser(User user) {
@@ -118,61 +128,58 @@ public class UserService {
 		return users;
 	}
 
-	public List<Organization> findOrganizations(int pageNo, int pageSize) {
+	public Map<String, Object> findOrganizations(int pageNo, int pageSize) {
 		// TODO Auto-generated method stub
 		Map<String, Object> condition = new HashMap<String, Object>();
-		condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize+1);
+		condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize);
 		condition.put(AjaxReturnValue.limitSize, pageSize);
-		organizationMapper.findOrganizations(condition);
-		return null;
+		List<Organization> organizations =  organizationMapper.findOrganizations(condition);
+		int total = organizationMapper.getNum();
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, organizations, total);
+		return result;
 	}
 
-	public Organization getOrganization(Organization organization) {
+	public Organization getOrganization(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		Organization organization = organizationMapper.getOrganizationById(id);
+		return organization;
 	}
 
-	public void deleteOrganization(Organization organization) {
+	public void deleteOrganization(int[] idArray) {
 		// TODO Auto-generated method stub
+		if (idArray != null && idArray.length > 0){
+			for (int id : idArray){
+				organizationMapper.deleteOrganizationById(id);
+			}	
+		}
 		
 	}
 
-	public void updateOrganization(Organization organization) {
+	public void saveOrganization(Organization organization) {
 		// TODO Auto-generated method stub
-		
+		if (organization.getId() > 0){
+			organizationMapper.updateOrganization(organization);
+		}else{
+			organizationMapper.insertOrganization(organization);
+		}
 	}
 
-	public void addOrganization(Organization organization) {
+	public void deleteRole(int id) {
 		// TODO Auto-generated method stub
-		
+		roleMapper.deleteRoleById(id);
 	}
 
-	public void addRole(Role role) {
+	public Role getRole(int id) {
 		// TODO Auto-generated method stub
-		roleMapper.insertRole(role);
+		Role role = roleMapper.getRoleById(id);
+		return role;
 	}
 
-	public void updateRole(Role role) {
-		// TODO Auto-generated method stub
-		roleMapper.updateRole(role);
-	}
-
-	public void deleteRole(Role role) {
-		// TODO Auto-generated method stub
-		roleMapper.deleteRoleById(role.getId());
-	}
-
-	public Role getRole(Role role) {
-		// TODO Auto-generated method stub
-		roleMapper.getRoleById(role.getId());
-		return null;
-	}
-
-	public List<Role> findRoles(int pageNo, int pageSize) {
+	public List<Role> findRoles() {
 		// TODO Auto-generated method stub
 		Map<String, Object> condition = new HashMap<String, Object>();
-		condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize+1);
-		condition.put(AjaxReturnValue.limitSize, pageSize);
+/*		condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize+1);
+		condition.put(AjaxReturnValue.limitSize, pageSize);*/
 		return roleMapper.findRoles(condition);
 	}
 
@@ -203,6 +210,28 @@ public class UserService {
 		// TODO Auto-generated method stub
 		List<Role> roles = roleMapper.getRoleByUserName(userName);
 		return roles;
+	}
+
+	public Map<String, Object> getUserList(String pageNoStr, String pageSizeStr,
+			String typeStr) {
+		// TODO Auto-generated method stub
+		Map<String, Object> condition = new HashMap<String, Object>();
+		if (StringUtils.isNotBlank(pageNoStr) && StringUtils.isNotBlank(pageSizeStr)){
+			int pageNo = Integer.parseInt(pageNoStr);
+			int pageSize = Integer.parseInt(pageSizeStr);
+			condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize);
+			condition.put(AjaxReturnValue.limitSize, pageSize);
+		}
+		List<User> users = userMapper.findUsers(condition);
+		int total = userMapper.getUserNum();
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, users, total);
+		return result;
+	}
+
+	public List<User> getAdminUserList() {
+		// TODO Auto-generated method stub
+		List<User> users = userMapper.findAdminUsers();
+		return users;
 	}
 
 }

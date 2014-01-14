@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
+import cn.com.ecrf.trq.repository.UserMapper;
 import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.CipherUtil;
 
@@ -18,8 +19,10 @@ public class UserAuthenticationTest extends SpringControllerTest {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserMapper userMapper;
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testFindUsers(){
 		User user = userService.findUserByLoginName("1");
@@ -72,7 +75,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testInsertRole(){
 		Role role = new Role();
@@ -124,6 +127,11 @@ public class UserAuthenticationTest extends SpringControllerTest {
 	public void findRoleByUser(){
 		List<Role> roles = userService.getRoleByUser("admin");
 		System.out.println(roles);
+	}
+	
+	@Test
+	public void findUserNum(){
+		System.out.println("num="+userMapper.getUserNum());
 	}
 
 }

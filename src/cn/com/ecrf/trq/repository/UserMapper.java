@@ -42,4 +42,8 @@ public interface UserMapper {
 
 	void updatePassword(User user);
 
+	int getUserNum();
+
+	List<User> findAdminUsers();
+
 }

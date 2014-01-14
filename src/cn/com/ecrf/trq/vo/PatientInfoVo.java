@@ -35,7 +35,9 @@ public class PatientInfoVo {
 		//出院日期
 		private String cyrq;
 		//医疗费用方式
-		private String ylfyfs;
+		private int ylfyfs;
+		//医疗费用方式
+		private String ylfyfstxt;
 		
 		public int getId() {
 			return id;
@@ -116,11 +118,17 @@ public class PatientInfoVo {
 		public void setCyrq(String cyrq) {
 			this.cyrq = cyrq;
 		}
-		public String getYlfyfs() {
+		public int getYlfyfs() {
 			return ylfyfs;
 		}
-		public void setYlfyfs(String ylfyfs) {
+		public void setYlfyfs(int ylfyfs) {
 			this.ylfyfs = ylfyfs;
+		}
+		public String getYlfyfstxt() {
+			return ylfyfstxt;
+		}
+		public void setYlfyfstxt(String ylfyfstxt) {
+			this.ylfyfstxt = ylfyfstxt;
 		}
 		public int getEthic() {
 			return ethic;

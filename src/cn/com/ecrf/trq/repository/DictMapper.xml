@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="cn.com.ecrf.trq.repository.DictMapper">
+	<select id="getUnDealDictList" resultType="cn.com.ecrf.trq.model.dict.DictSnapshot">
+		select d.id as id,
+			   d.name as name,
+			   count(i.type) as untreated
+		from dt_dictname d left join dt_itemdict i
+		on d.name=i.type
+		group by d.abbr
+	</select>
+	<select id="getDictRowList" resultType="cn.com.ecrf.trq.model.dict.DictRow" parameterType="int">
+		select 	i.id as id,
+				i.name as name,
+				i.abbr as abbr,
+				b.id   as baseItemId,
+				b.name as baseItemName,
+				b.abbr as baseItemAbbr
+		from dt_dictname d,dt_itemdict i left join dt_basedict b
+		on i.fk_base_id=b.id
+		where i.type=d.name and d.id=#{id}
+	</select>
+  
+</mapper>

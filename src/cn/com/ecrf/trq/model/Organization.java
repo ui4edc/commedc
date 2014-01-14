@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Organization {
 	private int id;
-	private String organizationName;
+	private String name;
 	private String code;
 	private String parentOrganization;
 	private String createBy;
@@ -15,17 +15,20 @@ public class Organization {
 	private String location;
 	private String mailAddress;
 	private int instanceNumber;
+	private int adminUserId;
+	private String adminUserName;
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getOrganizationName() {
-		return organizationName;
+	public String getName() {
+		return name;
 	}
-	public void setOrganizationName(String organizationName) {
-		this.organizationName = organizationName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getCode() {
 		return code;
@@ -86,6 +89,18 @@ public class Organization {
 	}
 	public void setInstanceNumber(int instanceNumber) {
 		this.instanceNumber = instanceNumber;
+	}
+	public int getAdminUserId() {
+		return adminUserId;
+	}
+	public void setAdminUserId(int adminUserId) {
+		this.adminUserId = adminUserId;
+	}
+	public String getAdminUserName() {
+		return adminUserName;
+	}
+	public void setAdminUserName(String adminUserName) {
+		this.adminUserName = adminUserName;
 	}
 	
 	

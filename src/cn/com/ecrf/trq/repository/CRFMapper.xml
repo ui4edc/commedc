@@ -1,8 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-
-<mapper namespace="cn.com.ecrf.trq.repository.CRFMapper" >
-	
-	
+ 
+<mapper namespace="cn.com.ecrf.trq.repository.CRFMapper">
+	<resultMap id="patientInfoResultMap" type="cn.com.ecrf.trq.model.PatientInfoCase" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="no" property="no" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="abbr" property="abbr" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+	    <result column="age" property="age" jdbcType="INTEGER" />
+	    <result column="weight" property="weight" jdbcType="FLOAT" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="ethic" property="ethic" jdbcType="VARCHAR" />
+	    <result column="hys" property="hys" jdbcType="VARCHAR" />
+	    <result column="height" property="height" jdbcType="INTEGER" />
+	    <result column="yyks" property="yyks" jdbcType="VARCHAR" />
+	    <result column="ryrq" property="ryrq" jdbcType="TIMESTAMP" />
+	    <result column="cyrq" property="cyrq" jdbcType="TIMESTAMP" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+	    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="insertPatientInfo" parameterType="cn.com.ecrf.trq.model.PatientInfoCase">
+      	<selectKey resultType="Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+	    insert into crf_patient_info (id, no, name, abbr, birthday, age,
+	      weight, sex, ethic, hys, height, yyks, ryrq, cyrq, ylfyfs, create_time, create_by)
+	    values (#{id}, #{no}, #{name}, #{abbr}, #{birthday}, #{age}, 
+	      #{weight}, #{sex}, #{ethic}, #{hys}, #{height}, #{yyks}, #{ryrq}, #{cyrq}, #{ylfyfs}, 
+	      current_timestamp(), createBy)
+	</insert>
+	<update id="updatePatientInfo" parameterType="cn.com.ecrf.trq.model.PatientInfoCase" >
+		update ac_user set
+		user_name=#{userName}, password=#{password}, display_name=#{displayName},
+		status=#{status}, update_time= now()
+		<if test="organizationId != null" >
+        	,fk_organization_id=#{organizationId}
+      	</if>
+      	<if test="emailAddress != null" >
+        	,email_address=#{emailAddress}
+      	</if>
+      	<if test="updateBy != null" >
+        	,update_by=#{updateBy}
+      	</if>
+  		where id=#{id}
+	    update crf_patient_info (id, no, name, abbr, birthday, age,
+	      weight, sex, ethic, hys, height, yyks, ryrq, cyrq, ylfyfs, create_time, create_by)
+	    values (#{id}, #{no}, #{name}, #{abbr}, #{birthday}, #{age}, 
+	      #{weight}, #{sex}, #{ethic}, #{hys}, #{height}, #{yyks}, #{ryrq}, #{cyrq}, #{ylfyfs}, 
+	      current_timestamp(), createBy)
+	</update>
   
 </mapper>

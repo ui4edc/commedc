@@ -1,10 +1,10 @@
-package cn.com.ecrf.trq.vo.dict;
+package cn.com.ecrf.trq.model.dict;
 
 public class DictSnapshot {
 
 	private int id;
 	private String name;
-	private int undealed;
+	private int untreated;
 	
 	public int getId() {
 		return id;
@@ -18,12 +18,13 @@ public class DictSnapshot {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getUndealed() {
-		return undealed;
+	public int getUntreated() {
+		return untreated;
 	}
-	public void setUndealed(int undealed) {
-		this.undealed = undealed;
+	public void setUntreated(int untreated) {
+		this.untreated = untreated;
 	}
+	
 	
 	
 }

@@ -45,7 +45,9 @@
     select 
     <include refid="Base_Column_List" />
     from ac_role
-     LIMIT #{limitStart},#{limitSize} 
+    <if test="limitStart != null" >
+     LIMIT #{limitStart},#{limitSize}
+     </if> 
   </select>
     <select id="getRoleByUserName" parameterType="string" resultMap="RoleResultMap">
   	select 

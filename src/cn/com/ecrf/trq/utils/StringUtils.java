@@ -7,4 +7,17 @@ public class StringUtils {
 		else
 			return true;
 	}
+	
+	public static int[] spiltIdArray(String idStr){
+		if (!isNotBlank(idStr)){
+			return null;
+		}
+		String[] sArray = idStr.split(",");
+		int[] iArray = new int[sArray.length];
+		for (int i=0;i<sArray.length;i++){
+			if (isNotBlank(sArray[i]))
+				iArray[i] = Integer.parseInt(sArray[i]);
+		}
+		return iArray;
+	}
 }

@@ -11,9 +11,15 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="display_name" property="displayName" jdbcType="VARCHAR" />
     <result column="fk_organization_id" property="organizationId" jdbcType="INTEGER" />
-    <result column="email_address" property="emailAddress" jdbcType="VARCHAR" />
+    <result column="fk_organization_name" property="displayName" jdbcType="VARCHAR" />
+    <result column="fk_role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="fk_role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="fk_adminuser_id" property="adminUserId" jdbcType="INTEGER" />
+    <result column="fk_adminuser_name" property="adminUserName" jdbcType="VARCHAR" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
   </resultMap>
   
@@ -28,11 +34,11 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-    id, user_name, status, password, display_name, fk_organization_id, email_address, create_time, update_time, update_by
+    id, user_name, status, display_name, fk_organization_id, fk_organization_name, contact, fk_role_id, fk_role_name, fk_adminuser_id, fk_adminuser_name, create_time, update_time, update_by
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int" >
     select 
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />, password 
     from ac_user
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -45,10 +51,11 @@
 	SELECT LAST_INSERT_ID()
 	</selectKey>
     insert into ac_user (id, user_name, status, 
-      password, display_name, fk_organization_id, email_address, create_time)
+      password, display_name, fk_organization_id, contact, create_time, fk_role_id, fk_adminuser_id, 
+      fk_organization_name, fk_role_name, fk_adminuser_name)
     values (#{id}, #{userName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{password,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR},#{organizationId,jdbcType=VARCHAR},
-      #{emailAddress,jdbcType=VARCHAR},current_timestamp())
+      #{contact,jdbcType=VARCHAR},current_timestamp(), #{roleId}, #{adminUserId}, #{organizationName}, #{roleName}, #{adminUserName})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.ecrf.trq.model.User" >
     insert into ac_user
@@ -83,19 +90,31 @@
   </insert>
   <select id="findUserByLoginName" resultMap="BaseResultMap" parameterType="string" >
     select 
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />, password
     from ac_user
     where user_name = #{userName}
+  </select>
+  <select id="getUserById" resultMap="BaseResultMap" parameterType="string">
+  	select 
+  	<include refid="Base_Column_List" />, password
+  	from ac_user
+  	where id=#{id}
   </select>
   <update id="updateUser" parameterType="cn.com.ecrf.trq.model.User">
   		update ac_user set
 		user_name=#{userName}, password=#{password}, display_name=#{displayName},
 		status=#{status}, update_time= now()
 		<if test="organizationId != null" >
-        	,fk_organization_id=#{organizationId}
+        	,fk_organization_id=#{organizationId}, fk_organization_name=#{organizationName}
       	</if>
-      	<if test="emailAddress != null" >
-        	,email_address=#{emailAddress}
+      	<if test="roleId != null" >
+        	,fk_role_id=#{roleId}, fk_role_name=#{roleName}
+      	</if>
+      	<if test="adminUserId != null" >
+        	,fk_adminuser_id=#{adminUserId}, fk_adminuser_name=#{adminUserName}
+      	</if>
+      	<if test="contact != null" >
+        	,contact=#{contact}
       	</if>
       	<if test="updateBy != null" >
         	,update_by=#{updateBy}
@@ -103,11 +122,25 @@
   		where id=#{id}
   </update>
   <select id="findUsers" resultMap="BaseResultMap" parameterType="map" >
+	select
+	<include refid="Base_Column_List" />
+    from ac_user
+    <if test="limitStart != null" >
+     LIMIT #{limitStart},#{limitSize} 
+     </if>
+  </select>
+  <select id="findAdminUsers" resultMap="BaseResultMap" parameterType="map" >
     select 
     <include refid="Base_Column_List" />
-    from ac_user
+    from ac_user u, ac_role r, ac_user_role ur where u.id=ur.user_id and ur.role_id=r.role_id and r.role_name='CRM'
+    <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
+     </if>
   </select>
+  <select id="getUserNum" resultType="int">
+  	select count(*) from ac_user
+  </select>
+  
   <!-- role -->
   <!--<sql id="Role_Column_List" >
     id, role_name, role_desc, create_time, update_time, update_time, update_by

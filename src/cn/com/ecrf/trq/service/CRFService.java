@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.json.JSONArray;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,10 @@ import org.springframework.stereotype.Service;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.repository.CRFMapper;
+import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
+import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
 import cn.com.ecrf.trq.vo.ListConditionVo;
@@ -63,14 +64,23 @@ public class CRFService {
 
 	public Map<String, Object> savePatientInfo(PatientInfoVo patientInfoVo) {
 		// TODO Auto-generated method stub
-		if (patientInfoVo.getId() > 0){
-			//update
-			
-		}else{
-			//insert
+		Map<String, Object> result;
+		try{
 			PatientInfoCase patientInfoCase =  convertPatientFromVoToModel(patientInfoVo);
+			if (patientInfoVo.getId() > 0){
+				//update
+				cRFMapper.updatePatientInfo(patientInfoCase);
+			}else{
+				//insert
+				cRFMapper.insertPatientInfo(patientInfoCase);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, "保存基本信息失败");
 		}
-		return null;
+		
+		return result;
 	}
 
 	private PatientInfoCase convertPatientFromVoToModel(
@@ -100,25 +110,25 @@ public class CRFService {
 		FormEnumObject sexObj = new FormEnumObject(patientInfoVo.getSex(), null, FormEnumValue.SEX);
 		patientInfoCase.setSex(convertIDToContent(sexObj));
 		patientInfoCase.setWeight(Float.parseFloat(patientInfoVo.getWeight()));
-		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getSex(), null, FormEnumValue.YLFYFS);
+		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getYlfyfs(), patientInfoVo.getYlfyfstxt(), FormEnumValue.YLFYFS);
 		patientInfoCase.setYlfyfs(convertIDToContent(ylfyfsObj));
 		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
+		//JSONArray jsonArray = new JSONArray();
 		for (int i=0;patientInfoVo.getYyks() != null && i< patientInfoVo.getYyks().size();i++){
 			CheckBoxVo checkBoxVo = (CheckBoxVo)patientInfoVo.getYyks().get(i);
-			FormEnumObject yyksObj = new FormEnumObject(checkBoxVo.getId(), checkBoxVo.getOther(), FormEnumValue.YLFYFS);
+			FormEnumObject yyksObj = new FormEnumObject(checkBoxVo.getId(), checkBoxVo.getOther(), FormEnumValue.YYKS);
 			convertIDToContent(yyksObj);
 			yyksobjs.add(yyksObj);
+			//jsonArray.put(yyksObj);
 		}
-		JSONArray jsonArray = new JSONArray();
-		//jsonArray.
-		//JSONArray arry=JSONArray.fromObject(yyksobjs);
-		patientInfoCase.setYyks("");
+		JSONUtils<FormEnumObject> util = new JSONUtils<FormEnumObject>(FormEnumObject.class);
+		patientInfoCase.setYyks(util.convertFromList(yyksobjs));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return null;
+		return patientInfoCase;
 	}
 
 	private String convertIDToContent(FormEnumObject obj) {

@@ -6,6 +6,10 @@ public class FormEnumObject {
 	private String other;
 	private String type;
 	
+	public FormEnumObject(){
+		
+	}
+	
 	public FormEnumObject(int seq, String other, String type){
 		this.seq = seq;
 		this.other = other;

@@ -21,7 +21,11 @@ public class User {
     
     private String roleName;
     
-    private String emailAddress;
+    private int adminUserId;
+    
+    private String adminUserName;
+    
+    private String contact;
     
     private Date createTime;
     
@@ -77,13 +81,7 @@ public class User {
 		this.organizationName = organizationName;
 	}
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
+	
 
 	public Date getCreateTime() {
 		return createTime;
@@ -131,6 +129,30 @@ public class User {
 
 	public void setRoleId(int roleId) {
 		this.roleId = roleId;
+	}
+
+	public int getAdminUserId() {
+		return adminUserId;
+	}
+
+	public void setAdminUserId(int adminUserId) {
+		this.adminUserId = adminUserId;
+	}
+
+	public String getAdminUserName() {
+		return adminUserName;
+	}
+
+	public void setAdminUserName(String adminUserName) {
+		this.adminUserName = adminUserName;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 	
 	

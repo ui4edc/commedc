@@ -16,9 +16,11 @@ public interface OrganizationMapper {
 	
 	int deleteOrganizationById(Integer id);
 	
-	Role getOrganizationById(Integer id);
+	Organization getOrganizationById(Integer id);
 
-	Role findOrganizationByName(String organizationName);
+	Organization findOrganizationByName(String name);
 
 	List<Organization> findOrganizations(Map<String, Object> condition);
+
+	int getNum();
 }

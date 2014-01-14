@@ -27,6 +27,7 @@ import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.CipherUtil;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
+import cn.com.ecrf.trq.utils.StringUtils;
 
 @Controller
 public class UserControler {
@@ -189,12 +190,30 @@ public class UserControler {
         return "true";  
     }  
     
-    @RequestMapping(value = "/accout/addUser", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/getUserList", method = RequestMethod.POST)
     @ResponseBody  
-    public Map<String, Object> addUser(User user){
+    public Map<String, Object> getUserList(HttpServletRequest request){
+		String pageNo = request.getParameter("pageNo");
+		String pageSize = request.getParameter("pageSize");
+		String type = request.getParameter("type");
+		Map<String, Object> result = userService.getUserList(pageNo,  pageSize, type);
+    	return result;
+    }
+    
+    @RequestMapping(value = "/account/getAdminList", method = RequestMethod.POST)  
+    @ResponseBody  
+    public Map<String, Object> getAdminList(HttpServletRequest request){
+		List<User> users = userService.getAdminUserList();
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, users, users.size());
+    	return result;
+    }
+    
+    @RequestMapping(value = "/account/saveUser", method = RequestMethod.POST)  
+    @ResponseBody  
+    public Map<String, Object> saveUser(User user){
     	Map<String, Object> result;
     	try{
-    		userService.addUser(user);
+    		userService.saveUser(user);
     		result = AjaxReturnUtils.generateAjaxReturn(true, null);
     	}catch(Exception e){
     		logger.error(e.getMessage());
@@ -204,26 +223,14 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/updateUser", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/deleteUser", method = RequestMethod.POST)  
     @ResponseBody  
-    public Map<String, Object> updateUser(User user){
+    public Map<String, Object> deleteUser(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
-    		userService.updateUser(user);
-    		result = AjaxReturnUtils.generateAjaxReturn(true, null);
-    	}catch(Exception e){
-    		logger.error(e.getMessage());
-    		result = AjaxReturnUtils.generateAjaxReturn(false, "修改用户失败");
-    	}
-    	return result;
-    }
-    
-    @RequestMapping(value = "/accout/deleteUser", method = RequestMethod.POST)  
-    @ResponseBody  
-    public Map<String, Object> deleteUser(User user){
-    	Map<String, Object> result;
-    	try{
-    		userService.deleteUser(user);
+    		String ids = request.getParameter("id");
+    		int[] iArray = StringUtils.spiltIdArray(ids);
+    		userService.deleteUser(iArray);
     		result = AjaxReturnUtils.generateAjaxReturn(true, null);
     	}catch(Exception e){
     		logger.error(e.getMessage());
@@ -233,7 +240,7 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/getUser", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/getUser", method = RequestMethod.POST)  
     @ResponseBody  
     public Map<String, Object> getUser(User user){
     	Map<String, Object> result;
@@ -248,29 +255,12 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/findUser", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/saveRole", method = RequestMethod.POST)  
     @ResponseBody  
-    public Map<String, Object> findUser(HttpServletRequest request){
+   public Map<String, Object> saveRole(Role role){
     	Map<String, Object> result;
     	try{
-    		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-    		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-    		List<User> users = userService.findUsers(pageNo, pageSize);
-    		result = AjaxReturnUtils.generateAjaxReturn(true, null, users);
-    	}catch(Exception e){
-    		logger.error(e.getMessage());
-    		result = AjaxReturnUtils.generateAjaxReturn(false, "获取用户列表失败");
-    		
-    	}
-    	return result;
-    }
-    
-    @RequestMapping(value = "/accout/addRole", method = RequestMethod.POST)  
-    @ResponseBody  
-   public Map<String, Object> addRole(Role role){
-    	Map<String, Object> result;
-    	try{
-    		userService.addRole(role);
+    		userService.saveRole(role);
     		result = AjaxReturnUtils.generateAjaxReturn(true, null);
     	}catch(Exception e){
     		logger.error(e.getMessage());
@@ -280,27 +270,13 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/updateRole", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/deleteRole", method = RequestMethod.POST)  
     @ResponseBody  
-    public Map<String, Object> updateRole(Role role){
+    public Map<String, Object> deleteRole(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
-    		userService.updateRole(role);
-    		result = AjaxReturnUtils.generateAjaxReturn(true, null);
-    	}catch(Exception e){
-    		logger.error(e.getMessage());
-    		result = AjaxReturnUtils.generateAjaxReturn(false, "修改角色失败");
-
-    	}
-    	return result;
-    }
-    
-    @RequestMapping(value = "/accout/deleteRole", method = RequestMethod.POST)  
-    @ResponseBody  
-    public Map<String, Object> deleteRole(Role role){
-    	Map<String, Object> result;
-    	try{
-    		userService.deleteRole(role);
+    		String roleId = request.getParameter("id");
+    		userService.deleteRole(Integer.parseInt(roleId));
     		result = AjaxReturnUtils.generateAjaxReturn(true, null);
     	}catch(Exception e){
     		logger.error(e.getMessage());
@@ -310,13 +286,14 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/getRole", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/getRole", method = RequestMethod.POST)  
     @ResponseBody  
-    public Map<String, Object> getRole(Role role){
+    public Map<String, Object> getRole(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
-    		Role role2 = userService.getRole(role);
-    		result = AjaxReturnUtils.generateAjaxReturn(true, null, role2);
+    		String roleId = request.getParameter("id");
+    		Role role = userService.getRole(Integer.parseInt(roleId));
+    		result = AjaxReturnUtils.generateAjaxReturn(true, null, role);
     	}catch(Exception e){
     		logger.error(e.getMessage());
     		result = AjaxReturnUtils.generateAjaxReturn(false, "获取机构失败");
@@ -325,14 +302,12 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/findRole", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/getRoleList", method = RequestMethod.POST)  
     @ResponseBody  
     public Map<String, Object> findRole(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
-    		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-    		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-    		List<Role> roles = userService.findRoles(pageNo, pageSize);
+    		List<Role> roles = userService.findRoles();
     		result = AjaxReturnUtils.generateAjaxReturn(true, null, roles);
     	}catch(Exception e){
     		logger.error(e.getMessage());
@@ -342,12 +317,12 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/addOrganization", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/saveOrganization", method = RequestMethod.POST)  
     @ResponseBody  
-    public Map<String, Object> addOrganization(Organization organization){
+    public Map<String, Object> saveOrganization(Organization organization){
     	Map<String, Object> result;
     	try{
-    		userService.addOrganization(organization);
+    		userService.saveOrganization(organization);
     		result = AjaxReturnUtils.generateAjaxReturn(true, null);
     	}catch(Exception e){
     		logger.error(e.getMessage());
@@ -357,27 +332,14 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/updateOrganization", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/deleteOrganization", method = RequestMethod.POST)  
     @ResponseBody  
-    public Map<String, Object> updateOrganization(Organization organization){
+    public Map<String, Object> deleteOrganization(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
-    		userService.updateOrganization(organization);
-    		result = AjaxReturnUtils.generateAjaxReturn(true, null);
-    	}catch(Exception e){
-    		logger.error(e.getMessage());
-    		result = AjaxReturnUtils.generateAjaxReturn(false, "修改机构失败");
-
-    	}
-    	return result;
-    }
-    
-    @RequestMapping(value = "/accout/deleteOrganization", method = RequestMethod.POST)  
-    @ResponseBody  
-    public Map<String, Object> deleteOrganization(Organization organization){
-    	Map<String, Object> result;
-    	try{
-    		userService.deleteOrganization(organization);
+    		String organizationIds = request.getParameter("id");
+    		int[] iArray = StringUtils.spiltIdArray(organizationIds);
+    		userService.deleteOrganization(iArray);
     		result = AjaxReturnUtils.generateAjaxReturn(true, null);
     	}catch(Exception e){
     		logger.error(e.getMessage());
@@ -387,13 +349,14 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/getOrganization", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/getOrganization", method = RequestMethod.POST)  
     @ResponseBody  
-    public Map<String, Object> getOrganization(Organization organization){
+    public Map<String, Object> getOrganization(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
-    		Organization organization2 = userService.getOrganization(organization);
-    		result = AjaxReturnUtils.generateAjaxReturn(true, null, organization2);
+    		String organizationId = request.getParameter("id");
+    		Organization organization = userService.getOrganization(Integer.parseInt(organizationId));
+    		result = AjaxReturnUtils.generateAjaxReturn(true, null, organization);
     	}catch(Exception e){
     		logger.error(e.getMessage());
     		result = AjaxReturnUtils.generateAjaxReturn(false, "获取机构失败");
@@ -402,18 +365,33 @@ public class UserControler {
     	return result;
     }
     
-    @RequestMapping(value = "/accout/findOrganization", method = RequestMethod.POST)  
+    @RequestMapping(value = "/account/getOrganizationList", method = RequestMethod.POST)  
     @ResponseBody  
     public Map<String, Object> findOrganization(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
     		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
     		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-    		List<Organization> organizations = userService.findOrganizations(pageNo, pageSize);
-    		result = AjaxReturnUtils.generateAjaxReturn(true, null, organizations);
+    		result = userService.findOrganizations(pageNo, pageSize);
     	}catch(Exception e){
     		logger.error(e.getMessage());
     		result = AjaxReturnUtils.generateAjaxReturn(false, "获取机构列表失败");
+    		
+    	}
+    	return result;
+    }
+    
+    @RequestMapping(value = "/account/deleteOrganizationList", method = RequestMethod.POST)  
+    @ResponseBody  
+    public Map<String, Object> deleteOrganizationList(HttpServletRequest request){
+    	Map<String, Object> result;
+    	try{
+    		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+    		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+    		result = AjaxReturnUtils.generateAjaxReturn(true, null);
+    	}catch(Exception e){
+    		logger.error(e.getMessage());
+    		result = AjaxReturnUtils.generateAjaxReturn(false, "删除机构列表失败");
     		
     	}
     	return result;
