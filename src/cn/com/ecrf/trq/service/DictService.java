@@ -1,6 +1,8 @@
 package cn.com.ecrf.trq.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,19 +28,24 @@ public class DictService {
 		return null;
 	}
 
-	public List<DictRow> getItemDict(String dictName) {
+	public List<DictRow> getItemDict(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		List<DictRow> list = dictMapper.getDictRowList(id);
+		return list;
 	}
 
-	public List<DictRow> getBaseDict(String dictName) {
+	public List<DictRow> getBaseDict(String name) {
 		// TODO Auto-generated method stub
-		return null;
+		List<DictRow> list = dictMapper.getBasicList(name);
+		return list;
 	}
 
 	public void addItemToBase(int selectedItemId, int baseItemId) {
 		// TODO Auto-generated method stub
-		
+		Map<String, Object> condition = new HashMap<String, Object>();
+		condition.put("baseItemId", baseItemId);
+		condition.put("selectedItemId", selectedItemId);
+		dictMapper.addItemToBase(condition);
 	}
 
 	

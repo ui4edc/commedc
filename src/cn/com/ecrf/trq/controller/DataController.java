@@ -41,7 +41,7 @@ public class DataController {
 	@RequestMapping(value="/data/export", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView export(HttpServletRequest request, HttpServletResponse response){
-		String fileType = request.getParameter("fileType");
+		String fileType = request.getParameter("type");
 		int fileTypeNum = Integer.parseInt(fileType);
 		if (fileTypeNum == 0){
 			/*String fileName = "下载的文件名.xsl";

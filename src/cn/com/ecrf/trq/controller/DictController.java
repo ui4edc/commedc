@@ -44,8 +44,8 @@ public class DictController {
 	@RequestMapping(value="/dict/getItemList", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> listItemDict(HttpServletRequest request) {
-		String dictName = request.getParameter("name");
-		List<DictRow> items = dictService.getItemDict(dictName);
+		String id = request.getParameter("id");
+		List<DictRow> items = dictService.getItemDict(Integer.parseInt(id));
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, items, items.size());
 		return result;
 	}
@@ -53,7 +53,7 @@ public class DictController {
 	@RequestMapping(value="/dict/getBaseList", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> listBaseDict(HttpServletRequest request) {
-		String dictName = request.getParameter("name");
+		String dictName = request.getParameter("keyword");
 		List<DictRow> bases = dictService.getBaseDict(dictName);
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, bases, bases.size());
 		return result;

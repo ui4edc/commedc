@@ -21,5 +21,16 @@
 		on i.fk_base_id=b.id
 		where i.type=d.name and d.id=#{id}
 	</select>
+	<select id="getBasicList" resultType="cn.com.ecrf.trq.model.dict.DictRow" parameterType="string">
+		select 	
+				b.id   as baseItemId,
+				b.name as baseItemName,
+				b.abbr as baseItemAbbr
+		from dt_basedict b
+		where b.name like '%'||#{name}||'%' or b.abbr like '%'||#{name}||'%'
+	</select>
+	<update id="addItemToBase" parameterType="map">
+		update dt_itemdict set fk_base_id=#{baseItemId} where id=#{selectedItemId}
+	</update>
   
 </mapper>
