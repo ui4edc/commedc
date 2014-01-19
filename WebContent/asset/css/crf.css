@@ -17,12 +17,14 @@ h1 .check-doubt:hover{background:#e74c3c}
 .crf-form .row .label{float:left; width:100px; font-weight:bold}
 .crf-form .row .wlabel{width:auto; margin-right:10px}
 .crf-form .row .ui-cal{float:left; margin-top:7px}
+.crf-form .row .ui-select{float:left; margin-top:7px}
 .crf-form .sub{padding-left:100px}
-.crf-form .sub2{padding-left:130px}
+.crf-form .sub2{padding-left:133px}
 .crf-form .sub3{padding-left:150px}
 .crf-form .auto{height:auto}
 .crf-form .f{float:left; margin-right:5px}
 .crf-form .mt7{margin-top:7px}
+.crf-form .block{border-bottom:1px #ccc dashed}
 .crf-form .bottom{padding-top:10px; height:26px; line-height:26px}
 
 #ctrltableExam1 .ui-table-hcell-text,

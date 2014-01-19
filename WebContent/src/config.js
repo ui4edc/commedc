@@ -60,6 +60,39 @@ var PAGE_SIZE = {
     value: 20
 };
 
+var NATION = [
+    {value: 1, name: "汉"}
+];
+
+var DRUG_TYPE = {
+    datasource: [
+        {name: "抗生素类", value: 1},
+        {name: "中药注射液", value: 2},
+        {name: "其他", value: 3}
+    ],
+    value: 1
+};
+
+var GXY_LEVEL = {
+    datasource: [
+        {name: "1级", value: 1},
+        {name: "2级", value: 2},
+        {name: "3级", value: 3},
+        {name: "单纯收缩期", value: 4},
+        {name: "不详", value: 5}
+    ],
+    value: 1
+};
+
+var TNB_Type = {
+    datasource: [
+        {name: "I型", value: 1},
+        {name: "II型", value: 2},
+        {name: "不详", value: 3}
+    ],
+    value: 1
+};
+
 var CRF_MENU = [
     {
         name: "患者信息",

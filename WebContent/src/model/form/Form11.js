@@ -28,25 +28,17 @@ es.Models.Form11 = Backbone.Model.extend({
                 success: true,
                 data: {
                     birthday: "1980-01-01",
-                    age: 33,
-                    ethic: 2,
-                    ethictxt: "满族",
-                    sex: 2,
-                    hys: 1,
-                    weight: 70.5,
-                    height: 178,
-                    yyks: [
-                        {id: 1, name: "呼吸科", checked: "checked"},
-                        {id: 2, name: "急诊科", checked: ""},
-                        {id: 3, name: "儿科", checked: ""},
-                        {id: 4, name: "感染科", checked: ""},
-                        {id: 5, name: "ICU", checked: ""}
-                    ],
+                    ethic: 1,
+                    sex: 1,
+                    hys: 3,
+                    weight: null,
+                    height: null,
+                    yyks: 1,
                     yykstext: "",
-                    indate: "2013-12-01",
-                    outdate: "2013-12-10",
-                    feemode: 5,
-                    feemodetxt: "xxx"
+                    indate: "2014-01-01",
+                    outdate: "2014-01-01",
+                    feemode: 1,
+                    feemodetxt: ""
                 }
             }
         });

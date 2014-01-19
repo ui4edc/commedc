@@ -8,7 +8,9 @@ es.Views.Form12 = Backbone.View.extend({
     el: ".crf-form",
     
     events: {
-        
+        "click .add-food": "addFood",
+        "click .add-drug": "addDrug",
+        "click .add-material": "addMaterial"
     },
     
     initialize: function() {
@@ -34,26 +36,86 @@ es.Views.Form12 = Backbone.View.extend({
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form12.html").done(function() {
+            var disabled = es.main.editable ? "" : "disabled:true";
             me.$el.mustache("tpl-form12", {
                 data: data.data,
-                disabled: es.main.editable ? "" : "disabled:true",
+                disabled: disabled,
                 save: es.main.editable ? [1] : []
             });
-            me.initCtrl();
+            me.$(".food").prepend($.Mustache.render("tpl-form12-food", {
+                food: data.data.food,
+                disabled: disabled
+            }));
+            me.$(".drug").prepend($.Mustache.render("tpl-form12-drug", {
+                drug: data.data.drug,
+                disabled: disabled
+            }));
+            me.$(".material").prepend($.Mustache.render("tpl-form12-material", {
+                material: data.data.material,
+                disabled: disabled
+            }));
+            
+            me.initCtrl(data.data);
         });
     },
     
-    initCtrl: function() {
+    initCtrl: function(data) {
         esui.init();
         
+        //赋值
+        switch (data.smoke) {
+            case 1: esui.get("Smoke1").setChecked(true); break;
+            case 3: esui.get("Smoke3").setChecked(true);
+        }
+        switch (data.drink) {
+            case 1: esui.get("Drink1").setChecked(true); break;
+            case 3: esui.get("Drink3").setChecked(true);
+        }
+        switch (data.hasFood) {
+            case 1: esui.get("Food1").setChecked(true); this.$(".food").show(); break;
+            case 3: esui.get("Food3").setChecked(true);
+        }
+        switch (data.hasDrug) {
+            case 1: esui.get("Drug1").setChecked(true); this.$(".drug").show(); break;
+            case 3: esui.get("Drug3").setChecked(true);
+        }
+        switch (data.hasMaterial) {
+            case 1: esui.get("Material1").setChecked(true); this.$(".material").show(); break;
+            case 3: esui.get("Material3").setChecked(true);
+        }
+        $.each(data.food, function(index, val) {
+            $.each(val.value.split(","), function(index2, val2) {
+                esui.get("FoodAllergy" + (index + 1) + "_" + val2).setChecked(true);
+            });
+        });
+        $.each(data.drug, function(index, val) {
+            $.each(val.value.split(","), function(index2, val2) {
+                esui.get("DrugAllergy" + (index + 1) + "_" + val2).setChecked(true);
+            });
+            
+            var type = esui.get("DrugType" + val.no);
+            type.datasource = DRUG_TYPE.datasource;
+            type.render();
+            type.setValue(val.type);
+        });
+        $.each(data.material, function(index, val) {
+            $.each(val.value.split(","), function(index2, val2) {
+                esui.get("MaterialAllergy" + (index + 1) + "_" + val2).setChecked(true);
+            });
+        });
+        
+        //事件
         var me = this;
         
         esui.get("Food1").onclick = function() {me.$(".food").show();};
         esui.get("Food2").onclick = function() {me.$(".food").hide();};
+        esui.get("Food3").onclick = function() {me.$(".food").hide();};
         esui.get("Drug1").onclick = function() {me.$(".drug").show();};
         esui.get("Drug2").onclick = function() {me.$(".drug").hide();};
+        esui.get("Drug3").onclick = function() {me.$(".drug").hide();};
         esui.get("Material1").onclick = function() {me.$(".material").show();};
         esui.get("Material2").onclick = function() {me.$(".material").hide();};
+        esui.get("Material3").onclick = function() {me.$(".material").hide();};
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
@@ -61,13 +123,33 @@ es.Views.Form12 = Backbone.View.extend({
         if (es.main.editable) {
             esui.get("Save").onclick = this.save;
         }
-        if (!es.main.editable) {
-            esui.get("ctrltextlineFoodNametext").disable();
-            esui.get("ctrltextlineDrug1Nametext").disable();
-            esui.get("ctrltextlineDrug2Nametext").disable();
-            esui.get("ctrltextlineDrug3Nametext").disable();
-            esui.get("ctrltextlineMaterialNametext").disable();
-        }
+    },
+    
+    addFood: function(e) {
+        $(e.target).parent().before($.Mustache.render("tpl-form12-food", {
+            food: [{no: this.$(".food-block").length + 1}],
+            disabled: ""
+        }));
+        esui.init();
+    },
+    
+    addDrug: function(e) {
+        var no =  this.$(".drug-block").length + 1;
+        $(e.target).parent().before($.Mustache.render("tpl-form12-drug", {
+            drug: [{no: no}],
+            disabled: ""
+        }));
+        var option = {};
+        option["DrugType" + no] = DRUG_TYPE;
+        esui.init(this.el, option);
+    },
+    
+    addMaterial: function(e) {
+        $(e.target).parent().before($.Mustache.render("tpl-form12-material", {
+            material: [{no: this.$(".material-block").length + 1}],
+            disabled: ""
+        }));
+        esui.init();
     },
     
     save: function() {

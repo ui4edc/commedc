@@ -7,38 +7,40 @@
 </div>
 <div class="row">
     <span class="label">年龄</span>
-    <input type="text" class="en" maxlength="3" value="{{data.age}}" ui="type:TextInput;id:Age;width:100;{{disabled}}" />
+    <input type="text" ui="type:TextInput;id:Age;width:100;disabled:true" />
 </div>
 <div class="row">
     <span class="label">民族</span>
-    <input type="radio" hidefocus="true" title="汉" name="nation" value="1" ui="type:Radio;id:HanNation;{{disabled}}" checked />
-    <input type="radio" hidefocus="true" title="其他" name="nation" value="2" ui="type:Radio;id:CustomNation;{{disabled}}" />
-    <input type="text" value="{{data.ethictxt}}" ui="type:TextInput;id:CustomNationName;width:100;{{disabled}}" />
+    <div ui="type:Select;id:Nation;width:100;{{disabled}}"></div>
 </div>
 <div class="row">
     <span class="label">性别</span>
     <input type="radio" hidefocus="true" title="男" name="sex" value="1" ui="type:Radio;id:Male;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="女" name="sex" value="2" ui="type:Radio;id:Female;{{disabled}}" />
-    <span class="female">
-        <input type="radio" hidefocus="true" title="妊娠期" name="female" value="1" ui="type:Radio;id:Female1;{{disabled}}" />
-        <input type="radio" hidefocus="true" title="哺乳期" name="female" value="2" ui="type:Radio;id:Female2;{{disabled}}" />
-        <input type="radio" hidefocus="true" title="无" name="female" value="3" ui="type:Radio;id:Female3;{{disabled}}" checked />
-    </span>
+</div>
+<div class="row sub2 female" style="display:none">
+    <input type="radio" hidefocus="true" title="妊娠期" name="female" value="1" ui="type:Radio;id:Female1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="哺乳期" name="female" value="2" ui="type:Radio;id:Female2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="无" name="female" value="3" ui="type:Radio;id:Female3;{{disabled}}" checked />
 </div>
 <div class="row">
     <span class="label">体重</span>
-    <input type="text" class="en" value="{{data.weight}}" ui="type:TextInput;id:Weight;width:100;{{disabled}}" /> kg
+    <span class="weight" style="display:none"><input type="text" class="en" value="{{data.weight}}" ui="type:TextInput;id:Weight;width:100;{{disabled}}" /> kg</span>
+    <input type="checkbox" hidefocus="true" title="未做" ui="type:Radio;id:HasWeight;{{disabled}}" checked />
 </div>
 <div class="row">
     <span class="label">身高</span>
-    <input type="text" class="en" value="{{data.height}}" ui="type:TextInput;id:Height;width:100;{{disabled}}" /> cm
+    <span class="height" style="display:none"><input type="text" class="en" value="{{data.height}}" ui="type:TextInput;id:Height;width:100;{{disabled}}" /> cm</span>
+    <input type="checkbox" hidefocus="true" title="未做" ui="type:Radio;id:HasHeight;{{disabled}}" checked />
 </div>
 <div class="row">
     <span class="label">用药科室</span>
-    {{#data.yyks}}
-    <input type="checkbox" hidefocus="true" title="{{name}}" name="dep" value="{{id}}" ui="type:CheckBox;id:Dep{{id}};{{disabled}}" {{checked}}/>
-    {{/data.yyks}}
-    <input type="checkbox" hidefocus="true" title="其他" name="dep" value="0" ui="type:CheckBox;id:CustomDep;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="呼吸科" name="dep" value="1" ui="type:Radio;id:Dep1;{{disabled}}" checked />
+    <input type="radio" hidefocus="true" title="急诊科" name="dep" value="2" ui="type:Radio;id:Dep2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="儿科" name="dep" value="3" ui="type:Radio;id:Dep3;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="感染科" name="dep" value="4" ui="type:Radio;id:Dep4;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="ICU" name="dep" value="5" ui="type:Radio;id:Dep5;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="dep" value="6" ui="type:Radio;id:Dep6;{{disabled}}" />
     <input type="text" value="{{data.yykstext}}" ui="type:TextInput;id:CustomDepName;width:100;{{disabled}}" />
 </div>
 <div class="row">
@@ -55,7 +57,7 @@
     <input type="radio" hidefocus="true" title="医保" name="pay" value="2" ui="type:Radio;id:Pay2;{{disabled}}" />
     <input type="radio" hidefocus="true" title="自费" name="pay" value="3" ui="type:Radio;id:Pay3;{{disabled}}" />
     <input type="radio" hidefocus="true" title="新农合" name="pay" value="4" ui="type:Radio;id:Pay4;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="其他" name="pay" value="5" ui="type:Radio;id:CustomPay;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="pay" value="5" ui="type:Radio;id:Pay5;{{disabled}}" />
     <input type="text" value="{{data.feemodetxt}}" ui="type:TextInput;id:CustomPayName;width:100;{{disabled}}" />
 </div>
 {{#save}}

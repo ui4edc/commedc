@@ -44,14 +44,42 @@ es.Views.Form13 = Backbone.View.extend({
     },
     
     initCtrl: function() {
-        esui.init();
+        //赋值
+        esui.init(document.body, {
+            GXYLevel: GXY_LEVEL,
+            TNBType: TNB_Type
+        });
         
+        //事件
         var me = this;
         
         esui.get("Disease1").onclick = function() {me.$(".disease").show();};
         esui.get("Disease2").onclick = function() {me.$(".disease").hide();};
+        esui.get("Disease3").onclick = function() {me.$(".disease").hide();};
         esui.get("ADisease1").onclick = function() {me.$(".a-disease").show();};
         esui.get("ADisease2").onclick = function() {me.$(".a-disease").hide();};
+        esui.get("ADisease3").onclick = function() {me.$(".a-disease").hide();};
+        esui.get("DiseaseType1_1").onclick = function() {
+            if (esui.get("DiseaseType1_1").isChecked()) {
+                me.$(".heart").show();
+            } else {
+                me.$(".heart").hide();
+            }
+        };
+        esui.get("DiseaseType1_2").onclick = function() {
+            if (esui.get("DiseaseType1_2").isChecked()) {
+                me.$("#ctrlselectGXYLevel").show();
+            } else {
+                me.$("#ctrlselectGXYLevel").hide();
+            }
+        };
+        esui.get("DiseaseType7").onclick = function() {
+            if (esui.get("DiseaseType7").isChecked()) {
+                me.$("#ctrlselectTNBType").show();
+            } else {
+                me.$("#ctrlselectTNBType").hide();
+            }
+        };
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;

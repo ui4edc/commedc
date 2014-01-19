@@ -123,3 +123,31 @@ util.ajax = {
         });
     }
 };
+
+/*
+ * 计算年龄
+ */
+
+util.getAge = function(birthday) {
+    var year = birthday.getFullYear(),
+        month = birthday.getMonth(),
+        day = birthday.getDate(),
+        now = new Date(),
+        thisYear = now.getFullYear(),
+        thisMonth = now.getMonth(),
+        thisDay = now.getDate();
+    if (thisYear <= year) {
+        return 0;
+    } else {
+        var age = thisYear - year;
+        if (thisMonth < month) {
+            return age - 1;
+        } else if (thisMonth > month) {
+            return age;
+        } else if (thisDay < day) {
+            return age - 1;
+        } else {
+            return age;
+        }
+    }
+};

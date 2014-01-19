@@ -44,6 +44,7 @@ es.Views.Form11 = Backbone.View.extend({
     },
     
     initCtrl: function(data) {
+        //赋值
         esui.init(es.main.el, {
             Birthday: {
                 range: BIRTHDAY_RANGE,
@@ -56,43 +57,75 @@ es.Views.Form11 = Backbone.View.extend({
             OutDate: {
                 range: CRF_RANGE,
                 value: data.outdate
+            },
+            Nation: {
+                datasource: NATION,
+                value: data.ethic
             }
         });
-        if (data.ethic == 1) {
-            esui.get("HanNation").setChecked(true);
-        } else {
-            esui.get("CustomNation").setChecked(true);
-        }
-        if (data.sex == 1) {
-            esui.get("Male").setChecked(true);
-            $(".female").hide();
-        } else {
+        
+        esui.get("Age").setValue(util.getAge(T.date.parse(data.birthday)));
+        
+        if (data.sex == 2) {
             esui.get("Female").setChecked(true);
+            this.$(".female").show();
             switch (data.hys) {
                 case 1: esui.get("Female1").setChecked(true); break;
-                case 2: esui.get("Female2").setChecked(true); break;
-                case 3: esui.get("Female3").setChecked(true);
+                case 2: esui.get("Female2").setChecked(true);
             }
         }
-        if (data.yykstext != "") {
-            esui.get("CustomDep").setChecked(true);
+        
+        if (data.weight != null) {
+            this.$(".weight").show();
+            esui.get("HasWeight").setChecked(false);
         }
+        if (data.height != null) {
+            this.$(".height").show();
+            esui.get("HasHeight").setChecked(false);
+        }
+        
+        switch (data.yyks) {
+            case 2: esui.get("Dep2").setChecked(true); break;
+            case 3: esui.get("Dep3").setChecked(true); break;
+            case 4: esui.get("Dep4").setChecked(true); break;
+            case 5: esui.get("Dep5").setChecked(true); break;
+            case 6: esui.get("Dep6").setChecked(true);
+        }
+        
         switch (data.feemode) {
-            case 1: esui.get("Pay1").setChecked(true); break;
             case 2: esui.get("Pay2").setChecked(true); break;
             case 3: esui.get("Pay3").setChecked(true); break;
             case 4: esui.get("Pay4").setChecked(true); break;
-            case 5: esui.get("CustomPay").setChecked(true);
+            case 5: esui.get("Pay5").setChecked(true);
         }
         
+        //事件
         var me = this;
         
-        esui.get("Birthday").onchange = function(value) {esui.get("Birthday").setValueAsDate(value);};
+        esui.get("Birthday").onchange = function(value) {
+            esui.get("Birthday").setValueAsDate(value);
+            esui.get("Age").setValue(util.getAge(value));
+        };
         esui.get("InDate").onchange = function(value) {esui.get("InDate").setValueAsDate(value);};
         esui.get("OutDate").onchange = function(value) {esui.get("OutDate").setValueAsDate(value);};
         
         esui.get("Male").onclick = function() {me.$(".female").hide();};
         esui.get("Female").onclick = function() {me.$(".female").show();};
+        
+        esui.get("HasWeight").onclick = function() {
+            if (esui.get("HasWeight").isChecked()) {
+                me.$(".weight").hide();
+            } else {
+                me.$(".weight").show();
+            }
+        };
+        esui.get("HasHeight").onclick = function() {
+            if (esui.get("HasHeight").isChecked()) {
+                me.$(".height").hide();
+            } else {
+                me.$(".height").show();
+            }
+        };
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
@@ -111,21 +144,20 @@ es.Views.Form11 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           id: es.main.crfId,
+           /*id: es.main.crfId,
            birthday: esui.get("Birthday").getValue(),
-           age: parseInt($.trim(esui.get("Age").getValue())),
-           ethic: parseInt(esui.get("HanNation").getGroup().getValue()),
-           ethictxt: $.trim(esui.get("CustomNationName").getValue()),
+           age: parseInt(esui.get("Age").getValue()),
+           ethic: esui.get("Nation").value,
            sex: parseInt(esui.get("Male").getGroup().getValue()),
            hys: parseInt(esui.get("Female1").getGroup().getValue()),
            weight: $.trim(esui.get("Weight").getValue()),
            height: $.trim(esui.get("Height").getValue()),
-           yyks: esui.get("CustomDep").getGroup().getValue(),
+           yyks: parseInt(esui.get("CustomDep").getGroup().getValue()),
            yykstext: $.trim(esui.get("CustomDepName").getValue()),
            indate: esui.get("InDate").getValue(),
            outdate: esui.get("OutDate").getValue(),
            feemode: parseInt(esui.get("CustomPay").getGroup().getValue()),
-           feemodetxt: $.trim(esui.get("CustomPayName").getValue())
+           feemodetxt: $.trim(esui.get("CustomPayName").getValue())*/
        };
        
        console.log("crf/saveBasicInfo.do-请求", data);
