@@ -46,4 +46,6 @@ public interface UserMapper {
 
 	List<User> findAdminUsers();
 
+	List<User> findCRMUsers();
+
 }

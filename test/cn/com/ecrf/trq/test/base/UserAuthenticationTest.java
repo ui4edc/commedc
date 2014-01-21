@@ -80,7 +80,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 	public void testInsertRole(){
 		Role role = new Role();
 		role.setRoleName("cro");
-		role.setRoleDesc("录入员");
+		role.setDescription("录入员");
 		role.setCode("00");
 		userService.saveRole(role);
 		Role role2 = userService.getRoleById(role.getId());

@@ -45,6 +45,15 @@ public class CRFController {
 		return result;
 	}
 	
+	@RequestMapping(value="/crf/addCRF", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getCRFBasic(HttpServletRequest request) {
+		String abbr = request.getParameter("abbr");
+		Map<String, Object> result = cRFService.genCRFNo(abbr);
+		
+		return result;
+	}
+	
 	@RequestMapping(value="/crf/update/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getCRFBasic(@PathVariable int id, HttpServletRequest request) {

@@ -57,7 +57,7 @@ public class LoginController {
 			model.put("organization", user.getOrganizationName());
 			List<Role> roles = userService.getRoleByUser(userName);
 			if (roles != null && roles.size() > 0){
-				model.put("role", roles.get(0).getRoleDesc());
+				model.put("role", roles.get(0).getDescription());
 				model.put("roleId", roles.get(0).getId());
 			}
 		

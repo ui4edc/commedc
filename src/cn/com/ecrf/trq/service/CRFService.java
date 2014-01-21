@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.service;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,8 +14,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PhaseSignPage;
+import cn.com.ecrf.trq.model.Role;
+import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.repository.CRFMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
@@ -31,6 +35,8 @@ import cn.com.ecrf.trq.vo.PatientInfoVo;
 public class CRFService {
 	@Autowired
 	private CRFMapper cRFMapper;
+	@Autowired
+	private UserService userService;
 	
 	public ListNotifyVo getNotifyInfo() {
 		// TODO Auto-generated method stub
@@ -95,8 +101,8 @@ public class CRFService {
 			
 				patientInfoCase.setBirthday(sdf.parse(patientInfoVo.getBirthday()));
 			
-		if (StringUtils.isNotBlank(patientInfoVo.getCyrq()))
-			patientInfoCase.setCyrq(sdf.parse(patientInfoVo.getCyrq()));
+		if (StringUtils.isNotBlank(patientInfoVo.getOutDate()))
+			patientInfoCase.setCyrq(sdf.parse(patientInfoVo.getOutDate()));
 		FormEnumObject ethicObj = new FormEnumObject(patientInfoVo.getEthic(), patientInfoVo.getEthictxt(), FormEnumValue.ETHIC);
 		patientInfoCase.setEthic(convertIDToContent(ethicObj));
 		patientInfoCase.setHeight(Integer.parseInt(patientInfoVo.getHeight()));
@@ -105,29 +111,29 @@ public class CRFService {
 		patientInfoCase.setId(patientInfoVo.getId());
 		patientInfoCase.setName(patientInfoVo.getName());
 		patientInfoCase.setNo(patientInfoVo.getNo());
-		if (StringUtils.isNotBlank(patientInfoVo.getRyrq()))
-			patientInfoCase.setRyrq(sdf.parse(patientInfoVo.getRyrq()));
+		if (StringUtils.isNotBlank(patientInfoVo.getInDate()))
+			patientInfoCase.setRyrq(sdf.parse(patientInfoVo.getInDate()));
 		FormEnumObject sexObj = new FormEnumObject(patientInfoVo.getSex(), null, FormEnumValue.SEX);
 		patientInfoCase.setSex(convertIDToContent(sexObj));
 		patientInfoCase.setWeight(Float.parseFloat(patientInfoVo.getWeight()));
-		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getYlfyfs(), patientInfoVo.getYlfyfstxt(), FormEnumValue.YLFYFS);
+		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getFeemode(), patientInfoVo.getFeemodetxt(), FormEnumValue.YLFYFS);
 		patientInfoCase.setYlfyfs(convertIDToContent(ylfyfsObj));
-		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
+/*		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
 		//JSONArray jsonArray = new JSONArray();
 		for (int i=0;patientInfoVo.getYyks() != null && i< patientInfoVo.getYyks().size();i++){
 			CheckBoxVo checkBoxVo = (CheckBoxVo)patientInfoVo.getYyks().get(i);
 			FormEnumObject yyksObj = new FormEnumObject(checkBoxVo.getId(), checkBoxVo.getOther(), FormEnumValue.YYKS);
 			convertIDToContent(yyksObj);
 			yyksobjs.add(yyksObj);
-			//jsonArray.put(yyksObj);
 		}
 		JSONUtils<FormEnumObject> util = new JSONUtils<FormEnumObject>(FormEnumObject.class);
-		patientInfoCase.setYyks(util.convertFromList(yyksobjs));
+		patientInfoCase.setYyks(util.convertFromList(yyksobjs));*/
+		FormEnumObject yyksObj = new FormEnumObject(patientInfoVo.getYyks(), patientInfoVo.getYykstxt(), FormEnumValue.YYKS);
+		patientInfoCase.setYyks(convertIDToContent(yyksObj));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return patientInfoCase;
 	}
 
@@ -160,6 +166,34 @@ public class CRFService {
 		}
 		obj.setSeq(seq);
 		return obj.getSeq();
+	}
+
+	public Map<String, Object> genCRFNo(String abbr) {
+		// TODO Auto-generated method stub
+		String no = "";
+		Map<String, Object> result = new HashMap<String, Object>();
+		Subject currentUser = SecurityUtils.getSubject();
+		try {
+			currentUser = SecurityUtils.getSubject();  
+			String userName = (String)currentUser.getPrincipal();
+			User user = userService.findUserByLoginName(userName);
+			Organization organization = userService.getOrganization(user.getOrganizationId());
+			int  seq = cRFMapper.getNextSeq(organization.getId());
+			DecimalFormat df = new DecimalFormat("0000");
+			String subNo = df.format(seq);
+			no = organization.getCode() + "-" + subNo;
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("no", no);
+			condition.put("abbr", abbr);
+			int id = cRFMapper.insertCRF(condition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			result.put("no", no);
+			result.put("id", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
 	}
 
 

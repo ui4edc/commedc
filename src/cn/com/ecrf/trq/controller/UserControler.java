@@ -204,7 +204,21 @@ public class UserControler {
     @ResponseBody  
     public Map<String, Object> getAdminList(HttpServletRequest request){
 		List<User> users = userService.getAdminUserList();
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, users, users.size());
+		int total = 0;
+		if (users != null)
+			total = users.size();
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, users, total);
+    	return result;
+    }
+    
+    @RequestMapping(value = "/account/getCRMList", method = RequestMethod.POST)  
+    @ResponseBody  
+    public Map<String, Object> getCRMList(HttpServletRequest request){
+		List<User> users = userService.getCRMList();
+		int total = 0;
+		if (users != null)
+			total = users.size();
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, users, total);
     	return result;
     }
     
@@ -370,8 +384,13 @@ public class UserControler {
     public Map<String, Object> findOrganization(HttpServletRequest request){
     	Map<String, Object> result;
     	try{
-    		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-    		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+    		String pageNoStr = request.getParameter("pageNo");
+    		String pageSizeStr = request.getParameter("pageSize");
+    		int pageNo = 0, pageSize = 0;
+    		if (StringUtils.isNotBlank(pageNoStr) && StringUtils.isNotBlank(pageSizeStr)){
+    			pageNo = Integer.parseInt(pageNoStr);
+        		pageSize = Integer.parseInt(pageSizeStr);
+    		}
     		result = userService.findOrganizations(pageNo, pageSize);
     	}catch(Exception e){
     		logger.error(e.getMessage());

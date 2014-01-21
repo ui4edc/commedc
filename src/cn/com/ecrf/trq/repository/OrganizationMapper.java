@@ -23,4 +23,6 @@ public interface OrganizationMapper {
 	List<Organization> findOrganizations(Map<String, Object> condition);
 
 	int getNum();
+
+	void insertCRFNO(int id);
 }

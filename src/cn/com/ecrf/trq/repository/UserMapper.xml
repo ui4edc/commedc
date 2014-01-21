@@ -131,7 +131,15 @@
   </select>
   <select id="findAdminUsers" resultMap="BaseResultMap" parameterType="map" >
     select 
-    <include refid="Base_Column_List" />
+    u.id, u.user_name, u.status, u.display_name
+    from ac_user u, ac_role r, ac_user_role ur where u.id=ur.user_id and ur.role_id=r.role_id and r.role_name='LCRO'
+    <if test="limitStart != null" >
+     LIMIT #{limitStart},#{limitSize} 
+     </if>
+  </select>
+  <select id="findCRMUsers" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    u.id, u.user_name, u.status, u.display_name 
     from ac_user u, ac_role r, ac_user_role ur where u.id=ur.user_id and ur.role_id=r.role_id and r.role_name='CRM'
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 

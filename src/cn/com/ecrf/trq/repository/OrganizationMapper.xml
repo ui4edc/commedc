@@ -29,7 +29,7 @@
 	</selectKey>
   	insert into ac_organization(id, organization_name, organization_desc, create_time, create_by, instance_number, 
   	fk_adminuser_id, fk_adminuser_name) values(#{id}, #{name}, #{organizationDesc}, now(), #{createBy}, #{instanceNumber},
-  	adminUserId, adminUserName);
+  	#{adminUserId}, #{adminUserName});
   </insert>
   <update id="updateOrganization" parameterType="cn.com.ecrf.trq.model.Organization">
   	update ac_organization set organization_name=#{name}, organization_desc=#{organizationDesc}, update_time=now(),
@@ -58,5 +58,7 @@
    <select id="getNum" resultType="int">
   	select count(*) from ac_organization
   </select>
-  
+  <insert id="insertCRFNO" parameterType="int">
+  	insert into crf_no(fk_organization_id, seq) values(#{id}, 1);
+  </insert>
 </mapper>

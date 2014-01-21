@@ -14,5 +14,9 @@ public interface CRFMapper {
 
 	public String getFormEnumValue(Map<String, Object> condition);
 
-	public int getFormEnumValueByName(Map<String, Object> condition); 
+	public int getFormEnumValueByName(Map<String, Object> condition);
+
+	public int getNextSeq(int id);
+
+	public int insertCRF(Map<String, Object> condition); 
 }

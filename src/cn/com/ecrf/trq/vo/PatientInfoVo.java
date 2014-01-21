@@ -29,15 +29,17 @@ public class PatientInfoVo {
 		//身高
 		private String height;
 		//用药科室
-		private List<CheckBoxVo> yyks;
+		private int yyks;
+		//
+		private String yykstxt;
 		//入院日期
-		private String ryrq;
+		private String inDate;
 		//出院日期
-		private String cyrq;
+		private String outDate;
 		//医疗费用方式
-		private int ylfyfs;
+		private int feemode;
 		//医疗费用方式
-		private String ylfyfstxt;
+		private String feemodetxt;
 		
 		public int getId() {
 			return id;
@@ -100,36 +102,6 @@ public class PatientInfoVo {
 		public void setHeight(String height) {
 			this.height = height;
 		}
-		public List<CheckBoxVo> getYyks() {
-			return yyks;
-		}
-		public void setYyks(List<CheckBoxVo> yyks) {
-			this.yyks = yyks;
-		}
-		public String getRyrq() {
-			return ryrq;
-		}
-		public void setRyrq(String ryrq) {
-			this.ryrq = ryrq;
-		}
-		public String getCyrq() {
-			return cyrq;
-		}
-		public void setCyrq(String cyrq) {
-			this.cyrq = cyrq;
-		}
-		public int getYlfyfs() {
-			return ylfyfs;
-		}
-		public void setYlfyfs(int ylfyfs) {
-			this.ylfyfs = ylfyfs;
-		}
-		public String getYlfyfstxt() {
-			return ylfyfstxt;
-		}
-		public void setYlfyfstxt(String ylfyfstxt) {
-			this.ylfyfstxt = ylfyfstxt;
-		}
 		public int getEthic() {
 			return ethic;
 		}
@@ -142,6 +114,43 @@ public class PatientInfoVo {
 		public void setEthictxt(String ethictxt) {
 			this.ethictxt = ethictxt;
 		}
+		public int getYyks() {
+			return yyks;
+		}
+		public void setYyks(int yyks) {
+			this.yyks = yyks;
+		}
+		public String getYykstxt() {
+			return yykstxt;
+		}
+		public void setYykstxt(String yykstxt) {
+			this.yykstxt = yykstxt;
+		}
+		public String getInDate() {
+			return inDate;
+		}
+		public void setInDate(String inDate) {
+			this.inDate = inDate;
+		}
+		public String getOutDate() {
+			return outDate;
+		}
+		public void setOutDate(String outDate) {
+			this.outDate = outDate;
+		}
+		public int getFeemode() {
+			return feemode;
+		}
+		public void setFeemode(int feemode) {
+			this.feemode = feemode;
+		}
+		public String getFeemodetxt() {
+			return feemodetxt;
+		}
+		public void setFeemodetxt(String feemodetxt) {
+			this.feemodetxt = feemodetxt;
+		}
+		
 		
 		
 		

@@ -25,7 +25,7 @@ public class DictService {
 					dictSnapshot.setName(dictSnapshot.getName()+"("+dictSnapshot.getUntreated()+")个未处理");
 			}
 		}
-		return null;
+		return dictSnapshots;
 	}
 
 	public List<DictRow> getItemDict(int id) {

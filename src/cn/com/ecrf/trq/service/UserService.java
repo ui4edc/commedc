@@ -43,11 +43,11 @@ public class UserService {
 	
 	public int saveUser(User user){
 		int id = 0;
-		int organizaitonId = user.getOrganizationId();
+		/*int organizaitonId = user.getOrganizationId();
 		if (organizaitonId > 0){
 			Organization organization = organizationMapper.getOrganizationById(id);
 			user.setOrganizationName(organization.getName());
-		}
+		}*/
 		if (user.getId() <= 0){
 			userMapper.insertUser(user);
 		}else{
@@ -101,6 +101,8 @@ public class UserService {
 
 	public void updateUser(User user) {
 		// TODO Auto-generated method stub
+		String password = CipherUtil.generatePassword(user.getPassword());
+		user.setPassword(password);
 		userMapper.updateUser(user);
 	}
 
@@ -131,8 +133,10 @@ public class UserService {
 	public Map<String, Object> findOrganizations(int pageNo, int pageSize) {
 		// TODO Auto-generated method stub
 		Map<String, Object> condition = new HashMap<String, Object>();
-		condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize);
-		condition.put(AjaxReturnValue.limitSize, pageSize);
+		if (pageNo > 0 && pageSize > 0){
+			condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize);
+			condition.put(AjaxReturnValue.limitSize, pageSize);
+		}
 		List<Organization> organizations =  organizationMapper.findOrganizations(condition);
 		int total = organizationMapper.getNum();
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, organizations, total);
@@ -161,6 +165,7 @@ public class UserService {
 			organizationMapper.updateOrganization(organization);
 		}else{
 			organizationMapper.insertOrganization(organization);
+			organizationMapper.insertCRFNO(organization.getId());
 		}
 	}
 
@@ -231,6 +236,12 @@ public class UserService {
 	public List<User> getAdminUserList() {
 		// TODO Auto-generated method stub
 		List<User> users = userMapper.findAdminUsers();
+		return users;
+	}
+
+	public List<User> getCRMList() {
+		// TODO Auto-generated method stub
+		List<User> users = userMapper.findCRMUsers();
 		return users;
 	}
 

@@ -9,7 +9,7 @@ public class Role {
 
     private String roleName;
     
-    private String roleDesc;
+    private String description;
     
     private Date createTime;
     
@@ -43,12 +43,12 @@ public class Role {
 		this.roleName = roleName;
 	}
 
-	public String getRoleDesc() {
-		return roleDesc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setRoleDesc(String roleDesc) {
-		this.roleDesc = roleDesc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Date getCreateTime() {
