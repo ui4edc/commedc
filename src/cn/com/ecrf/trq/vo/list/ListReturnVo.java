@@ -1,4 +1,4 @@
-package cn.com.ecrf.trq.vo;
+package cn.com.ecrf.trq.vo.list;
 
 public class ListReturnVo {
 
@@ -14,6 +14,8 @@ public class ListReturnVo {
 	private int progressType;
 	private int type;
 	private int id;
+	private String doubtDate;
+	private String doubter;
 	
 	public boolean isCrf() {
 		return crf;
@@ -86,6 +88,18 @@ public class ListReturnVo {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getDoubtDate() {
+		return doubtDate;
+	}
+	public void setDoubtDate(String doubtDate) {
+		this.doubtDate = doubtDate;
+	}
+	public String getDoubter() {
+		return doubter;
+	}
+	public void setDoubter(String doubter) {
+		this.doubter = doubter;
 	}
 	
 	

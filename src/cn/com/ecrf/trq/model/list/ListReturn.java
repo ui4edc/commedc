@@ -1,19 +1,24 @@
-package cn.com.ecrf.trq.vo;
+package cn.com.ecrf.trq.model.list;
 
-public class ListConditionVo {
+import java.util.Date;
+
+public class ListReturn {
+
 	private boolean crf;
 	private String abbr;
 	private int no;
-	private String createDateForm;
-	private String createDateTo;
-	private String lastModifiedFrom;
+	private Date createDate;
+	private Date lastModified;
 	private String orderBy;
 	private int pageNo;
 	private int pageSize;
-	private String progress;
+	private int progress;
 	private int progressType;
 	private int type;
-	private boolean undealed;
+	private int id;
+	private Date doubtDate;
+	private String doubter;
+	private int doubtNumber;
 	
 	public boolean isCrf() {
 		return crf;
@@ -33,23 +38,17 @@ public class ListConditionVo {
 	public void setNo(int no) {
 		this.no = no;
 	}
-	public String getCreateDateForm() {
-		return createDateForm;
+	public Date getCreateDate() {
+		return createDate;
 	}
-	public void setCreateDateForm(String createDateForm) {
-		this.createDateForm = createDateForm;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
-	public String getCreateDateTo() {
-		return createDateTo;
+	public Date getLastModified() {
+		return lastModified;
 	}
-	public void setCreateDateTo(String createDateTo) {
-		this.createDateTo = createDateTo;
-	}
-	public String getLastModifiedFrom() {
-		return lastModifiedFrom;
-	}
-	public void setLastModifiedFrom(String lastModifiedFrom) {
-		this.lastModifiedFrom = lastModifiedFrom;
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
 	}
 	public String getOrderBy() {
 		return orderBy;
@@ -69,10 +68,10 @@ public class ListConditionVo {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	public String getProgress() {
+	public int getProgress() {
 		return progress;
 	}
-	public void setProgress(String progress) {
+	public void setProgress(int progress) {
 		this.progress = progress;
 	}
 	public int getProgressType() {
@@ -87,14 +86,24 @@ public class ListConditionVo {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public boolean isUndealed() {
-		return undealed;
+	public int getId() {
+		return id;
 	}
-	public void setUndealed(boolean undealed) {
-		this.undealed = undealed;
+	public void setId(int id) {
+		this.id = id;
 	}
-	
-	
+	public Date getDoubtDate() {
+		return doubtDate;
+	}
+	public void setDoubtDate(Date doubtDate) {
+		this.doubtDate = doubtDate;
+	}
+	public String getDoubter() {
+		return doubter;
+	}
+	public void setDoubter(String doubter) {
+		this.doubter = doubter;
+	}
 	
 	
 }

@@ -52,5 +52,57 @@
 	      #{weight}, #{sex}, #{ethic}, #{hys}, #{height}, #{yyks}, #{ryrq}, #{cyrq}, #{ylfyfs}, 
 	      current_timestamp(), createBy)
 	</update>
-  
+	<select id="getDoubtCRFNum" parameterType="string" resultType="int">
+		select count(*) from crf_user_sign c where c.lockstatus=30 and cro_name=#{userName}
+	</select>
+  	<select id="getToDoNum" parameterType="string" resultType="int">
+		select count(*) from crf_user_sign c where c.lockstatus=10 and cro_name=#{userName}
+	</select>
+	<select id="getPatientList" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
+		select 
+			p.abbr as abbr,
+			p.no as no,
+			p.id as id,
+			us.cro_createtime as createDate,
+			us.cro_updatetime as lastModified,
+			us.progress as progress
+		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus}
+		 <if test="abbr != null" >
+        	and p.abbr=#{abbr}
+      	</if>
+      	<if test="no != null" >
+        	and p.no=#{no}
+      	</if>
+      	<if test="createDateForm != null" >
+        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	</if>
+      	<if test="lastModifiedFrom != null" >
+        	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
+      	</if>
+	</select>
+	<select id="getDoutSummaryList" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
+		select 
+			p.abbr as abbr,
+			p.no as no,
+			p.id as id,
+			us.cro_createtime as createDate,
+			us.cro_updatetime as lastModified,
+			us.progress as progress,
+			
+		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus}
+		 <if test="abbr != null" >
+        	and p.abbr=#{abbr}
+      	</if>
+      	<if test="no != null" >
+        	and p.no=#{no}
+      	</if>
+      	<if test="createDateForm != null" >
+        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	</if>
+      	<if test="lastModifiedFrom != null" >
+        	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
+      	</if>
+	</select>
+	
+	
 </mapper>

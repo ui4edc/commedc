@@ -19,7 +19,7 @@ import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.service.DictService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
-import cn.com.ecrf.trq.vo.ListNotifyVo;
+import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 
 @Controller
 public class DictController {

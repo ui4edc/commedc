@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
-import cn.com.ecrf.trq.vo.ListConditionVo;
-import cn.com.ecrf.trq.vo.ListNotifyVo;
-import cn.com.ecrf.trq.vo.ListReturnVo;
+import cn.com.ecrf.trq.vo.list.ListConditionVo;
+import cn.com.ecrf.trq.vo.list.ListNotifyVo;
+import cn.com.ecrf.trq.vo.list.ListReturnVo;
 
 @Controller
 public class ListController {

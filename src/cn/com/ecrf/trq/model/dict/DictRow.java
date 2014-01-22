@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
-import cn.com.ecrf.trq.vo.ListNotifyVo;
+import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 
 public class DictRow {
 	private int id;

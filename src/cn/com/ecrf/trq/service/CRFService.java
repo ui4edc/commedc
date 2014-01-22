@@ -19,6 +19,8 @@ import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
+import cn.com.ecrf.trq.model.list.ListCondition;
+import cn.com.ecrf.trq.model.list.ListReturn;
 import cn.com.ecrf.trq.repository.CRFMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
@@ -26,10 +28,10 @@ import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
-import cn.com.ecrf.trq.vo.ListConditionVo;
-import cn.com.ecrf.trq.vo.ListNotifyVo;
-import cn.com.ecrf.trq.vo.ListReturnVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
+import cn.com.ecrf.trq.vo.list.ListConditionVo;
+import cn.com.ecrf.trq.vo.list.ListNotifyVo;
+import cn.com.ecrf.trq.vo.list.ListReturnVo;
 
 @Service
 public class CRFService {
@@ -42,15 +44,97 @@ public class CRFService {
 		// TODO Auto-generated method stub
 		Subject subject = SecurityUtils.getSubject();
 		String userName = (String) subject.getPrincipal();
-		
-		return null;
+		int doubtNumber = cRFMapper.getDoubtCRFNum(userName);
+		int toDoNumber = cRFMapper.getToDoNum(userName);
+		ListNotifyVo notify = new ListNotifyVo();
+		notify.setQuestionNum(doubtNumber);
+		notify.setDeadlineNum(toDoNumber);
+		return notify;
 	}
 
 	public List<ListReturnVo> getCRFList(ListConditionVo condition) {
 		// TODO Auto-generated method stub
-		return null;
+		ListCondition sqlCondition = convertCondition(condition);
+		int type = condition.getType();
+		List<ListReturn> list = null;
+		if (type == 1 || type == 2 || type == 4){//草稿
+			list = cRFMapper.getPatientList(sqlCondition);
+		}else if (type == 3){//质疑
+			list = cRFMapper.getDoutSummaryList(sqlCondition);
+		}
+		List<ListReturnVo> listVo = convertListReturn(list);
+		return listVo;
 	}
 	
+	private List<ListReturnVo> convertListReturn(List<ListReturn> list) {
+		// TODO Auto-generated method stub
+		List<ListReturnVo> listVo = new ArrayList<ListReturnVo>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if (list != null){
+			for (ListReturn result : list){
+				ListReturnVo resultVo = new ListReturnVo();
+				resultVo.setAbbr(result.getAbbr());
+				if (result.getCreateDate() != null)
+					resultVo.setCreateDate(sdf.format(result.getCreateDate()));
+				if (result.getCreateDate() != null)
+				resultVo.setDoubtDate(sdf.format(result.getDoubtDate()));
+				resultVo.setDoubter(result.getDoubter());
+				resultVo.setId(result.getId());
+				if (result.getLastModified() != null)
+					resultVo.setLastModified(sdf.format(result.getLastModified()));
+				resultVo.setNo(result.getNo());
+				if (result.getProgress() > 0)
+					resultVo.setProgress(result.getProgress() + "%");
+				listVo.add(resultVo);
+			}
+		}
+		return listVo;
+	}
+
+	private ListCondition convertCondition(ListConditionVo condition) {
+		// TODO Auto-generated method stub
+		ListCondition sqlCondition = new ListCondition();
+		int lockStatus = 0;
+		if (condition.getType() == 1)
+			lockStatus = 10;
+		if (condition.getType() == 2)
+			lockStatus = 20;
+		if (condition.getType() == 3)
+			lockStatus = 30;
+		if (condition.getType() == 4)
+			lockStatus = 40;
+		if (condition.getType() == 45)
+			lockStatus = 50;
+		sqlCondition.setLockStatus(lockStatus);
+		sqlCondition.setAbbr(condition.getAbbr());
+		String progress = condition.getProgress();
+		if (StringUtils.isNotBlank(progress))
+			sqlCondition.setProgress(Integer.parseInt(progress.replace("%", "")));
+		sqlCondition.setProgressType(condition.getProgressType());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if (StringUtils.isNotBlank(condition.getCreateDateForm())){		
+				sqlCondition.setCreateDateForm(sdf.parse(condition.getCreateDateForm()));
+				sqlCondition.setCreateDateTo(sdf.parse(condition.getCreateDateTo()));
+			}
+			if (StringUtils.isNotBlank(condition.getLastModifiedFrom())){
+				sqlCondition.setLastModifiedFrom(sdf.parse(condition.getCreateDateForm()));
+				sqlCondition.setLastModifiedTo(sdf.parse(condition.getCreateDateTo()));
+			}
+			if (StringUtils.isNotBlank(condition.getDoubtDateFrom())){
+				sqlCondition.setDoubtDateFrom(sdf.parse(condition.getCreateDateForm()));
+				sqlCondition.setDoubtDateTo(sdf.parse(condition.getCreateDateTo()));
+			}
+			sqlCondition.setCrf(condition.isCrf());
+			sqlCondition.setDesc(condition.isDesc());
+			sqlCondition.setNo(condition.getNo());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sqlCondition;
+	}
+
 	public int getCRFTotal(ListConditionVo condition){
 		int total = 0;
 		return total;

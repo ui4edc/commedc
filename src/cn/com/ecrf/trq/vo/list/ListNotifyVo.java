@@ -1,4 +1,4 @@
-package cn.com.ecrf.trq.vo;
+package cn.com.ecrf.trq.vo.list;
 
 public class ListNotifyVo {
 
