@@ -27,14 +27,16 @@ es.Models.Form11 = Backbone.Model.extend({
             mockData: {
                 success: true,
                 data: {
-                    birthday: "1980-01-01",
+                    birthday: "2001-01-01",
                     ethic: 1,
                     sex: 1,
                     hys: 3,
                     weight: null,
+                    weightud: false,
                     height: null,
+                    heightud: false,
                     yyks: 1,
-                    yykstext: "",
+                    yykstxt: "",
                     indate: "2014-01-01",
                     outdate: "2014-01-01",
                     feemode: 1,

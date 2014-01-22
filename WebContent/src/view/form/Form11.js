@@ -43,7 +43,7 @@ es.Views.Form11 = Backbone.View.extend({
     
     initCtrl: function(data) {
         //赋值
-        esui.init(es.main.el, {
+        esui.init(document.body, {
             Birthday: {
                 range: BIRTHDAY_RANGE,
                 value: data.birthday
@@ -73,13 +73,11 @@ es.Views.Form11 = Backbone.View.extend({
             }
         }
         
-        if (data.weight != null) {
-            this.$(".weight").show();
-            esui.get("HasWeight").setChecked(false);
+        if (data.weightud) {
+            esui.get("WeightUd").setChecked(true);
         }
-        if (data.height != null) {
-            this.$(".height").show();
-            esui.get("HasHeight").setChecked(false);
+        if (data.heightud) {
+            esui.get("HeightUd").setChecked(true);
         }
         
         switch (data.yyks) {
@@ -110,21 +108,6 @@ es.Views.Form11 = Backbone.View.extend({
         esui.get("Male").onclick = function() {me.$(".female").hide();};
         esui.get("Female").onclick = function() {me.$(".female").show();};
         
-        esui.get("HasWeight").onclick = function() {
-            if (esui.get("HasWeight").isChecked()) {
-                me.$(".weight").hide();
-            } else {
-                me.$(".weight").show();
-            }
-        };
-        esui.get("HasHeight").onclick = function() {
-            if (esui.get("HasHeight").isChecked()) {
-                me.$(".height").hide();
-            } else {
-                me.$(".height").show();
-            }
-        };
-        
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
@@ -142,21 +125,54 @@ es.Views.Form11 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           /*id: es.main.crfId,
+           id: es.main.crfId,
            birthday: esui.get("Birthday").getValue(),
            age: parseInt(esui.get("Age").getValue()),
            ethic: esui.get("Nation").value,
            sex: parseInt(esui.get("Male").getGroup().getValue()),
            hys: parseInt(esui.get("Female1").getGroup().getValue()),
            weight: $.trim(esui.get("Weight").getValue()),
+           weightud: esui.get("WeightUd").isChecked(),
            height: $.trim(esui.get("Height").getValue()),
-           yyks: parseInt(esui.get("CustomDep").getGroup().getValue()),
-           yykstext: $.trim(esui.get("CustomDepName").getValue()),
+           heightud: esui.get("HeightUd").isChecked(),
+           yyks: parseInt(esui.get("Dep1").getGroup().getValue()),
+           yykstxt: $.trim(esui.get("CustomDepName").getValue()),
            indate: esui.get("InDate").getValue(),
            outdate: esui.get("OutDate").getValue(),
-           feemode: parseInt(esui.get("CustomPay").getGroup().getValue()),
-           feemodetxt: $.trim(esui.get("CustomPayName").getValue())*/
+           feemode: parseInt(esui.get("Pay1").getGroup().getValue()),
+           feemodetxt: $.trim(esui.get("CustomPayName").getValue())
        };
+       
+       //验证
+       var weight = data.weight,
+           height = data.height,
+           floatPattern = /^\d+(\.\d+)?$/;
+       if (!data.weightud && weight == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写体重"});
+           return;
+       }
+       if (!data.weightud && weight != "" && !floatPattern.test(weight)) {
+           esui.Dialog.alert({title: "提示", content: "体重填写不正确"});
+           return;
+       }
+       if (!data.heightud && height == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写身高"});
+           return;
+       }
+       if (!data.heightud && height != "" && !floatPattern.test(height)) {
+           esui.Dialog.alert({title: "提示", content: "身高填写不正确"});
+           return;
+       }
+       if (parseFloat(height) > 300 || parseFloat(height) < 100) {
+           esui.Dialog.alert({title: "提示", content: "身高填写不正确"});
+           return;
+       }
+       var indate = T.date.parse(data.indate).getTime(),
+           outdate = T.date.parse(data.outdate).getTime();
+       if (indate > outdate) {
+           esui.Dialog.alert({title: "提示", content: "入院日期不能晚于出院日期！"});
+           return;
+       }
        
        console.log("crf/saveBasicInfo.do-请求", data);
        
@@ -166,10 +182,7 @@ es.Views.Form11 = Backbone.View.extend({
             success: function(response) {
                 console.log("crf/saveBasicInfo.do-响应:", response);
                 
-                esui.Dialog.alert({
-                    title: "保存",
-                    content: "保存成功！"
-                });
+                esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 
                 //更新进度
                 me.updateProgress(response.progress);
