@@ -95,7 +95,7 @@ es.Views.List = Backbone.View.extend({
             }
         };
         esui.get("ProgressType").onchange = function(value) {
-            if (value == 1) {
+            if (value == 0) {
                 $("#ctrltextProgress").hide();
             } else {
                 $("#ctrltextProgress").show();
@@ -140,22 +140,20 @@ es.Views.List = Backbone.View.extend({
         this.args.no = $.trim(esui.get("No").getValue());
         this.args.abbr = $.trim(esui.get("Abbr").getValue());
         if (esui.get("CreateRangeType").value == 1) {
-            this.args.createDate = null;
+            this.args.createDateFrom = null;
+            this.args.createDateTo = null;
         } else {
             var date = esui.get("CreateRange").getValue().split(",");
-            this.args.createDate = {
-                begin: date[0],
-                end: date[1]
-            };
+            this.args.createDateFrom = date[0];
+            this.args.createDateTo = date[1];
         }
         if (esui.get("LastModifyRangeType").value == 1) {
-            this.args.lastModified = null;
+            this.args.lastModifiedFrom = null;
+            this.args.lastModifiedTo = null;
         } else {
             var date = esui.get("LastModifyRange").getValue().split(",");
-            this.args.lastModified = {
-                begin: date[0],
-                end: date[1]
-            };
+            this.args.lastModifiedFrom = date[0];
+            this.args.lastModifiedTo = date[1];
         }
         this.args.progressType = esui.get("ProgressType").value;
         if (esui.get("ProgressType").value == 1) {
@@ -163,16 +161,16 @@ es.Views.List = Backbone.View.extend({
         } else {
             this.args.progress = $.trim(esui.get("Progress").getValue());
         }
+        
         this.args.undealed = esui.get("Undealed").isChecked();
         this.args.doubter = $.trim(esui.get("Doubter").getValue());
         if (esui.get("DoubtRangeType").value == 1) {
-            this.args.doubtDate = null;
+            this.args.doubtDateFrom = null;
+            this.args.doubtDateTo = null;
         } else {
             var date = esui.get("DoubtRange").getValue().split(",");
-            this.args.doubtDate = {
-                begin: date[0],
-                end: date[1]
-            };
+            this.args.doubtDateFrom = date[0];
+            this.args.doubtDateTo = date[1];
         }
     },
     
@@ -210,18 +208,22 @@ es.Views.List = Backbone.View.extend({
         this.queryFirstPage();
         
         //已提交待审核
-        if (this.args.type == 2) {
-            this.$("#ctrlbuttonSubmitCRF").hide();
+        if (this.args.type == 1) {
             this.$(".time-label").text("提交时间范围：");
         } else {
-            this.$("#ctrlbuttonSubmitCRF").show();
             this.$(".time-label").text("最后修改时间范围：");
         }
         //被质疑
-        if (this.args.type == 3) {
+        if (this.args.type == 2) {
             this.$(".doubt-form").show();
         } else {
             this.$(".doubt-form").hide();
+        }
+        //已提交待审核 || 审核通过
+        if (this.args.type == 1 || this.args.type == 3) {
+            this.$("#ctrlbuttonSubmitCRF").hide();
+        } else {
+            this.$("#ctrlbuttonSubmitCRF").show();
         }
     },
     
@@ -267,7 +269,7 @@ es.Views.List = Backbone.View.extend({
                 },
                 {
                     field: "lastModified",
-                    title: this.args.type == 2 ? "提交时间" : "最后修改时间",
+                    title: this.args.type == 1 ? "提交时间" : "最后修改时间",
                     sortable: true,
                     content: function(item) {return item.lastModified;}
                 },
@@ -279,7 +281,7 @@ es.Views.List = Backbone.View.extend({
                 }
             ];
             //被质疑
-            if (this.args.type == 3) {
+            if (this.args.type == 2) {
                 table.fields.splice(2, 0,
                 {
                     field: "doubter",
@@ -328,13 +330,13 @@ es.Views.List = Backbone.View.extend({
         var data = {},
             me = this;
             
-        console.log("获取通知-请求", data);
+        console.log("list/notify.do-请求", data);
         
         util.ajax.run({
-            url: "",
+            url: "list/notify.do",
             data: data,
             success: function(response) {
-                console.log("获取通知-响应", response);
+                console.log("list/notify.do-响应", response);
                 
                 me.$(".notify").prepend($.Mustache.render("tpl-list-notify", {
                     doubtNumber: response.doubtNumber,
@@ -354,7 +356,6 @@ es.Views.List = Backbone.View.extend({
      * 打开对话框
      */
     openNewCRF: function() {
-        esui.get("NewNo").setValue("");
         esui.get("NewAbbr").setValue("");
         esui.get("NewCRFDialog").show();
     },
@@ -364,17 +365,16 @@ es.Views.List = Backbone.View.extend({
      */
     newCRF: function() {
         var data = {
-            no: $.trim(esui.get("NewNo").getValue()),
             abbr: $.trim(esui.get("NewAbbr").getValue())
         };
         
-        console.log("新建CRF-请求", data);
+        console.log("crf/addCRF.do-请求", data);
         
         util.ajax.run({
-            url: "",
+            url: "crf/addCRF.do",
             data: data,
             success: function(response) {
-                console.log("新建CRF-响应", response);
+                console.log("crf/addCRF.do-响应", response);
                 
                 esui.get("NewCRFDialog").hide();
                 es.router.navigate("crf/update/" + response.id, true);
@@ -382,7 +382,8 @@ es.Views.List = Backbone.View.extend({
             mock: MOCK,
             mockData: {
                 success: true,
-                id: 1
+                id: 1,
+                no: "333-1234"
             }
         });
     },
@@ -407,16 +408,17 @@ es.Views.List = Backbone.View.extend({
                         id.push(parseInt(val.id));
                     });
                     var data = {
+                        crf: esui.get("CRF").isChecked(),
                         id: id.join(",")
                     };
                     
-                    console.log("批量删除-请求", data);
+                    console.log("list/batchDelete.do-请求", data);
                     
                     util.ajax.run({
-                        url: "",
+                        url: "list/batchDelete.do",
                         data: data,
                         success: function(response) {
-                            console.log("批量删除-响应", response);
+                            console.log("list/batchDelete.do-响应", response);
                             
                             es.main.queryFirstPage();
                         },
@@ -446,16 +448,17 @@ es.Views.List = Backbone.View.extend({
                 id.push(parseInt(val.id));
             });
             var data = {
+                crf: esui.get("CRF").isChecked(),
                 id: id.join(",")
             };
             
-            console.log("批量提交-请求", data);
+            console.log("list/batchCommit.do-请求", data);
             
             util.ajax.run({
-                url: "",
+                url: "list/batchCommit.do",
                 data: data,
                 success: function(response) {
-                    console.log("批量提交-响应", response);
+                    console.log("list/batchCommit.do-响应", response);
                     
                     es.main.queryFirstPage();
                 },

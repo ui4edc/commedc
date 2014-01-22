@@ -50,7 +50,6 @@ es.Views.Index = Backbone.View.extend({
      * 打开对话框
      */
     openNewCRF: function() {
-    	esui.get("NewNo").setValue("");
         esui.get("NewAbbr").setValue("");
         esui.get("NewCRFDialog").show();
     },
@@ -60,17 +59,16 @@ es.Views.Index = Backbone.View.extend({
      */
     newCRF: function() {
         var data = {
-            no: $.trim(esui.get("NewNo").getValue()),
             abbr: $.trim(esui.get("NewAbbr").getValue())
         };
         
-        console.log("新建CRF-请求", data);
+        console.log("crf/addCRF.do-请求", data);
         
         util.ajax.run({
-            url: "",
+            url: "crf/addCRF.do",
             data: data,
             success: function(response) {
-                console.log("新建CRF-响应", response);
+                console.log("crf/addCRF.do-响应", response);
                 
                 esui.get("NewCRFDialog").hide();
                 es.router.navigate("crf/update/" + response.id, true);
@@ -78,7 +76,8 @@ es.Views.Index = Backbone.View.extend({
             mock: MOCK,
             mockData: {
                 success: true,
-                id: 1
+                id: 1,
+                no: "333-1234"
             }
         });
     },

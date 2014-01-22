@@ -79,12 +79,10 @@ es.Views.CRF = Backbone.View.extend({
     },
     
     renderInfo: function(model, data) {
-        this.hasDoubt = data.hasDoubt;
         this.$("h1").append($.Mustache.render("tpl-crf-title", {
             no: data.no,
             abbr: data.abbr,
             submitBtn: this.canSubmit ? [1] : [],
-            hasDoubt: this.hasDoubt ? [1] : [],
             doubtBtn: this.canDoubt ? [1] : []
         }));
         this.$(".progressbar .progress").text("完成度：" + data.progress);

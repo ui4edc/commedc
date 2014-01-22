@@ -28,9 +28,7 @@ es.Views.Form70 = Backbone.View.extend({
         if (es.main.canDoubt) {
             es.main.$el.append($.Mustache.render("tpl-doubt-dialog"));
         }
-        if (es.main.hasDoubt) {
-            es.main.$el.append($.Mustache.render("tpl-check-doubt-dialog"));
-        }
+        es.main.$el.append($.Mustache.render("tpl-check-doubt-dialog"));
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form70.html").done(function() {

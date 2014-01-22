@@ -39,11 +39,11 @@ var CRF_RANGE = {
 
 var PROGRESS_TYPE = {
     datasource: [
-        {name: "不限制", value: 1},
-        {name: "大于等于", value: 2},
-        {name: "小于等于", value: 3}
+        {name: "不限制", value: 0},
+        {name: "大于等于", value: 1},
+        {name: "小于等于", value: 2}
     ],
-    value: 1
+    value: 0
 };
 
 var DEFAULT_OPTION = {
