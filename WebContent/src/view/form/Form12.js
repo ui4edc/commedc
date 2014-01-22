@@ -49,7 +49,7 @@ es.Views.Form12 = Backbone.View.extend({
                 disabled: disabled
             }));
             me.$(".material").prepend($.Mustache.render("tpl-form12-material", {
-                material: data.data.material,
+                other: data.data.other,
                 disabled: disabled
             }));
             
@@ -77,29 +77,35 @@ es.Views.Form12 = Backbone.View.extend({
             case 1: esui.get("Drug1").setChecked(true); this.$(".drug").show(); break;
             case 3: esui.get("Drug3").setChecked(true);
         }
-        switch (data.hasMaterial) {
+        switch (data.hasOther) {
             case 1: esui.get("Material1").setChecked(true); this.$(".material").show(); break;
             case 3: esui.get("Material3").setChecked(true);
         }
         $.each(data.food, function(index, val) {
-            $.each(val.value.split(","), function(index2, val2) {
-                esui.get("FoodAllergy" + (index + 1) + "_" + val2).setChecked(true);
-            });
+            if (val.value != "") {
+                $.each(val.value.split(","), function(index2, val2) {
+                    esui.get("FoodAllergy" + (index + 1) + "_" + val2).setChecked(true);
+                });
+            }
         });
         $.each(data.drug, function(index, val) {
-            $.each(val.value.split(","), function(index2, val2) {
-                esui.get("DrugAllergy" + (index + 1) + "_" + val2).setChecked(true);
-            });
+            if (val.value != "") {
+                $.each(val.value.split(","), function(index2, val2) {
+                    esui.get("DrugAllergy" + (index + 1) + "_" + val2).setChecked(true);
+                });
+            }
             
             var type = esui.get("DrugType" + val.no);
             type.datasource = DRUG_TYPE.datasource;
             type.render();
             type.setValue(val.type);
         });
-        $.each(data.material, function(index, val) {
-            $.each(val.value.split(","), function(index2, val2) {
-                esui.get("MaterialAllergy" + (index + 1) + "_" + val2).setChecked(true);
-            });
+        $.each(data.other, function(index, val) {
+            if (val.value != "") {
+                $.each(val.value.split(","), function(index2, val2) {
+                    esui.get("MaterialAllergy" + (index + 1) + "_" + val2).setChecked(true);
+                });
+            }
         });
         
         //事件
@@ -144,7 +150,7 @@ es.Views.Form12 = Backbone.View.extend({
     
     addMaterial: function(e) {
         $(e.target).parent().before($.Mustache.render("tpl-form12-material", {
-            material: [{no: this.$(".material-block").length + 1}],
+            other: [{no: this.$(".material-block").length + 1}],
             disabled: ""
         }));
         esui.init();
@@ -154,16 +160,61 @@ es.Views.Form12 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           
+           smoke: parseInt(esui.get("Smoke1").getGroup().getValue()),
+           drink: parseInt(esui.get("Drink1").getGroup().getValue()),
+           hasFood: parseInt(esui.get("Food1").getGroup().getValue()),
+           hasDrug: parseInt(esui.get("Drug1").getGroup().getValue()),
+           hasOther: parseInt(esui.get("Material1").getGroup().getValue()),
+           food: [],
+           drug: [],
+           other: []
        };
        
-       console.log("保存表单-请求", data);
+       if (data.hasFood == 1) {
+           var food = me.$(".food-block");
+           $.each(food, function(index, val) {
+               var item = {},
+                   no = index + 1;
+               data.food.push({
+                   name: $.trim(esui.get("FoodName" + no).getValue()),
+                   value: esui.get("FoodAllergy" + no + "_1").getGroup().getValue(),
+                   txt: $.trim(esui.get("CustomFoodAllergyName" + no).getValue())
+               });
+           });
+       }
+       if (data.hasDrug == 1) {
+           var drug = me.$(".drug-block");
+           $.each(drug, function(index, val) {
+               var item = {},
+                   no = index + 1;
+               data.drug.push({
+                   name: $.trim(esui.get("DrugName" + no).getValue()),
+                   value: esui.get("DrugAllergy" + no + "_1").getGroup().getValue(),
+                   txt: $.trim(esui.get("CustomDrugAllergyName" + no).getValue()),
+                   type: esui.get("DrugType" + no).value
+               });
+           });
+       }
+       if (data.hasOther == 1) {
+           var material = me.$(".material-block");
+           $.each(material, function(index, val) {
+               var item = {},
+                   no = index + 1;
+               data.other.push({
+                   name: $.trim(esui.get("MaterialName" + no).getValue()),
+                   value: esui.get("MaterialAllergy" + no + "_1").getGroup().getValue(),
+                   txt: $.trim(esui.get("CustomMaterialAllergyName" + no).getValue())
+               });
+           });
+       }
+       
+       console.log("crf/savePersonHistory.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/savePersonHistory.do",
             data: data,
             success: function(response) {
-                console.log("保存表单-响应:", response);
+                console.log("crf/savePersonHistory.do-响应:", response);
                 
                 esui.Dialog.alert({
                     title: "保存",

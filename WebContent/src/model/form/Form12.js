@@ -13,13 +13,13 @@ es.Models.Form12 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("获取表单-请求", args);
+        console.log("crf/getPersonHistory.do-请求", args);
         
         util.ajax.run({
-            url: "",
+            url: "crf/getPersonHistory.do",
             data: args,
             success: function(response) {
-                console.log("获取表单-响应", response);
+                console.log("crf/getPersonHistory.do-响应", response);
                 
                 $.each(response.data.food, function(index, val) {
                     val.no = index + 1;
@@ -27,7 +27,7 @@ es.Models.Form12 = Backbone.Model.extend({
                 $.each(response.data.drug, function(index, val) {
                     val.no = index + 1;
                 });
-                $.each(response.data.material, function(index, val) {
+                $.each(response.data.other, function(index, val) {
                     val.no = index + 1;
                 });
                 
@@ -37,22 +37,21 @@ es.Models.Form12 = Backbone.Model.extend({
             mockData: {
                 success: true,
                 data: {
-                    smoke: 1,
-                    drink: 1,
+                    smoke: 2,
+                    drink: 2,
                     hasFood: 1,
                     hasDrug: 1,
-                    hasMaterial: 1,
+                    hasOther: 1,
                     food: [
-                        {name: "1", value: "1,2,3", text: ""},
-                        {name: "2", value: "7", text: "text"}
+                        {name: "", value: "1", txt: ""}
                     ],
                     drug: [
-                        {name: "1", value: "1,2,3", text: "", type: 1},
-                        {name: "2", value: "7", text: "text", type: 2}
+                        {name: "1", value: "1,2,3", txt: "", type: 1},
+                        {name: "2", value: "8", txt: "txt", type: 2}
                     ],
-                    material: [
-                        {name: "1", value: "1,2,3", text: ""},
-                        {name: "2", value: "7", text: "text"}
+                    other: [
+                        {name: "1", value: "1,2,3", txt: ""},
+                        {name: "2", value: "8", txt: "txt"}
                     ]
                 }
             }

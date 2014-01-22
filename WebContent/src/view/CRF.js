@@ -170,19 +170,16 @@ es.Views.CRF = Backbone.View.extend({
     },
     
     /*
-     * 打开对话框
+     * 打开质疑对话框
      */
     openDoubtCRF: function() {
-        esui.init(this.el, {
-            Field: {
-                datasource: [{name: "请选择", value: 0}],
-                value: 0
-            }
-        });
+        esui.init();
         esui.get("Description").setValue("");
         esui.get("DoubtDialog").show();
         
-        var data = {};
+        var data = {
+            menu: parseInt(this.$(".menu-item-active").attr("id").replace("TreeNode", ""), 10)
+        };
         
         console.log("获取质疑字段-请求", data);
         
@@ -192,18 +189,21 @@ es.Views.CRF = Backbone.View.extend({
             success: function(response) {
                 console.log("获取质疑字段-响应", response);
                 
+                var datasource = [];
+                $.each(response.data, function(index, val) {
+                    datasource.push({name: val.name, value: val.id});
+                });
                 var field = esui.get("Field");
-                field.datasource = response.data;
-                field.datasource.unshift({name: "请选择", value: 0});
+                field.datasource = datasource;
                 field.render();
-                field.setValue(0);
+                field.setValue(datasource[0].value);
             },
             mock: MOCK,
             mockData: {
                 success: true,
                 data: [
-                    {name: "出生日期", value: 1},
-                    {name: "身高", value: 2}
+                    {name: "出生日期", id: 1},
+                    {name: "身高", id: 2}
                 ]
             }
         });
@@ -213,9 +213,12 @@ es.Views.CRF = Backbone.View.extend({
      * 提交质疑
      */
     doubtCRF: function() {
+        var me = es.main;
+        
         var data = {
             id: es.main.crfId,
-            field: esui.get("Field").value,
+            menu: parseInt(me.$(".menu-item-active").attr("id").replace("TreeNode", ""), 10),
+            fieldId: esui.get("Field").value,
             description: $.trim(esui.get("Description").getValue())
         };
         
@@ -248,7 +251,8 @@ es.Views.CRF = Backbone.View.extend({
      */
     openCheckDoubt: function() {
         var data = {
-            id: es.main.crfId
+            id: es.main.crfId,
+            menu: parseInt(this.$(".menu-item-active").attr("id").replace("TreeNode", ""), 10)
         };
         
         console.log("查看质疑-请求", data);

@@ -67,8 +67,8 @@
         <input type="checkbox" hidefocus="true" title="喉头水肿" name="food-allergy{{no}}" value="4" ui="type:CheckBox;id:FoodAllergy{{no}}_4;{{disabled}}" />
         <input type="checkbox" hidefocus="true" title="过敏性休克" name="food-allergy{{no}}" value="5" ui="type:CheckBox;id:FoodAllergy{{no}}_5;{{disabled}}" />
         <input type="checkbox" hidefocus="true" title="消化系统症状" name="food-allergy{{no}}" value="6" ui="type:CheckBox;id:FoodAllergy{{no}}_6;{{disabled}}" />
-        <input type="checkbox" hidefocus="true" title="其他" name="food-allergy{{no}}" value="7" ui="type:CheckBox;id:FoodAllergy{{no}}_7;{{disabled}}" />
-        <input type="text" value="{{text}}" ui="type:TextInput;id:CustomFoodAllergyName{{no}};width:80;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="其他" name="food-allergy{{no}}" value="8" ui="type:CheckBox;id:FoodAllergy{{no}}_8;{{disabled}}" />
+        <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomFoodAllergyName{{no}};width:80;{{disabled}}" />
     </div>
 </div>
 {{/food}}
@@ -92,14 +92,14 @@
         <input type="checkbox" hidefocus="true" title="消化系统症状" name="drug-allergy{{no}}" value="6" ui="type:CheckBox;id:DrugAllergy{{no}}_6;{{disabled}}" />
         <input type="checkbox" hidefocus="true" title="皮试阳性" name="drug-allergy{{no}}" value="7" ui="type:CheckBox;id:DrugAllergy{{no}}_7;{{disabled}}" />
         <input type="checkbox" hidefocus="true" title="其他" name="drug-allergy{{no}}" value="8" ui="type:CheckBox;id:DrugAllergy{{no}}_8;{{disabled}}" />
-        <input type="text" value="{{text}}" ui="type:TextInput;id:CustomDrugAllergyName1;width:80;{{disabled}}" />
+        <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomDrugAllergyName{{no}};width:80;{{disabled}}" />
     </div>
 </div>
 {{/drug}}
 </script>
 
 <script id="tpl-form12-material" type="text/html">
-{{#material}}
+{{#other}}
 <div class="material-block block">
     <div>
         <strong>过敏物质名称</strong>
@@ -112,9 +112,9 @@
         <input type="checkbox" hidefocus="true" title="喉头水肿" name="material-allergy{{no}}" value="4" ui="type:CheckBox;id:MaterialAllergy{{no}}_4;{{disabled}}" />
         <input type="checkbox" hidefocus="true" title="过敏性休克" name="material-allergy{{no}}" value="5" ui="type:CheckBox;id:MaterialAllergy{{no}}_5;{{disabled}}" />
         <input type="checkbox" hidefocus="true" title="消化系统症状" name="material-allergy{{no}}" value="6" ui="type:CheckBox;id:MaterialAllergy{{no}}_6;{{disabled}}" />
-        <input type="checkbox" hidefocus="true" title="其他" name="material-allergy{{no}}" value="7" ui="type:CheckBox;id:MaterialAllergy{{no}}_7;{{disabled}}" />
-        <input type="text" value="{{text}}" ui="type:TextInput;id:CustomMaterialAllergyName{{no}};width:80;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="其他" name="material-allergy{{no}}" value="8" ui="type:CheckBox;id:MaterialAllergy{{no}}_8;{{disabled}}" />
+        <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomMaterialAllergyName{{no}};width:80;{{disabled}}" />
     </div>
 </div>
-{{/material}}
+{{/other}}
 </script>

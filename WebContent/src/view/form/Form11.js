@@ -170,7 +170,15 @@ es.Views.Form11 = Backbone.View.extend({
        var indate = T.date.parse(data.indate).getTime(),
            outdate = T.date.parse(data.outdate).getTime();
        if (indate > outdate) {
-           esui.Dialog.alert({title: "提示", content: "入院日期不能晚于出院日期！"});
+           esui.Dialog.alert({title: "提示", content: "入院日期不能晚于出院日期"});
+           return;
+       }
+       if (data.yyks == 6 && data.yykstxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写用药科室"});
+           return;
+       }
+       if (data.feemode == 5 && data.feemodetxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写医疗费用方式"});
            return;
        }
        
