@@ -87,7 +87,7 @@ es.Views.Data = Backbone.View.extend({
             }
         };
         esui.get("ProgressType").onchange = function(value) {
-            if (value == 1) {
+            if (value == 0) {
                 $("#ctrltextProgress").hide();
             } else {
                 $("#ctrltextProgress").show();
@@ -130,22 +130,20 @@ es.Views.Data = Backbone.View.extend({
         this.args.no = $.trim(esui.get("No").getValue());
         this.args.abbr = $.trim(esui.get("Abbr").getValue());
         if (esui.get("CreateRangeType").value == 1) {
-            this.args.createDate = null;
+            this.args.createDateFrom = null;
+            this.args.createDateTo = null;
         } else {
             var date = esui.get("CreateRange").getValue().split(",");
-            this.args.createDate = {
-                begin: date[0],
-                end: date[1]
-            };
+            this.args.createDateFrom = date[0];
+            this.args.createDateTo = date[1];
         }
         if (esui.get("LastModifyRangeType").value == 1) {
-            this.args.lastModified = null;
+            this.args.lastModifiedFrom = null;
+            this.args.lastModifiedTo = null;
         } else {
             var date = esui.get("LastModifyRange").getValue().split(",");
-            this.args.lastModified = {
-                begin: date[0],
-                end: date[1]
-            };
+            this.args.lastModifiedFrom = date[0];
+            this.args.lastModifiedTo = date[1];
         }
         this.args.progressType = esui.get("ProgressType").value;
         if (esui.get("ProgressType").value == 1) {
@@ -153,16 +151,16 @@ es.Views.Data = Backbone.View.extend({
         } else {
             this.args.progress = $.trim(esui.get("Progress").getValue());
         }
+        
         this.args.undealed = esui.get("Undealed").isChecked();
         this.args.doubter = $.trim(esui.get("Doubter").getValue());
         if (esui.get("DoubtRangeType").value == 1) {
-            this.args.doubtDate = null;
+            this.args.doubtDateFrom = null;
+            this.args.doubtDateTo = null;
         } else {
             var date = esui.get("DoubtRange").getValue().split(",");
-            this.args.doubtDate = {
-                begin: date[0],
-                end: date[1]
-            };
+            this.args.doubtDateFrom = date[0];
+            this.args.doubtDateTo = date[1];
         }
     },
     
@@ -200,7 +198,7 @@ es.Views.Data = Backbone.View.extend({
         this.queryFirstPage();
         
         //质疑记录
-        if (this.args.type == 9) {
+        if (this.args.type == 1) {
             this.$(".doubt-form").show();
         } else {
             this.$(".doubt-form").hide();
@@ -261,7 +259,7 @@ es.Views.Data = Backbone.View.extend({
                 }
             ];
             //质疑记录
-            if (this.args.type == 9) {
+            if (this.args.type == 1) {
                 table.fields.splice(2, 0,
                 {
                     field: "doubter",
