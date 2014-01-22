@@ -128,6 +128,16 @@ var DRUG_TYPE = {
     value: 1
 };
 
+var GXB_LEVEL = {
+    datasource: [
+        {name: "I", value: 1},
+        {name: "II", value: 2},
+        {name: "III", value: 3},
+        {name: "IV", value: 4}
+    ],
+    value: 1
+};
+
 var GXY_LEVEL = {
     datasource: [
         {name: "1级", value: 1},

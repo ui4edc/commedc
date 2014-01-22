@@ -216,10 +216,7 @@ es.Views.Form12 = Backbone.View.extend({
             success: function(response) {
                 console.log("crf/savePersonHistory.do-响应:", response);
                 
-                esui.Dialog.alert({
-                    title: "保存",
-                    content: "保存成功！"
-                });
+                esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 
                 //更新进度
                 me.updateProgress(response.progress);

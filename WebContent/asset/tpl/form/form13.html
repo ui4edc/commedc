@@ -12,12 +12,10 @@
         <span class="f">
             <input type="checkbox" hidefocus="true" title="心血管疾病：" name="disease-type" value="1" ui="type:CheckBox;id:DiseaseType1;{{disabled}}" />
             <input type="checkbox" hidefocus="true" title="冠心病" name="disease-type1" value="1" ui="type:Radio;id:DiseaseType1_1;{{disabled}}" />
-            <span style="display:none" class="heart">，心功能分级 NYHA：
-                <input type="radio" hidefocus="true" title="I" name="heart" value="1" ui="type:Radio;id:Heart1;{{disabled}}" checked />
-                <input type="radio" hidefocus="true" title="II" name="heart" value="2" ui="type:Radio;id:Heart2;{{disabled}}" />
-                <input type="radio" hidefocus="true" title="III" name="heart" value="3" ui="type:Radio;id:Heart3;{{disabled}}" />
-                <input type="radio" hidefocus="true" title="IV" name="heart" value="4" ui="type:Radio;id:Heart4;{{disabled}}" />
-            </span>
+            <span style="display:none" class="heart">，心功能分级 NYHA：</span>
+        </span>
+        <div ui="type:Select;id:GXBLevel;width:50;{{disabled}}" style="display:none"></div>
+        <span class="f">&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="checkbox" hidefocus="true" title="高血压" name="disease-type1" value="2" ui="type:Radio;id:DiseaseType1_2;{{disabled}}" />
         </span>
         <div ui="type:Select;id:GXYLevel;width:100;{{disabled}}" style="display:none"></div>
@@ -41,7 +39,7 @@
     </div>
     <div>
         <input type="checkbox" hidefocus="true" title="其他" name="disease-type" value="8" ui="type:CheckBox;id:DiseaseType8;{{disabled}}" />
-        <input type="text" ui="type:TextInput;id:CustomDiseaseTypeName;width:200;{{disabled}}" />
+        <input type="text" value="{{data.diseasetxt}}" ui="type:TextInput;id:CustomDiseaseTypeName;width:200;{{disabled}}" />
     </div>
 </div>
 
@@ -61,7 +59,7 @@
     </div>
     <div>
         <input type="checkbox" hidefocus="true" title="其他" name="a-disease-type" value="6" ui="type:CheckBox;id:ADiseaseType6;{{disabled}}" />
-        <input type="text" ui="type:TextInput;id:CustomADiseaseTypeName;width:200;{{disabled}}" />
+        <input type="text" value="{{data.allergytxt}}" ui="type:TextInput;id:CustomADiseaseTypeName;width:200;{{disabled}}" />
     </div>
 </div>
 {{#save}}

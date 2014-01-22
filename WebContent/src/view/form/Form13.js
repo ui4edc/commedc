@@ -37,20 +37,61 @@ es.Views.Form13 = Backbone.View.extend({
                 disabled: es.main.editable ? "" : "disabled:true",
                 save: es.main.editable ? [1] : []
             });
-            me.initCtrl();
+            me.initCtrl(data.data);
         });
     },
     
-    initCtrl: function() {
+    initCtrl: function(data) {
         //赋值
+        var me = this;
         esui.init(document.body, {
+            GXBLevel: GXB_LEVEL,
             GXYLevel: GXY_LEVEL,
             TNBType: TNB_Type
         });
+        switch (data.hasDisease) {
+            case 1: esui.get("Disease1").setChecked(true); this.$(".disease").show(); break;
+            case 3: esui.get("Disease3").setChecked(true);
+        }
+        switch (data.hasAllergy) {
+            case 1: esui.get("ADisease1").setChecked(true); this.$(".a-disease").show(); break;
+            case 3: esui.get("ADisease3").setChecked(true);
+        }
+        if (data.disease != "") {
+            $.each(data.disease.split(","), function(index, val) {
+                esui.get("DiseaseType" + val).setChecked(true);
+                if (val == "7") {
+                    me.$("#ctrlselectTNBType").show();
+                    esui.get("TNBType").setValue(data.tnb);
+                }
+            });
+        }
+        if (data.disease1 != "") {
+            $.each(data.disease1.split(","), function(index, val) {
+                esui.get("DiseaseType1_" + val).setChecked(true);
+                if (val == "1") {
+                    me.$(".heart").show();
+                    me.$("#ctrlselectGXBLevel").show();
+                    esui.get("GXBLevel").setValue(data.gxb);
+                }
+                if (val == "2") {
+                    me.$("#ctrlselectGXYLevel").show();
+                    esui.get("GXYLevel").setValue(data.gxy);
+                }
+            });
+        }
+        if (data.disease2 != "") {
+            $.each(data.disease2.split(","), function(index, val) {
+                esui.get("DiseaseType2_" + val).setChecked(true);
+            });
+        }
+        if (data.allergy != "") {
+            $.each(data.allergy.split(","), function(index, val) {
+                esui.get("ADiseaseType" + val).setChecked(true);
+            });
+        }
         
         //事件
-        var me = this;
-        
         esui.get("Disease1").onclick = function() {me.$(".disease").show();};
         esui.get("Disease2").onclick = function() {me.$(".disease").hide();};
         esui.get("Disease3").onclick = function() {me.$(".disease").hide();};
@@ -60,8 +101,10 @@ es.Views.Form13 = Backbone.View.extend({
         esui.get("DiseaseType1_1").onclick = function() {
             if (esui.get("DiseaseType1_1").isChecked()) {
                 me.$(".heart").show();
+                me.$("#ctrlselectGXBLevel").show();
             } else {
                 me.$(".heart").hide();
+                me.$("#ctrlselectGXBLevel").hide();
             }
         };
         esui.get("DiseaseType1_2").onclick = function() {
@@ -91,21 +134,28 @@ es.Views.Form13 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           
+           hasDisease: parseInt(esui.get("Disease1").getGroup().getValue()),
+           hasAllergy: parseInt(esui.get("ADisease1").getGroup().getValue()),
+           disease: esui.get("DiseaseType1").getGroup().getValue(),
+           disease1: esui.get("DiseaseType1_1").getGroup().getValue(),
+           disease2: esui.get("DiseaseType2_1").getGroup().getValue(),
+           diseasetxt: $.trim(esui.get("CustomDiseaseTypeName").getValue()),
+           gxb: esui.get("GXBLevel").value,
+           gxy: esui.get("GXYLevel").value,
+           tnb: esui.get("TNBType").value,
+           allergy: esui.get("ADiseaseType1").getGroup().getValue(),
+           allergytxt: $.trim(esui.get("CustomADiseaseTypeName").getValue())
        };
        
-       console.log("保存表单-请求", data);
+       console.log("crf/savePersonHistory.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/savePersonHistory.do",
             data: data,
             success: function(response) {
-                console.log("保存表单-响应:", response);
+                console.log("crf/savePersonHistory.do-响应:", response);
                 
-                esui.Dialog.alert({
-                    title: "保存",
-                    content: "保存成功！"
-                });
+                esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 
                 //更新进度
                 me.updateProgress(response.progress);
