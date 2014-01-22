@@ -66,7 +66,7 @@
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
 			us.progress as progress
-		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus}
+		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus} and p.no=us.no
 		 <if test="abbr != null" >
         	and p.abbr=#{abbr}
       	</if>
@@ -87,9 +87,8 @@
 			p.id as id,
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
-			us.progress as progress,
-			
-		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus}
+			us.progress as progress
+		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus} and p.no=us.no
 		 <if test="abbr != null" >
         	and p.abbr=#{abbr}
       	</if>
@@ -103,6 +102,73 @@
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
 	</select>
-	
-	
+	<select id="getProgress" parameterType="string" resultType="int">
+		select progress from crf_user_sign where no=#{no}
+	</select>
+	<select id="getCRFSumm" parameterType="int" resultType="cn.com.ecrf.trq.model.list.ListReturn">
+		select 
+			p.abbr as abbr,
+			p.no as no,
+			p.id as id,
+			us.cro_createtime as createDate,
+			us.cro_updatetime as lastModified,
+			us.progress as progress
+		 from crf_patient_info p, crf_user_sign us where and p.no=us.no and p.id=#{id}
+	</select>
+	<select id="getBasicInfo" parameterType="int" resultType="cn.com.ecrf.trq.model.PatientInfoCase">
+		select 
+			id as id,
+			no as no,
+			name as name,
+			abbr as abbr,
+			birthday as birthday,
+			age as age,
+			weight as weight,
+			weightud as weightud,
+			sex as sex,
+			ethic as ethic,
+			hys as hys,
+			height as height,
+			heightud as heightud,
+			yyks as yyks,
+			ryrq as ryrq,
+			cyrq as cyrq,
+			ylfyfs as ylfyfs
+			from crf_patient_info where id=#{id}
+	</select>
+	<insert id="insertPersonHistory" parameterType="cn.com.ecrf.trq.model.PersonAllergicHistoryCase">
+	    insert into crf_person_history (no, smoke, drink, drug, food,
+	      other, druglb, foodlb, otherlb, create_time)
+	    values (#{no}, #{smoke}, #{drug}, #{food}, #{other}, 
+	      #{druglb}, #{foodlb}, current_timestamp());
+	</insert>
+	<update id="updatePersonHistory" parameterType="cn.com.ecrf.trq.model.PersonAllergicHistoryCase" >
+		update crf_person_history set
+		smoke=#{smoke}, drink=#{drink}, drug=#{drug},
+		food=#{food}, other=#{other}, druglb=#{druglb}, foodlb=#{foodlb}, otherlb=#{otherlb}, update_time=now()
+  		where no=#{no}
+	</update>
+	<update id="updateProgress" parameterType="int">
+		update crf_patient_info p, crf_user_sign us set us.progress=#{progress} and p.no=us.no and p.id=#{id}
+	</update>
+	<select id="getPastHistory" parameterType="int" resultType="cn.com.ecrf.trq.model.PastHistoryCase">
+		select 
+			id as id,
+			no as no,
+			disease as disease,
+			diseaselb as diseaselb,
+			allergy as allergy,
+			allergylb as allergylb
+			from crf_past_history ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
+	</select>
+	<insert id="insertPersonHistory" parameterType="cn.com.ecrf.trq.model.PastHistoryCase">
+	    insert into crf_past_history (no, disease, diseaselb, allergy, allergylb, create_time)
+	    values (#{no}, #{disease}, #{diseaselb}, #{allergy}, #{allergylb}, current_timestamp());
+	</insert>
+	<update id="updatePastHistory" parameterType="cn.com.ecrf.trq.model.PastHistoryCase" >
+		update crf_past_history set
+		disease=#{disease}, diseaselb=#{diseaselb}, allergy=#{allergy},
+		allergylb=#{allergylb}, update_time=now()
+  		where no=#{no}
+	</update>
 </mapper>

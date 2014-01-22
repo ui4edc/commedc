@@ -20,7 +20,9 @@ import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
+import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
+import cn.com.ecrf.trq.vo.PersonalHistoryVo;
 
 @Controller
 public class CRFController {
@@ -47,20 +49,29 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/addCRF", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getCRFBasic(HttpServletRequest request) {
+	public Map<String, Object> addCRF(HttpServletRequest request) {
 		String abbr = request.getParameter("abbr");
 		Map<String, Object> result = cRFService.genCRFNo(abbr);
 		
 		return result;
 	}
 	
-	@RequestMapping(value="/crf/update/{id}", method = RequestMethod.POST)
+	@RequestMapping(value="/crf/getCRFSumm", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getCRFSumm(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = cRFService.getCRFSumm(id);
+		
+		return result;
+	}
+	
+	/*@RequestMapping(value="/crf/update/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getCRFBasic(@PathVariable int id, HttpServletRequest request) {
 		PatientInfoVo patientInfoVo = cRFService.getPatientInfo(id);
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
 		return result;
-	}
+	}*/
 	
 	
 	/**
@@ -71,8 +82,46 @@ public class CRFController {
 	 */
 	@RequestMapping(value="/crf/saveBasicInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> saveBasicInfo(@RequestBody PatientInfoVo patientInfoVo, HttpServletRequest request) {
+	public Map<String, Object> saveBasicInfo(/*@RequestBody*/ PatientInfoVo patientInfoVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.savePatientInfo(patientInfoVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getBasicInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getBasicInfo(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = cRFService.getBasicInfo(id);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getPersonHistory", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getPersonHistory(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = cRFService.getPersonHistory(id);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/savePersonHistory", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> savePersonHistory(/*@RequestBody*/ PersonalHistoryVo personalHistoryVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.savePersonHistory(personalHistoryVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getPastHistory", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getPastHistory(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = cRFService.getPastHistory(id);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/savePastHistory", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> savePastHistory(/*@RequestBody*/ PastHistoryVo pastHistoryVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.savePastHistory(pastHistoryVo);
 		return result;
 	}
 	

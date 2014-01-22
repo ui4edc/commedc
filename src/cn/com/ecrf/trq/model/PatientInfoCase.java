@@ -39,6 +39,11 @@ public class PatientInfoCase {
 	private Date cyrq;
 	//医疗费用方式
 	private String ylfyfs;
+	
+	private boolean heightud;
+	
+	private boolean weightud;
+	
 	public int getId() {
 		return id;
 	}
@@ -128,6 +133,18 @@ public class PatientInfoCase {
 	}
 	public void setYlfyfs(String ylfyfs) {
 		this.ylfyfs = ylfyfs;
+	}
+	public boolean isHeightud() {
+		return heightud;
+	}
+	public void setHeightud(boolean heightud) {
+		this.heightud = heightud;
+	}
+	public boolean isWeightud() {
+		return weightud;
+	}
+	public void setWeightud(boolean weightud) {
+		this.weightud = weightud;
 	}
 	
 	

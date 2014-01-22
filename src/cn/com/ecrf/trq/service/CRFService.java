@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.Organization;
+import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
+import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
 import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
@@ -28,7 +30,9 @@ import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
+import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
+import cn.com.ecrf.trq.vo.PersonalHistoryVo;
 import cn.com.ecrf.trq.vo.list.ListConditionVo;
 import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 import cn.com.ecrf.trq.vo.list.ListReturnVo;
@@ -39,6 +43,8 @@ public class CRFService {
 	private CRFMapper cRFMapper;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private ConvertorService convertorService;
 	
 	public ListNotifyVo getNotifyInfo() {
 		// TODO Auto-generated method stub
@@ -140,38 +146,13 @@ public class CRFService {
 		return total;
 	}
 
-	public PatientInfoVo getPatientInfo(int id) {
-		// TODO Auto-generated method stub
-		
-		return null;
-	}
-
 	public PhaseSignPage getPhaseSignInfo(int id) {
 		// TODO Auto-generated method stub
 		
 		return null;
 	}
 
-	public Map<String, Object> savePatientInfo(PatientInfoVo patientInfoVo) {
-		// TODO Auto-generated method stub
-		Map<String, Object> result;
-		try{
-			PatientInfoCase patientInfoCase =  convertPatientFromVoToModel(patientInfoVo);
-			if (patientInfoVo.getId() > 0){
-				//update
-				cRFMapper.updatePatientInfo(patientInfoCase);
-			}else{
-				//insert
-				cRFMapper.insertPatientInfo(patientInfoCase);
-			}
-			result = AjaxReturnUtils.generateAjaxReturn(true, null);
-		}catch(Exception e){
-			e.printStackTrace();
-			result = AjaxReturnUtils.generateAjaxReturn(false, "保存基本信息失败");
-		}
-		
-		return result;
-	}
+	
 
 	private PatientInfoCase convertPatientFromVoToModel(
 			PatientInfoVo patientInfoVo) {
@@ -187,19 +168,21 @@ public class CRFService {
 			
 		if (StringUtils.isNotBlank(patientInfoVo.getOutDate()))
 			patientInfoCase.setCyrq(sdf.parse(patientInfoVo.getOutDate()));
-		FormEnumObject ethicObj = new FormEnumObject(patientInfoVo.getEthic(), patientInfoVo.getEthictxt(), FormEnumValue.ETHIC);
+		FormEnumObject ethicObj = new FormEnumObject(patientInfoVo.getEthic(), null, FormEnumValue.ETHIC);
 		patientInfoCase.setEthic(convertIDToContent(ethicObj));
 		patientInfoCase.setHeight(Integer.parseInt(patientInfoVo.getHeight()));
+		patientInfoCase.setHeightud(patientInfoVo.isHeightud());
 		FormEnumObject hysObj = new FormEnumObject(patientInfoVo.getHys(), null, FormEnumValue.HYS);
 		patientInfoCase.setHys(convertIDToContent(hysObj));
 		patientInfoCase.setId(patientInfoVo.getId());
-		patientInfoCase.setName(patientInfoVo.getName());
+		//patientInfoCase.setName(patientInfoVo.getName());
 		patientInfoCase.setNo(patientInfoVo.getNo());
 		if (StringUtils.isNotBlank(patientInfoVo.getInDate()))
 			patientInfoCase.setRyrq(sdf.parse(patientInfoVo.getInDate()));
 		FormEnumObject sexObj = new FormEnumObject(patientInfoVo.getSex(), null, FormEnumValue.SEX);
 		patientInfoCase.setSex(convertIDToContent(sexObj));
 		patientInfoCase.setWeight(Float.parseFloat(patientInfoVo.getWeight()));
+		patientInfoCase.setWeightud(patientInfoVo.isWeightud());
 		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getFeemode(), patientInfoVo.getFeemodetxt(), FormEnumValue.YLFYFS);
 		patientInfoCase.setYlfyfs(convertIDToContent(ylfyfsObj));
 /*		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
@@ -219,6 +202,58 @@ public class CRFService {
 			e.printStackTrace();
 		}
 		return patientInfoCase;
+	}
+	
+	private PatientInfoVo convertPatientFromModelToVo(
+			PatientInfoCase patientInfoCase) {
+		// TODO Auto-generated method stub
+		PatientInfoVo patientInfoVo = new PatientInfoVo();
+		patientInfoVo.setAbbr(patientInfoCase.getAbbr());
+		patientInfoVo.setAge(""+patientInfoCase.getAge());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+		if (patientInfoCase.getBirthday() != null)
+			patientInfoVo.setBirthday(sdf.format(patientInfoCase.getBirthday()));
+		if (patientInfoCase.getCyrq() != null)
+			patientInfoVo.setOutDate(sdf.format(patientInfoCase.getCyrq()));
+		FormEnumObject ethicObj = new FormEnumObject(patientInfoCase.getEthic(), FormEnumValue.ETHIC);
+		patientInfoVo.setEthic(convertContentToID(ethicObj));
+		patientInfoVo.setHeight(patientInfoVo.getHeight());
+		patientInfoVo.setHeightud(patientInfoVo.isHeightud());
+		FormEnumObject hysObj = new FormEnumObject(patientInfoCase.getHys(), FormEnumValue.HYS);
+		patientInfoVo.setHys(convertContentToID(hysObj));
+		patientInfoVo.setId(patientInfoVo.getId());
+		//patientInfoCase.setName(patientInfoVo.getName());
+		patientInfoVo.setNo(patientInfoVo.getNo());
+		if (patientInfoCase.getRyrq() != null)
+			patientInfoVo.setInDate(sdf.format(patientInfoVo.getInDate()));
+		FormEnumObject sexObj = new FormEnumObject(patientInfoCase.getSex(), FormEnumValue.SEX);
+		patientInfoVo.setSex(convertContentToID(sexObj));
+		patientInfoVo.setWeight(""+patientInfoCase.getWeight());
+		patientInfoVo.setWeightud(patientInfoCase.isWeightud());
+		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoCase.getYlfyfs(), FormEnumValue.YLFYFS);
+		patientInfoVo.setYyks(convertContentToID(ylfyfsObj));
+		if (StringUtils.isNotBlank(ylfyfsObj.getOther()))
+			patientInfoVo.setYykstxt(ylfyfsObj.getOther());
+/*		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
+		//JSONArray jsonArray = new JSONArray();
+		for (int i=0;patientInfoVo.getYyks() != null && i< patientInfoVo.getYyks().size();i++){
+			CheckBoxVo checkBoxVo = (CheckBoxVo)patientInfoVo.getYyks().get(i);
+			FormEnumObject yyksObj = new FormEnumObject(checkBoxVo.getId(), checkBoxVo.getOther(), FormEnumValue.YYKS);
+			convertIDToContent(yyksObj);
+			yyksobjs.add(yyksObj);
+		}
+		JSONUtils<FormEnumObject> util = new JSONUtils<FormEnumObject>(FormEnumObject.class);
+		patientInfoCase.setYyks(util.convertFromList(yyksobjs));*/
+		FormEnumObject yyksObj = new FormEnumObject(patientInfoCase.getYyks(), FormEnumValue.YYKS);
+		patientInfoVo.setYyks(convertContentToID(yyksObj));
+		if (StringUtils.isNotBlank(yyksObj.getOther()))
+			patientInfoVo.setYykstxt(yyksObj.getOther());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return patientInfoVo;
 	}
 
 	private String convertIDToContent(FormEnumObject obj) {
@@ -277,6 +312,138 @@ public class CRFService {
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
+		return result;
+	}
+
+	public Map<String, Object> getCRFSumm(String id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			ListReturn listReturn = cRFMapper.getCRFSumm(Integer.parseInt(id));
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			result.put("abbr", listReturn.getAbbr());
+			result.put("no", listReturn.getNo());
+			result.put("progress", listReturn.getProgress() + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	public Map<String, Object> getBasicInfo(String id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(Integer.parseInt(id));
+			PatientInfoVo patientInfoVo = convertPatientFromModelToVo(patientInfoCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
+		return result;
+	}
+
+	public Map<String, Object> savePatientInfo(PatientInfoVo patientInfoVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result;
+		try{
+			PatientInfoCase patientInfoCase =  convertPatientFromVoToModel(patientInfoVo);
+			if (patientInfoVo.getId() > 0){
+				//update
+				cRFMapper.updatePatientInfo(patientInfoCase);
+			}else{
+				//insert
+				cRFMapper.insertPatientInfo(patientInfoCase);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			
+			int progress = cRFMapper.getProgress(patientInfoCase.getNo());
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, "保存基本信息失败");
+		}
+		
+		return result;
+	}
+	
+	public Map<String, Object> getPersonHistory(String id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			PersonAllergicHistoryCase personAllergicHistoryCase = cRFMapper.getPersonHistory(Integer.parseInt(id));
+			PersonalHistoryVo personalHistoryVo = convertorService.convertPersonHistoryFromModelToView(personAllergicHistoryCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, personalHistoryVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
+		return result;
+	}
+
+	public Map<String, Object> savePersonHistory(
+			PersonalHistoryVo personalHistoryVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result;
+		try{
+			PersonAllergicHistoryCase personAllergicHistoryCase =  convertorService.convertPersonHistoryFromModelToVo(personalHistoryVo);
+			PersonAllergicHistoryCase dbCase = cRFMapper.getPersonHistory(personAllergicHistoryCase.getId());
+			if (dbCase != null && dbCase.getNo() != null)
+				cRFMapper.updatePersonHistory(personAllergicHistoryCase);
+			else {
+				cRFMapper.insertPersonHistory(personAllergicHistoryCase);
+				cRFMapper.updateProgress(20);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			int progress = cRFMapper.getProgress(personAllergicHistoryCase.getNo());
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;
+	}
+
+	public Map<String, Object> getPastHistory(String id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			PastHistoryCase pastHistoryCase = cRFMapper.getPastHistory(Integer.parseInt(id));
+			PastHistoryVo pastHistoryVo = convertorService.convertPastHistoryFromViewToModel(pastHistoryCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, pastHistoryVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
+		return result;
+	}
+
+	public Map<String, Object> savePastHistory(PastHistoryVo pastHistoryVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result;
+		try{
+			PastHistoryCase pastHistoryCase =  convertorService.convertPastHistoryFromModelToVo(pastHistoryVo);
+			PastHistoryCase dbCase = cRFMapper.getPastHistory(pastHistoryCase.getId());
+			if (dbCase != null && dbCase.getNo() != null)
+				cRFMapper.updatePastHistory(pastHistoryCase);
+			else {
+				cRFMapper.insertPastHistory(pastHistoryCase);
+				cRFMapper.updateProgress(30);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			int progress = cRFMapper.getProgress(pastHistoryCase.getNo());
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
 		return result;
 	}
 

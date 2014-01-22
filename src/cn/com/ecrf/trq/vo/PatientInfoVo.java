@@ -18,16 +18,18 @@ public class PatientInfoVo {
 		private String age;
 		//体重
 		private String weight;
+		private boolean weightud;
 		//性别
 		private int sex;
 		//民族
 		private int ethic;
 		//民族其他
-		private String ethictxt;
+		//private String ethictxt;
 		//怀孕史：妊娠期，怀孕期，无
 		private int hys;
 		//身高
 		private String height;
+		private boolean heightud;
 		//用药科室
 		private int yyks;
 		//
@@ -108,12 +110,6 @@ public class PatientInfoVo {
 		public void setEthic(int ethic) {
 			this.ethic = ethic;
 		}
-		public String getEthictxt() {
-			return ethictxt;
-		}
-		public void setEthictxt(String ethictxt) {
-			this.ethictxt = ethictxt;
-		}
 		public int getYyks() {
 			return yyks;
 		}
@@ -149,6 +145,18 @@ public class PatientInfoVo {
 		}
 		public void setFeemodetxt(String feemodetxt) {
 			this.feemodetxt = feemodetxt;
+		}
+		public boolean isHeightud() {
+			return heightud;
+		}
+		public void setHeightud(boolean heightud) {
+			this.heightud = heightud;
+		}
+		public boolean isWeightud() {
+			return weightud;
+		}
+		public void setWeightud(boolean weightud) {
+			this.weightud = weightud;
 		}
 		
 		
