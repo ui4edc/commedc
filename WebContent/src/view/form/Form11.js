@@ -126,6 +126,7 @@ es.Views.Form11 = Backbone.View.extend({
        
        var data = {
            id: es.main.crfId,
+           no: me.model.get("data").no,
            birthday: esui.get("Birthday").getValue(),
            age: parseInt(esui.get("Age").getValue()),
            ethic: esui.get("Nation").value,

@@ -13,13 +13,13 @@ es.Models.CRF = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("获取CRF基本信息-请求", args);
+        console.log("crf/getCRFSumm.do-请求", args);
 
         util.ajax.run({
-            url: "",
+            url: "crf/getCRFSumm.do",
             data: args,
             success: function(response) {
-                console.log("获取CRF基本信息-响应", response);
+                console.log("crf/getCRFSumm.do-响应", response);
                 
                 me.set({data: response});
             },

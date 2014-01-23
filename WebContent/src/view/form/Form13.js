@@ -134,6 +134,8 @@ es.Views.Form13 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
+           id: es.main.crfId,
+           no: me.model.get("data").no,
            hasDisease: parseInt(esui.get("Disease1").getGroup().getValue()),
            hasAllergy: parseInt(esui.get("ADisease1").getGroup().getValue()),
            disease: esui.get("DiseaseType1").getGroup().getValue(),

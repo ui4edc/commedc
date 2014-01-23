@@ -160,6 +160,8 @@ es.Views.Form12 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
+           id: es.main.crfId,
+           no: me.model.get("data").no,
            smoke: parseInt(esui.get("Smoke1").getGroup().getValue()),
            drink: parseInt(esui.get("Drink1").getGroup().getValue()),
            hasFood: parseInt(esui.get("Food1").getGroup().getValue()),
