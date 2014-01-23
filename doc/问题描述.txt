@@ -1,0 +1,13 @@
+20140124
+1.ajax请求报302错误时，跳转到login.do地址
+2.查询观察表时，progress填了10，请求参数里面没有值
+3.点击查询结果里的观察表编号，请求的地址现在为/commedc,应该为/commedc/list/getPatientList
+4.基本情况的url为空
+5.个人史：
+存在的可能的情况是，第一次请求获取个人史，还没录入，这时响应中的data为null,
+但是个人史的表单应该继续显示，现在却没有显示(其他表单存在一样的问题)。
+rf/getPersonHistory.do-请求 Object {id: 8} Form12.js:16
+crf/getPersonHistory.do-响应 Object {data: null, errorMsg: "", success: true} 
+Uncaught TypeError: Cannot read property 'food' of null Form12.js:24
+6.保存个人史时，提交的表单里面有数组，
+需要在ajax请求时将整个表单转为json字符串(见聊天记录)
