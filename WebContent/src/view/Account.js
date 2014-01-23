@@ -85,7 +85,7 @@ es.Views.Account = Backbone.View.extend({
      * 获取参数
      */
     getArgs: function() {
-        this.args.type = parseInt(this.$(".tabbar .active").attr("type"));
+        this.args.type = parseInt(this.$(".tabbar .active").attr("type"), 10);
     },
     
     /*
@@ -213,7 +213,7 @@ es.Views.Account = Backbone.View.extend({
                 onok: function () {
                     var id = [];
                     $.each(selected, function(index, val) {
-                        id.push(parseInt(val.id));
+                        id.push(parseInt(val.id, 10));
                     });
                     var data = {
                         id: id.join(",")
@@ -291,7 +291,7 @@ es.Views.Account = Backbone.View.extend({
      * 打开编辑账户对话框
      */
     openEditAccount: function(e) {
-        var data = {id: parseInt(e.target.id)};
+        var data = {id: parseInt(e.target.id, 10)};
         es.main.curUserId = data.id;
         
         console.log("account/getUser.do-请求:", data);
@@ -380,7 +380,7 @@ es.Views.Account = Backbone.View.extend({
                 onok: function () {
                     var id = [];
                     $.each(selected, function(index, val) {
-                        id.push(parseInt(val.id));
+                        id.push(parseInt(val.id, 10));
                     });
                     var data = {
                         id: id.join(",")
@@ -425,8 +425,8 @@ es.Views.Account = Backbone.View.extend({
     newCenter: function() {
         var data = {
             name: $.trim(esui.get("Name").getValue()),
-            code: parseInt($.trim(esui.get("Code").getValue())),
-            instanceNumber: parseInt($.trim(esui.get("InstanceNumber").getValue())),
+            code: parseInt($.trim(esui.get("Code").getValue()), 10),
+            instanceNumber: parseInt($.trim(esui.get("InstanceNumber").getValue()), 10),
             adminUserId: esui.get("Superviser").value
         };
         
@@ -452,7 +452,7 @@ es.Views.Account = Backbone.View.extend({
      * 打开编辑中心对话框
      */
     openEditCenter: function(e) {
-        var data = {id: parseInt(e.target.id)};
+        var data = {id: parseInt(e.target.id, 10)};
         es.main.curCenterId = data.id;
         
         console.log("account/getOrganization.do-请求:", data);
@@ -487,8 +487,8 @@ es.Views.Account = Backbone.View.extend({
         var data = {
             id: es.main.curCenterId,
             name: $.trim(esui.get("EName").getValue()),
-            code: parseInt($.trim(esui.get("ECode").getValue())),
-            instanceNumber: parseInt($.trim(esui.get("EInstanceNumber").getValue())),
+            code: parseInt($.trim(esui.get("ECode").getValue()), 10),
+            instanceNumber: parseInt($.trim(esui.get("EInstanceNumber").getValue()), 10),
             adminUserId: esui.get("ESuperviser").value
         };
         

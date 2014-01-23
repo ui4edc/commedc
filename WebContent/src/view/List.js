@@ -136,7 +136,7 @@ es.Views.List = Backbone.View.extend({
      */
     getArgs: function() {
         this.args.crf = esui.get("CRF").isChecked();
-        this.args.type = parseInt(this.$(".tabbar .active").attr("type"));
+        this.args.type = parseInt(this.$(".tabbar .active").attr("type"), 10);
         this.args.no = $.trim(esui.get("No").getValue());
         this.args.abbr = $.trim(esui.get("Abbr").getValue());
         if (esui.get("CreateRangeType").value == 1) {
@@ -405,7 +405,7 @@ es.Views.List = Backbone.View.extend({
                 onok: function () {
                     var id = [];
                     $.each(selected, function(index, val) {
-                        id.push(parseInt(val.id));
+                        id.push(parseInt(val.id, 10));
                     });
                     var data = {
                         crf: esui.get("CRF").isChecked(),
@@ -445,7 +445,7 @@ es.Views.List = Backbone.View.extend({
         } else {
             var id = [];
             $.each(selected, function(index, val) {
-                id.push(parseInt(val.id));
+                id.push(parseInt(val.id, 10));
             });
             var data = {
                 crf: esui.get("CRF").isChecked(),

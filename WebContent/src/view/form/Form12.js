@@ -160,13 +160,13 @@ es.Views.Form12 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           id: es.main.crfId,
+           id: me.crfId,
            no: me.model.get("data").no,
-           smoke: parseInt(esui.get("Smoke1").getGroup().getValue()),
-           drink: parseInt(esui.get("Drink1").getGroup().getValue()),
-           hasFood: parseInt(esui.get("Food1").getGroup().getValue()),
-           hasDrug: parseInt(esui.get("Drug1").getGroup().getValue()),
-           hasOther: parseInt(esui.get("Material1").getGroup().getValue()),
+           smoke: parseInt(esui.get("Smoke1").getGroup().getValue(), 10),
+           drink: parseInt(esui.get("Drink1").getGroup().getValue(), 10),
+           hasFood: parseInt(esui.get("Food1").getGroup().getValue(), 10),
+           hasDrug: parseInt(esui.get("Drug1").getGroup().getValue(), 10),
+           hasOther: parseInt(esui.get("Material1").getGroup().getValue(), 10),
            food: [],
            drug: [],
            other: []
@@ -219,8 +219,6 @@ es.Views.Form12 = Backbone.View.extend({
                 console.log("crf/savePersonHistory.do-响应:", response);
                 
                 esui.Dialog.alert({title: "保存", content: "保存成功！"});
-                
-                //更新进度
                 me.updateProgress(response.progress);
             },
             mock: MOCK,

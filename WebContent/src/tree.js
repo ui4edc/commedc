@@ -60,7 +60,7 @@ Tree.prototype = {
         $(this.container + " .menu-item").removeClass("menu-item-active");
         me.addClass("active");
         
-        this.onClick(parseInt(me.attr("id").replace(/[a-z]+/i, "")));
+        this.onClick(parseInt(me.attr("id").replace(/[a-z]+/i, ""), 10));
     },
     
     /*
@@ -76,7 +76,7 @@ Tree.prototype = {
         $(this.container + " .menu-item").removeClass("menu-item-active");
         me.addClass("menu-item-active");
         
-        this.onClick(parseInt(me.attr("id").replace(/[a-z]+/i, "")));
+        this.onClick(parseInt(me.attr("id").replace(/[a-z]+/i, ""), 10));
     },
     
     destroy: function() {

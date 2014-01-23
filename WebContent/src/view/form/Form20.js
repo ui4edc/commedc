@@ -37,15 +37,51 @@ es.Views.Form20 = Backbone.View.extend({
                 disabled: es.main.editable ? "" : "disabled:true",
                 save: es.main.editable ? [1] : []
             });
-            me.initCtrl();
+            me.initCtrl(data.data);
         });
     },
     
-    initCtrl: function() {
+    initCtrl: function(data) {
         esui.init();
         
+        //赋值
         var me = this;
         
+        if (data.disease1 != "") {
+            $.each(data.disease1.split(","), function(index, val) {
+                esui.get("Disease1_" + val).setChecked(true);
+            });
+        }
+        if (data.fy1 != "") {
+            $.each(data.fy1.split(","), function(index, val) {
+                esui.get("Disease1_4_1_" + val).setChecked(true);
+            });
+        }
+        if (data.fy2 != "") {
+            $.each(data.fy2.split(","), function(index, val) {
+                esui.get("Disease1_4_2_" + val).setChecked(true);
+            });
+        }
+        if (data.disease2 != "") {
+            $.each(data.disease2.split(","), function(index, val) {
+                esui.get("Disease2_" + val).setChecked(true);
+            });
+        }
+        if (data.disease3 != "") {
+            $.each(data.disease3.split(","), function(index, val) {
+                esui.get("Disease3_" + val).setChecked(true);
+            });
+        }
+        switch (data.zy) {
+            case 1: esui.get("ZY1").setChecked(true); break;
+            case 2: esui.get("ZY2").setChecked(true); break;
+            case 3: esui.get("ZY3").setChecked(true); break;
+            case 4: esui.get("ZY4").setChecked(true); break;
+            case 5: esui.get("ZY5").setChecked(true); break;
+            case 6: esui.get("ZY6").setChecked(true);
+        }
+        
+        //事件
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
@@ -58,23 +94,28 @@ es.Views.Form20 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           
+           id: me.crfId,
+           no: me.model.get("data").no,
+           disease1: esui.get("Disease1_1").getGroup().getValue(),
+           fy1: esui.get("Disease1_4_1_1").getGroup().getValue(),
+           fy2: esui.get("Disease1_4_2_1").getGroup().getValue(),
+           disease2: esui.get("Disease2_1").getGroup().getValue(),
+           disease3: esui.get("Disease3_1").getGroup().getValue(),
+           diseasetxt: $.trim(esui.get("CustomDiseaseName").getValue()),
+           diagnosis: $.trim(esui.get("Diagnosis").getValue()),
+           zy: parseInt(esui.get("ZY1").getGroup().getValue(), 10),
+           zytxt: $.trim(esui.get("CustomZYName").getValue())
        };
        
-       console.log("保存表单-请求", data);
+       console.log("crf/saveDeseaseInfo.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/saveDeseaseInfo.do",
             data: data,
             success: function(response) {
-                console.log("保存表单-响应:", response);
+                console.log("crf/saveDeseaseInfo.do-响应:", response);
                 
-                esui.Dialog.alert({
-                    title: "保存",
-                    content: "保存成功！"
-                });
-                
-                //更新进度
+                esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 me.updateProgress(response.progress);
             },
             mock: MOCK,

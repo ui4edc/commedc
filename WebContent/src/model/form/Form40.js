@@ -26,9 +26,17 @@ es.Models.Form40 = Backbone.Model.extend({
             mock: MOCK,
             mockData: {
                 success: true,
-                data: [
-                    {name: "", start: "", end: "", dose: "", unit: "", way: "", frequency: ""}
-                ]
+                data: {
+                    drug: [{
+                        name: "name",
+                        start: "start",
+                        end: "end",
+                        dose: "dose",
+                        unit: "unit",
+                        way: "way",
+                        frequency: "frequency"
+                    }]
+                }
             }
         });
     }

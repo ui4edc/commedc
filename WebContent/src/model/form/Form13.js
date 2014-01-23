@@ -13,13 +13,13 @@ es.Models.Form13 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("crf/getPersonHistory.do-请求", args);
+        console.log("crf/getPastHistory.do-请求", args);
         
         util.ajax.run({
-            url: "crf/getPersonHistory.do",
+            url: "crf/getPastHistory.do",
             data: args,
             success: function(response) {
-                console.log("crf/getPersonHistory.do-响应", response);
+                console.log("crf/getPastHistory.do-响应", response);
                 
                 me.set({data: response});
             },
@@ -27,7 +27,6 @@ es.Models.Form13 = Backbone.Model.extend({
             mockData: {
                 success: true,
                 data: {
-                    no: "333-1234",
                     hasDisease: 1,
                     hasAllergy: 1,
                     disease: "1,2,3,4,5,6,7,8",

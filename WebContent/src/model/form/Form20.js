@@ -13,20 +13,30 @@ es.Models.Form20 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("获取表单-请求", args);
+        console.log("crf/getDeseaseInfo.do-请求", args);
         
         util.ajax.run({
-            url: "",
+            url: "crf/getDeseaseInfo.do",
             data: args,
             success: function(response) {
-                console.log("获取表单-响应", response);
+                console.log("crf/getDeseaseInfo.do-响应", response);
                 
                 me.set({data: response});
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {}
+                data: {
+                    disease1: "1,2,3,4,5",
+                    fy1: "1,2",
+                    fy2: "1,2",
+                    disease2: "1,2,3,4,5",
+                    disease3: "1,2",
+                    diseasetxt: "",
+                    diagnosis: "",
+                    zy: 7,
+                    zytxt: ""
+                }
             }
         });
     }

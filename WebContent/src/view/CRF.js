@@ -40,7 +40,7 @@ es.Views.CRF = Backbone.View.extend({
         //状态判断
         var hash = window.location.hash,
             title = "";
-        this.crfId = parseInt(query);
+        this.crfId = parseInt(query, 10);
         var isCRM = $("#RoleId").val() == "2" ? true : false;
         
         if (/^#crf\/update\/\d+$/.test(hash)) {
@@ -169,6 +169,16 @@ es.Views.CRF = Backbone.View.extend({
         });
     },
     
+    getMenuId: function() {
+        var menu;
+        if (this.$(".menu-item-active").length != 0) {
+            menu = this.$(".sidenav .menu-item-active");
+        } else {
+            menu = this.$(".sidenav .active");
+        }
+        return parseInt(menu.attr("id").replace("TreeNode", ""), 10);
+    },
+    
     /*
      * 打开质疑对话框
      */
@@ -178,7 +188,7 @@ es.Views.CRF = Backbone.View.extend({
         esui.get("DoubtDialog").show();
         
         var data = {
-            menu: parseInt(this.$(".menu-item-active").attr("id").replace("TreeNode", ""), 10)
+            menu: this.getMenuId()
         };
         
         console.log("获取质疑字段-请求", data);
@@ -216,8 +226,8 @@ es.Views.CRF = Backbone.View.extend({
         var me = es.main;
         
         var data = {
-            id: es.main.crfId,
-            menu: parseInt(me.$(".menu-item-active").attr("id").replace("TreeNode", ""), 10),
+            id: me.crfId,
+            menu: me.getMenuId(),
             fieldId: esui.get("Field").value,
             description: $.trim(esui.get("Description").getValue())
         };
@@ -251,8 +261,8 @@ es.Views.CRF = Backbone.View.extend({
      */
     openCheckDoubt: function() {
         var data = {
-            id: es.main.crfId,
-            menu: parseInt(this.$(".menu-item-active").attr("id").replace("TreeNode", ""), 10)
+            id: this.crfId,
+            menu: this.getMenuId()
         };
         
         console.log("查看质疑-请求", data);

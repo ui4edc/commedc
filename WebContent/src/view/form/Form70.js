@@ -181,7 +181,8 @@ es.Views.Form70 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           
+           id: me.crfId,
+           no: me.model.get("data").no
        };
        
        console.log("保存表单-请求", data);
@@ -192,12 +193,7 @@ es.Views.Form70 = Backbone.View.extend({
             success: function(response) {
                 console.log("保存表单-响应:", response);
                 
-                esui.Dialog.alert({
-                    title: "保存",
-                    content: "保存成功！"
-                });
-                
-                //更新进度
+                esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 me.updateProgress(response.progress);
             },
             mock: MOCK,

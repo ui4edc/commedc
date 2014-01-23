@@ -176,7 +176,7 @@ es.Views.Dict = Backbone.View.extend({
 		
 		var selectedItemId = [];
 		$.each(selected, function(index, val) {
-			selectedItemId.push(parseInt(val.id));
+			selectedItemId.push(parseInt(val.id, 10));
 		});
 		
 		var data = {

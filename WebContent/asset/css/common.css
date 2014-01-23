@@ -58,7 +58,7 @@ h1 .btn:hover{background:#3498db}
 
 /*Tab*/
 .tabbar{height:27px; padding-left:30px; margin-bottom:20px; background:url(images/tab-bg.png)}
-.tabbar a{float:left; width:110px; height:27px; line-height:27px; margin-right:10px; text-align:center; text-decoration:none; color:#000; background:url(images/tab.png) 0 -27px}
+.tabbar a{float:left; width:110px; height:27px; line-height:27px; margin-right:8px; text-align:center; text-decoration:none; color:#000; background:url(images/tab.png) 0 -27px}
 .tabbar a.active{color:#3b6bad; background:url(images/tab.png); font-weight:bold}
 
 /*页码*/

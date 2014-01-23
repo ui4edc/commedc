@@ -125,22 +125,22 @@ es.Views.Form11 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           id: es.main.crfId,
+           id: me.crfId,
            no: me.model.get("data").no,
            birthday: esui.get("Birthday").getValue(),
-           age: parseInt(esui.get("Age").getValue()),
+           age: parseInt(esui.get("Age").getValue(), 10),
            ethic: esui.get("Nation").value,
-           sex: parseInt(esui.get("Male").getGroup().getValue()),
-           hys: parseInt(esui.get("Female1").getGroup().getValue()),
+           sex: parseInt(esui.get("Male").getGroup().getValue(), 10),
+           hys: parseInt(esui.get("Female1").getGroup().getValue(), 10),
            weight: $.trim(esui.get("Weight").getValue()),
            weightud: esui.get("WeightUd").isChecked(),
            height: $.trim(esui.get("Height").getValue()),
            heightud: esui.get("HeightUd").isChecked(),
-           yyks: parseInt(esui.get("Dep1").getGroup().getValue()),
+           yyks: parseInt(esui.get("Dep1").getGroup().getValue(), 10),
            yykstxt: $.trim(esui.get("CustomDepName").getValue()),
            indate: esui.get("InDate").getValue(),
            outdate: esui.get("OutDate").getValue(),
-           feemode: parseInt(esui.get("Pay1").getGroup().getValue()),
+           feemode: parseInt(esui.get("Pay1").getGroup().getValue(), 10),
            feemodetxt: $.trim(esui.get("CustomPayName").getValue())
        };
        
@@ -192,8 +192,6 @@ es.Views.Form11 = Backbone.View.extend({
                 console.log("crf/saveBasicInfo.do-响应:", response);
                 
                 esui.Dialog.alert({title: "保存", content: "保存成功！"});
-                
-                //更新进度
                 me.updateProgress(response.progress);
             },
             mock: MOCK,

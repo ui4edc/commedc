@@ -134,10 +134,10 @@ es.Views.Form13 = Backbone.View.extend({
        var me = es.main;
        
        var data = {
-           id: es.main.crfId,
+           id: me.crfId,
            no: me.model.get("data").no,
-           hasDisease: parseInt(esui.get("Disease1").getGroup().getValue()),
-           hasAllergy: parseInt(esui.get("ADisease1").getGroup().getValue()),
+           hasDisease: parseInt(esui.get("Disease1").getGroup().getValue(), 10),
+           hasAllergy: parseInt(esui.get("ADisease1").getGroup().getValue(), 10),
            disease: esui.get("DiseaseType1").getGroup().getValue(),
            disease1: esui.get("DiseaseType1_1").getGroup().getValue(),
            disease2: esui.get("DiseaseType2_1").getGroup().getValue(),
@@ -149,17 +149,15 @@ es.Views.Form13 = Backbone.View.extend({
            allergytxt: $.trim(esui.get("CustomADiseaseTypeName").getValue())
        };
        
-       console.log("crf/savePersonHistory.do-请求", data);
+       console.log("crf/savePastHistory.do-请求", data);
        
        util.ajax.run({
-            url: "crf/savePersonHistory.do",
+            url: "crf/savePastHistory.do",
             data: data,
             success: function(response) {
-                console.log("crf/savePersonHistory.do-响应:", response);
+                console.log("crf/savePastHistory.do-响应:", response);
                 
                 esui.Dialog.alert({title: "保存", content: "保存成功！"});
-                
-                //更新进度
                 me.updateProgress(response.progress);
             },
             mock: MOCK,
