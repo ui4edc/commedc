@@ -1,5 +1,5 @@
 /*
- * 实验检查-入组检查
+ * 实验检查-入院检查
  * 
  * @author: Ricky
  */
@@ -41,59 +41,26 @@ es.Views.Form51 = Backbone.View.extend({
     },
     
     initCtrl: function(data) {
-        esui.init(es.main.el, {
+        //赋值
+        esui.init(document.body, {
             ExamDay: {
                 range: CRF_RANGE,
-                valueAsDate: new Date()
+                value: data.examDate
             }
         });
         
-        var me = this;
-        
-        esui.get("ExamDay").onchange = function(value) {esui.get("ExamDay").setValueAsDate(value);};
-        
-        if (es.main.canDoubt) {
-            esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        var me = this,
+            editable = es.main.editable;
+            
+        switch (data.sample) {
+            case 2: esui.get("Sample2").setChecked(true); break;
+            case 3: esui.get("Sample3").setChecked(true);
         }
-        if (es.main.editable) {
-            esui.get("Save").onclick = this.save;
+        if (data.result != "") {
+            $.each(data.result.split(","), function(index, val) {
+                esui.get("Result" + val).setChecked(true);
+            });
         }
-        if (!es.main.editable) {
-            esui.get("ExamDay").disable();
-        }
-        
-        esui.get("Exam1").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam2").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam3").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam4").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam5").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam6").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        
-        var editable = es.main.editable;
         
         var table1 = esui.get("Exam1");
         table1.datasource = data.data1;
@@ -354,14 +321,92 @@ es.Views.Form51 = Backbone.View.extend({
             }
         ];
         table6.render();
+        
+        if (data.done == 1) {
+            esui.get("Done1").setChecked(true);
+        } else {
+            this.$(".exam").hide();
+        }
+        
+        //事件
+        esui.get("Done1").onclick = function() {me.$(".exam").show();};
+        esui.get("Done2").onclick = function() {me.$(".exam").hide();};
+        esui.get("ExamDay").onchange = function(value) {esui.get("ExamDay").setValueAsDate(value);};
+        
+        esui.get("Exam1").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam2").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam3").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam4").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam5").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam6").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        
+        if (es.main.canDoubt) {
+            esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        }
+        if (es.main.editable) {
+            esui.get("Save").onclick = this.save;
+        }
+        if (!es.main.editable) {
+            esui.get("ExamDay").disable();
+        }
     },
     
     save: function() {
        var me = es.main;
        
+       var bodyExam = esui.get("Exam1").datasource;
+       if (bodyExam[0].f1 == ""
+           || bodyExam[0].f2 == ""
+           || bodyExam[0].f3 == ""
+           || bodyExam[0].f4 == ""
+           || bodyExam[0].f5 == ""
+           || bodyExam[0].f6 == ""
+       ) {
+           esui.Dialog.alert({title: "提示", content: "请将体格检查填写完整"});
+           return;
+       }
+       
        var data = {
            id: me.crfId,
-           no: me.model.get("data").no
+           no: me.model.get("data").no,
+           done: parseInt(esui.get("Done1").getGroup().getValue(), 10),
+           examDate: esui.get("ExamDay").getValue(),
+           sample: parseInt(esui.get("Sample1").getGroup().getValue(), 10),
+           sampletxt: $.trim(esui.get("SampleName").getValue()),
+           result: esui.get("Result1").getGroup().getValue(),
+           resulttxt1: $.trim(esui.get("Result1Content").getValue()),
+           resulttxt2: $.trim(esui.get("Result2Content").getValue()),
+           resulttxt3: $.trim(esui.get("Result3Content").getValue()),
+           data1: bodyExam,
+           data2: esui.get("Exam2").datasource,
+           data3: esui.get("Exam3").datasource,
+           data4: esui.get("Exam4").datasource,
+           data5: esui.get("Exam5").datasource,
+           data6: esui.get("Exam6").datasource
        };
        
        console.log("保存表单-请求", data);

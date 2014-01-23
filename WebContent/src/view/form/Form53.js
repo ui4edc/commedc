@@ -42,47 +42,9 @@ es.Views.Form53 = Backbone.View.extend({
     initCtrl: function(data) {
         esui.init();
         
-        var me = this;
-        
-        if (es.main.canDoubt) {
-            esui.get("DoubtOK").onclick = es.main.doubtCRF;
-        }
-        if (es.main.editable) {
-            esui.get("Save").onclick = this.save;
-        }
-        
-        esui.get("Exam1").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam2").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam3").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam4").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam5").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam6").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        
-        var editable = es.main.editable;
+        //赋值
+        var me = this,
+            editable = es.main.editable;
         
         var table1 = esui.get("Exam1");
         table1.datasource = data.data1;
@@ -343,6 +305,54 @@ es.Views.Form53 = Backbone.View.extend({
             }
         ];
         table6.render();
+        
+        if (data.done == 1) {
+            esui.get("Done1").setChecked(true);
+        } else {
+            this.$(".exam").hide();
+        }
+        
+        //事件
+        esui.get("Done1").onclick = function() {me.$(".exam").show();};
+        esui.get("Done2").onclick = function() {me.$(".exam").hide();};
+        
+        esui.get("Exam1").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam2").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam3").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam4").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam5").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Exam6").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        
+        if (es.main.canDoubt) {
+            esui.get("DoubtOK").onclick = es.main.doubtCRF;
+        }
+        if (es.main.editable) {
+            esui.get("Save").onclick = this.save;
+        }
     },
     
     save: function() {
@@ -350,7 +360,13 @@ es.Views.Form53 = Backbone.View.extend({
        
        var data = {
            id: me.crfId,
-           no: me.model.get("data").no
+           no: me.model.get("data").no,
+           data1: esui.get("Exam1").datasource,
+           data2: esui.get("Exam2").datasource,
+           data3: esui.get("Exam3").datasource,
+           data4: esui.get("Exam4").datasource,
+           data5: esui.get("Exam5").datasource,
+           data6: esui.get("Exam6").datasource
        };
        
        console.log("保存表单-请求", data);

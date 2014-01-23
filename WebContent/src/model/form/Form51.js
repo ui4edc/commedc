@@ -1,5 +1,5 @@
 /*
- * 实验检查-入组检查
+ * 实验检查-入院检查
  * 
  * @author: Ricky
  */
@@ -27,6 +27,14 @@ es.Models.Form51 = Backbone.Model.extend({
             mockData: {
                 success: true,
                 data: {
+                    done: 1,
+                    examDate: "2014-01-01",
+                    sample: 1,
+                    sampletxt: "",
+                    result: "1,2,3",
+                    resulttxt1: "",
+                    resulttxt2: "",
+                    resulttxt3: "",
                     data1: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
                     data2: [{f1:"",f2:"",f3:""}],
                     data3: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:""}],
