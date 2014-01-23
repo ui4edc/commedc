@@ -7,4 +7,5 @@ public class FormEnumValue {
 	public static final String YLFYFS = "ylfyfs";
 	public static final String OTHER = "其他";
 	public static final String YYKS = "yyks";
+	public static final String YES_NO_UNKNOWN = "ywbx";
 }

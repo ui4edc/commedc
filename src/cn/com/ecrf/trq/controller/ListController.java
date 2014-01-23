@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
+import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.list.ListConditionVo;
 import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 import cn.com.ecrf.trq.vo.list.ListReturnVo;
@@ -46,4 +47,15 @@ public class ListController {
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, list, total);
 		return result;
 	}
+	
+	@RequestMapping(value="/list/batchDelete", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> batchDelete(HttpServletRequest request) { 
+		String crf = request.getParameter("crf");
+		String id = request.getParameter("id");
+		
+		Map<String, Object> result = cRFService.batchDelete(id);
+		return result;
+	}
+	
 }

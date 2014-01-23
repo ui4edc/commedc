@@ -20,15 +20,15 @@
   
   <!-- organization -->
   <sql id="Base_Column_List" >
-    id, organization_name, organization_desc, create_time, update_time, update_time, update_by, instance_number,
+    id, organization_name, code, organization_desc, create_time, update_time, update_time, update_by, instance_number,
     fk_adminuser_id, fk_adminuser_name
   </sql>
   <insert id="insertOrganization" parameterType="cn.com.ecrf.trq.model.Organization">
 	<selectKey resultType="Integer" order="AFTER" keyProperty="id">
 		SELECT LAST_INSERT_ID()
 	</selectKey>
-  	insert into ac_organization(id, organization_name, organization_desc, create_time, create_by, instance_number, 
-  	fk_adminuser_id, fk_adminuser_name) values(#{id}, #{name}, #{organizationDesc}, now(), #{createBy}, #{instanceNumber},
+  	insert into ac_organization(id, organization_name, code, organization_desc, create_time, create_by, instance_number, 
+  	fk_adminuser_id, fk_adminuser_name) values(#{id}, #{name}, #{code}, #{organizationDesc}, now(), #{createBy}, #{instanceNumber},
   	#{adminUserId}, #{adminUserName});
   </insert>
   <update id="updateOrganization" parameterType="cn.com.ecrf.trq.model.Organization">

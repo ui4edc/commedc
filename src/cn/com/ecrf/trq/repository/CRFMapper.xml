@@ -33,19 +33,6 @@
 	      current_timestamp(), createBy)
 	</insert>
 	<update id="updatePatientInfo" parameterType="cn.com.ecrf.trq.model.PatientInfoCase" >
-		update ac_user set
-		user_name=#{userName}, password=#{password}, display_name=#{displayName},
-		status=#{status}, update_time= now()
-		<if test="organizationId != null" >
-        	,fk_organization_id=#{organizationId}
-      	</if>
-      	<if test="emailAddress != null" >
-        	,email_address=#{emailAddress}
-      	</if>
-      	<if test="updateBy != null" >
-        	,update_by=#{updateBy}
-      	</if>
-  		where id=#{id}
 	    update crf_patient_info (id, no, name, abbr, birthday, age,
 	      weight, sex, ethic, hys, height, yyks, ryrq, cyrq, ylfyfs, create_time, create_by)
 	    values (#{id}, #{no}, #{name}, #{abbr}, #{birthday}, #{age}, 
@@ -66,13 +53,54 @@
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
 			us.progress as progress
-		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus} and p.no=us.no
-		 <if test="abbr != null" >
+		 from crf_patient_info p, crf_user_sign us where us.lockstatus=#{lockStatus} and p.no=us.no
+		 <if test="abbr != null and abbr != ''" >
         	and p.abbr=#{abbr}
       	</if>
-      	<if test="no != null" >
+      	<if test="no != null and  no != ''" >
         	and p.no=#{no}
       	</if>
+		<choose>
+			<when test="progressType == 1">
+				and us.progress >= #{progress}
+			</when>
+			<when test="progressType == 2">
+				and #{progress} >= us.progress
+			</when>
+		    <otherwise>    
+            </otherwise>    
+		</choose>
+      	<if test="createDateForm != null" >
+        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	</if>
+      	<if test="lastModifiedFrom != null" >
+        	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
+      	</if>
+      	<if test="limitSize > 0">
+      		LIMIT #{limitStart},#{limitSize}
+      	</if>
+	</select>
+	
+	<select id="getTotalPatientNum" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="int">
+		select 
+			count(*)
+		 from crf_patient_info p, crf_user_sign us where us.lockstatus=#{lockStatus} and p.no=us.no
+		 <if test="abbr != null and abbr != ''" >
+        	and p.abbr=#{abbr}
+      	</if>
+      	<if test="no != null and  no != ''" >
+        	and p.no=#{no}
+      	</if>
+		<choose>
+			<when test="progressType == 1">
+				and us.progress >= #{progress}
+			</when>
+			<when test="progressType == 2">
+				and #{progress} >= us.progress
+			</when>
+		    <otherwise>    
+            </otherwise>    
+		</choose>
       	<if test="createDateForm != null" >
         	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
       	</if>
@@ -80,6 +108,9 @@
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
 	</select>
+	
+	
+	
 	<select id="getDoutSummaryList" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
 		select 
 			p.abbr as abbr,
@@ -113,7 +144,7 @@
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
 			us.progress as progress
-		 from crf_patient_info p, crf_user_sign us where and p.no=us.no and p.id=#{id}
+		 from crf_patient_info p, crf_user_sign us where p.no=us.no and p.id=#{id}
 	</select>
 	<select id="getBasicInfo" parameterType="int" resultType="cn.com.ecrf.trq.model.PatientInfoCase">
 		select 
@@ -136,6 +167,20 @@
 			ylfyfs as ylfyfs
 			from crf_patient_info where id=#{id}
 	</select>
+	<select id="getPersonHistory" parameterType="int" resultType="cn.com.ecrf.trq.model.PersonAllergicHistoryCase">
+		select 
+			pi.id as id,
+			pi.no as no,
+			smoke as smoke,
+			drink as drink,
+			drug as drug,
+			food as food,
+			other as other,
+			druglb as druglb,
+			foodlb as foodlb,
+			otherlb as otherlb
+			from crf_person_history ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
+	</select>
 	<insert id="insertPersonHistory" parameterType="cn.com.ecrf.trq.model.PersonAllergicHistoryCase">
 	    insert into crf_person_history (no, smoke, drink, drug, food,
 	      other, druglb, foodlb, otherlb, create_time)
@@ -153,15 +198,15 @@
 	</update>
 	<select id="getPastHistory" parameterType="int" resultType="cn.com.ecrf.trq.model.PastHistoryCase">
 		select 
-			id as id,
-			no as no,
+			pi.id as id,
+			ph.no as no,
 			disease as disease,
 			diseaselb as diseaselb,
 			allergy as allergy,
 			allergylb as allergylb
 			from crf_past_history ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
 	</select>
-	<insert id="insertPersonHistory" parameterType="cn.com.ecrf.trq.model.PastHistoryCase">
+	<insert id="insertPastHistory" parameterType="cn.com.ecrf.trq.model.PastHistoryCase">
 	    insert into crf_past_history (no, disease, diseaselb, allergy, allergylb, create_time)
 	    values (#{no}, #{disease}, #{diseaselb}, #{allergy}, #{allergylb}, current_timestamp());
 	</insert>
@@ -171,4 +216,23 @@
 		allergylb=#{allergylb}, update_time=now()
   		where no=#{no}
 	</update>
+	<update id="updateNextSeq" parameterType="int">
+		update crf_no set seq=seq+1 where fk_organization_id=#{id}
+	</update>
+	<select id="getNextSeq" resultType="int">
+		select seq from crf_no where fk_organization_id=#{id}
+	</select>
+	<insert id="insertCRF" parameterType="cn.com.ecrf.trq.model.PatientInfoCase">
+      	<selectKey resultType="int" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+	    insert into crf_patient_info (no, abbr, create_time, create_by)
+	    values (#{no}, #{abbr}, current_timestamp(), #{createBy})
+	</insert>
+	<select id="getFormEnumValueByName" parameterType="map" resultType="int">
+		select seq from crf_form_enum where name=#{name} and abbr=#{type}
+	</select>
+	<select id="getFormEnumValue" parameterType="map" resultType="string">
+		select name from crf_form_enum where abbr=#{type} and seq=#{seq}
+	</select>
 </mapper>

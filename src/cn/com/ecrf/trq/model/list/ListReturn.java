@@ -6,7 +6,7 @@ public class ListReturn {
 
 	private boolean crf;
 	private String abbr;
-	private int no;
+	private String no;
 	private Date createDate;
 	private Date lastModified;
 	private String orderBy;
@@ -32,10 +32,10 @@ public class ListReturn {
 	public void setAbbr(String abbr) {
 		this.abbr = abbr;
 	}
-	public int getNo() {
+	public String getNo() {
 		return no;
 	}
-	public void setNo(int no) {
+	public void setNo(String no) {
 		this.no = no;
 	}
 	public Date getCreateDate() {

@@ -21,13 +21,15 @@ public interface CRFMapper {
 
 	public int getNextSeq(int id);
 
-	public int insertCRF(Map<String, Object> condition);
+	public void insertCRF(PatientInfoCase patientInfoCase);
 
 	public int getDoubtCRFNum(String userName);
 
 	public int getToDoNum(String userName);
 
 	public List<ListReturn> getPatientList(ListCondition condition);
+	
+	public int getTotalPatientNum(ListCondition sqlCondition); 
 
 	public List<ListReturn> getDoutSummaryList(ListCondition sqlCondition);
 
@@ -51,5 +53,10 @@ public interface CRFMapper {
 
 	public void updatePastHistory(PastHistoryCase pastHistoryCase);
 
-	public void insertPastHistory(PastHistoryCase pastHistoryCase); 
+	public void insertPastHistory(PastHistoryCase pastHistoryCase);
+
+	public void updateNextSeq(int id);
+
+	public void deletePatientInfo(int parseInt);
+
 }

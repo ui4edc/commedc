@@ -4,18 +4,18 @@ public class ListReturnVo {
 
 	private boolean crf;
 	private String abbr;
-	private int no;
-	private String createDate;
-	private String lastModified;
+	private String no;
+	private String createDate = "";
+	private String lastModified = "";
 	private String orderBy;
 	private int pageNo;
 	private int pageSize;
-	private String progress;
+	private String progress = "";
 	private int progressType;
 	private int type;
 	private int id;
-	private String doubtDate;
-	private String doubter;
+	private String doubtDate = "";
+	private String doubter = "";
 	
 	public boolean isCrf() {
 		return crf;
@@ -29,10 +29,10 @@ public class ListReturnVo {
 	public void setAbbr(String abbr) {
 		this.abbr = abbr;
 	}
-	public int getNo() {
+	public String getNo() {
 		return no;
 	}
-	public void setNo(int no) {
+	public void setNo(String no) {
 		this.no = no;
 	}
 	public String getCreateDate() {

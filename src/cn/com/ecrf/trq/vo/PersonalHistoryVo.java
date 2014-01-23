@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonalHistoryVo {
@@ -18,11 +19,11 @@ public class PersonalHistoryVo {
 	
 	private int hasOther;
 	
-	private List<MutilSelect> food;
+	private List<MutilSelect> food = new ArrayList<MutilSelect>();
 	
-	private List<MutilSelect> drug;
+	private List<MutilSelect> drug = new ArrayList<MutilSelect>();
 	
-	private List<MutilSelect> other;
+	private List<MutilSelect> other = new ArrayList<MutilSelect>();
 
 	public int getId() {
 		return id;

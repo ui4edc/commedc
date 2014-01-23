@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.ecrf.trq.model.CRFUserSign;
 import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
@@ -24,10 +25,12 @@ import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.model.list.ListCondition;
 import cn.com.ecrf.trq.model.list.ListReturn;
 import cn.com.ecrf.trq.repository.CRFMapper;
+import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
+import cn.com.ecrf.trq.utils.LockStatusUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
@@ -45,6 +48,8 @@ public class CRFService {
 	private UserService userService;
 	@Autowired
 	private ConvertorService convertorService;
+	@Autowired
+	private UserSignMapper userSignMapper;
 	
 	public ListNotifyVo getNotifyInfo() {
 		// TODO Auto-generated method stub
@@ -60,15 +65,24 @@ public class CRFService {
 
 	public List<ListReturnVo> getCRFList(ListConditionVo condition) {
 		// TODO Auto-generated method stub
-		ListCondition sqlCondition = convertCondition(condition);
-		int type = condition.getType();
-		List<ListReturn> list = null;
-		if (type == 1 || type == 2 || type == 4){//草稿
-			list = cRFMapper.getPatientList(sqlCondition);
-		}else if (type == 3){//质疑
-			list = cRFMapper.getDoutSummaryList(sqlCondition);
+		List<ListReturnVo> listVo = null;
+		try{
+			ListCondition sqlCondition = convertCondition(condition);
+			Subject subject = SecurityUtils.getSubject();
+			String userName = (String) subject.getPrincipal();
+			sqlCondition.setUserName(userName);
+			int type = condition.getType();
+			List<ListReturn> list = null;
+			if (type == 0 || type == 1 || type == 3){//草稿,提交，审核通过
+				list = cRFMapper.getPatientList(sqlCondition);
+			}else if (type == 2){//质疑
+				list = cRFMapper.getDoutSummaryList(sqlCondition);
+			}
+			listVo = convertListReturn(list);
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		List<ListReturnVo> listVo = convertListReturn(list);
+		
 		return listVo;
 	}
 	
@@ -82,8 +96,8 @@ public class CRFService {
 				resultVo.setAbbr(result.getAbbr());
 				if (result.getCreateDate() != null)
 					resultVo.setCreateDate(sdf.format(result.getCreateDate()));
-				if (result.getCreateDate() != null)
-				resultVo.setDoubtDate(sdf.format(result.getDoubtDate()));
+				if (result.getDoubtDate() != null)
+					resultVo.setDoubtDate(sdf.format(result.getDoubtDate()));
 				resultVo.setDoubter(result.getDoubter());
 				resultVo.setId(result.getId());
 				if (result.getLastModified() != null)
@@ -101,15 +115,15 @@ public class CRFService {
 		// TODO Auto-generated method stub
 		ListCondition sqlCondition = new ListCondition();
 		int lockStatus = 0;
-		if (condition.getType() == 1)
+		if (condition.getType() == 0)
 			lockStatus = 10;
-		if (condition.getType() == 2)
+		if (condition.getType() == 1)
 			lockStatus = 20;
-		if (condition.getType() == 3)
+		if (condition.getType() == 2)
 			lockStatus = 30;
-		if (condition.getType() == 4)
+		if (condition.getType() == 3)
 			lockStatus = 40;
-		if (condition.getType() == 45)
+		if (condition.getType() == 4)
 			lockStatus = 50;
 		sqlCondition.setLockStatus(lockStatus);
 		sqlCondition.setAbbr(condition.getAbbr());
@@ -134,6 +148,12 @@ public class CRFService {
 			sqlCondition.setCrf(condition.isCrf());
 			sqlCondition.setDesc(condition.isDesc());
 			sqlCondition.setNo(condition.getNo());
+			if (condition.getPageNo() > 0 && condition.getPageSize() > 0){
+				int pageNo = condition.getPageNo();
+				int pageSize = condition.getPageSize();
+				sqlCondition.setLimitStart((pageNo-1)*pageSize);
+				sqlCondition.setLimitSize(pageSize);
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -143,6 +163,16 @@ public class CRFService {
 
 	public int getCRFTotal(ListConditionVo condition){
 		int total = 0;
+		
+		try{
+			ListCondition sqlCondition = convertCondition(condition);
+			Subject subject = SecurityUtils.getSubject();
+			String userName = (String) subject.getPrincipal();
+			sqlCondition.setUserName(userName);
+			total = cRFMapper.getTotalPatientNum(sqlCondition);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return total;
 	}
 
@@ -154,138 +184,11 @@ public class CRFService {
 
 	
 
-	private PatientInfoCase convertPatientFromVoToModel(
-			PatientInfoVo patientInfoVo) {
-		// TODO Auto-generated method stub
-		PatientInfoCase patientInfoCase = new PatientInfoCase();
-		patientInfoCase.setAbbr(patientInfoVo.getAbbr());
-		patientInfoCase.setAge(Integer.parseInt(patientInfoVo.getAge()));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-		if (StringUtils.isNotBlank(patientInfoVo.getBirthday()))
-			
-				patientInfoCase.setBirthday(sdf.parse(patientInfoVo.getBirthday()));
-			
-		if (StringUtils.isNotBlank(patientInfoVo.getOutDate()))
-			patientInfoCase.setCyrq(sdf.parse(patientInfoVo.getOutDate()));
-		FormEnumObject ethicObj = new FormEnumObject(patientInfoVo.getEthic(), null, FormEnumValue.ETHIC);
-		patientInfoCase.setEthic(convertIDToContent(ethicObj));
-		patientInfoCase.setHeight(Integer.parseInt(patientInfoVo.getHeight()));
-		patientInfoCase.setHeightud(patientInfoVo.isHeightud());
-		FormEnumObject hysObj = new FormEnumObject(patientInfoVo.getHys(), null, FormEnumValue.HYS);
-		patientInfoCase.setHys(convertIDToContent(hysObj));
-		patientInfoCase.setId(patientInfoVo.getId());
-		//patientInfoCase.setName(patientInfoVo.getName());
-		patientInfoCase.setNo(patientInfoVo.getNo());
-		if (StringUtils.isNotBlank(patientInfoVo.getInDate()))
-			patientInfoCase.setRyrq(sdf.parse(patientInfoVo.getInDate()));
-		FormEnumObject sexObj = new FormEnumObject(patientInfoVo.getSex(), null, FormEnumValue.SEX);
-		patientInfoCase.setSex(convertIDToContent(sexObj));
-		patientInfoCase.setWeight(Float.parseFloat(patientInfoVo.getWeight()));
-		patientInfoCase.setWeightud(patientInfoVo.isWeightud());
-		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getFeemode(), patientInfoVo.getFeemodetxt(), FormEnumValue.YLFYFS);
-		patientInfoCase.setYlfyfs(convertIDToContent(ylfyfsObj));
-/*		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
-		//JSONArray jsonArray = new JSONArray();
-		for (int i=0;patientInfoVo.getYyks() != null && i< patientInfoVo.getYyks().size();i++){
-			CheckBoxVo checkBoxVo = (CheckBoxVo)patientInfoVo.getYyks().get(i);
-			FormEnumObject yyksObj = new FormEnumObject(checkBoxVo.getId(), checkBoxVo.getOther(), FormEnumValue.YYKS);
-			convertIDToContent(yyksObj);
-			yyksobjs.add(yyksObj);
-		}
-		JSONUtils<FormEnumObject> util = new JSONUtils<FormEnumObject>(FormEnumObject.class);
-		patientInfoCase.setYyks(util.convertFromList(yyksobjs));*/
-		FormEnumObject yyksObj = new FormEnumObject(patientInfoVo.getYyks(), patientInfoVo.getYykstxt(), FormEnumValue.YYKS);
-		patientInfoCase.setYyks(convertIDToContent(yyksObj));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return patientInfoCase;
-	}
 	
-	private PatientInfoVo convertPatientFromModelToVo(
-			PatientInfoCase patientInfoCase) {
-		// TODO Auto-generated method stub
-		PatientInfoVo patientInfoVo = new PatientInfoVo();
-		patientInfoVo.setAbbr(patientInfoCase.getAbbr());
-		patientInfoVo.setAge(""+patientInfoCase.getAge());
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-		if (patientInfoCase.getBirthday() != null)
-			patientInfoVo.setBirthday(sdf.format(patientInfoCase.getBirthday()));
-		if (patientInfoCase.getCyrq() != null)
-			patientInfoVo.setOutDate(sdf.format(patientInfoCase.getCyrq()));
-		FormEnumObject ethicObj = new FormEnumObject(patientInfoCase.getEthic(), FormEnumValue.ETHIC);
-		patientInfoVo.setEthic(convertContentToID(ethicObj));
-		patientInfoVo.setHeight(patientInfoVo.getHeight());
-		patientInfoVo.setHeightud(patientInfoVo.isHeightud());
-		FormEnumObject hysObj = new FormEnumObject(patientInfoCase.getHys(), FormEnumValue.HYS);
-		patientInfoVo.setHys(convertContentToID(hysObj));
-		patientInfoVo.setId(patientInfoVo.getId());
-		//patientInfoCase.setName(patientInfoVo.getName());
-		patientInfoVo.setNo(patientInfoVo.getNo());
-		if (patientInfoCase.getRyrq() != null)
-			patientInfoVo.setInDate(sdf.format(patientInfoVo.getInDate()));
-		FormEnumObject sexObj = new FormEnumObject(patientInfoCase.getSex(), FormEnumValue.SEX);
-		patientInfoVo.setSex(convertContentToID(sexObj));
-		patientInfoVo.setWeight(""+patientInfoCase.getWeight());
-		patientInfoVo.setWeightud(patientInfoCase.isWeightud());
-		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoCase.getYlfyfs(), FormEnumValue.YLFYFS);
-		patientInfoVo.setYyks(convertContentToID(ylfyfsObj));
-		if (StringUtils.isNotBlank(ylfyfsObj.getOther()))
-			patientInfoVo.setYykstxt(ylfyfsObj.getOther());
-/*		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
-		//JSONArray jsonArray = new JSONArray();
-		for (int i=0;patientInfoVo.getYyks() != null && i< patientInfoVo.getYyks().size();i++){
-			CheckBoxVo checkBoxVo = (CheckBoxVo)patientInfoVo.getYyks().get(i);
-			FormEnumObject yyksObj = new FormEnumObject(checkBoxVo.getId(), checkBoxVo.getOther(), FormEnumValue.YYKS);
-			convertIDToContent(yyksObj);
-			yyksobjs.add(yyksObj);
-		}
-		JSONUtils<FormEnumObject> util = new JSONUtils<FormEnumObject>(FormEnumObject.class);
-		patientInfoCase.setYyks(util.convertFromList(yyksobjs));*/
-		FormEnumObject yyksObj = new FormEnumObject(patientInfoCase.getYyks(), FormEnumValue.YYKS);
-		patientInfoVo.setYyks(convertContentToID(yyksObj));
-		if (StringUtils.isNotBlank(yyksObj.getOther()))
-			patientInfoVo.setYykstxt(yyksObj.getOther());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return patientInfoVo;
-	}
+	
+	
 
-	private String convertIDToContent(FormEnumObject obj) {
-		// TODO Auto-generated method stub
-		Map<String, Object> condition = new HashMap<String, Object>();
-		if (obj.getSeq() > 0){
-			condition.put("seq", obj.getSeq());
-			condition.put("type", obj.getType());
-			String value = cRFMapper.getFormEnumValue(condition);
-			if (!StringUtils.isNotBlank(value) || "其他".equals(value))
-				value = obj.getOther();
-			obj.setName(value);
-		}
-		return obj.getName();
-	}
-
-	private int convertContentToID(FormEnumObject obj) {
-		// TODO Auto-generated method stub
-		Map<String, Object> condition = new HashMap<String, Object>();
-		condition.put("name", obj.getName());
-		condition.put("type", obj.getType());
-		int seq = cRFMapper.getFormEnumValueByName(condition);
-		if (seq == 0){
-			condition = new HashMap<String, Object>();
-			condition.put("name", FormEnumValue.OTHER);
-			condition.put("type", obj.getType());
-			seq = cRFMapper.getFormEnumValueByName(condition);
-			obj.setOther(obj.getName());
-		}
-		obj.setSeq(seq);
-		return obj.getSeq();
-	}
+	
 
 	public Map<String, Object> genCRFNo(String abbr) {
 		// TODO Auto-generated method stub
@@ -301,13 +204,27 @@ public class CRFService {
 			DecimalFormat df = new DecimalFormat("0000");
 			String subNo = df.format(seq);
 			no = organization.getCode() + "-" + subNo;
-			Map<String, Object> condition = new HashMap<String, Object>();
+/*			Map<String, Object> condition = new HashMap<String, Object>();
 			condition.put("no", no);
 			condition.put("abbr", abbr);
-			int id = cRFMapper.insertCRF(condition);
+			condition.put("id", 0);*/
+			PatientInfoCase patientInfoCase = new PatientInfoCase();
+			patientInfoCase.setNo(no);
+			patientInfoCase.setAbbr(abbr);
+			patientInfoCase.setCreateBy(userName);
+			cRFMapper.insertCRF(patientInfoCase);
+			CRFUserSign userSign = new CRFUserSign();
+			userSign.setNo(no);
+			userSign.setLockStatus(LockStatusUtils.draft);
+			userSign.setCroName(userName);
+			userSign.setProgress(0);
+			userSignMapper.insertUserSign(userSign);
+			int id = patientInfoCase.getId();
+			cRFMapper.updateNextSeq(organization.getId());
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			result.put("no", no);
 			result.put("id", id);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
@@ -336,7 +253,7 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(Integer.parseInt(id));
-			PatientInfoVo patientInfoVo = convertPatientFromModelToVo(patientInfoCase);
+			PatientInfoVo patientInfoVo = convertorService.convertPatientFromModelToView(patientInfoCase);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -350,7 +267,7 @@ public class CRFService {
 		// TODO Auto-generated method stub
 		Map<String, Object> result;
 		try{
-			PatientInfoCase patientInfoCase =  convertPatientFromVoToModel(patientInfoVo);
+			PatientInfoCase patientInfoCase =  convertorService.convertPatientFromViewToModel(patientInfoVo);
 			if (patientInfoVo.getId() > 0){
 				//update
 				cRFMapper.updatePatientInfo(patientInfoCase);
@@ -375,11 +292,13 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			PersonAllergicHistoryCase personAllergicHistoryCase = cRFMapper.getPersonHistory(Integer.parseInt(id));
-			PersonalHistoryVo personalHistoryVo = convertorService.convertPersonHistoryFromModelToView(personAllergicHistoryCase);
+			PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
+			if (personAllergicHistoryCase != null)
+				personalHistoryVo = convertorService.convertPersonHistoryFromModelToView(personAllergicHistoryCase);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, personalHistoryVo);
 		}catch(Exception e){
 			e.printStackTrace();
-			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
 		
 		return result;
@@ -444,6 +363,24 @@ public class CRFService {
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
 		
+		return result;
+	}
+
+	public Map<String, Object> batchDelete(String id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			if (StringUtils.isNotBlank(id)){
+				String[] idArray = id.split(",");
+				for (String str : idArray){
+					cRFMapper.deletePatientInfo(Integer.parseInt(str));
+				}
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
 		return result;
 	}
 

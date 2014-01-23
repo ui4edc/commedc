@@ -11,8 +11,10 @@ public class ListCondition {
 	private Date lastModifiedFrom;
 	private String orderBy;
 	private boolean desc;
-	private int pageNo;
-	private int pageSize;
+	/*private int pageNo;
+	private int pageSize;*/
+	private int limitStart;
+	private int limitSize;
 	private int progress;
 	private int progressType;
 	private int type;
@@ -21,6 +23,7 @@ public class ListCondition {
 	private Date doubtDateFrom;
 	private Date doubtDateTo;
 	private Date lastModifiedTo;
+	private String userName;
 	
 	public boolean isCrf() {
 		return crf;
@@ -47,18 +50,8 @@ public class ListCondition {
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
 	}
-	public int getPageNo() {
-		return pageNo;
-	}
-	public void setPageNo(int pageNo) {
-		this.pageNo = pageNo;
-	}
-	public int getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
+	
+	
 	public int getProgress() {
 		return progress;
 	}
@@ -130,6 +123,24 @@ public class ListCondition {
 	}
 	public void setLastModifiedTo(Date lastModifiedTo) {
 		this.lastModifiedTo = lastModifiedTo;
+	}
+	public int getLimitStart() {
+		return limitStart;
+	}
+	public void setLimitStart(int limitStart) {
+		this.limitStart = limitStart;
+	}
+	public int getLimitSize() {
+		return limitSize;
+	}
+	public void setLimitSize(int limitSize) {
+		this.limitSize = limitSize;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 	

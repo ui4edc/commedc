@@ -44,6 +44,10 @@ public class PatientInfoCase {
 	
 	private boolean weightud;
 	
+	private Date createTime;
+	
+	private String createBy;
+	
 	public int getId() {
 		return id;
 	}
@@ -145,6 +149,18 @@ public class PatientInfoCase {
 	}
 	public void setWeightud(boolean weightud) {
 		this.weightud = weightud;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public String getCreateBy() {
+		return createBy;
+	}
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
 	}
 	
 	
