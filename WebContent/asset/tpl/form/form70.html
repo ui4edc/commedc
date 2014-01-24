@@ -3,23 +3,23 @@
 <h2>ADR</h2>
 <div class="row">
     <span class="label">报告类型</span>
-    <input type="radio" hidefocus="true" title="新的严重" name="type" value="1" ui="type:Radio;id:Type1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="新的严重" name="type" value="1" ui="type:Radio;id:Type1;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="新的一般" name="type" value="2" ui="type:Radio;id:Type2;{{disabled}}" />
     <input type="radio" hidefocus="true" title="严重" name="type" value="3" ui="type:Radio;id:Type3;{{disabled}}" />
     <input type="radio" hidefocus="true" title="一般" name="type" value="4" ui="type:Radio;id:Type4;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">该患者是否采血</span>
-    <input type="radio" hidefocus="true" title="是" name="blood" value="1" ui="type:Radio;id:Blood1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="是" name="blood" value="1" ui="type:Radio;id:Blood1;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="否" name="blood" value="2" ui="type:Radio;id:Blood2;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">患者姓名</span>
-    <input type="text" ui="type:TextInput;id:Name;width:100;{{disabled}}" />
+    <input type="text" value="{{data.name}}" ui="type:TextInput;id:Name;width:100;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">性别</span>
-    <input type="radio" hidefocus="true" title="男" name="sex" value="1" ui="type:Radio;id:Male;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="男" name="sex" value="1" ui="type:Radio;id:Male;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="女" name="sex" value="2" ui="type:Radio;id:Female;{{disabled}}" />
 </div>
 <div class="row">
@@ -28,43 +28,43 @@
 </div>
 <div class="row">
     <span class="label">民族</span>
-    <input type="text" ui="type:TextInput;id:Nation;width:100;{{disabled}}" />
+    <div ui="type:Select;id:Nation;width:100;{{disabled}}"></div>
 </div>
 <div class="row">
     <span class="label">体重</span>
-    <input type="text" class="en" ui="type:TextInput;id:Weight;width:100;{{disabled}}" /> kg
+    <input type="text" value="{{data.weight}}" class="en" ui="type:TextInput;id:Weight;width:100;{{disabled}}" /> kg
 </div>
 <div class="row">
     <span class="label">联系方式</span>
-    <input type="text" ui="type:TextInput;id:Contact;width:100;{{disabled}}" />
+    <input type="text" value="{{data.contact}}" ui="type:TextInput;id:Contact;width:100;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">原患疾病</span>
-    <input type="text" ui="type:TextInput;id:Disease;width:200;{{disabled}}" />
+    <input type="text" value="{{data.disease}}" ui="type:TextInput;id:Disease;width:200;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">病历号/门诊号</span>
-    <input type="text" ui="type:TextInput;id:No;width:100;{{disabled}}" />
+    <input type="text" value="{{data.patientNo}}" ui="type:TextInput;id:PatientNo;width:100;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label wlabel">既往药品不良反应/事件</span>
-    <input type="radio" hidefocus="true" title="有" name="has-adr" value="1" ui="type:Radio;id:HasADR1;{{disabled}}" />
-    <input type="text" ui="type:TextInput;id:ADRName;width:200;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="无" name="has-adr" value="2" ui="type:Radio;id:HasADR2;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="不详" name="has-adr" value="3" ui="type:Radio;id:HasADR3;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="有" name="his-adr" value="1" ui="type:Radio;id:HisADR1;{{disabled}}" />
+    <input type="text" value="{{data.historyadrtxt}}" ui="type:TextInput;id:HisADR;width:200;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="无" name="his-adr" value="2" ui="type:Radio;id:HisADR2;{{disabled}}" checked />
+    <input type="radio" hidefocus="true" title="不详" name="his-adr" value="3" ui="type:Radio;id:HisADR3;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label wlabel">家族药品不良反应/事件</span>
     <input type="radio" hidefocus="true" title="有" name="family-adr" value="1" ui="type:Radio;id:FamilyADR1;{{disabled}}" />
-    <input type="text" ui="type:TextInput;id:FamilyADRName;width:200;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="无" name="family-adr" value="2" ui="type:Radio;id:FamilyADR2;{{disabled}}" />
+    <input type="text" value="{{data.familyadrtxt}}" ui="type:TextInput;id:FamilyADR;width:200;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="无" name="family-adr" value="2" ui="type:Radio;id:FamilyADR2;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="不详" name="family-adr" value="3" ui="type:Radio;id:FamilyADR3;{{disabled}}" />
 </div>
-<div class="row sub3">关系：
-    <input type="radio" hidefocus="true" title="父母" name="family" value="1" ui="type:Radio;id:Family1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="兄弟姐妹" name="family" value="2" ui="type:Radio;id:Family2;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="其他" name="family" value="3" ui="type:Radio;id:Family3;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="不详" name="family" value="4" ui="type:Radio;id:Family4;{{disabled}}" />
+<div class="row sub4 relationship" style="display:none">关系：
+    <input type="radio" hidefocus="true" title="父母" name="relationship" value="1" ui="type:Radio;id:Relationship1;{{disabled}}" checked />
+    <input type="radio" hidefocus="true" title="兄弟姐妹" name="relationship" value="2" ui="type:Radio;id:Relationship2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="relationship" value="3" ui="type:Radio;id:Relationship3;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="不详" name="relationship" value="4" ui="type:Radio;id:Relationship4;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">相关重要信息</span>
@@ -73,14 +73,25 @@
     <input type="checkbox" hidefocus="true" title="妊娠期" name="info" value="3" ui="type:CheckBox;id:Info3;{{disabled}}" />
     <input type="checkbox" hidefocus="true" title="肝病史" name="info" value="4" ui="type:CheckBox;id:Info4;{{disabled}}" />
     <input type="checkbox" hidefocus="true" title="肾病史" name="info" value="5" ui="type:CheckBox;id:Info5;{{disabled}}" />
-</div>
-<div class="row sub">
     <input type="checkbox" hidefocus="true" title="过敏史" name="info" value="6" ui="type:CheckBox;id:Info6;{{disabled}}" />
-    <input type="text" ui="type:TextInput;id:Info6Name;width:100;{{disabled}}" />
-    <input type="checkbox" hidefocus="true" title="其他" name="important" value="0" ui="type:CheckBox;id:CustomInfo;{{disabled}}" />
-    <input type="text" ui="type:TextInput;id:CustomInfoName;width:100;{{disabled}}" />
+    <input type="text" value="{{data.infotxt1}}" ui="type:TextInput;id:Info6Name;width:100;{{disabled}}" />
+    <input type="checkbox" hidefocus="true" title="其他" name="info" value="7" ui="type:CheckBox;id:Info7;{{disabled}}" />
+    <input type="text" value="{{data.infotxt2}}" ui="type:TextInput;id:Info7Name;width:100;{{disabled}}" />
 </div>
-<div ui="type:Table;id:Drug;editable:1"></div>
+<div class="row"><span class="label">怀疑药品</span></div>
+<div ui="type:Table;id:Drug1;editable:1"></div>
+{{#save}}
+<div class="row">
+    <a href="javascript:void(0)" hidefocus="true" class="add1 add-btn">添加一行</a>
+</div>
+{{/save}}
+<div class="row"><span class="label">并用药品</span></div>
+<div ui="type:Table;id:Drug2;editable:1"></div>
+{{#save}}
+<div class="row">
+    <a href="javascript:void(0)" hidefocus="true" class="add2 add-btn">添加一行</a>
+</div>
+{{/save}}
 <div class="row">
     <span class="label wlabel">不良反应/事件名称</span>
 </div>
@@ -153,89 +164,90 @@
         <input type="checkbox" hidefocus="true" title="休克" name="adr10" value="5" ui="type:CheckBox;id:ADR10_5;{{disabled}}" />
     </div>
     <div>
-        <input type="checkbox" hidefocus="true" title="其他" name="adr" value="0" ui="type:CheckBox;id:CustomADR;{{disabled}}" />
-        <input type="text" ui="type:TextInput;id:CustomADRName;width:200;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="其他" name="adr" value="11" ui="type:CheckBox;id:ADR11;{{disabled}}" />
+        <input type="text" value="{{data.adrtxt}}" ui="type:TextInput;id:CustomADRName;width:200;{{disabled}}" />
     </div>
 </div>
 <div class="row">
     <span class="label wlabel">不良反应/事件发生时间</span>
-    <div ui="type:Calendar;id:ADRTime;{{disabled}}"></div>
-    <input type="text" maxlength="2" class="f mt7 en" ui="type:TextInput;id:ADRH;width:30;{{disabled}}" />
+    <div ui="type:Calendar;id:ADRDate;{{disabled}}"></div>
+    <input type="text" maxlength="2" class="f mt7 en" value="{{data.adrH}}" ui="type:TextInput;id:ADRH;width:30;{{disabled}}" />
     <span class="f">时</span>
-    <input type="text" maxlength="2" class="f mt7 en" ui="type:TextInput;id:ADRM;width:30;{{disabled}}" />
+    <input type="text" maxlength="2" class="f mt7 en" value="{{data.adrM}}" ui="type:TextInput;id:ADRM;width:30;{{disabled}}" />
     <span class="f">分</span>
 </div>
 <div class="row">
     <span class="label wlabel">不良反应/事件过程描述（包括症状、体征、临床检验等）</span>
 </div>
 <div class="row sub auto">
-    <textarea ui="type:TextInput;id:Description;width:400;height:100;{{disabled}}"></textarea>
+    <textarea ui="type:TextInput;id:Description;width:400;height:100;{{disabled}}">{{data.adrDescription}}</textarea>
 </div>
 <div class="row">
     <span class="label wlabel">不良反应/事件处理情况</span>
 </div>
 <div class="row sub auto">
     <div>
-        <input type="radio" hidefocus="true" title="停药" name="deal" value="1" ui="type:Radio;id:Deal1;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="停药" name="deal" value="1" ui="type:Radio;id:Deal1;{{disabled}}" checked />
         <input type="radio" hidefocus="true" title="减少剂量" name="deal" value="2" ui="type:Radio;id:Deal2;{{disabled}}" />（剂量为 
-        <input type="text" class="en" ui="type:TextInput;id:Deal2Dose;width:50;{{disabled}}" /> mg/日）
+        <input type="text" class="en" value="{{data.adrDealDose}}" ui="type:TextInput;id:Deal2Dose;width:50;{{disabled}}" /> mg/日）
     </div>
     <div>
         <input type="radio" hidefocus="true" title="对症支持治疗" name="deal" value="3" ui="type:Radio;id:Deal3;{{disabled}}" />：
-        <input type="radio" hidefocus="true" title="地塞米松" name="deal3" value="1" ui="type:Radio;id:Deal3_1;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="地塞米松" name="deal3" value="1" ui="type:Radio;id:Deal3_1;{{disabled}}" checked />
         <input type="radio" hidefocus="true" title="肾上腺素" name="deal3" value="2" ui="type:Radio;id:Deal3_2;{{disabled}}" />
         <input type="radio" hidefocus="true" title="异丙嗪" name="deal3" value="3" ui="type:Radio;id:Deal3_3;{{disabled}}" />
         <input type="radio" hidefocus="true" title="吸氧" name="deal3" value="4" ui="type:Radio;id:Deal3_4;{{disabled}}" />
-        <input type="radio" hidefocus="true" title="其他" name="deal3" value="0" ui="type:Radio;id:CustomDeal3;{{disabled}}" />
-        <input type="text" ui="type:TextInput;id:CustomDeal3Name;width:100;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="其他" name="deal3" value="5" ui="type:Radio;id:Deal3_5;{{disabled}}" />
+        <input type="text" value="{{data.adrDeal3txt}}" ui="type:TextInput;id:CustomDeal3Name;width:100;{{disabled}}" />
     </div>
     <div>
-        <input type="radio" hidefocus="true" title="其他" name="deal" value="4" ui="type:Radio;id:CustomDeal;{{disabled}}" />
-        <input type="text" ui="type:TextInput;id:CustomDealName;width:100;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="其他" name="deal" value="4" ui="type:Radio;id:Deal4;{{disabled}}" />
+        <input type="text" value="{{data.adrDeal4txt}}" ui="type:TextInput;id:CustomDealName;width:100;{{disabled}}" />
     </div>
     <div>备注</div>
-    <textarea ui="type:TextInput;id:DealRemark;width:400;height:100;{{disabled}}"></textarea>
+    <textarea ui="type:TextInput;id:DealRemark;width:400;height:100;{{disabled}}">{{data.adrDealRemark}}</textarea>
 </div>
 <div class="row">
     <span class="label wlabel">不良反应/事件的结果</span>
 </div>
 <div class="row sub auto">
     <div>
-        <input type="radio" hidefocus="true" title="痊愈" name="result" value="1" ui="type:Radio;id:Result1;{{disabled}}" />
-        <input type="radio" hidefocus="true" title="好转" name="result" value="2" ui="type:Radio;id:Result2;{{disabled}}" />
-        <input type="radio" hidefocus="true" title="未好转" name="result" value="3" ui="type:Radio;id:Result3;{{disabled}}" />
-        <input type="radio" hidefocus="true" title="不详" name="result" value="4" ui="type:Radio;id:Result4;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="痊愈" name="ending" value="1" ui="type:Radio;id:Ending1;{{disabled}}" checked />
+        <input type="radio" hidefocus="true" title="好转" name="ending" value="2" ui="type:Radio;id:Ending2;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="未好转" name="ending" value="3" ui="type:Radio;id:Ending3;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="不详" name="ending" value="4" ui="type:Radio;id:Ending4;{{disabled}}" />
     </div>
     <div>
-        <input type="radio" hidefocus="true" title="有后遗症" name="result" value="5" ui="type:Radio;id:Result5;{{disabled}}" />，表现
-        <input type="text" ui="type:TextInput;id:Result5Content;width:200;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="有后遗症" name="ending" value="5" ui="type:Radio;id:Ending5;{{disabled}}" />，表现
+        <input type="text" value="{{data.endingtxt}}" ui="type:TextInput;id:Ending5Content;width:200;{{disabled}}" />
     </div>
     <div>
-        <input type="radio" hidefocus="true" title="死亡" name="result" value="6" ui="type:Radio;id:Result6;{{disabled}}" />，直接死因
-        <input type="text" ui="type:TextInput;id:Result6Content;width:200;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="死亡" name="ending" value="6" ui="type:Radio;id:Ending6;{{disabled}}" />
     </div>
-    <div>
+    <div class="death" style="overflow:hidden; display:none">
+        <span class="f">直接死因</span>
+        <input class="f mt7" type="text" value="{{data.deathReason}}" ui="type:TextInput;id:DeathReason;width:200;{{disabled}}" />
         <span class="f">死亡时间</span>
-        <div ui="type:Calendar;id:Dead;{{disabled}}"></div>
+        <div ui="type:Calendar;id:DeathDate;{{disabled}}"></div>
     </div>
 </div>
 <div class="row">
     <span class="label wlabel">停药或减量后，反应/事件是否消失或减轻</span>
-    <input type="radio" hidefocus="true" title="是" name="stop" value="1" ui="type:Radio;id:Stop1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="是" name="stop" value="1" ui="type:Radio;id:Stop1;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="否" name="stop" value="2" ui="type:Radio;id:Stop2;{{disabled}}" />
     <input type="radio" hidefocus="true" title="不明" name="stop" value="3" ui="type:Radio;id:Stop3;{{disabled}}" />
     <input type="radio" hidefocus="true" title="未停药或未减量" name="stop" value="4" ui="type:Radio;id:Stop4;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label wlabel">再次使用可疑药品后是否再次出现同样反应/事件</span>
-    <input type="radio" hidefocus="true" title="是" name="restart" value="1" ui="type:Radio;id:Restart1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="是" name="restart" value="1" ui="type:Radio;id:Restart1;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="否" name="restart" value="2" ui="type:Radio;id:Restart2;{{disabled}}" />
     <input type="radio" hidefocus="true" title="不明" name="restart" value="3" ui="type:Radio;id:Restart3;{{disabled}}" />
     <input type="radio" hidefocus="true" title="未再使用" name="restart" value="4" ui="type:Radio;id:Restart4;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">关联性评价</span>报告人评价：
-    <input type="radio" hidefocus="true" title="肯定" name="evaluate" value="1" ui="type:Radio;id:Evaluate1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="肯定" name="evaluate" value="1" ui="type:Radio;id:Evaluate1;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="很可能" name="evaluate" value="2" ui="type:Radio;id:Evaluate2;{{disabled}}" />
     <input type="radio" hidefocus="true" title="可能" name="evaluate" value="3" ui="type:Radio;id:Evaluate3;{{disabled}}" />
     <input type="radio" hidefocus="true" title="可能无关" name="evaluate" value="4" ui="type:Radio;id:Evaluate4;{{disabled}}" />
@@ -244,22 +256,22 @@
 </div>
 <div class="row">
     <span class="label">报告人信息</span>职业：
-    <input type="radio" hidefocus="true" title="医生" name="career" value="1" ui="type:Radio;id:Career1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="医生" name="career" value="1" ui="type:Radio;id:Career1;{{disabled}}" checked />
     <input type="radio" hidefocus="true" title="药师" name="career" value="2" ui="type:Radio;id:Career2;{{disabled}}" />
     <input type="radio" hidefocus="true" title="护士" name="career" value="3" ui="type:Radio;id:Career3;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="其他" name="career" value="0" ui="type:Radio;id:CustomCareer;{{disabled}}" />
-    <input type="text" ui="type:TextInput;id:CustomCareerName;width:50;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="career" value="4" ui="type:Radio;id:Career4;{{disabled}}" />
+    <input type="text" value="{{data.careertxt}}" ui="type:TextInput;id:CustomCareerName;width:50;{{disabled}}" />
 </div>
 <div class="row sub auto">
-    <div>电子邮箱 <input type="text" ui="type:TextInput;id:Email;width:200;{{disabled}}" /></div>
+    <div>电子邮箱 <input type="text" class="en" value="{{data.email}}" ui="type:TextInput;id:Email;width:200;{{disabled}}" /></div>
     <div style="overflow:hidden">
         <span class="f">报告日期</span>
-        <div ui="type:Calendar;id:Report;{{disabled}}"></div>
+        <div ui="type:Calendar;id:ReportDate;{{disabled}}"></div>
     </div>
 </div>
 <div class="row auto">
     <span class="label">备注</span>
-    <textarea ui="type:TextInput;id:Remark;width:400;height:100;{{disabled}}"></textarea>
+    <textarea ui="type:TextInput;id:Remark;width:400;height:100;{{disabled}}">{{data.remark}}</textarea>
 </div>
 {{#save}}
 <div class="bottom">

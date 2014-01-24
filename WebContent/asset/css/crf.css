@@ -21,6 +21,7 @@ h1 .check-doubt:hover{background:#e74c3c}
 .crf-form .sub{padding-left:100px}
 .crf-form .sub2{padding-left:133px}
 .crf-form .sub3{padding-left:179px}
+.crf-form .sub4{padding-left:150px}
 .crf-form .auto{height:auto}
 .crf-form .f{float:left; margin-right:5px}
 .crf-form .mt7{margin-top:7px}
@@ -30,7 +31,8 @@ h1 .check-doubt:hover{background:#e74c3c}
 #ctrltableExam1 .ui-table-hcell-text,
 #ctrltableExam3 .ui-table-hcell-text,
 #ctrltableExam4 .ui-table-hcell-text,
-#ctrltableDrug .ui-table-hcell-text{height:auto; overflow:visible}
+#ctrltableDrug1 .ui-table-hcell-text,
+#ctrltableDrug2 .ui-table-hcell-text{height:auto; overflow:visible}
 
 .times{width:650px; overflow:hidden; margin:10px 0}
 .times a{float:left; width:70px; height:20px; line-height:20px; margin:0 5px 5px 0; text-align:center; background:#fff; border:1px #a8bfd1 solid; color:#000; text-decoration:none; border-radius:3px}

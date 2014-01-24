@@ -8,7 +8,8 @@ es.Views.Form70 = Backbone.View.extend({
     el: ".crf-form",
     
     events: {
-        
+        "click .add1": "addRow1",
+        "click .add2": "addRow2"
     },
     
     initialize: function() {
@@ -42,31 +43,267 @@ es.Views.Form70 = Backbone.View.extend({
     },
     
     initCtrl: function(data) {
-        esui.init(es.main.el, {
+        //赋值
+        esui.init(document.body, {
             Birthday: {
                 range: BIRTHDAY_RANGE,
-                valueAsDate: new Date()
+                value: data.birthday
             },
-            ADRTime: {
-                range: CRF_RANGE,
-                valueAsDate: new Date()
+            Nation: {
+                datasource: NATION,
+                value: data.ethic
             },
-            Dead: {
+            ADRDate: {
                 range: CRF_RANGE,
-                valueAsDate: new Date()
+                value: data.adrDate
             },
-            Report: {
+            DeathDate: {
                 range: CRF_RANGE,
-                valueAsDate: new Date()
+                value: data.deathDate
+            },
+            ReportDate: {
+                range: CRF_RANGE,
+                value: data.reportDate
             }
         });
         
+        var editable = es.main.editable;
+        
+        var table1 = esui.get("Drug1"),
+            table2 = esui.get("Drug2");;
+        table1.datasource = data.drug1;
+        table2.datasource = data.drug2;
+        table1.fields = table2.fields = [
+            {
+                field: "f1",
+                title: "批准文号",
+                editable: editable,
+                edittype: "string",
+                width: 75,
+                stable: true,
+                content: function(item) {return item.f1;}
+            },
+            {
+                field: "f2",
+                title: "商品名称",
+                editable: editable,
+                edittype: "string",
+                width: 75,
+                stable: true,
+                content: function(item) {return item.f2;}
+            },
+            {
+                field: "f3",
+                title: "通用名称<br>（含剂型）",
+                editable: editable,
+                edittype: "string",
+                width: 75,
+                stable: true,
+                content: function(item) {return item.f3;}
+            },
+            {
+                field: "f4",
+                title: "生产厂家",
+                editable: editable,
+                edittype: "string",
+                width: 75,
+                stable: true,
+                content: function(item) {return item.f4;}
+            },
+            {
+                field: "f5",
+                title: "生产批号",
+                editable: editable,
+                edittype: "string",
+                width: 75,
+                stable: true,
+                content: function(item) {return item.f5;}
+            },
+            {
+                field: "f6",
+                title: "用法用量<br>（次剂量、途径、日次数）",
+                editable: editable,
+                edittype: "string",
+                width: 170,
+                stable: true,
+                content: function(item) {return item.f6;}
+            },
+            {
+                field: "f7",
+                title: "用药<br>起止时间",
+                editable: editable,
+                edittype: "string",
+                width: 75,
+                stable: true,
+                content: function(item) {return item.f7;}
+            },
+            {
+                field: "f8",
+                title: "用药原因",
+                editable: editable,
+                edittype: "string",
+                width: 75,
+                stable: true,
+                content: function(item) {return item.f8;}
+            }
+        ];
+        table1.render();
+        table2.render();
+        
+        switch (data.type) {
+            case 2: esui.get("Type2").setChecked(true); break;
+            case 3: esui.get("Type3").setChecked(true); break;
+            case 4: esui.get("Type4").setChecked(true);
+        }
+        if (data.blood == 2) {
+            esui.get("Blood2").setChecked(true);
+        }
+        if (data.sex == 2) {
+            esui.get("Female").setChecked(true);
+        }
+        switch (data.historyadr) {
+            case 1: esui.get("HisADR1").setChecked(true); break;
+            case 3: esui.get("HisADR3").setChecked(true);
+        }
+        switch (data.familyadr) {
+            case 1: esui.get("FamilyADR1").setChecked(true); this.$(".relationship").show(); break;
+            case 3: esui.get("FamilyADR3").setChecked(true);
+        }
+        switch (data.relationship) {
+            case 2: esui.get("Relationship2").setChecked(true); break;
+            case 3: esui.get("Relationship3").setChecked(true); break;
+            case 4: esui.get("Relationship4").setChecked(true);
+        }
+        if (data.info != "") {
+            $.each(data.info.split(","), function(index, val) {
+                esui.get("Info" + val).setChecked(true);
+            });
+        }
+        if (data.adr != "") {
+            $.each(data.adr.split(","), function(index, val) {
+                esui.get("ADR" + val).setChecked(true);
+            });
+        }
+        if (data.adr1 != "") {
+            $.each(data.adr1.split(","), function(index, val) {
+                esui.get("ADR1_" + val).setChecked(true);
+            });
+        }
+        if (data.adr2 != "") {
+            $.each(data.adr2.split(","), function(index, val) {
+                esui.get("ADR2_" + val).setChecked(true);
+            });
+        }
+        if (data.adr3 != "") {
+            $.each(data.adr3.split(","), function(index, val) {
+                esui.get("ADR3_" + val).setChecked(true);
+            });
+        }
+        if (data.adr4 != "") {
+            $.each(data.adr4.split(","), function(index, val) {
+                esui.get("ADR4_" + val).setChecked(true);
+            });
+        }
+        if (data.adr5 != "") {
+            $.each(data.adr5.split(","), function(index, val) {
+                esui.get("ADR5_" + val).setChecked(true);
+            });
+        }
+        if (data.adr6 != "") {
+            $.each(data.adr6.split(","), function(index, val) {
+                esui.get("ADR6_" + val).setChecked(true);
+            });
+        }
+        if (data.adr7 != "") {
+            $.each(data.adr7.split(","), function(index, val) {
+                esui.get("ADR7_" + val).setChecked(true);
+            });
+        }
+        if (data.adr8 != "") {
+            $.each(data.adr8.split(","), function(index, val) {
+                esui.get("ADR8_" + val).setChecked(true);
+            });
+        }
+        if (data.adr9 != "") {
+            $.each(data.adr9.split(","), function(index, val) {
+                esui.get("ADR9_" + val).setChecked(true);
+            });
+        }
+        if (data.adr10 != "") {
+            $.each(data.adr10.split(","), function(index, val) {
+                esui.get("ADR10_" + val).setChecked(true);
+            });
+        }
+        switch (data.adrDeal) {
+            case 2: esui.get("Deal2").setChecked(true); break;
+            case 3: esui.get("Deal3").setChecked(true); break;
+            case 4: esui.get("Deal4").setChecked(true);
+        }
+        switch (data.adrDeal3) {
+            case 2: esui.get("Deal3_2").setChecked(true); break;
+            case 3: esui.get("Deal3_3").setChecked(true); break;
+            case 4: esui.get("Deal3_4").setChecked(true); break;
+            case 5: esui.get("Deal3_5").setChecked(true);
+        }
+        switch (data.ending) {
+            case 2: esui.get("Ending2").setChecked(true); break;
+            case 3: esui.get("Ending3").setChecked(true); break;
+            case 4: esui.get("Ending4").setChecked(true); break;
+            case 5: esui.get("Ending5").setChecked(true); break;
+            case 6: esui.get("Ending6").setChecked(true); this.$(".death").show();
+        }
+        switch (data.adrStop) {
+            case 2: esui.get("Stop2").setChecked(true); break;
+            case 3: esui.get("Stop3").setChecked(true); break;
+            case 4: esui.get("Stop4").setChecked(true);
+        }
+        switch (data.adrRestart) {
+            case 2: esui.get("Restart2").setChecked(true); break;
+            case 3: esui.get("Restart3").setChecked(true); break;
+            case 4: esui.get("Restart4").setChecked(true);
+        }
+        switch (data.evaluate) {
+            case 2: esui.get("Evaluate2").setChecked(true); break;
+            case 3: esui.get("Evaluate3").setChecked(true); break;
+            case 4: esui.get("Evaluate4").setChecked(true); break;
+            case 5: esui.get("Evaluate5").setChecked(true); break;
+            case 6: esui.get("Evaluate6").setChecked(true);
+        }
+        switch (data.career) {
+            case 2: esui.get("Career2").setChecked(true); break;
+            case 3: esui.get("Career3").setChecked(true); break;
+            case 4: esui.get("Career4").setChecked(true);
+        }
+        
+        //事件
         var me = this;
         
+        esui.get("Drug1").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        esui.get("Drug2").onedit = function (value, options, editor) {
+            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
+            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            editor.stop();
+        };
+        
         esui.get("Birthday").onchange = function(value) {esui.get("Birthday").setValueAsDate(value);};
-        esui.get("ADRTime").onchange = function(value) {esui.get("ADRTime").setValueAsDate(value);};
-        esui.get("Dead").onchange = function(value) {esui.get("Dead").setValueAsDate(value);};
-        esui.get("Report").onchange = function(value) {esui.get("Report").setValueAsDate(value);};
+        esui.get("ADRDate").onchange = function(value) {esui.get("ADRDate").setValueAsDate(value);};
+        esui.get("DeathDate").onchange = function(value) {esui.get("DeathDate").setValueAsDate(value);};
+        esui.get("ReportDate").onchange = function(value) {esui.get("ReportDate").setValueAsDate(value);};
+        
+        esui.get("FamilyADR1").onclick = function() {me.$(".relationship").show();};
+        esui.get("FamilyADR2").onclick = function() {me.$(".relationship").hide();};
+        esui.get("FamilyADR3").onclick = function() {me.$(".relationship").hide();};
+        
+        esui.get("Ending1").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending2").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending3").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending4").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending5").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending6").onclick = function() {me.$(".death").show();};
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
@@ -76,104 +313,21 @@ es.Views.Form70 = Backbone.View.extend({
         }
         if (!es.main.editable) {
             esui.get("Birthday").disable();
-            esui.get("ADRTime").disable();
-            esui.get("Dead").disable();
-            esui.get("Report").disable();
+            esui.get("ADRDate").disable();
+            esui.get("DeathDate").disable();
+            esui.get("ReportDate").disable();
         }
-        
-        esui.get("Drug").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        
-        var editable = es.main.editable;
-        
-        var table = esui.get("Drug");
-        table.datasource = data.drug;
-        table.fields = [
-            {
-                field: "f1",
-                title: "药品",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "批准文号",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "商品名称",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f3;}
-            },
-            {
-                field: "f4",
-                title: "通用名称<br>（含剂型）",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f4;}
-            },
-            {
-                field: "f5",
-                title: "生产厂家",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f5;}
-            },
-            {
-                field: "f6",
-                title: "生产批号",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f6;}
-            },
-            {
-                field: "f7",
-                title: "用法用量<br>（次剂量、途径、日次数）",
-                editable: editable,
-                edittype: "string",
-                width: 170,
-                stable: true,
-                content: function(item) {return item.f7;}
-            },
-            {
-                field: "f8",
-                title: "用药<br>起止时间",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f8;}
-            },
-            {
-                field: "f9",
-                title: "用药原因",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f9;}
-            }
-        ];
+    },
+    
+    addRow1: function() {
+        var table = esui.get("Drug1");
+        table.datasource.push({f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:"",f8:""});
+        table.render();
+    },
+    
+    addRow2: function() {
+        var table = esui.get("Drug2");
+        table.datasource.push({f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:"",f8:""});
         table.render();
     },
     
@@ -182,7 +336,61 @@ es.Views.Form70 = Backbone.View.extend({
        
        var data = {
            id: me.crfId,
-           no: me.model.get("data").no
+           no: me.model.get("data").no,
+           type: parseInt(esui.get("Type1").getValue(), 10),
+           blood: parseInt(esui.get("Blood1").getValue(), 10),
+           name: $.trim(esui.get("Name").getValue()),
+           sex: parseInt(esui.get("Male").getGroup().getValue(), 10),
+           birthday: esui.get("Birthday").getValue(),
+           ethic: esui.get("Nation").value,
+           weight: $.trim(esui.get("Weight").getValue()),
+           contact: $.trim(esui.get("Contact").getValue()),
+           disease: $.trim(esui.get("Disease").getValue()),
+           patientNo: $.trim(esui.get("PatientNo").getValue()),
+           historyadr: parseInt(esui.get("HisADR1").getValue(), 10),
+           historyadrtxt: $.trim(esui.get("HisADR").getValue()),
+           familyadr: parseInt(esui.get("FamilyADR1").getValue(), 10),
+           familyadrtxt: $.trim(esui.get("FamilyADR").getValue()),
+           relationship: parseInt(esui.get("Relationship1").getGroup().getValue(), 10),
+           info: esui.get("Info1").getGroup().getValue(),
+           info6txt: $.trim(esui.get("Info6Name").getValue()),
+           info7txt: $.trim(esui.get("Info7Name").getValue()),
+           drug1: esui.get("Drug1").datasource,
+           drug2: esui.get("Drug2").datasource,
+           adr: esui.get("ADR1").getGroup().getValue(),
+           adr1: esui.get("ADR1_1").getGroup().getValue(),
+           adr2: esui.get("ADR2_1").getGroup().getValue(),
+           adr3: esui.get("ADR3_1").getGroup().getValue(),
+           adr4: esui.get("ADR4_1").getGroup().getValue(),
+           adr5: esui.get("ADR5_1").getGroup().getValue(),
+           adr6: esui.get("ADR6_1").getGroup().getValue(),
+           adr7: esui.get("ADR7_1").getGroup().getValue(),
+           adr8: esui.get("ADR8_1").getGroup().getValue(),
+           adr9: esui.get("ADR9_1").getGroup().getValue(),
+           adr10: esui.get("ADR10_1").getGroup().getValue(),
+           adrtxt: $.trim(esui.get("CustomADRName").getValue()),
+           adrDate: esui.get("ADRDate").getValue(),
+           adrH: $.trim(esui.get("ADRH").getValue()),
+           adrM: $.trim(esui.get("ADRM").getValue()),
+           adrDescription: $.trim(esui.get("Description").getValue()),
+           adrDeal: parseInt(esui.get("Deal1").getValue(), 10),
+           adrDeal3: parseInt(esui.get("Deal3_1").getValue(), 10),
+           adrDealDose: $.trim(esui.get("Deal2Dose").getValue()),
+           adrDeal3txt: $.trim(esui.get("CustomDeal3Name").getValue()),
+           adrDeal4txt: $.trim(esui.get("CustomDealName").getValue()),
+           adrDealRemark: $.trim(esui.get("DealRemark").getValue()),
+           ending: parseInt(esui.get("Ending1").getGroup().getValue(), 10),
+           endingtxt: $.trim(esui.get("Ending5Content").getValue()),
+           deathDate: esui.get("DeathDate").getValue(),
+           deathReason: $.trim(esui.get("DeathReason").getValue()),
+           adrStop: parseInt(esui.get("Stop1").getGroup().getValue(), 10),
+           adrRestart: parseInt(esui.get("Restart1").getGroup().getValue(), 10),
+           evaluate: parseInt(esui.get("Evaluate1").getGroup().getValue(), 10),
+           career: parseInt(esui.get("Career1").getGroup().getValue(), 10),
+           careertxt: $.trim(esui.get("CustomCareerName").getValue()),
+           email: $.trim(esui.get("Email").getValue()),
+           reportDate: esui.get("ReportDate").getValue(),
+           remark: $.trim(esui.get("Remark").getValue())
        };
        
        console.log("保存表单-请求", data);
