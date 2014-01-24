@@ -100,6 +100,8 @@ util.ajax = {
             
             data : option.data,
             
+            contentType: "application/json;charset=UTF-8",
+            
             beforeSend: function(jqXHR, settings) {
                 if (option.showMask) {
                     util.ajax.showMask();
