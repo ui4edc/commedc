@@ -10,6 +10,8 @@ es.Views.Form30 = Backbone.View.extend({
     events: {
         "click .tabbar a": "switchTimes",
         "click .add-bottle": "addBottle",
+        "click .add-injection": "addInjection",
+        "click .add-drug": "addDrug"
     },
     
     initialize: function() {
@@ -69,6 +71,14 @@ es.Views.Form30 = Backbone.View.extend({
                     bottle: data.data.bottle,
                     disabled: disabled
                 }));
+                me.$(".injections").prepend($.Mustache.render("tpl-form30-injection", {
+                    injection: data.data.injection,
+                    disabled: disabled
+                }));
+                me.$(".add-drug").parent().before($.Mustache.render("tpl-form30-drug", {
+                    banDrug: data.data.banDrug,
+                    disabled: disabled
+                }));
                 
                 me.initCtrl(data.data);
                 
@@ -85,6 +95,14 @@ es.Views.Form30 = Backbone.View.extend({
             }));
             this.$(".bottles").prepend($.Mustache.render("tpl-form30-bottle", {
                 bottle: data.data.bottle,
+                disabled: disabled
+            }));
+            this.$(".injections").prepend($.Mustache.render("tpl-form30-injection", {
+                injection: data.data.injection,
+                disabled: disabled
+            }));
+            this.$(".add-drug").parent().before($.Mustache.render("tpl-form30-drug", {
+                banDrug: data.data.banDrug,
                 disabled: disabled
             }));
             
@@ -199,6 +217,22 @@ es.Views.Form30 = Backbone.View.extend({
     addBottle: function(e) {
         $(e.target).parent().before($.Mustache.render("tpl-form30-bottle", {
             bottle: [{no: this.$(".bottle").length + 1}],
+            disabled: ""
+        }));
+        esui.init();
+    },
+    
+    addInjection: function(e) {
+        $(e.target).parent().before($.Mustache.render("tpl-form30-injection", {
+            injection: [{no: this.$(".injection").length + 1}],
+            disabled: ""
+        }));
+        esui.init();
+    },
+    
+    addDrug: function(e) {
+        $(e.target).parent().before($.Mustache.render("tpl-form30-drug", {
+            banDrug: [{no: this.$(".ban-drug").length + 1}],
             disabled: ""
         }));
         esui.init();

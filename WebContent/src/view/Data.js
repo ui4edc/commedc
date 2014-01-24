@@ -146,7 +146,7 @@ es.Views.Data = Backbone.View.extend({
             this.args.lastModifiedTo = date[1];
         }
         this.args.progressType = esui.get("ProgressType").value;
-        if (esui.get("ProgressType").value == 1) {
+        if (this.args.progressType == 0) {
             this.args.progress = null;
         } else {
             this.args.progress = $.trim(esui.get("Progress").getValue());

@@ -6,7 +6,23 @@
 
 es.Models.Form12 = Backbone.Model.extend({
     defaults: {
-        data: null
+        data: null,
+        def: {
+			smoke: 2,
+			drink: 2,
+			hasFood: 2,
+			hasDrug: 2,
+			hasOther: 2,
+			food: [
+				{name: null, value: "", txt: null}
+			],
+			drug: [
+				{name: null, value: "", txt: null, type: 1}
+			],
+			other: [
+				{name: null, value: "", txt: null}
+			]
+		}
     },
     
     getData: function(args) {
@@ -20,7 +36,9 @@ es.Models.Form12 = Backbone.Model.extend({
             data: args,
             success: function(response) {
                 console.log("crf/getPersonHistory.do-响应", response);
-                
+                if (response.data == null) {
+                    response.data = me.get("def");
+                }
                 $.each(response.data.food, function(index, val) {
                     val.no = index + 1;
                 });
@@ -36,24 +54,7 @@ es.Models.Form12 = Backbone.Model.extend({
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {
-                    smoke: 2,
-                    drink: 2,
-                    hasFood: 1,
-                    hasDrug: 1,
-                    hasOther: 1,
-                    food: [
-                        {name: "", value: "1", txt: ""}
-                    ],
-                    drug: [
-                        {name: "1", value: "1,2,3", txt: "", type: 1},
-                        {name: "2", value: "8", txt: "txt", type: 2}
-                    ],
-                    other: [
-                        {name: "1", value: "1,2,3", txt: ""},
-                        {name: "2", value: "8", txt: "txt"}
-                    ]
-                }
+                data: null
             }
         });
     }

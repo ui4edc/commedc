@@ -93,9 +93,12 @@ util.ajax = {
         
         $.ajax({
             type: "POST",
+            
             dataType: "json",
+            
             url: $("#BasePath").val() + option.url,
-            data : option.data,
+            
+            data : JSON.stringify(option.data),
             
             beforeSend: function(jqXHR, settings) {
                 if (option.showMask) {
@@ -118,6 +121,12 @@ util.ajax = {
                     option.success && option.success(data);
                 } else {
                     util.ajax.showError(data.errorMsg);
+                }
+            },
+            
+            statusCode: {
+                "302": function() {
+                    window.location.href = $("#BasePath").val() + "tologin.do";
                 }
             }
         });

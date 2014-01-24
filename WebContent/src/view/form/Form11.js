@@ -62,7 +62,7 @@ es.Views.Form11 = Backbone.View.extend({
             }
         });
         
-        esui.get("Age").setValue(util.getAge(T.date.parse(data.birthday)));
+        esui.get("Age").setValue(util.getAge(T.date.parse(data.birthday)) + "");
         
         if (data.sex == 2) {
             esui.get("Female").setChecked(true);

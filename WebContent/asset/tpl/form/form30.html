@@ -140,12 +140,7 @@
     <input type="radio" hidefocus="true" title="否" name="has-injection" value="2" ui="type:Radio;id:HasInjection2;{{disabled}}" checked />
 </div>
 <div class="row sub auto injections" style="display:none">
-{{#data.injection}}
-<div class="injection">注射剂{{no}}：<input type="text" value="{{name}}" ui="type:TextInput;id:InjectionName{{no}};width:100;{{disabled}}" />
-剂量{{no}}：<input type="text" value="{{dose}}" ui="type:TextInput;id:InjectionDose{{no}};width:50;{{disabled}}" />
-（单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:InjectionUnit{{no}};width:50;{{disabled}}" />）
-</div>
-{{/data.injection}}
+    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-injection">添加一行</a></div>{{/save}}
 </div>
 
 <div class="row">
@@ -162,13 +157,8 @@
     <input type="radio" hidefocus="true" title="其他" name="ban" value="4" ui="type:Radio;id:Ban4;{{disabled}}" />
     <input type="text" value="{{data.bantxt}}" ui="type:TextInput;id:BanName;width:100;{{disabled}}" />
     
-<div><strong>产生配伍禁忌药品：</strong></div>
-{{#data.banDrug}}
-<div class="ban-drug">药品名称{{no}}：<input type="text" value="{{name}}" ui="type:TextInput;id:DrugName{{no}};width:100;{{disabled}}" />
-剂量{{no}}：<input type="text" value="{{dose}}" ui="type:TextInput;id:DrugDose{{no}};width:50;{{disabled}}" />
-（单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:DrugUnit{{no}};width:50;{{disabled}}" />）
-</div>
-{{/data.banDrug}}
+    <div><strong>产生配伍禁忌药品：</strong></div>
+    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-drug">添加一行</a></div>{{/save}}
 </div>
 
 <div class="row">
@@ -193,4 +183,22 @@
 （单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:BottleUnit{{no}};width:50;{{disabled}}" />）
 </div>
 {{/bottle}}
+</script>
+
+<script id="tpl-form30-injection" type="text/html">
+{{#injection}}
+<div class="injection">注射剂{{no}}：<input type="text" value="{{name}}" ui="type:TextInput;id:InjectionName{{no}};width:100;{{disabled}}" />
+剂量{{no}}：<input type="text" value="{{dose}}" ui="type:TextInput;id:InjectionDose{{no}};width:50;{{disabled}}" />
+（单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:InjectionUnit{{no}};width:50;{{disabled}}" />）
+</div>
+{{/injection}}
+</script>
+
+<script id="tpl-form30-drug" type="text/html">
+{{#banDrug}}
+<div class="ban-drug">药品名称{{no}}：<input type="text" value="{{name}}" ui="type:TextInput;id:DrugName{{no}};width:100;{{disabled}}" />
+剂量{{no}}：<input type="text" value="{{dose}}" ui="type:TextInput;id:DrugDose{{no}};width:50;{{disabled}}" />
+（单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:DrugUnit{{no}};width:50;{{disabled}}" />）
+</div>
+{{/banDrug}}
 </script>

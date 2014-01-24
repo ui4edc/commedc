@@ -6,7 +6,18 @@
 
 es.Models.Form20 = Backbone.Model.extend({
     defaults: {
-        data: null
+        data: null,
+        def: {
+			disease1: "",
+			fy1: "",
+			fy2: "",
+			disease2: "",
+			disease3: "",
+			diseasetxt: null,
+			diagnosis: null,
+			zy: 7,
+			zytxt: null
+		}
     },
     
     getData: function(args) {
@@ -20,23 +31,15 @@ es.Models.Form20 = Backbone.Model.extend({
             data: args,
             success: function(response) {
                 console.log("crf/getDeseaseInfo.do-响应", response);
-                
+                if (response.data == null) {
+                    response.data = me.get("def");
+                }
                 me.set({data: response});
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {
-                    disease1: "1,2,3,4,5",
-                    fy1: "1,2",
-                    fy2: "1,2",
-                    disease2: "1,2,3,4,5",
-                    disease3: "1,2",
-                    diseasetxt: "",
-                    diagnosis: "",
-                    zy: 7,
-                    zytxt: ""
-                }
+                data: null
             }
         });
     }

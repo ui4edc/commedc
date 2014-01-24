@@ -6,7 +6,16 @@
 
 es.Models.Form52 = Backbone.Model.extend({
     defaults: {
-        data: null
+        data: null,
+        def: {
+			done: 2,
+			data1: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
+			data2: [{f1:"",f2:"",f3:""}],
+			data3: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:""}],
+			data4: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
+			data5: [{f1:"",f2:"",f3:""}],
+			data6: [{f1:"",f2:"",f3:""}]
+		}
     },
     
     getData: function(args) {
@@ -20,21 +29,15 @@ es.Models.Form52 = Backbone.Model.extend({
             data: args,
             success: function(response) {
                 console.log("获取表单-响应", response);
-                
+                if (response.data == null) {
+                    response.data = me.get("def");
+                }
                 me.set({data: response});
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {
-                    done: 1,
-                    data1: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
-                    data2: [{f1:"",f2:"",f3:""}],
-                    data3: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:""}],
-                    data4: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
-                    data5: [{f1:"",f2:"",f3:""}],
-                    data6: [{f1:"",f2:"",f3:""}]
-                }
+                data: null
             }
         });
     }

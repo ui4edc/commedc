@@ -6,7 +6,18 @@
 
 es.Models.Form40 = Backbone.Model.extend({
     defaults: {
-        data: null
+        data: null,
+        def: {
+			drug: [{
+				name: "",
+				start: "",
+				end: "",
+				dose: "",
+				unit: "",
+				way: "",
+				frequency: ""
+			}]
+		}
     },
     
     getData: function(args) {
@@ -20,23 +31,15 @@ es.Models.Form40 = Backbone.Model.extend({
             data: args,
             success: function(response) {
                 console.log("获取表单-响应", response);
-                
+                if (response.data == null) {
+                    response.data = me.get("def");
+                }
                 me.set({data: response});
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {
-                    drug: [{
-                        name: "name",
-                        start: "start",
-                        end: "end",
-                        dose: "dose",
-                        unit: "unit",
-                        way: "way",
-                        frequency: "frequency"
-                    }]
-                }
+                data: null
             }
         });
     }
