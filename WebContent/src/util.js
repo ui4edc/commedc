@@ -98,7 +98,7 @@ util.ajax = {
             
             url: $("#BasePath").val() + option.url,
             
-            data : JSON.stringify(option.data),
+            data : option.data,
             
             beforeSend: function(jqXHR, settings) {
                 if (option.showMask) {

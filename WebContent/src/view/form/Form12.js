@@ -214,7 +214,7 @@ es.Views.Form12 = Backbone.View.extend({
        
        util.ajax.run({
             url: "crf/savePersonHistory.do",
-            data: data,
+            data: JSON.stringify(data),
             success: function(response) {
                 console.log("crf/savePersonHistory.do-响应:", response);
                 
