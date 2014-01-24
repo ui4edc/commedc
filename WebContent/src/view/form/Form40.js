@@ -162,6 +162,7 @@ es.Views.Form40 = Backbone.View.extend({
        util.ajax.run({
             url: "",
             data: JSON.stringify(data),
+            json: true,
             success: function(response) {
                 console.log("保存表单-响应:", response);
                 
