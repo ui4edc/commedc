@@ -33,16 +33,16 @@ public class ConvertorService {
 			PatientInfoVo patientInfoVo) {
 		// TODO Auto-generated method stub
 		PatientInfoCase patientInfoCase = new PatientInfoCase();
-		patientInfoCase.setAbbr(patientInfoVo.getAbbr());
-		patientInfoCase.setAge(Integer.parseInt(patientInfoVo.getAge()));
+		//patientInfoCase.setAbbr(patientInfoVo.getAbbr());
+		patientInfoCase.setAge(patientInfoVo.getAge());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 		if (StringUtils.isNotBlank(patientInfoVo.getBirthday()))
 			
 				patientInfoCase.setBirthday(sdf.parse(patientInfoVo.getBirthday()));
 			
-		if (StringUtils.isNotBlank(patientInfoVo.getOutDate()))
-			patientInfoCase.setCyrq(sdf.parse(patientInfoVo.getOutDate()));
+		if (StringUtils.isNotBlank(patientInfoVo.getOutdate()))
+			patientInfoCase.setCyrq(sdf.parse(patientInfoVo.getOutdate()));
 		FormEnumObject ethicObj = new FormEnumObject(patientInfoVo.getEthic(), null, FormEnumValue.ETHIC);
 		patientInfoCase.setEthic(convertIDToContent(ethicObj));
 		patientInfoCase.setHeight(Integer.parseInt(patientInfoVo.getHeight()));
@@ -52,8 +52,8 @@ public class ConvertorService {
 		patientInfoCase.setId(patientInfoVo.getId());
 		//patientInfoCase.setName(patientInfoVo.getName());
 		patientInfoCase.setNo(patientInfoVo.getNo());
-		if (StringUtils.isNotBlank(patientInfoVo.getInDate()))
-			patientInfoCase.setRyrq(sdf.parse(patientInfoVo.getInDate()));
+		if (StringUtils.isNotBlank(patientInfoVo.getIndate()))
+			patientInfoCase.setRyrq(sdf.parse(patientInfoVo.getIndate()));
 		FormEnumObject sexObj = new FormEnumObject(patientInfoVo.getSex(), null, FormEnumValue.SEX);
 		patientInfoCase.setSex(convertIDToContent(sexObj));
 		patientInfoCase.setWeight(Float.parseFloat(patientInfoVo.getWeight()));
@@ -83,28 +83,28 @@ public class ConvertorService {
 			PatientInfoCase patientInfoCase) {
 		// TODO Auto-generated method stub
 		PatientInfoVo patientInfoVo = new PatientInfoVo();
-		patientInfoVo.setAbbr(patientInfoCase.getAbbr());
-		patientInfoVo.setAge(""+patientInfoCase.getAge());
+		//patientInfoVo.setAbbr(patientInfoCase.getAbbr());
+		patientInfoVo.setAge(patientInfoCase.getAge());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 		if (patientInfoCase.getBirthday() != null)
 			patientInfoVo.setBirthday(sdf.format(patientInfoCase.getBirthday()));
 		if (patientInfoCase.getCyrq() != null)
-			patientInfoVo.setOutDate(sdf.format(patientInfoCase.getCyrq()));
+			patientInfoVo.setOutdate(sdf.format(patientInfoCase.getCyrq()));
 		FormEnumObject ethicObj = new FormEnumObject(patientInfoCase.getEthic(), FormEnumValue.ETHIC);
 		patientInfoVo.setEthic(convertContentToID(ethicObj));
-		patientInfoVo.setHeight(patientInfoVo.getHeight());
-		patientInfoVo.setHeightud(patientInfoVo.isHeightud());
+		patientInfoVo.setHeight(""+patientInfoCase.getHeight());
+		patientInfoVo.setHeightud(patientInfoCase.isHeightud());
 		FormEnumObject hysObj = new FormEnumObject(patientInfoCase.getHys(), FormEnumValue.HYS);
 		patientInfoVo.setHys(convertContentToID(hysObj));
-		patientInfoVo.setId(patientInfoVo.getId());
+		patientInfoVo.setId(patientInfoCase.getId());
 		//patientInfoCase.setName(patientInfoVo.getName());
-		patientInfoVo.setNo(patientInfoVo.getNo());
+		patientInfoVo.setNo(patientInfoCase.getNo());
 		if (patientInfoCase.getRyrq() != null)
-			patientInfoVo.setInDate(sdf.format(patientInfoVo.getInDate()));
+			patientInfoVo.setIndate(sdf.format(patientInfoCase.getRyrq()));
 		FormEnumObject sexObj = new FormEnumObject(patientInfoCase.getSex(), FormEnumValue.SEX);
 		patientInfoVo.setSex(convertContentToID(sexObj));
-		patientInfoVo.setWeight(""+patientInfoCase.getWeight());
+		patientInfoVo.setWeight(""+(int)patientInfoCase.getWeight());
 		patientInfoVo.setWeightud(patientInfoCase.isWeightud());
 		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoCase.getYlfyfs(), FormEnumValue.YLFYFS);
 		patientInfoVo.setYyks(convertContentToID(ylfyfsObj));
@@ -124,6 +124,10 @@ public class ConvertorService {
 		patientInfoVo.setYyks(convertContentToID(yyksObj));
 		if (StringUtils.isNotBlank(yyksObj.getOther()))
 			patientInfoVo.setYykstxt(yyksObj.getOther());
+		FormEnumObject yyfyfsObj = new FormEnumObject(patientInfoCase.getYlfyfs(), FormEnumValue.YLFYFS);
+		patientInfoVo.setFeemode(convertContentToID(yyksObj));
+		if (StringUtils.isNotBlank(yyfyfsObj.getOther()))
+			patientInfoVo.setFeemodetxt(yyfyfsObj.getOther());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -168,6 +172,7 @@ public class ConvertorService {
 			PersonalHistoryVo personalHistoryVo) {
 		// TODO Auto-generated method stub
 		PersonAllergicHistoryCase  personalHistoryCase = new PersonAllergicHistoryCase();
+		personalHistoryCase.setNo(personalHistoryVo.getNo());
 		FormEnumObject drinkObj = new FormEnumObject(personalHistoryVo.getDrink(), null, FormEnumValue.YES_NO_UNKNOWN);
 		personalHistoryCase.setDrink(convertIDToContent(drinkObj));
 		FormEnumObject smokeObj = new FormEnumObject(personalHistoryVo.getSmoke(), null, FormEnumValue.YES_NO_UNKNOWN);

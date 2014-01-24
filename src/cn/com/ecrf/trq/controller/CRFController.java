@@ -1,11 +1,15 @@
 package cn.com.ecrf.trq.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +24,13 @@ import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
+import cn.com.ecrf.trq.utils.JSONUtils;
+import cn.com.ecrf.trq.utils.StreamConvertorUtils;
+import cn.com.ecrf.trq.vo.DiseaseInfoVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
+import cn.com.ecrf.trq.vo.crf.ParameterType;
 
 @Controller
 public class CRFController {
@@ -82,45 +90,105 @@ public class CRFController {
 	 */
 	@RequestMapping(value="/crf/saveBasicInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> saveBasicInfo(/*@RequestBody*/ PatientInfoVo patientInfoVo, HttpServletRequest request) {
+	public Map<String, Object> saveBasicInfo(PatientInfoVo patientInfoVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.savePatientInfo(patientInfoVo);
 		return result;
 	}
 	
 	@RequestMapping(value="/crf/getBasicInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getBasicInfo(HttpServletRequest request) {
+	public Map<String, Object> getBasicInfo(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getBasicInfo(id);
+		Map<String, Object> result = cRFService.getBasicInfo(""+parameterType.getId());
 		return result;
 	}
 	
 	@RequestMapping(value="/crf/getPersonHistory", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getPersonHistory(HttpServletRequest request) {
+	public Map<String, Object> getPersonHistory(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getPersonHistory(id);
+		Map<String, Object> result = cRFService.getPersonHistory(""+parameterType.getId());
 		return result;
 	}
 	
 	@RequestMapping(value="/crf/savePersonHistory", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> savePersonHistory(/*@RequestBody*/ PersonalHistoryVo personalHistoryVo, HttpServletRequest request) {
+	public Map<String, Object> savePersonHistory(@RequestBody PersonalHistoryVo personalHistoryVo, HttpServletRequest request) {
+		//PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
+		try {
+			InputStream in = request.getInputStream();
+			String json = StreamConvertorUtils.inputStream2String(in);
+			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
+			System.out.println(json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Map<String, Object> result = cRFService.savePersonHistory(personalHistoryVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getDeseaseInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDeseaseInfo(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = cRFService.getDeseaseInfo(""+parameterType.getId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/saveDeseaseInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveDeseaseInfo(@RequestBody DiseaseInfoVo diseaseInfoVo, HttpServletRequest request) {
+		//PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
+		try {
+			InputStream in = request.getInputStream();
+			String json = StreamConvertorUtils.inputStream2String(in);
+			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
+			System.out.println(json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Map<String, Object> result = cRFService.saveDeseaseInfo(diseaseInfoVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getDrugUseInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugUseInfo(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = cRFService.getDeseaseInfo(""+parameterType.getId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/saveDrugUseInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveDrugUseInfo(@RequestBody DiseaseInfoVo diseaseInfoVo, HttpServletRequest request) {
+		//PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
+		try {
+			InputStream in = request.getInputStream();
+			String json = StreamConvertorUtils.inputStream2String(in);
+			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
+			System.out.println(json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Map<String, Object> result = cRFService.saveDeseaseInfo(diseaseInfoVo);
 		return result;
 	}
 	
 	@RequestMapping(value="/crf/getPastHistory", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getPastHistory(HttpServletRequest request) {
+	public Map<String, Object> getPastHistory(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getPastHistory(id);
+		Map<String, Object> result = cRFService.getPastHistory(""+parameterType.getId());
 		return result;
 	}
 	
 	@RequestMapping(value="/crf/savePastHistory", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> savePastHistory(/*@RequestBody*/ PastHistoryVo pastHistoryVo, HttpServletRequest request) {
+	public Map<String, Object> savePastHistory(@RequestBody PastHistoryVo pastHistoryVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.savePastHistory(pastHistoryVo);
 		return result;
 	}

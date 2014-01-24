@@ -9,16 +9,14 @@ public class PatientInfoVo {
 		//观察表编号
 		private String no;
 		//患者姓名
-		private String name;
+		//private String name;
 		//姓名缩写
-		private String abbr;
+		//private String abbr;
 		//出生年月
 		private String birthday; //YYYY-MM-DD
 		//年龄
-		private String age;
-		//体重
-		private String weight;
-		private boolean weightud;
+		private int age;
+
 		//性别
 		private int sex;
 		//民族
@@ -27,6 +25,9 @@ public class PatientInfoVo {
 		//private String ethictxt;
 		//怀孕史：妊娠期，怀孕期，无
 		private int hys;
+		//体重
+		private String weight;
+		private boolean weightud;
 		//身高
 		private String height;
 		private boolean heightud;
@@ -35,49 +36,36 @@ public class PatientInfoVo {
 		//
 		private String yykstxt;
 		//入院日期
-		private String inDate;
+		private String indate;
 		//出院日期
-		private String outDate;
+		private String outdate;
 		//医疗费用方式
 		private int feemode;
 		//医疗费用方式
 		private String feemodetxt;
-		
 		public int getId() {
 			return id;
 		}
 		public void setId(int id) {
 			this.id = id;
 		}
-		
 		public String getNo() {
 			return no;
 		}
 		public void setNo(String no) {
 			this.no = no;
 		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		public String getAbbr() {
-			return abbr;
-		}
-		public void setAbbr(String abbr) {
-			this.abbr = abbr;
-		}
+		
 		public String getBirthday() {
 			return birthday;
 		}
 		public void setBirthday(String birthday) {
 			this.birthday = birthday;
 		}
-		public String getAge() {
+		public int getAge() {
 			return age;
 		}
-		public void setAge(String age) {
+		public void setAge(int age) {
 			this.age = age;
 		}
 		public String getWeight() {
@@ -86,11 +74,23 @@ public class PatientInfoVo {
 		public void setWeight(String weight) {
 			this.weight = weight;
 		}
+		public boolean isWeightud() {
+			return weightud;
+		}
+		public void setWeightud(boolean weightud) {
+			this.weightud = weightud;
+		}
 		public int getSex() {
 			return sex;
 		}
 		public void setSex(int sex) {
 			this.sex = sex;
+		}
+		public int getEthic() {
+			return ethic;
+		}
+		public void setEthic(int ethic) {
+			this.ethic = ethic;
 		}
 		public int getHys() {
 			return hys;
@@ -104,11 +104,11 @@ public class PatientInfoVo {
 		public void setHeight(String height) {
 			this.height = height;
 		}
-		public int getEthic() {
-			return ethic;
+		public boolean isHeightud() {
+			return heightud;
 		}
-		public void setEthic(int ethic) {
-			this.ethic = ethic;
+		public void setHeightud(boolean heightud) {
+			this.heightud = heightud;
 		}
 		public int getYyks() {
 			return yyks;
@@ -122,17 +122,17 @@ public class PatientInfoVo {
 		public void setYykstxt(String yykstxt) {
 			this.yykstxt = yykstxt;
 		}
-		public String getInDate() {
-			return inDate;
+		public String getIndate() {
+			return indate;
 		}
-		public void setInDate(String inDate) {
-			this.inDate = inDate;
+		public void setIndate(String indate) {
+			this.indate = indate;
 		}
-		public String getOutDate() {
-			return outDate;
+		public String getOutdate() {
+			return outdate;
 		}
-		public void setOutDate(String outDate) {
-			this.outDate = outDate;
+		public void setOutdate(String outdate) {
+			this.outdate = outdate;
 		}
 		public int getFeemode() {
 			return feemode;
@@ -146,18 +146,8 @@ public class PatientInfoVo {
 		public void setFeemodetxt(String feemodetxt) {
 			this.feemodetxt = feemodetxt;
 		}
-		public boolean isHeightud() {
-			return heightud;
-		}
-		public void setHeightud(boolean heightud) {
-			this.heightud = heightud;
-		}
-		public boolean isWeightud() {
-			return weightud;
-		}
-		public void setWeightud(boolean weightud) {
-			this.weightud = weightud;
-		}
+		
+		
 		
 		
 		

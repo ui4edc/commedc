@@ -30,14 +30,12 @@
 	      weight, sex, ethic, hys, height, yyks, ryrq, cyrq, ylfyfs, create_time, create_by)
 	    values (#{id}, #{no}, #{name}, #{abbr}, #{birthday}, #{age}, 
 	      #{weight}, #{sex}, #{ethic}, #{hys}, #{height}, #{yyks}, #{ryrq}, #{cyrq}, #{ylfyfs}, 
-	      current_timestamp(), createBy)
+	      current_timestamp(), #{createBy})
 	</insert>
 	<update id="updatePatientInfo" parameterType="cn.com.ecrf.trq.model.PatientInfoCase" >
-	    update crf_patient_info (id, no, name, abbr, birthday, age,
-	      weight, sex, ethic, hys, height, yyks, ryrq, cyrq, ylfyfs, create_time, create_by)
-	    values (#{id}, #{no}, #{name}, #{abbr}, #{birthday}, #{age}, 
-	      #{weight}, #{sex}, #{ethic}, #{hys}, #{height}, #{yyks}, #{ryrq}, #{cyrq}, #{ylfyfs}, 
-	      current_timestamp(), createBy)
+	    update crf_patient_info set birthday=#{birthday}, age=#{age},
+	      weight=#{weight}, sex=#{sex}, ethic=#{ethic}, hys=#{hys}, height=#{height}, yyks=#{yyks}, ryrq=#{ryrq}, cyrq=#{cyrq}, ylfyfs=#{ylfyfs} 
+		where id=#{id}
 	</update>
 	<select id="getDoubtCRFNum" parameterType="string" resultType="int">
 		select count(*) from crf_user_sign c where c.lockstatus=30 and cro_name=#{userName}
@@ -184,8 +182,8 @@
 	<insert id="insertPersonHistory" parameterType="cn.com.ecrf.trq.model.PersonAllergicHistoryCase">
 	    insert into crf_person_history (no, smoke, drink, drug, food,
 	      other, druglb, foodlb, otherlb, create_time)
-	    values (#{no}, #{smoke}, #{drug}, #{food}, #{other}, 
-	      #{druglb}, #{foodlb}, current_timestamp());
+	    values (#{no}, #{smoke}, #{drink}, #{drug}, #{food}, #{other}, 
+	      #{druglb}, #{foodlb}, #{otherlb}, current_timestamp());
 	</insert>
 	<update id="updatePersonHistory" parameterType="cn.com.ecrf.trq.model.PersonAllergicHistoryCase" >
 		update crf_person_history set
@@ -194,7 +192,7 @@
   		where no=#{no}
 	</update>
 	<update id="updateProgress" parameterType="int">
-		update crf_patient_info p, crf_user_sign us set us.progress=#{progress} and p.no=us.no and p.id=#{id}
+		update crf_user_sign us set us.progress=#{progress} where us.no=#{no}
 	</update>
 	<select id="getPastHistory" parameterType="int" resultType="cn.com.ecrf.trq.model.PastHistoryCase">
 		select 

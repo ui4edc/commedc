@@ -33,6 +33,7 @@ import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.LockStatusUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
+import cn.com.ecrf.trq.vo.DiseaseInfoVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
@@ -315,7 +316,10 @@ public class CRFService {
 				cRFMapper.updatePersonHistory(personAllergicHistoryCase);
 			else {
 				cRFMapper.insertPersonHistory(personAllergicHistoryCase);
-				cRFMapper.updateProgress(20);
+				Map<String, Object> condition = new HashMap<String, Object>();
+				condition.put("progress", 30);
+				condition.put("no", personalHistoryVo.getNo());
+				cRFMapper.updateProgress(condition);
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(personAllergicHistoryCase.getNo());
@@ -353,7 +357,10 @@ public class CRFService {
 				cRFMapper.updatePastHistory(pastHistoryCase);
 			else {
 				cRFMapper.insertPastHistory(pastHistoryCase);
-				cRFMapper.updateProgress(30);
+				Map<String, Object> condition = new HashMap<String, Object>();
+				condition.put("progress", 30);
+				condition.put("no", pastHistoryVo.getNo());
+				cRFMapper.updateProgress(condition);
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(pastHistoryCase.getNo());
@@ -382,6 +389,16 @@ public class CRFService {
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
 		return result;
+	}
+
+	public Map<String, Object> saveDeseaseInfo(DiseaseInfoVo diseaseInfoVo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> getDeseaseInfo(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

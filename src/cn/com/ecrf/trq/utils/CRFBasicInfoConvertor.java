@@ -12,8 +12,8 @@ public class CRFBasicInfoConvertor implements IConvertor<PatientInfoCase, Patien
 		// TODO Auto-generated method stub
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		PatientInfoVo view = new PatientInfoVo();
-		view.setAbbr(model.getAbbr());
-		view.setAge(""+model.getAge());
+		//view.setAbbr(model.getAbbr());
+		view.setAge(model.getAge());
 		view.setBirthday(sdf.format(model.getBirthday()));
 	
 		//view.setEthic(ethic);

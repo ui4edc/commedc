@@ -47,7 +47,7 @@ public interface CRFMapper {
 	public void updatePersonHistory(
 			PersonAllergicHistoryCase personAllergicHistoryCase);
 
-	public void updateProgress(int progress);
+	public void updateProgress(Map<String,Object> condition);
 
 	public PastHistoryCase getPastHistory(int id);
 
