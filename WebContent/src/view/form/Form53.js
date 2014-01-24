@@ -33,6 +33,7 @@ es.Views.Form53 = Backbone.View.extend({
         var me = this;
         $.Mustache.load("asset/tpl/form/form53.html").done(function() {
             me.$el.mustache("tpl-form53", {
+                disabled: es.main.editable ? "" : "disabled:true",
                 save: es.main.editable ? [1] : []
             });
             me.initCtrl(data.data);

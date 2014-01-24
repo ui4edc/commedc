@@ -16,14 +16,9 @@
         <input type="radio" hidefocus="true" title="无" name="adr" value="2" ui="type:Radio;id:ADR2;{{disabled}}" checked />
         <input type="radio" hidefocus="true" title="不详" name="adr" value="3" ui="type:Radio;id:ADR3;{{disabled}}" />
     </div>
-    <br><br>
-    <div class="tabbar" style="padding-left:20px">
-        <a href="javascript:void(0)" hidefocus="true" times="1" class="active">第一次用药</a>
-        <a href="javascript:void(0)" hidefocus="true" times="2">第二次用药</a>
-        <a href="javascript:void(0)" hidefocus="true" times="3">第三次用药</a>
-        <a href="javascript:void(0)" hidefocus="true" times="4">第四次用药</a>
-        <a href="javascript:void(0)" hidefocus="true" times="5">第五次用药</a>
-        <a href="javascript:void(0)" hidefocus="true" times="6">第六次用药</a>
+    <h3>痰热清用药情况</h3>
+    <div class="times">
+        {{#save}}<span class="add-btn">添加用药情况</span>{{/save}}
     </div>
 </div>
 <div class="form30-body"></div>
@@ -32,6 +27,10 @@
     <div ui="type:Button;id:Save;skin:largeem">保 存</div>
 </div>
 {{/save}}
+</script>
+
+<script id="tpl-form30-times" type="text/html">
+<a href="javascript:void(0)" hidefocus="true" times="{{n}}">第{{n}}次用药</a>
 </script>
 
 <script id="tpl-form30-body" type="text/html">
@@ -108,7 +107,7 @@
     <input type="radio" hidefocus="true" title="否" name="same-bottle" value="2" ui="type:Radio;id:SameBottle2;{{disabled}}" checked />
 </div>
 <div class="row sub auto bottles" style="display:none">
-    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-bottle">添加一行</a></div>{{/save}}
+    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-bottle add-btn">添加一行</a></div>{{/save}}
 </div>
 
 <div class="row">
@@ -140,7 +139,7 @@
     <input type="radio" hidefocus="true" title="否" name="has-injection" value="2" ui="type:Radio;id:HasInjection2;{{disabled}}" checked />
 </div>
 <div class="row sub auto injections" style="display:none">
-    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-injection">添加一行</a></div>{{/save}}
+    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-injection add-btn">添加一行</a></div>{{/save}}
 </div>
 
 <div class="row">
@@ -158,7 +157,7 @@
     <input type="text" value="{{data.bantxt}}" ui="type:TextInput;id:BanName;width:100;{{disabled}}" />
     
     <div><strong>产生配伍禁忌药品：</strong></div>
-    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-drug">添加一行</a></div>{{/save}}
+    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-drug add-btn">添加一行</a></div>{{/save}}
 </div>
 
 <div class="row">

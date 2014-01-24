@@ -8,7 +8,8 @@ es.Views.Form30 = Backbone.View.extend({
     el: ".crf-form",
     
     events: {
-        "click .tabbar a": "switchTimes",
+        "click .times a": "switchTimes",
+        "click .times span": "addTimes",
         "click .add-bottle": "addBottle",
         "click .add-injection": "addInjection",
         "click .add-drug": "addDrug"
@@ -36,13 +37,20 @@ es.Views.Form30 = Backbone.View.extend({
             return;
         }
         
-        this.$(".tabbar a").removeClass("active");
+        this.$(".times a").removeClass("active");
         me.addClass("active");
         
         this.model.getData({
             id: es.main.crfId,
             times: parseInt(me.attr("times"), 10)
         });
+    },
+    
+    addTimes: function(e) {
+        var me = $(e.target);
+        me.before($.Mustache.render("tpl-form30-times", {
+            n: this.$(".times a").length + 1
+        }));
     },
     
     renderForm: function(model, data) {
@@ -62,6 +70,16 @@ es.Views.Form30 = Backbone.View.extend({
                     disabled: disabled,
                     save: es.main.editable ? [1] : []
                 });
+                //用药次数
+                var btnHtml = [];
+                for (var i = 0, n = data.data.total; i < n; i++) {
+                    btnHtml.push($.Mustache.render("tpl-form30-times", {
+                        n: i + 1
+                    }));
+                }
+                me.$(".times").prepend(btnHtml.join(""));
+                me.$(".times a:first").addClass("active");
+                //用药情况
                 me.$(".form30-body").mustache("tpl-form30-body", {
                     data: data.data,
                     disabled: disabled,
@@ -88,6 +106,7 @@ es.Views.Form30 = Backbone.View.extend({
             esui.dispose("Start");
             esui.dispose("End");
             
+            //用药情况
             this.$(".form30-body").html($.Mustache.render("tpl-form30-body", {
                 data: data.data,
                 disabled: disabled,

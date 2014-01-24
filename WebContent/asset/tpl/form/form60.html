@@ -3,75 +3,72 @@
 <h2>用药小结</h2>
 <div class="row">
     <span class="label wlabel">病程首次用药时间</span>
-    <div ui="type:Calendar;id:Start;{{disabled}}"></div>
+    <div ui="type:Calendar;id:StartDate;{{disabled}}"></div>
 </div>
 <div class="row">
     <span class="label wlabel">病程末次用药时间</span>
-    <div ui="type:Calendar;id:End;{{disabled}}"></div>
+    <div ui="type:Calendar;id:EndDate;{{disabled}}"></div>
 </div>
 <div class="row">
     <span class="label wlabel">痰热清注射液用药结局</span>
 </div>
 <div class="row sub auto">
     <div>
-        <input type="radio" hidefocus="true" title="痊愈" name="ending" value="1" ui="type:Radio;id:Ending1;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="痊愈" name="ending" value="1" ui="type:Radio;id:Ending1;{{disabled}}" checked />
         <input type="radio" hidefocus="true" title="好转" name="ending" value="2" ui="type:Radio;id:Ending2;{{disabled}}" />
         <input type="radio" hidefocus="true" title="无变化" name="ending" value="3" ui="type:Radio;id:Ending3;{{disabled}}" />
         <input type="radio" hidefocus="true" title="加重" name="ending" value="4" ui="type:Radio;id:Ending4;{{disabled}}" />
-    </div>
-    <div>
-        <input type="radio" hidefocus="true" title="死亡" name="ending" value="5" ui="type:Radio;id:Ending5;{{disabled}}" />，直接死因：
-        <input type="text" ui="type:TextInput;id:DeadReason;width:200;{{disabled}}" />
-    </div>
-    <div style="overflow:hidden">
-        <span class="f">死亡时间：</span>
-        <div ui="type:Calendar;id:Dead;{{disabled}}"></div>
-    </div>
-    <div>
+        <input type="radio" hidefocus="true" title="死亡" name="ending" value="5" ui="type:Radio;id:Ending5;{{disabled}}" />
         <input type="radio" hidefocus="true" title="因经济原因停药" name="ending" value="6" ui="type:Radio;id:Ending6;{{disabled}}" />
         <input type="radio" hidefocus="true" title="因ADR停药" name="ending" value="7" ui="type:Radio;id:Ending7;{{disabled}}" />
+    </div>
+    <div class="death" style="overflow:hidden; display:none">
+        <span class="f">直接死因：</span>
+        <input type="text" class="f mt7" value="{{data.deathReason}}" ui="type:TextInput;id:DeathReason;width:200;{{disabled}}" />
+        <span class="f">死亡时间：</span>
+        <div ui="type:Calendar;id:DeathDate;{{disabled}}"></div>
     </div>
 </div>
 <div class="row">
     <span class="label">是否出现ADR</span>
     <input type="radio" hidefocus="true" title="是" name="adr" value="1" ui="type:Radio;id:ADR1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="否" name="adr" value="2" ui="type:Radio;id:ADR2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="否" name="adr" value="2" ui="type:Radio;id:ADR2;{{disabled}}" checked />
 </div>
 <div class="row">
     <span class="label">药师干预</span>
     <span>有无痰热清注射液用药不合理的现象</span>
-    <input type="radio" hidefocus="true" title="有" name="phm1" value="1" ui="type:Radio;id:Phm1_1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="无" name="phm1" value="2" ui="type:Radio;id:Phm1_2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="有" name="unreasonable" value="1" ui="type:Radio;id:Unreasonable1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="无" name="unreasonable" value="2" ui="type:Radio;id:Unreasonable2;{{disabled}}" checked />
 </div>
 <div class="row sub auto">
     <div>
         <span>药师是否进行相关干预</span>
-        <input type="radio" hidefocus="true" title="是" name="phm2" value="1" ui="type:Radio;id:Phm2_1;{{disabled}}" />
-        <input type="radio" hidefocus="true" title="否" name="phm2" value="2" ui="type:Radio;id:Phm2_2;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="是" name="intervention" value="1" ui="type:Radio;id:Intervention1;{{disabled}}" />
+        <input type="radio" hidefocus="true" title="否" name="intervention" value="2" ui="type:Radio;id:Intervention2;{{disabled}}" checked />
     </div>
-    <div>
+    <div class="intervention" style="display:none">
         <span>药师如何进行干预</span>
-        <input type="text" ui="type:TextInput;id:HowToDo;width:200;{{disabled}}" />
+        <input type="text" value="{{data.interventiontxt}}" ui="type:TextInput;id:Intervention;width:200;{{disabled}}" />
     </div>
 </div>
 <div class="row">
     <span class="label">经济学指标</span>
     <span>治疗总费用</span>
-    <input type="text" ui="type:TextInput;id:Index1;width:100;{{disabled}}" /> 元
+    <input type="text" value="{{data.treatmentCost}}" class="en" ui="type:TextInput;id:Index1;width:100;{{disabled}}" /> 元
 </div>
 <div class="row sub auto">
     <div>
         <span>药品总费用</span>
-        <input type="text" ui="type:TextInput;id:Index2;width:100;{{disabled}}" /> 元
+        <input type="text" value="{{data.drugCost}}" class="en" ui="type:TextInput;id:Index2;width:100;{{disabled}}" /> 元
     </div>
     <div>
         <span>痰热清注射液费用</span>
-        <input type="text" ui="type:TextInput;id:Index3;width:100;{{disabled}}" /> 元
+        <input type="text" value="{{data.trqCost}}" class="en" ui="type:TextInput;id:Index3;width:100;{{disabled}}" /> 元
     </div>
 </div>
 <div class="row auto">
     <span class="label">备注</span>
-    <textarea ui="type:TextInput;id:Remark;width:400;height:100;{{disabled}}"></textarea>
+    <textarea ui="type:TextInput;id:Remark;width:400;height:100;{{disabled}}">{{data.remark}}</textarea>
 </div>
 {{#save}}
 <div class="bottom">

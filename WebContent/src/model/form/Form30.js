@@ -8,6 +8,8 @@ es.Models.Form30 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
+            total: 1,
+            
 			history: 2,
 			adr: 2,
 			adrtxt: null,

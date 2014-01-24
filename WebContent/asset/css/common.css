@@ -92,6 +92,8 @@ h1 .btn:hover{background:#3498db}
 /*无结果提示*/
 .no-result{text-align:center; font-size:14px; color:#666; padding:30px 0}
 
+.add-btn{background:url(images/icon-add.png) left center no-repeat; padding-left:15px}
+
 /*esui*/
 .ui-dialog{border:2px solid #2980b9}
 .ui-dialog-head{background:#2980b9}

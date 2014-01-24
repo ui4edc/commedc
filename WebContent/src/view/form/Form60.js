@@ -37,31 +37,67 @@ es.Views.Form60 = Backbone.View.extend({
                 disabled: es.main.editable ? "" : "disabled:true",
                 save: es.main.editable ? [1] : []
             });
-            me.initCtrl();
+            me.initCtrl(data.data);
         });
     },
     
-    initCtrl: function() {
-        esui.init(es.main.el, {
-            Start: {
+    initCtrl: function(data) {
+        esui.init(document.body, {
+            StartDate: {
                 range: CRF_RANGE,
-                valueAsDate: new Date()
+                value: data.startDate
             },
-            End: {
+            EndDate: {
                 range: CRF_RANGE,
-                valueAsDate: new Date()
+                value: data.endDate
             },
-            Dead: {
+            DeathDate: {
                 range: CRF_RANGE,
-                valueAsDate: new Date()
+                value: data.deathDate
             }
         });
         
+        //赋值
+        switch (data.ending) {
+            case 2: esui.get("Ending2").setChecked(true); break;
+            case 3: esui.get("Ending3").setChecked(true); break;
+            case 4: esui.get("Ending4").setChecked(true); break;
+            case 5: esui.get("Ending5").setChecked(true); this.$(".death").show(); break;
+            case 6: esui.get("Ending6").setChecked(true); break;
+            case 7: esui.get("Ending7").setChecked(true);
+        }
+        if (data.adr == 1) {
+            esui.get("ADR1").setChecked(true);
+        }
+        if (data.unreasonable == 1) {
+            esui.get("Unreasonable1").setChecked(true);
+        }
+        if (data.intervention == 1) {
+            esui.get("Intervention1").setChecked(true);
+            this.$(".intervention").show();
+        }
+        
+        //事件
         var me = this;
         
-        esui.get("Start").onchange = function(value) {esui.get("Start").setValueAsDate(value);};
-        esui.get("End").onchange = function(value) {esui.get("End").setValueAsDate(value);};
-        esui.get("Dead").onchange = function(value) {esui.get("Dead").setValueAsDate(value);};
+        esui.get("StartDate").onchange = function(value) {esui.get("StartDate").setValueAsDate(value);};
+        esui.get("EndDate").onchange = function(value) {esui.get("EndDate").setValueAsDate(value);};
+        esui.get("DeathDate").onchange = function(value) {esui.get("DeathDate").setValueAsDate(value);};
+        
+        esui.get("Ending1").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending2").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending3").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending4").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending5").onclick = function() {me.$(".death").show();};
+        esui.get("Ending6").onclick = function() {me.$(".death").hide();};
+        esui.get("Ending7").onclick = function() {me.$(".death").hide();};
+        
+        esui.get("Intervention1").onclick = function() {me.$(".intervention").show();};
+        esui.get("Intervention2").onclick = function() {me.$(".intervention").hide();};
+        
+        esui.get("ADR1").onclick = function() {
+            esui.Dialog.alert({title: "提示", content: "别忘记继续填写ADR噢！"});
+        };
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
@@ -70,9 +106,9 @@ es.Views.Form60 = Backbone.View.extend({
             esui.get("Save").onclick = this.save;
         }
         if (!es.main.editable) {
-            esui.get("Start").disable();
-            esui.get("End").disable();
-            esui.get("Dead").disable();
+            esui.get("StartDate").disable();
+            esui.get("EndDate").disable();
+            esui.get("DeathDate").disable();
         }
     },
     
@@ -81,7 +117,20 @@ es.Views.Form60 = Backbone.View.extend({
        
        var data = {
            id: me.crfId,
-           no: me.model.get("data").no
+           no: me.model.get("data").no,
+           startDate: esui.get("StartDate").getValue(),
+           endDate: esui.get("EndDate").getValue(),
+           ending: parseInt(esui.get("Ending1").getGroup().getValue(), 10),
+           deathDate: esui.get("DeathDate").getValue(),
+           deathReason: $.trim(esui.get("DeathReason").getValue()),
+           adr: parseInt(esui.get("ADR1").getGroup().getValue(), 10),
+           unreasonable: parseInt(esui.get("Unreasonable1").getGroup().getValue(), 10),
+           intervention: parseInt(esui.get("Intervention1").getGroup().getValue(), 10),
+           interventiontxt: $.trim(esui.get("DeathReason").getValue()),
+           treatmentCost: $.trim(esui.get("Index1").getValue()),
+           drugCost: $.trim(esui.get("Index2").getValue()),
+           trqCost: $.trim(esui.get("Index3").getValue()),
+           remark: $.trim(esui.get("Remark").getValue())
        };
        
        console.log("保存表单-请求", data);
