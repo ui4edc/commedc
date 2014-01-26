@@ -28,3 +28,7 @@ Uncaught TypeError: Cannot read property 'food' of null Form12.js:24
 	药师：<shiro:?></shiro:?>
 	CRM：<shiro:?></shiro:?>
 	DM：<shiro:?></shiro:?>
+
+20140127
+1.用药情况的url写错了，应该是getDrugUseInfo.do，不是getDrugCombinationInfo.do
+2.20140126容我三思下
