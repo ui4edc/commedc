@@ -393,14 +393,14 @@ es.Views.Form70 = Backbone.View.extend({
            remark: $.trim(esui.get("Remark").getValue())
        };
        
-       console.log("保存表单-请求", data);
+       console.log("crf/saveADR.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/saveADR.do",
             data: JSON.stringify(data),
             json: true,
             success: function(response) {
-                console.log("保存表单-响应:", response);
+                console.log("crf/saveADR.do-响应:", response);
                 
                 esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 me.updateProgress(response.progress);

@@ -11,3 +11,20 @@ crf/getPersonHistory.do-响应 Object {data: null, errorMsg: "", success: true}
 Uncaught TypeError: Cannot read property 'food' of null Form12.js:24
 6.保存个人史时，提交的表单里面有数组，
 需要在ajax请求时将整个表单转为json字符串(见聊天记录) （已统一处理）
+
+
+20140126
+1、crf/saveTotalCRF.do，提交全部数据做不到，页面只能显示一个表单，其他表单都销毁了。
+	我的理解是这时数据都已经存在了，只需在数据库里把crf改一下状态。
+2、还未确定url的接口
+	1）新建ADR
+	2）获取质疑字段、提交质疑
+	3）查看质疑
+	4）数据监察
+	5）数据管理
+	6）全局统计
+3、 导出只能为get请求，格式：/commedc/data/export.do?crf=true&type=0&id=1,2,3
+4、确定权限
+	药师：<shiro:?></shiro:?>
+	CRM：<shiro:?></shiro:?>
+	DM：<shiro:?></shiro:?>

@@ -157,14 +157,14 @@ es.Views.Form40 = Backbone.View.extend({
            drug: esui.get("Merge").datasource
        };
        
-       console.log("保存表单-请求", data);
+       console.log("crf/saveDrugCombinationInfo.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/saveDrugCombinationInfo.do",
             data: JSON.stringify(data),
             json: true,
             success: function(response) {
-                console.log("保存表单-响应:", response);
+                console.log("crf/saveDrugCombinationInfo.do-响应:", response);
                 
                 esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 me.updateProgress(response.progress);

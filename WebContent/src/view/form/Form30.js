@@ -190,9 +190,9 @@ es.Views.Form30 = Backbone.View.extend({
             case 3: esui.get("Ban3").setChecked(true); break;
             case 4: esui.get("Ban4").setChecked(true);
         }
-        if (data.hasFood == 1) {
-            esui.get("HasFood1").setChecked(true);
-            this.$(".food").show();
+        switch (data.hasFood) {
+            case 1: esui.get("HasFood1").setChecked(true); this.$(".food").show(); break;
+            case 3: esui.get("HasFood3").setChecked(true);
         }
         if (data.food != "") {
             $.each(data.food.split(","), function(index, val) {
@@ -214,6 +214,7 @@ es.Views.Form30 = Backbone.View.extend({
         esui.get("HasBan2").onclick = function() {me.$(".ban").hide();};
         esui.get("HasFood1").onclick = function() {me.$(".food").show();};
         esui.get("HasFood2").onclick = function() {me.$(".food").hide();};
+        esui.get("HasFood3").onclick = function() {me.$(".food").hide();};
         
         if (!this.rendered) {
             esui.get("History1").onclick = function() {me.$(".history").show();};
@@ -344,14 +345,14 @@ es.Views.Form30 = Backbone.View.extend({
            });
        });
        
-       console.log("保存表单-请求", data);
+       console.log("crf/saveDrugUseInfo.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/saveDrugUseInfo.do",
             data: JSON.stringify(data),
             json: true,
             success: function(response) {
-                console.log("保存表单-响应:", response);
+                console.log("crf/saveDrugUseInfo.do-响应:", response);
                 
                 esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 me.updateProgress(response.progress);

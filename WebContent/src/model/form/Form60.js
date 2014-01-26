@@ -28,13 +28,13 @@ es.Models.Form60 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("获取表单-请求", args);
+        console.log("crf/getDrugSummary.do-请求", args);
         
         util.ajax.run({
-            url: "",
+            url: "crf/getDrugSummary.do",
             data: args,
             success: function(response) {
-                console.log("获取表单-响应", response);
+                console.log("crf/getDrugSummary.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
                 }

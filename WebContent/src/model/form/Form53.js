@@ -22,13 +22,13 @@ es.Models.Form53 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("获取表单-请求", args);
+        console.log("crf/getOutHospitalExam.do-请求", args);
         
         util.ajax.run({
-            url: "",
+            url: "crf/getOutHospitalExam.do",
             data: args,
             success: function(response) {
-                console.log("获取表单-响应", response);
+                console.log("crf/getOutHospitalExam.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
                 }
