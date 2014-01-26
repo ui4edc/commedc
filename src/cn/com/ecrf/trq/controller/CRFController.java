@@ -27,6 +27,7 @@ import cn.com.ecrf.trq.utils.AjaxReturnValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StreamConvertorUtils;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
@@ -138,7 +139,7 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/saveDeseaseInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> saveDeseaseInfo(@RequestBody DiseaseInfoVo diseaseInfoVo, HttpServletRequest request) {
+	public Map<String, Object> saveDeseaseInfo(DiseaseInfoVo diseaseInfoVo, HttpServletRequest request) {
 		//PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
 		try {
 			InputStream in = request.getInputStream();
@@ -157,24 +158,14 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getDrugUseInfo(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getDeseaseInfo(""+parameterType.getId());
+		Map<String, Object> result = cRFService.gettDrugUseInfo(""+parameterType.getId());
 		return result;
 	}
 	
 	@RequestMapping(value="/crf/saveDrugUseInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> saveDrugUseInfo(@RequestBody DiseaseInfoVo diseaseInfoVo, HttpServletRequest request) {
-		//PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
-		try {
-			InputStream in = request.getInputStream();
-			String json = StreamConvertorUtils.inputStream2String(in);
-			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
-			System.out.println(json);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Map<String, Object> result = cRFService.saveDeseaseInfo(diseaseInfoVo);
+	public Map<String, Object> saveDrugUseInfo(@RequestBody DrugUseVo drugUseVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.saveDrugUseInfo(drugUseVo);
 		return result;
 	}
 	
@@ -188,7 +179,7 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/savePastHistory", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> savePastHistory(@RequestBody PastHistoryVo pastHistoryVo, HttpServletRequest request) {
+	public Map<String, Object> savePastHistory(PastHistoryVo pastHistoryVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.savePastHistory(pastHistoryVo);
 		return result;
 	}

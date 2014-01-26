@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.CRFUserSign;
+import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DrugUseCase;
 import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
@@ -31,9 +33,11 @@ import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.LockStatusUtils;
+import cn.com.ecrf.trq.utils.ProcessUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
@@ -272,9 +276,17 @@ public class CRFService {
 			if (patientInfoVo.getId() > 0){
 				//update
 				cRFMapper.updatePatientInfo(patientInfoCase);
+				Map<String, Object> condition = new HashMap<String, Object>();
+				condition.put("progress", ProcessUtils.BASIC_INFO);
+				condition.put("no", patientInfoVo.getNo());
+				cRFMapper.updateProgress(condition);
 			}else{
 				//insert
 				cRFMapper.insertPatientInfo(patientInfoCase);
+				Map<String, Object> condition = new HashMap<String, Object>();
+				condition.put("progress", ProcessUtils.BASIC_INFO);
+				condition.put("no", patientInfoVo.getNo());
+				cRFMapper.updateProgress(condition);
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			
@@ -316,11 +328,11 @@ public class CRFService {
 				cRFMapper.updatePersonHistory(personAllergicHistoryCase);
 			else {
 				cRFMapper.insertPersonHistory(personAllergicHistoryCase);
-				Map<String, Object> condition = new HashMap<String, Object>();
-				condition.put("progress", 30);
-				condition.put("no", personalHistoryVo.getNo());
-				cRFMapper.updateProgress(condition);
 			}
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("progress", ProcessUtils.PERSON_HISTORY);
+			condition.put("no", personalHistoryVo.getNo());
+			cRFMapper.updateProgress(condition);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(personAllergicHistoryCase.getNo());
 			result.put("progress", progress + "%");
@@ -337,7 +349,7 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			PastHistoryCase pastHistoryCase = cRFMapper.getPastHistory(Integer.parseInt(id));
-			PastHistoryVo pastHistoryVo = convertorService.convertPastHistoryFromViewToModel(pastHistoryCase);
+			PastHistoryVo pastHistoryVo = convertorService.convertPastHistoryFromModelToView(pastHistoryCase);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, pastHistoryVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -351,17 +363,17 @@ public class CRFService {
 		// TODO Auto-generated method stub
 		Map<String, Object> result;
 		try{
-			PastHistoryCase pastHistoryCase =  convertorService.convertPastHistoryFromModelToVo(pastHistoryVo);
+			PastHistoryCase pastHistoryCase =  convertorService.convertPastHistoryFromViewToModel(pastHistoryVo);
 			PastHistoryCase dbCase = cRFMapper.getPastHistory(pastHistoryCase.getId());
 			if (dbCase != null && dbCase.getNo() != null)
 				cRFMapper.updatePastHistory(pastHistoryCase);
 			else {
 				cRFMapper.insertPastHistory(pastHistoryCase);
-				Map<String, Object> condition = new HashMap<String, Object>();
-				condition.put("progress", 30);
-				condition.put("no", pastHistoryVo.getNo());
-				cRFMapper.updateProgress(condition);
 			}
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("progress", ProcessUtils.PASS_HISTORY);
+			condition.put("no", pastHistoryVo.getNo());
+			cRFMapper.updateProgress(condition);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(pastHistoryCase.getNo());
 			result.put("progress", progress + "%");
@@ -393,12 +405,84 @@ public class CRFService {
 
 	public Map<String, Object> saveDeseaseInfo(DiseaseInfoVo diseaseInfoVo) {
 		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> result;
+		try{
+			DiseaseInfoCase diseaseInfoCase =  convertorService.convertDiseaseInfoFromViewToModel(diseaseInfoVo);
+			DiseaseInfoCase dbCase = cRFMapper.getDiseaseInfo(diseaseInfoVo.getId());
+			if (dbCase != null && dbCase.getNo() != null)
+				cRFMapper.updateDiseaseInfo(diseaseInfoCase);
+			else {
+				cRFMapper.insertDiseaseInfo(diseaseInfoCase);
+			}
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("progress", ProcessUtils.DISEASE_INFO);
+			condition.put("no", diseaseInfoVo.getNo());
+			cRFMapper.updateProgress(condition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			int progress = cRFMapper.getProgress(diseaseInfoVo.getNo());
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;
 	}
 
 	public Map<String, Object> getDeseaseInfo(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> result = null;
+		try{
+			DiseaseInfoCase diseaseInfoCase = cRFMapper.getDiseaseInfo(Integer.parseInt(id));
+			DiseaseInfoVo diseaseInfoVo = convertorService.convertDiseaseInfoFromModelToView(diseaseInfoCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, diseaseInfoVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
+		return result;
+	}
+
+	public Map<String, Object> saveDrugUseInfo(DrugUseVo drugUseVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result;
+		try{
+			DrugUseCase drugUseCase =  convertorService.convertDrugUseInfoFromViewToModel(drugUseVo);
+			DiseaseInfoCase dbCase = cRFMapper.getDiseaseInfo(drugUseVo.getId());
+			if (dbCase != null && dbCase.getNo() != null)
+				cRFMapper.updateDrugUseInfo(drugUseCase);
+			else {
+				cRFMapper.insertDrugUseInfo(drugUseCase);
+			}
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("progress", ProcessUtils.DISEASE_INFO);
+			condition.put("no", drugUseVo.getNo());
+			cRFMapper.updateProgress(condition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			int progress = cRFMapper.getProgress(drugUseVo.getNo());
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;
+	}
+
+	public Map<String, Object> gettDrugUseInfo(String id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			DrugUseCase drugUseInfoCase = cRFMapper.getDrugUseInfo(Integer.parseInt(id));
+			DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromModelToView(drugUseInfoCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugUseVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
+		return result;
 	}
 
 

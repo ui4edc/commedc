@@ -3,6 +3,8 @@ package cn.com.ecrf.trq.vo;
 import java.util.Date;
 import java.util.List;
 
+import cn.com.ecrf.trq.vo.crf.BanDrug;
+
 /**
  * 用药情况
  * @author user
@@ -12,75 +14,64 @@ public class DrugUseVo {
 		private int id;
 		//观察表编号
 		private String no;
-		//痰热清用药史
-		private int trqyys;
-		//不良反应
-		private int blfy;
-		//不良反应表现
-		private String blfybx;
-		//批号
-		private String ph;
-		//用药开始时间，日期
-		private String yykssjd;
-		//用药开始时间，小时
-		private String yykssjh;
-		//用药开始时间，分钟
-		private String yykssjm;
-		//用药结束时间，日期
-		private String yyjssjd;
-		//用药结束时间，小时
-		private String yyjssjh;
-		//用药结束时间，分钟
-		private String yyjssjm;
-		//溶媒类型
-		private int rmlx;
-		//溶媒其他名称
-		private String rmqtmc;
-		//溶媒其他百分比
-		private String rmqtbfb;
-		//配液至给药时间
-		private String pyzgysj;
-		//配液场所
-		private int pycs;
-		//给药途径：静脉滴注，静脉泵入， 其他途径名称
-		private int gytj;
-		//静脉滴注速度
-		private String jmdzsd;
-		//静脉滴注时间
-		private String jmdzsj;
-		//静脉泵入速度
-		private String jmbrsd;
-		//其他途径名称
-		private String qttjmc;
-		//其他途径速度
-		private String qttjsd;
-		//其他途径单位
-		private String qttjdw;
-		//通瓶用药
-		private int tpyy;
-		//同瓶用药列表
-		private List<DrugInstanceObject> tpyylb; 
-		//同组用药
-		private int tzyy;
-		//同组用药间隔液
-		private DrugInstanceObject tzyyjgy;
-		//是否有其他注射剂
-		private int qtzsj;
-		private List<DrugInstanceObject> qtzsjlb;
-		//配伍禁忌现象,是否
-		private int pwjjxx;
-		//配伍禁忌现象产生
-		private int pwjjxxcs;
-		//配伍禁忌现象,颜色
-		private String pwjjxxcsys;
-		//配伍禁忌现象,其他名称
-		private String pwjjcsqtmc;
-		//配伍禁忌药品列表
-		private List<DrugInstanceObject> pwjjywlb;
-		//进食易致敏物质
-		private int jsyzawz;
-		//进食易致敏物质列表
-		private List<CheckBoxVo> jsyzawzlb;
+		
+		private String times;
+		
+		private int history;
+		
+		private int adr;
+		
+		private int adrtxt;
+		
+		private String banColor;
+		
+		private String bantxt;
+		
+		private List<BanDrug> banDrug;
+		
+		private String batchNumber;
+		
+		private List<BanDrug> bottle;
+		
+		private String dose;
+		
+		private String endDate;
+		
+		private String endH;
+		
+		private String endM;
+		
+		private String food;
+		
+		private String foodtxt;
+		private String gSolvent2Dose;
+		private int gpSolvent;
+		private	String gpSolvent1Dose;
+		private String	gpSolvent3Dose;
+		private String	gpSolvent3Name;
+		private String	gpSolvent3Percent;
+		private int	hasBan;
+		private int	hasFood;
+		private int	hasInjection;
+		private List<BanDrug> injection;
+		private String prepareTime;
+		private boolean prepareTimeUd;
+		private int sameBottle;
+		private int sameGroup;
+		private int solvent;
+		private String solventDose;
+		private String solventName;
+		private String solventPercent;
+		private String startDate;
+		private String startH;
+		private String startM;
+		private int way;
+		private String way1Speed;
+		private String way1Time;
+		private String way2Speed;
+		private String way3Name;
+		private String way3Speed;
+		private String way3Unit;
 		public int getId() {
 			return id;
 		}
@@ -93,216 +84,267 @@ public class DrugUseVo {
 		public void setNo(String no) {
 			this.no = no;
 		}
-		public int getTrqyys() {
-			return trqyys;
+		public String getTimes() {
+			return times;
 		}
-		public void setTrqyys(int trqyys) {
-			this.trqyys = trqyys;
+		public void setTimes(String times) {
+			this.times = times;
 		}
-		public int getBlfy() {
-			return blfy;
+		public int getHistory() {
+			return history;
 		}
-		public void setBlfy(int blfy) {
-			this.blfy = blfy;
+		public void setHistory(int history) {
+			this.history = history;
 		}
-		public String getBlfybx() {
-			return blfybx;
+		public int getAdr() {
+			return adr;
 		}
-		public void setBlfybx(String blfybx) {
-			this.blfybx = blfybx;
+		public void setAdr(int adr) {
+			this.adr = adr;
 		}
-		public String getPh() {
-			return ph;
+		public int getAdrtxt() {
+			return adrtxt;
 		}
-		public void setPh(String ph) {
-			this.ph = ph;
+		public void setAdrtxt(int adrtxt) {
+			this.adrtxt = adrtxt;
 		}
-		public String getYykssjd() {
-			return yykssjd;
+		public String getBanColor() {
+			return banColor;
 		}
-		public void setYykssjd(String yykssjd) {
-			this.yykssjd = yykssjd;
+		public void setBanColor(String banColor) {
+			this.banColor = banColor;
 		}
-		public String getYykssjh() {
-			return yykssjh;
+		public String getBantxt() {
+			return bantxt;
 		}
-		public void setYykssjh(String yykssjh) {
-			this.yykssjh = yykssjh;
+		public void setBantxt(String bantxt) {
+			this.bantxt = bantxt;
 		}
-		public String getYykssjm() {
-			return yykssjm;
+		public List<BanDrug> getBanDrug() {
+			return banDrug;
 		}
-		public void setYykssjm(String yykssjm) {
-			this.yykssjm = yykssjm;
+		public void setBanDrug(List<BanDrug> banDrug) {
+			this.banDrug = banDrug;
 		}
-		public String getYyjssjd() {
-			return yyjssjd;
+		public String getBatchNumber() {
+			return batchNumber;
 		}
-		public void setYyjssjd(String yyjssjd) {
-			this.yyjssjd = yyjssjd;
+		public void setBatchNumber(String batchNumber) {
+			this.batchNumber = batchNumber;
 		}
-		public String getYyjssjh() {
-			return yyjssjh;
+		public List<BanDrug> getBottle() {
+			return bottle;
 		}
-		public void setYyjssjh(String yyjssjh) {
-			this.yyjssjh = yyjssjh;
+		public void setBottle(List<BanDrug> bottle) {
+			this.bottle = bottle;
 		}
-		public String getYyjssjm() {
-			return yyjssjm;
+		public String getDose() {
+			return dose;
 		}
-		public void setYyjssjm(String yyjssjm) {
-			this.yyjssjm = yyjssjm;
+		public void setDose(String dose) {
+			this.dose = dose;
 		}
-		public int getRmlx() {
-			return rmlx;
+		public String getEndDate() {
+			return endDate;
 		}
-		public void setRmlx(int rmlx) {
-			this.rmlx = rmlx;
+		public void setEndDate(String endDate) {
+			this.endDate = endDate;
 		}
-		public String getRmqtmc() {
-			return rmqtmc;
+		public String getEndH() {
+			return endH;
 		}
-		public void setRmqtmc(String rmqtmc) {
-			this.rmqtmc = rmqtmc;
+		public void setEndH(String endH) {
+			this.endH = endH;
 		}
-		public String getRmqtbfb() {
-			return rmqtbfb;
+		public String getEndM() {
+			return endM;
 		}
-		public void setRmqtbfb(String rmqtbfb) {
-			this.rmqtbfb = rmqtbfb;
+		public void setEndM(String endM) {
+			this.endM = endM;
 		}
-		public String getPyzgysj() {
-			return pyzgysj;
+		public String getFood() {
+			return food;
 		}
-		public void setPyzgysj(String pyzgysj) {
-			this.pyzgysj = pyzgysj;
+		public void setFood(String food) {
+			this.food = food;
 		}
-		public int getPycs() {
-			return pycs;
+		public String getFoodtxt() {
+			return foodtxt;
 		}
-		public void setPycs(int pycs) {
-			this.pycs = pycs;
+		public void setFoodtxt(String foodtxt) {
+			this.foodtxt = foodtxt;
 		}
-		public int getGytj() {
-			return gytj;
+		public String getgSolvent2Dose() {
+			return gSolvent2Dose;
 		}
-		public void setGytj(int gytj) {
-			this.gytj = gytj;
+		public void setgSolvent2Dose(String gSolvent2Dose) {
+			this.gSolvent2Dose = gSolvent2Dose;
 		}
-		public String getJmdzsd() {
-			return jmdzsd;
+		public int getGpSolvent() {
+			return gpSolvent;
 		}
-		public void setJmdzsd(String jmdzsd) {
-			this.jmdzsd = jmdzsd;
+		public void setGpSolvent(int gpSolvent) {
+			this.gpSolvent = gpSolvent;
 		}
-		public String getJmdzsj() {
-			return jmdzsj;
+		public String getGpSolvent1Dose() {
+			return gpSolvent1Dose;
 		}
-		public void setJmdzsj(String jmdzsj) {
-			this.jmdzsj = jmdzsj;
+		public void setGpSolvent1Dose(String gpSolvent1Dose) {
+			this.gpSolvent1Dose = gpSolvent1Dose;
 		}
-		public String getJmbrsd() {
-			return jmbrsd;
+		public String getGpSolvent3Dose() {
+			return gpSolvent3Dose;
 		}
-		public void setJmbrsd(String jmbrsd) {
-			this.jmbrsd = jmbrsd;
+		public void setGpSolvent3Dose(String gpSolvent3Dose) {
+			this.gpSolvent3Dose = gpSolvent3Dose;
 		}
-		public String getQttjmc() {
-			return qttjmc;
+		public String getGpSolvent3Name() {
+			return gpSolvent3Name;
 		}
-		public void setQttjmc(String qttjmc) {
-			this.qttjmc = qttjmc;
+		public void setGpSolvent3Name(String gpSolvent3Name) {
+			this.gpSolvent3Name = gpSolvent3Name;
 		}
-		public String getQttjsd() {
-			return qttjsd;
+		public String getGpSolvent3Percent() {
+			return gpSolvent3Percent;
 		}
-		public void setQttjsd(String qttjsd) {
-			this.qttjsd = qttjsd;
+		public void setGpSolvent3Percent(String gpSolvent3Percent) {
+			this.gpSolvent3Percent = gpSolvent3Percent;
 		}
-		public String getQttjdw() {
-			return qttjdw;
+		public int getHasBan() {
+			return hasBan;
 		}
-		public void setQttjdw(String qttjdw) {
-			this.qttjdw = qttjdw;
+		public void setHasBan(int hasBan) {
+			this.hasBan = hasBan;
 		}
-		public int getTpyy() {
-			return tpyy;
+		public int getHasFood() {
+			return hasFood;
 		}
-		public void setTpyy(int tpyy) {
-			this.tpyy = tpyy;
+		public void setHasFood(int hasFood) {
+			this.hasFood = hasFood;
 		}
-		public List<DrugInstanceObject> getTpyylb() {
-			return tpyylb;
+		public int getHasInjection() {
+			return hasInjection;
 		}
-		public void setTpyylb(List<DrugInstanceObject> tpyylb) {
-			this.tpyylb = tpyylb;
+		public void setHasInjection(int hasInjection) {
+			this.hasInjection = hasInjection;
 		}
-		public int getTzyy() {
-			return tzyy;
+		public List<BanDrug> getInjection() {
+			return injection;
 		}
-		public void setTzyy(int tzyy) {
-			this.tzyy = tzyy;
+		public void setInjection(List<BanDrug> injection) {
+			this.injection = injection;
 		}
-		public DrugInstanceObject getTzyyjgy() {
-			return tzyyjgy;
+		public String getPrepareTime() {
+			return prepareTime;
 		}
-		public void setTzyyjgy(DrugInstanceObject tzyyjgy) {
-			this.tzyyjgy = tzyyjgy;
+		public void setPrepareTime(String prepareTime) {
+			this.prepareTime = prepareTime;
 		}
-		public int getQtzsj() {
-			return qtzsj;
+		public boolean isPrepareTimeUd() {
+			return prepareTimeUd;
 		}
-		public void setQtzsj(int qtzsj) {
-			this.qtzsj = qtzsj;
+		public void setPrepareTimeUd(boolean prepareTimeUd) {
+			this.prepareTimeUd = prepareTimeUd;
 		}
-		public List<DrugInstanceObject> getQtzsjlb() {
-			return qtzsjlb;
+		public int getSameBottle() {
+			return sameBottle;
 		}
-		public void setQtzsjlb(List<DrugInstanceObject> qtzsjlb) {
-			this.qtzsjlb = qtzsjlb;
+		public void setSameBottle(int sameBottle) {
+			this.sameBottle = sameBottle;
 		}
-		public int getPwjjxx() {
-			return pwjjxx;
+		public int getSameGroup() {
+			return sameGroup;
 		}
-		public void setPwjjxx(int pwjjxx) {
-			this.pwjjxx = pwjjxx;
+		public void setSameGroup(int sameGroup) {
+			this.sameGroup = sameGroup;
 		}
-		public int getPwjjxxcs() {
-			return pwjjxxcs;
+		public int getSolvent() {
+			return solvent;
 		}
-		public void setPwjjxxcs(int pwjjxxcs) {
-			this.pwjjxxcs = pwjjxxcs;
+		public void setSolvent(int solvent) {
+			this.solvent = solvent;
 		}
-		public String getPwjjxxcsys() {
-			return pwjjxxcsys;
+		public String getSolventDose() {
+			return solventDose;
 		}
-		public void setPwjjxxcsys(String pwjjxxcsys) {
-			this.pwjjxxcsys = pwjjxxcsys;
+		public void setSolventDose(String solventDose) {
+			this.solventDose = solventDose;
 		}
-		public String getPwjjcsqtmc() {
-			return pwjjcsqtmc;
+		public String getSolventName() {
+			return solventName;
 		}
-		public void setPwjjcsqtmc(String pwjjcsqtmc) {
-			this.pwjjcsqtmc = pwjjcsqtmc;
+		public void setSolventName(String solventName) {
+			this.solventName = solventName;
 		}
-		public List<DrugInstanceObject> getPwjjywlb() {
-			return pwjjywlb;
+		public String getSolventPercent() {
+			return solventPercent;
 		}
-		public void setPwjjywlb(List<DrugInstanceObject> pwjjywlb) {
-			this.pwjjywlb = pwjjywlb;
+		public void setSolventPercent(String solventPercent) {
+			this.solventPercent = solventPercent;
 		}
-		public int getJsyzawz() {
-			return jsyzawz;
+		public String getStartDate() {
+			return startDate;
 		}
-		public void setJsyzawz(int jsyzawz) {
-			this.jsyzawz = jsyzawz;
+		public void setStartDate(String startDate) {
+			this.startDate = startDate;
 		}
-		public List<CheckBoxVo> getJsyzawzlb() {
-			return jsyzawzlb;
+		public String getStartH() {
+			return startH;
 		}
-		public void setJsyzawzlb(List<CheckBoxVo> jsyzawzlb) {
-			this.jsyzawzlb = jsyzawzlb;
+		public void setStartH(String startH) {
+			this.startH = startH;
 		}
+		public String getStartM() {
+			return startM;
+		}
+		public void setStartM(String startM) {
+			this.startM = startM;
+		}
+		public int getWay() {
+			return way;
+		}
+		public void setWay(int way) {
+			this.way = way;
+		}
+		public String getWay1Speed() {
+			return way1Speed;
+		}
+		public void setWay1Speed(String way1Speed) {
+			this.way1Speed = way1Speed;
+		}
+		public String getWay1Time() {
+			return way1Time;
+		}
+		public void setWay1Time(String way1Time) {
+			this.way1Time = way1Time;
+		}
+		public String getWay2Speed() {
+			return way2Speed;
+		}
+		public void setWay2Speed(String way2Speed) {
+			this.way2Speed = way2Speed;
+		}
+		public String getWay3Name() {
+			return way3Name;
+		}
+		public void setWay3Name(String way3Name) {
+			this.way3Name = way3Name;
+		}
+		public String getWay3Speed() {
+			return way3Speed;
+		}
+		public void setWay3Speed(String way3Speed) {
+			this.way3Speed = way3Speed;
+		}
+		public String getWay3Unit() {
+			return way3Unit;
+		}
+		public void setWay3Unit(String way3Unit) {
+			this.way3Unit = way3Unit;
+		}
+		
+		
+		
 		
 		
 }

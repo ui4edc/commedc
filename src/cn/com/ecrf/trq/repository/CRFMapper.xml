@@ -34,7 +34,8 @@
 	</insert>
 	<update id="updatePatientInfo" parameterType="cn.com.ecrf.trq.model.PatientInfoCase" >
 	    update crf_patient_info set birthday=#{birthday}, age=#{age},
-	      weight=#{weight}, sex=#{sex}, ethic=#{ethic}, hys=#{hys}, height=#{height}, yyks=#{yyks}, ryrq=#{ryrq}, cyrq=#{cyrq}, ylfyfs=#{ylfyfs} 
+	      weight=#{weight}, sex=#{sex}, ethic=#{ethic}, hys=#{hys}, height=#{height}, yyks=#{yyks}, ryrq=#{ryrq}, cyrq=#{cyrq}, ylfyfs=#{ylfyfs}，
+	      weightud=#{weightud},heightud=#{heightud}
 		where id=#{id}
 	</update>
 	<select id="getDoubtCRFNum" parameterType="string" resultType="int">
@@ -192,26 +193,36 @@
   		where no=#{no}
 	</update>
 	<update id="updateProgress" parameterType="int">
-		update crf_user_sign us set us.progress=#{progress} where us.no=#{no}
+		update crf_user_sign us set us.progress=#{progress} where us.no=#{no} and us.progress>#{progress}
 	</update>
 	<select id="getPastHistory" parameterType="int" resultType="cn.com.ecrf.trq.model.PastHistoryCase">
 		select 
 			pi.id as id,
 			ph.no as no,
-			disease as disease,
-			diseaselb as diseaselb,
 			allergy as allergy,
-			allergylb as allergylb
+			allergytxt as allergytxt,
+			disease as disease,
+			disease1 as disease1,
+			disease2 as disease2,
+			diseasetxt as diseasetxt,
+			gxb as gxb,
+			gxy as gxy,
+			hasAllergy as hasAllergy,
+			hasDisease as hasDisease,
+			tnb as tnb
 			from crf_past_history ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
 	</select>
 	<insert id="insertPastHistory" parameterType="cn.com.ecrf.trq.model.PastHistoryCase">
-	    insert into crf_past_history (no, disease, diseaselb, allergy, allergylb, create_time)
-	    values (#{no}, #{disease}, #{diseaselb}, #{allergy}, #{allergylb}, current_timestamp());
+	    insert into crf_past_history (no, allergy, allergytxt, disease, disease1, disease2, diseasetxt, gxb,
+	    gxy, hasAllergy, hasDisease, tnb)
+	    values (#{no}, #{allergy}, #{allergytxt}, #{disease}, #{disease1}, #{disease2}, #{diseasetxt}, #{gxb}, #{gxy}, #{hasAllergy}, 
+	    #{hasDisease}, #{tnb});
 	</insert>
 	<update id="updatePastHistory" parameterType="cn.com.ecrf.trq.model.PastHistoryCase" >
 		update crf_past_history set
-		disease=#{disease}, diseaselb=#{diseaselb}, allergy=#{allergy},
-		allergylb=#{allergylb}, update_time=now()
+		allergy=#{allergy}, allergytxt=#{allergytxt}, disease=#{disease},
+		disease1=#{disease1}, disease2=#{disease2}, diseasetxt=#{diseasetxt},gxb=#{gxb},
+		gxy=#{gxy}, hasAllergy=#{hasAllergy}, hasDisease=#{hasDisease}, tnb=#{tnb} 
   		where no=#{no}
 	</update>
 	<update id="updateNextSeq" parameterType="int">
@@ -233,4 +244,94 @@
 	<select id="getFormEnumValue" parameterType="map" resultType="string">
 		select name from crf_form_enum where abbr=#{type} and seq=#{seq}
 	</select>
+	<select id="getDiseaseInfo" parameterType="int" resultType="cn.com.ecrf.trq.model.DiseaseInfoCase">
+		select 
+			pi.id as id,
+			ph.no as no,
+			diagnosis as diagnosis,
+			disease1 as disease1,
+			disease2 as disease2,
+			disease3 as disease3,
+			diseasetxt as diseasetxt,
+			fy1 as fy1,
+			fy2 as fy2,
+			zy as zy,
+			zytxt as zytxt
+			from crf_disease_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
+	</select>
+	<insert id="insertDiseaseInfo" parameterType="cn.com.ecrf.trq.model.DiseaseInfoCase">
+	    insert into crf_disease_info (no, diagnosis, disease1, disease2, disease3, diseasetxt, fy1, fy2,
+	    zy, zytxt, create_time)
+	    values (#{no}, #{diagnosis}, #{disease1}, #{disease2}, #{disease3}, #{diseasetxt}, #{fy1}, #{fy2}, #{zy}, #{zytxt},
+	    current_timestamp());
+	</insert>
+	<update id="updateDiseaseInfo" parameterType="cn.com.ecrf.trq.model.DiseaseInfoCase" >
+		update crf_disease_info set
+		diagnosis=#{diagnosis}, disease1=#{disease1}, disease2=#{disease2},
+		disease3=#{disease3}, diseasetxt=#{diseasetxt}, fy1=#{fy1},fy2=#{fy2},
+		zy=#{zy}, zytxt=#{zytxt}, update_time=now()
+  		where no=#{no}
+	</update>
+	<select id="getDrugUseInfo" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugUseCase">
+		select 
+			pi.id as id,
+			ph.no as no,
+			seq as times,
+			history as history,
+			adr as adr,
+			adrtxt as adrtxt,
+			banColor as banColor,
+			bantxt as bantxt,
+			banDruglb as banDruglb,
+			batchNumber as batchNumber,
+			bottlelb as bottlelb,
+			dose as dose,
+			endDate as endDate,
+			endH as endH,
+			endM as endM,
+			food as food,
+			foodtxt as foodtxt,
+			private String gSolvent2Dose;
+			gpSolvent as gpSolvent,
+			gpSolvent1Dose as gpSolvent1Dose,
+			gpSolvent3Dose as gpSolvent3Dose,
+			gpSolvent3Name as gpSolvent3Name,
+			gpSolvent3Percent as gpSolvent3Percent,
+			hasBan as hasBan,
+			hasFood as hasFood,
+			hasInjection as hasInjection,
+			injectionlb as injectionlb,
+			prepareTime as prepareTime,
+			prepareTimeUd as prepareTimeUd,
+			sameBottle as sameBottle,
+			sameGroup as sameGroup,
+			solvent as solvent,
+			solventDose as solventDose,
+			solventName as solventName,
+			solventPercent as solventPercent,
+			startDate as startDate,
+			startH as startH,
+			startM as startM,
+			way as way,
+			way1Speed as way1Speed,
+			way1Time as way1Time,
+			way2Speed as way2Speed,
+			way3Name as way3Name,
+			way3Speed as way3Speed,
+			way3Unit as way3Unit
+		from crf_druguse_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
+	</select>
+	<insert id="insertDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase">
+	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, banColor, bantxt, banDruglb,
+	    batchNumber, bottlelb)
+	    values (#{no}, #{times}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, #{batchNumber}, #{bottlelb});
+	</insert>
+	<update id="updateDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase" >
+		update crf_druguse_info set
+		history=#{history}, adr=#{adr},
+		adrtxt=#{adrtxt}, banColor=#{banColor}, bantxt=#{bantxt},banDruglb=#{banDruglb},
+		batchNumber=#{batchNumber}, bottlelb=#{bottlelb}
+  		where no=#{no} and seq=#{times}
+	</update>
+	
 </mapper>

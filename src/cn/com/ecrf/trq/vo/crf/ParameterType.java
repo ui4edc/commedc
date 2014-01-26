@@ -4,6 +4,8 @@ public class ParameterType {
 	private int id;
 	private String no;
 	private String abbr;
+	private int times;
+	
 	public int getId() {
 		return id;
 	}
@@ -21,6 +23,12 @@ public class ParameterType {
 	}
 	public void setAbbr(String abbr) {
 		this.abbr = abbr;
+	}
+	public int getTimes() {
+		return times;
+	}
+	public void setTimes(int times) {
+		this.times = times;
 	}
 	
 	

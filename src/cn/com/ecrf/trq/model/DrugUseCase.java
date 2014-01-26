@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.SameGroupObject;
+import cn.com.ecrf.trq.vo.crf.BanDrug;
 
 /**
  * 包含痰热清注射液用药情况
@@ -12,66 +13,337 @@ import cn.com.ecrf.trq.vo.SameGroupObject;
  *
  */
 public class DrugUseCase {
+	private int id;
 	//观察表编号
-	private String blbh;
-	//每次用药剂量
-	private String exdose;
-	//每次用药剂量单位
-	private String exdoseu;
-	//批号
-	private String exlot;
-	//治疗开始时间=用药开始时间
-	private Date exstdtc;
-	//治疗结束时间=用药结束时间
-	private Date exendtc;
-	//溶媒名称 = 治疗赋形剂， 葡萄糖注射液， 氯化钠注射液
-	private String extrtv;
-	//溶媒 剂量= 治疗赋形剂剂量 ， 500
-	private String exvamt;
-	//治疗赋形剂剂量单位, ml
-	private String exvamtu;
-	//治疗赋形剂百分比, 0.9, 5
-	private String exsuppvamtpt;
-	//配药场所
-	private String exsuppsite;
-	//配药至给药时间
-	private int exsuppdur;
-	//配药至给药时间单位，分
-	private String exsuppduru;
-	//给药途径：静脉滴注，静脉泵入， 其他途径名称
-	private String exroute;
-	//给药途径滴速
-	private int exsupproutespd;
-	//给药途径滴速单位
-	private String exsupproutespdu;
-	//给药途径持续时间
-	private int exsupproutedur;
-	//给药途径持续时间单位, 分
-	private String exsupprouteduru;
-	//是否同瓶用药
-	private String exsuppbottomyn;
-	//同瓶用药列表
-	private List<DrugInstanceObject> exsuppbottomlb; 
-	//是否同组用药
-	private String exsuppgroupyn;
-	//同组用药列表
-	private List<SameGroupObject> exsuppgrouplb; 
-	//是否有其他注射剂
-	private String exsuppqtzsjyn;
-	//其他注射剂列表
-	private List<DrugInstanceObject> exsuppqtzsjlb; 
-	//是否有配伍禁忌现象
-	private String exsupppwjjxxyn;
-	//配伍禁忌现象名称
-	private String exsuppwjjxxterm;
-	//配伍禁忌现象颜色
-	private String exsuppwjjxxcolor;
-	//配伍禁忌药品列表
-	private List<DrugInstanceObject> exsupppwjjyplb;
-	//静滴前后24小时内是否进食易致敏物质
-	private String exsuppjsyzmwzyn;
-	//静滴前后24小时内进食易致敏物质名称
-	private List<String> exsuppjsyzmwzlb;
+	private String no;
+	
+	private int times;
+	
+	private int history;
+	
+	private int adr;
+	
+	private String adrtxt;
+	
+	private String banColor;
+	
+	private String bantxt;
+	
+	private String banDruglb;
+	
+	private String batchNumber;
+	
+	private String bottlelb;
+	
+	private String dose;
+	
+	private String endDate;
+	
+	private String endH;
+	
+	private String endM;
+	
+	private String food;
+	
+	private String foodtxt;
+	private String gSolvent2Dose;
+	private int gpSolvent;
+	private	String gpSolvent1Dose;
+	private String	gpSolvent3Dose;
+	private String	gpSolvent3Name;
+	private String	gpSolvent3Percent;
+	private int	hasBan;
+	private int	hasFood;
+	private int	hasInjection;
+	private String injectionlb;
+	private String prepareTime;
+	private boolean prepareTimeUd;
+	private int sameBottle;
+	private int sameGroup;
+	private int solvent;
+	private String solventDose;
+	private String solventName;
+	private String solventPercent;
+	private String startDate;
+	private String startH;
+	private String startM;
+	private int way;
+	private String way1Speed;
+	private String way1Time;
+	private String way2Speed;
+	private String way3Name;
+	private String way3Speed;
+	private String way3Unit;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
+	}
+	public int getTimes() {
+		return times;
+	}
+	public void setTimes(int times) {
+		this.times = times;
+	}
+	public int getHistory() {
+		return history;
+	}
+	public void setHistory(int history) {
+		this.history = history;
+	}
+	public int getAdr() {
+		return adr;
+	}
+	public void setAdr(int adr) {
+		this.adr = adr;
+	}
+	public String getBanColor() {
+		return banColor;
+	}
+	public void setBanColor(String banColor) {
+		this.banColor = banColor;
+	}
+	public String getBantxt() {
+		return bantxt;
+	}
+	public void setBantxt(String bantxt) {
+		this.bantxt = bantxt;
+	}
+	public String getBanDruglb() {
+		return banDruglb;
+	}
+	public void setBanDruglb(String banDruglb) {
+		this.banDruglb = banDruglb;
+	}
+	public String getBatchNumber() {
+		return batchNumber;
+	}
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
+	public String getBottlelb() {
+		return bottlelb;
+	}
+	public void setBottlelb(String bottlelb) {
+		this.bottlelb = bottlelb;
+	}
+	public String getDose() {
+		return dose;
+	}
+	public void setDose(String dose) {
+		this.dose = dose;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getEndH() {
+		return endH;
+	}
+	public void setEndH(String endH) {
+		this.endH = endH;
+	}
+	public String getEndM() {
+		return endM;
+	}
+	public void setEndM(String endM) {
+		this.endM = endM;
+	}
+	public String getFood() {
+		return food;
+	}
+	public void setFood(String food) {
+		this.food = food;
+	}
+	public String getFoodtxt() {
+		return foodtxt;
+	}
+	public void setFoodtxt(String foodtxt) {
+		this.foodtxt = foodtxt;
+	}
+	public String getgSolvent2Dose() {
+		return gSolvent2Dose;
+	}
+	public void setgSolvent2Dose(String gSolvent2Dose) {
+		this.gSolvent2Dose = gSolvent2Dose;
+	}
+	public int getGpSolvent() {
+		return gpSolvent;
+	}
+	public void setGpSolvent(int gpSolvent) {
+		this.gpSolvent = gpSolvent;
+	}
+	public String getGpSolvent1Dose() {
+		return gpSolvent1Dose;
+	}
+	public void setGpSolvent1Dose(String gpSolvent1Dose) {
+		this.gpSolvent1Dose = gpSolvent1Dose;
+	}
+	public String getGpSolvent3Dose() {
+		return gpSolvent3Dose;
+	}
+	public void setGpSolvent3Dose(String gpSolvent3Dose) {
+		this.gpSolvent3Dose = gpSolvent3Dose;
+	}
+	public String getGpSolvent3Name() {
+		return gpSolvent3Name;
+	}
+	public void setGpSolvent3Name(String gpSolvent3Name) {
+		this.gpSolvent3Name = gpSolvent3Name;
+	}
+	public String getGpSolvent3Percent() {
+		return gpSolvent3Percent;
+	}
+	public void setGpSolvent3Percent(String gpSolvent3Percent) {
+		this.gpSolvent3Percent = gpSolvent3Percent;
+	}
+	public int getHasBan() {
+		return hasBan;
+	}
+	public void setHasBan(int hasBan) {
+		this.hasBan = hasBan;
+	}
+	public int getHasFood() {
+		return hasFood;
+	}
+	public void setHasFood(int hasFood) {
+		this.hasFood = hasFood;
+	}
+	public int getHasInjection() {
+		return hasInjection;
+	}
+	public void setHasInjection(int hasInjection) {
+		this.hasInjection = hasInjection;
+	}
+	public String getInjectionlb() {
+		return injectionlb;
+	}
+	public void setInjectionlb(String injectionlb) {
+		this.injectionlb = injectionlb;
+	}
+	public String getPrepareTime() {
+		return prepareTime;
+	}
+	public void setPrepareTime(String prepareTime) {
+		this.prepareTime = prepareTime;
+	}
+	public boolean isPrepareTimeUd() {
+		return prepareTimeUd;
+	}
+	public void setPrepareTimeUd(boolean prepareTimeUd) {
+		this.prepareTimeUd = prepareTimeUd;
+	}
+	public int getSameBottle() {
+		return sameBottle;
+	}
+	public void setSameBottle(int sameBottle) {
+		this.sameBottle = sameBottle;
+	}
+	public int getSameGroup() {
+		return sameGroup;
+	}
+	public void setSameGroup(int sameGroup) {
+		this.sameGroup = sameGroup;
+	}
+	public int getSolvent() {
+		return solvent;
+	}
+	public void setSolvent(int solvent) {
+		this.solvent = solvent;
+	}
+	public String getSolventDose() {
+		return solventDose;
+	}
+	public void setSolventDose(String solventDose) {
+		this.solventDose = solventDose;
+	}
+	public String getSolventName() {
+		return solventName;
+	}
+	public void setSolventName(String solventName) {
+		this.solventName = solventName;
+	}
+	public String getSolventPercent() {
+		return solventPercent;
+	}
+	public void setSolventPercent(String solventPercent) {
+		this.solventPercent = solventPercent;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getStartH() {
+		return startH;
+	}
+	public void setStartH(String startH) {
+		this.startH = startH;
+	}
+	public String getStartM() {
+		return startM;
+	}
+	public void setStartM(String startM) {
+		this.startM = startM;
+	}
+	public int getWay() {
+		return way;
+	}
+	public void setWay(int way) {
+		this.way = way;
+	}
+	public String getWay1Speed() {
+		return way1Speed;
+	}
+	public void setWay1Speed(String way1Speed) {
+		this.way1Speed = way1Speed;
+	}
+	public String getWay1Time() {
+		return way1Time;
+	}
+	public void setWay1Time(String way1Time) {
+		this.way1Time = way1Time;
+	}
+	public String getWay2Speed() {
+		return way2Speed;
+	}
+	public void setWay2Speed(String way2Speed) {
+		this.way2Speed = way2Speed;
+	}
+	public String getWay3Name() {
+		return way3Name;
+	}
+	public void setWay3Name(String way3Name) {
+		this.way3Name = way3Name;
+	}
+	public String getWay3Speed() {
+		return way3Speed;
+	}
+	public void setWay3Speed(String way3Speed) {
+		this.way3Speed = way3Speed;
+	}
+	public String getWay3Unit() {
+		return way3Unit;
+	}
+	public void setWay3Unit(String way3Unit) {
+		this.way3Unit = way3Unit;
+	}
+	public String getAdrtxt() {
+		return adrtxt;
+	}
+	public void setAdrtxt(String adrtxt) {
+		this.adrtxt = adrtxt;
+	}
 	
 	
 	

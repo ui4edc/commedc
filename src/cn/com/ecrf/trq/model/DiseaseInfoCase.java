@@ -11,58 +11,86 @@ public class DiseaseInfoCase {
 	/**
 	 * 疾病诊断
 	 */
-	//观察表编号
-	private String blbh;
-	//内科疾病：是，否
-	private String nkjbyn;
-	//内科疾病名称:上呼吸道感染, 急性支气管炎
-	private String nkjbmc;
-	//内科疾病分级1:儿童，成人
-	private String nkjbfj1;
-	//内科疾病分级2:轻度，重度，轻、中症，重症
-	private String nkjbfj2;
-	//外科疾病:是，否
-	private String wkjbyn;
-	//外科疾病名称
-	private String wkjbmc;
-	//传染病:是，否
-	private String crbyn;
-	//其他疾病：是，否
-	private String qtjbyn;
-	//其他疾病名称
-	private String qtjbmc;
-	//第一诊断(编号)
-	private String dyzdcd;
-	//中医诊断名称
-	private String zyzdmc;
-	
-	/**
-	 * 个人史
-	 */
-	//吸烟史:是，否
-	private String xysyn;
-	//饮酒史:是，否
-	private String yjsyn;
-	
-	/**
-	 * 过敏史
-	 */
-	//食物过敏史:是，否
-	private String swgmsyn;
-	//食物过敏史列表:key-过敏物质，value-过敏表现
-	private Map<String, String> swgmslb;
-	//药物过敏史:是，否
-	private String ywgmsyn;
-	//抗生素类-药物过敏史
-	private Map<String, String> ksslywgmslb;
-	//中药注射剂-药物过敏史
-	private Map<String, String> zyzsjywgmslb;
-	//其他药物-药物过敏史
-	private Map<String, String> qtywgmslb;
-	//其他物质：是，否
-	private String qtwzyn;
-	//其他物质过敏史
-	private Map<String, String> qtwzgmslb;
-	
+	//id
+		private int id;
+		//观察表编号
+		private String no;
+		//第一入院诊断
+		private String diagnosis; 
+		private String disease1;
+		private String disease2;
+		private String disease3;
+		private String diseasetxt;
+		private String fy1;
+		private String fy2;
+		private int zy;
+		private String zytxt;
+		
+		public int getId() {
+			return id;
+		}
+		public void setId(int id) {
+			this.id = id;
+		}
+		public String getNo() {
+			return no;
+		}
+		public void setNo(String no) {
+			this.no = no;
+		}
+		public String getDiagnosis() {
+			return diagnosis;
+		}
+		public void setDiagnosis(String diagnosis) {
+			this.diagnosis = diagnosis;
+		}
+		public String getDisease1() {
+			return disease1;
+		}
+		public void setDisease1(String disease1) {
+			this.disease1 = disease1;
+		}
+		public String getDisease2() {
+			return disease2;
+		}
+		public void setDisease2(String disease2) {
+			this.disease2 = disease2;
+		}
+		public String getDisease3() {
+			return disease3;
+		}
+		public void setDisease3(String disease3) {
+			this.disease3 = disease3;
+		}
+		public String getDiseasetxt() {
+			return diseasetxt;
+		}
+		public void setDiseasetxt(String diseasetxt) {
+			this.diseasetxt = diseasetxt;
+		}
+		public String getFy1() {
+			return fy1;
+		}
+		public void setFy1(String fy1) {
+			this.fy1 = fy1;
+		}
+		public String getFy2() {
+			return fy2;
+		}
+		public void setFy2(String fy2) {
+			this.fy2 = fy2;
+		}
+		public int getZy() {
+			return zy;
+		}
+		public void setZy(int zy) {
+			this.zy = zy;
+		}
+		public String getZytxt() {
+			return zytxt;
+		}
+		public void setZytxt(String zytxt) {
+			this.zytxt = zytxt;
+		}
 	
 }

@@ -3,6 +3,8 @@ package cn.com.ecrf.trq.repository;
 import java.util.List;
 import java.util.Map;
 
+import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DrugUseCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
@@ -58,5 +60,17 @@ public interface CRFMapper {
 	public void updateNextSeq(int id);
 
 	public void deletePatientInfo(int parseInt);
+
+	public DiseaseInfoCase getDiseaseInfo(int id);
+
+	public void updateDiseaseInfo(DiseaseInfoCase diseaseInfoCase);
+
+	public void insertDiseaseInfo(DiseaseInfoCase diseaseInfoCase);
+
+	public DrugUseCase getDrugUseInfo(int parseInt);
+
+	public void updateDrugUseInfo(DrugUseCase drugUseCase);
+
+	public void insertDrugUseInfo(DrugUseCase drugUseCase);
 
 }

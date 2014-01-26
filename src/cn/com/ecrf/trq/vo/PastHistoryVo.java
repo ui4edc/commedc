@@ -8,13 +8,13 @@ public class PastHistoryVo {
 	//观察表编号
 	private String no;
 	
-	private int allergy;
+	private String allergy;
 	
 	private String allergytxt;
 	
 	private String disease;
 	
-	private String diease1;
+	private String disease1;
 	
 	private String disease2;
 	
@@ -46,11 +46,11 @@ public class PastHistoryVo {
 		this.no = no;
 	}
 
-	public int getAllergy() {
+	public String getAllergy() {
 		return allergy;
 	}
 
-	public void setAllergy(int allergy) {
+	public void setAllergy(String allergy) {
 		this.allergy = allergy;
 	}
 
@@ -70,12 +70,14 @@ public class PastHistoryVo {
 		this.disease = disease;
 	}
 
-	public String getDiease1() {
-		return diease1;
+	
+
+	public String getDisease1() {
+		return disease1;
 	}
 
-	public void setDiease1(String diease1) {
-		this.diease1 = diease1;
+	public void setDisease1(String disease1) {
+		this.disease1 = disease1;
 	}
 
 	public String getDisease2() {

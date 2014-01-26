@@ -7,30 +7,17 @@ public class DiseaseInfoVo {
 	private int id;
 	//观察表编号
 	private String no;
-	//内科疾病
-	private boolean nkjb;
-	//内科疾病名称:上呼吸道感染, 急性支气管炎
-	private List<SubCheckBoxVo> nkjblb;
-	//外科疾病:是，否
-	private boolean wkjb;
-	//外科疾病名称
-	private int wkjbmc;
-	//传染病:是，否
-	private boolean crb;
-	//传染病:流行性
-	private int crbmc;
-	//传染病其他
-	private String crbOther;
-	//其他疾病：是，否
-	private boolean qtjb;
-	//其他疾病名称
-	private String qtjbOther;
-	//第一诊断(编号)
-	private String dyzd;
-	//中医诊断
-	private int zyzd;
-	//中医诊断名称
-	private int zyzdOther;
+	//第一入院诊断
+	private String diagnosis; 
+	private String disease1;
+	private String disease2;
+	private String disease3;
+	private String diseasetxt;
+	private String fy1;
+	private String fy2;
+	private int zy;
+	private String zytxt;
+	
 	public int getId() {
 		return id;
 	}
@@ -43,78 +30,62 @@ public class DiseaseInfoVo {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public boolean isNkjb() {
-		return nkjb;
+	public String getDiagnosis() {
+		return diagnosis;
 	}
-	public void setNkjb(boolean nkjb) {
-		this.nkjb = nkjb;
+	public void setDiagnosis(String diagnosis) {
+		this.diagnosis = diagnosis;
 	}
-	public List<SubCheckBoxVo> getNkjblb() {
-		return nkjblb;
+	public String getDisease1() {
+		return disease1;
 	}
-	public void setNkjblb(List<SubCheckBoxVo> nkjblb) {
-		this.nkjblb = nkjblb;
+	public void setDisease1(String disease1) {
+		this.disease1 = disease1;
 	}
-	public boolean isWkjb() {
-		return wkjb;
+	public String getDisease2() {
+		return disease2;
 	}
-	public void setWkjb(boolean wkjb) {
-		this.wkjb = wkjb;
+	public void setDisease2(String disease2) {
+		this.disease2 = disease2;
 	}
-	public int getWkjbmc() {
-		return wkjbmc;
+	public String getDisease3() {
+		return disease3;
 	}
-	public void setWkjbmc(int wkjbmc) {
-		this.wkjbmc = wkjbmc;
+	public void setDisease3(String disease3) {
+		this.disease3 = disease3;
 	}
-	public boolean isCrb() {
-		return crb;
+	public String getDiseasetxt() {
+		return diseasetxt;
 	}
-	public void setCrb(boolean crb) {
-		this.crb = crb;
+	public void setDiseasetxt(String diseasetxt) {
+		this.diseasetxt = diseasetxt;
 	}
-	public int getCrbmc() {
-		return crbmc;
+	public String getFy1() {
+		return fy1;
 	}
-	public void setCrbmc(int crbmc) {
-		this.crbmc = crbmc;
+	public void setFy1(String fy1) {
+		this.fy1 = fy1;
 	}
-	public String getCrbOther() {
-		return crbOther;
+	public String getFy2() {
+		return fy2;
 	}
-	public void setCrbOther(String crbOther) {
-		this.crbOther = crbOther;
+	public void setFy2(String fy2) {
+		this.fy2 = fy2;
 	}
-	public boolean isQtjb() {
-		return qtjb;
+	public int getZy() {
+		return zy;
 	}
-	public void setQtjb(boolean qtjb) {
-		this.qtjb = qtjb;
+	public void setZy(int zy) {
+		this.zy = zy;
 	}
-	public String getQtjbOther() {
-		return qtjbOther;
+	public String getZytxt() {
+		return zytxt;
 	}
-	public void setQtjbOther(String qtjbOther) {
-		this.qtjbOther = qtjbOther;
+	public void setZytxt(String zytxt) {
+		this.zytxt = zytxt;
 	}
-	public String getDyzd() {
-		return dyzd;
-	}
-	public void setDyzd(String dyzd) {
-		this.dyzd = dyzd;
-	}
-	public int getZyzd() {
-		return zyzd;
-	}
-	public void setZyzd(int zyzd) {
-		this.zyzd = zyzd;
-	}
-	public int getZyzdOther() {
-		return zyzdOther;
-	}
-	public void setZyzdOther(int zyzdOther) {
-		this.zyzdOther = zyzdOther;
-	}
+	
+	
 	
 	
 	

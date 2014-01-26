@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,9 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DrugUseCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
@@ -18,6 +22,8 @@ import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
+import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.MutilSelect;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
@@ -195,18 +201,35 @@ public class ConvertorService {
 
 
 
-	public PastHistoryCase convertPastHistoryFromModelToVo(
+	public PastHistoryCase convertPastHistoryFromViewToModel(
 			PastHistoryVo pastHistoryVo) {
 		// TODO Auto-generated method stub
-		return null;
+		PastHistoryCase pastHistoryCase = new PastHistoryCase();
+		try {
+			BeanUtils.copyProperties(pastHistoryCase, pastHistoryVo);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pastHistoryCase;
 	}
 
 
 
-	public PastHistoryVo convertPastHistoryFromViewToModel(
+	public PastHistoryVo convertPastHistoryFromModelToView(
 			PastHistoryCase pastHistoryCase) {
 		// TODO Auto-generated method stub
-		return null;
+		PastHistoryVo pastHistoryVo = null;
+		try {
+			if (pastHistoryCase != null){
+				pastHistoryVo = new PastHistoryVo();
+				BeanUtils.copyProperties(pastHistoryVo, pastHistoryCase);
+			}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pastHistoryVo;
 	}
 	
 	private String convertIDToContent(FormEnumObject obj) {
@@ -238,6 +261,72 @@ public class ConvertorService {
 		}
 		obj.setSeq(seq);
 		return obj.getSeq();
+	}
+
+	public DiseaseInfoCase convertDiseaseInfoFromViewToModel(
+			DiseaseInfoVo diseaseInfoVo) {
+		// TODO Auto-generated method stub
+		DiseaseInfoCase diseaseInfoCase = null;
+		try {
+			if (diseaseInfoVo != null){
+				diseaseInfoCase = new DiseaseInfoCase();
+				BeanUtils.copyProperties(diseaseInfoCase, diseaseInfoVo);
+			}
+			
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return diseaseInfoCase;
+	}
+
+	public DiseaseInfoVo convertDiseaseInfoFromModelToView(
+			DiseaseInfoCase diseaseInfoCase) {
+		// TODO Auto-generated method stub
+		DiseaseInfoVo diseaseInfoVo = null;
+		try {
+			if (diseaseInfoCase != null){
+				diseaseInfoVo = new DiseaseInfoVo();
+				BeanUtils.copyProperties(diseaseInfoVo, diseaseInfoCase);
+			}
+			
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return diseaseInfoVo;
+	}
+
+	public DrugUseVo convertDrugUseInfoFromModelToView(
+			DrugUseCase drugUseInfoCase) {
+		// TODO Auto-generated method stub
+		DrugUseVo drugUseVo = null;
+		try {
+			if (drugUseInfoCase != null){
+				drugUseVo = new DrugUseVo();
+				BeanUtils.copyProperties(drugUseVo, drugUseInfoCase);
+			}
+			
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return drugUseVo;
+	}
+
+	public DrugUseCase convertDrugUseInfoFromViewToModel(DrugUseVo drugUseVo) {
+		// TODO Auto-generated method stub
+		DrugUseCase drugUseCase = null;
+		try {
+			if (drugUseVo != null){
+				drugUseCase = new DrugUseCase();
+				BeanUtils.copyProperties(drugUseCase, drugUseVo);
+			}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return drugUseCase;
 	}
 
 }
