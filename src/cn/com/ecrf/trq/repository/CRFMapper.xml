@@ -291,7 +291,7 @@
 			endM as endM,
 			food as food,
 			foodtxt as foodtxt,
-			private String gSolvent2Dose;
+			gSolvent2Dose as gSolvent2Dose,
 			gpSolvent as gpSolvent,
 			gpSolvent1Dose as gpSolvent1Dose,
 			gpSolvent3Dose as gpSolvent3Dose,
@@ -323,8 +323,15 @@
 	</select>
 	<insert id="insertDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase">
 	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, banColor, bantxt, banDruglb,
-	    batchNumber, bottlelb)
-	    values (#{no}, #{times}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, #{batchNumber}, #{bottlelb});
+	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gSolvent2Dose, gpSolvent1Dose,
+	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
+	    prepareTime, prepareTimeUd, sameBottle, sameGroup, solvent, solventDose, solventName, solventPercent,
+	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit)
+	    values (#{no}, #{times}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, 
+	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gSolvent2Dose}, #{gpSolvent1Dose},
+	    #{gpSolvent3Dose}, #{gpSolvent3Name},#{gpSolvent3Percent}, #{hasBan}, #{hasFood}, #{hasInjection}, #{injectionlb}, 
+	    #{prepareTime}, #{prepareTimeUd}, #{sameBottle}, #{sameGroup},#{solvent}, #{solventDose}, #{solventName}, #{solventPercent},
+	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit});
 	</insert>
 	<update id="updateDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase" >
 		update crf_druguse_info set

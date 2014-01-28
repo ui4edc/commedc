@@ -59,7 +59,7 @@ public interface CRFMapper {
 
 	public void updateNextSeq(int id);
 
-	public void deletePatientInfo(int parseInt);
+	public void deletePatientInfo(int id);
 
 	public DiseaseInfoCase getDiseaseInfo(int id);
 
@@ -67,7 +67,7 @@ public interface CRFMapper {
 
 	public void insertDiseaseInfo(DiseaseInfoCase diseaseInfoCase);
 
-	public DrugUseCase getDrugUseInfo(int parseInt);
+	public DrugUseCase getDrugUseInfo(int id);
 
 	public void updateDrugUseInfo(DrugUseCase drugUseCase);
 

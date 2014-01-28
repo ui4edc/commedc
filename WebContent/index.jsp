@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <% String basePath = request.getContextPath(); %>
 <!DOCTYPE HTML>
 <html>
@@ -13,16 +14,22 @@
 <div id="Nav">
     <a href="#index/" class="index">首页</a>
     <!--药师-->
+    <shiro:hasRole name="CRO">  
     <a href="#list/" class="list">观察表</a>
+    </shiro:hasRole>  
     <!--CRM-->
+    <shiro:hasRole name="CRM, LCRO">
     <a href="#supervise/" class="supervise">数据监察</a>
     <a href="#dict/" class="dict">数据字典</a>
     <a href="#upload/" class="upload">图片上传</a>
+    </shiro:hasRole> 
     <!--DM-->
+    <shiro:hasRole name="DM">
     <a href="#stat/" class="stat">全局统计</a>
     <a href="#data/" class="data">数据管理</a>
     <a href="#dict/" class="dict">数据字典</a>
     <a href="#account/" class="account">账户管理</a>
+    </shiro:hasRole> 
 </div>
 <div id="Main"></div>
 <div id="Foot"></div>

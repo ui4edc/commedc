@@ -329,4 +329,9 @@ public class ConvertorService {
 		return drugUseCase;
 	}
 
+	public DrugUseVo convertDrugUseInfoFromJSONToView(String json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.com.ecrf.trq.model.DrugUseCase;
 import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.service.CRFService;
+import cn.com.ecrf.trq.service.ConvertorService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
@@ -38,6 +40,8 @@ public class CRFController {
 
 	@Autowired
 	private CRFService cRFService;
+	@Autowired
+	private ConvertorService convertorService;
 	
 	@RequestMapping("/rest/crf/getPatientList")
 	@ResponseBody
@@ -121,6 +125,7 @@ public class CRFController {
 			String json = StreamConvertorUtils.inputStream2String(in);
 			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
 			System.out.println(json);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -164,8 +169,20 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/saveDrugUseInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> saveDrugUseInfo(@RequestBody DrugUseVo drugUseVo, HttpServletRequest request) {
-		Map<String, Object> result = cRFService.saveDrugUseInfo(drugUseVo);
+	public Map<String, Object> saveDrugUseInfo(/*@RequestBody DrugUseVo drugUseVo,*/ HttpServletRequest request) {
+		Map<String, Object> result  = null;
+		try {
+			InputStream in = request.getInputStream();
+			String json = StreamConvertorUtils.inputStream2String(in);
+			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
+			System.out.println(json);
+			DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromJSONToView(json);
+			result = cRFService.saveDrugUseInfo(drugUseVo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
 	
@@ -181,6 +198,54 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> savePastHistory(PastHistoryVo pastHistoryVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.savePastHistory(pastHistoryVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getDrugCombinationInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugCombinationInfo(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getInHospitalExam", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getInHospitalExam(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getDrugUseExam", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugUseExam(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getOutHospitalExam", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getOutHospitalExam(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getDrugSummary", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugSummary(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getADR", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getADR(ParameterType parameterType, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
 		return result;
 	}
 	

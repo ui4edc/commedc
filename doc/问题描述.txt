@@ -32,3 +32,24 @@ Uncaught TypeError: Cannot read property 'food' of null Form12.js:24
 20140127
 1.用药情况的url写错了，应该是getDrugUseInfo.do，不是getDrugCombinationInfo.do
 2.20140126容我三思下
+
+20140129
+1.增加退出接口,url:/commedc/logout.do
+2.修改了index.jsp，用<shiro:hasRole name="CRO"></shiro:hasRole>控制页面权限，现在有四种角色：
+CRO：即药师，导航栏是首页，观察表；以及首页第一行新建CRF,新建ADR,修改旧表/解决质疑
+LCRO:即分中心管理员，导航栏是首页，观察表，账户管理（只能添加用户，隐藏中心管理功能），以及首页第一行图标
+CRM:即监察员，导航栏
+是首页，监察，数据字典，图片上传，以及首页第二行图标
+DM:级超级管理员，导航栏是首页，监察，数据字典，图片上传,全局统计，数据管理，数据字典，账户管理，以及首页第三行图标
+3.修改密码的url从/commedc/password.html改成/commedc/password.do
+4.session超时后，ajax请求会得到302的错误，然后会重定向url到/commedc/login.do,但是页面没有跳转，需要自动跳转
+对20140126问题的清理，
+1)全部提交调用url为/commedc/crf/saveTotalCRF.do，参数见详细接口.docx,1.2.0.5
+2)还未确定url的接口
+2.1)新建ADR，需要指定观察表编号，url为/commedc/crf/addADR.do,参数见详细接口.docx,1.2.0.6
+2.2)获取质疑字段，url为/commed/supervise/getDoubtDict.do,参数见详细接口.docx,1.2.0.2
+提交质疑，url为/commed/supervise/saveDoubtColumn.do,参数见详细接口.docx,1.2.0.3
+3)查看质疑，url为/commed/supervise/getDoubtRecord.do,参数见详细接口.docx,1.2.0.4
+4)数据监察地址和同观察表，都是/commedc/getPatientList，参数也一样
+5)数据管理,地址也是/commedc/getPatientList，参数也一样。
+6)全局统计待定

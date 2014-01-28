@@ -21,7 +21,7 @@ public class DrugUseVo {
 		
 		private int adr;
 		
-		private int adrtxt;
+		private String adrtxt;
 		
 		private String banColor;
 		
@@ -102,10 +102,11 @@ public class DrugUseVo {
 		public void setAdr(int adr) {
 			this.adr = adr;
 		}
-		public int getAdrtxt() {
+
+		public String getAdrtxt() {
 			return adrtxt;
 		}
-		public void setAdrtxt(int adrtxt) {
+		public void setAdrtxt(String adrtxt) {
 			this.adrtxt = adrtxt;
 		}
 		public String getBanColor() {
