@@ -378,16 +378,18 @@ es.Views.Form51 = Backbone.View.extend({
     save: function() {
        var me = es.main;
        
-       var bodyExam = esui.get("Exam1").datasource;
-       if (bodyExam[0].f1 == ""
-           || bodyExam[0].f2 == ""
-           || bodyExam[0].f3 == ""
-           || bodyExam[0].f4 == ""
-           || bodyExam[0].f5 == ""
-           || bodyExam[0].f6 == ""
-       ) {
-           esui.Dialog.alert({title: "提示", content: "请将体格检查填写完整"});
-           return;
+       if (esui.get("Done1").isChecked()) {
+           var bodyExam = esui.get("Exam1").datasource;
+           if (bodyExam[0].f1 == ""
+               || bodyExam[0].f2 == ""
+               || bodyExam[0].f3 == ""
+               || bodyExam[0].f4 == ""
+               || bodyExam[0].f5 == ""
+               || bodyExam[0].f6 == ""
+           ) {
+               esui.Dialog.alert({title: "提示", content: "请将体格检查填写完整"});
+               return;
+           }
        }
        
        var data = {
