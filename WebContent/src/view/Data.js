@@ -199,7 +199,7 @@ es.Views.Data = Backbone.View.extend({
         this.queryFirstPage();
         
         //质疑记录
-        if (this.args.type == 1) {
+        if (this.args.type == 8) {
             this.$(".doubt-form").show();
         } else {
             this.$(".doubt-form").hide();
@@ -260,7 +260,7 @@ es.Views.Data = Backbone.View.extend({
                 }
             ];
             //质疑记录
-            if (this.args.type == 1) {
+            if (this.args.type == 8) {
                 table.fields.splice(2, 0,
                 {
                     field: "doubter",
@@ -344,16 +344,17 @@ es.Views.Data = Backbone.View.extend({
                         id.push(parseInt(val.id, 10));
                     });
                     var data = {
+                        crf: esui.get("CRF").isChecked(),
                         id: id.join(",")
                     };
                     
-                    console.log("批量删除-请求", data);
+                    console.log("list/batchDelete.do-请求", data);
                     
                     util.ajax.run({
-                        url: "",
+                        url: "list/batchDelete.do",
                         data: data,
                         success: function(response) {
-                            console.log("批量删除-响应", response);
+                            console.log("list/batchDelete.do-响应", response);
                             
                             es.main.queryFirstPage();
                         },

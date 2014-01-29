@@ -41,7 +41,6 @@ es.Views.CRF = Backbone.View.extend({
         var hash = window.location.hash,
             title = "";
         this.crfId = parseInt(query, 10);
-        var isCRM = $("#RoleId").val() == "2" ? true : false;
         
         if (/^#crf\/update\/\d+$/.test(hash)) {
             title = "填写CRF";
@@ -59,13 +58,13 @@ es.Views.CRF = Backbone.View.extend({
             title = "质疑CRF";
             this.editable = false;
             this.selectADR = false;
-            this.canSubmit = isCRM;
+            this.canSubmit = true;
             this.canDoubt = true;
         } else if(/^#crf\/doubtadr\/\d+$/.test(hash)) {
             title = "质疑CRF";
             this.editable = false;
             this.selectADR = true;
-            this.canSubmit = isCRM;
+            this.canSubmit = true;
             this.canDoubt = true;
         }
         
@@ -191,13 +190,13 @@ es.Views.CRF = Backbone.View.extend({
             menu: this.getMenuId()
         };
         
-        console.log("获取质疑字段-请求", data);
+        console.log("supervise/getDoubtDict.do-请求", data);
         
         util.ajax.run({
-            url: "",
+            url: "supervise/getDoubtDict.do",
             data: data,
             success: function(response) {
-                console.log("获取质疑字段-响应", response);
+                console.log("supervise/getDoubtDict.do-响应", response);
                 
                 var datasource = [];
                 $.each(response.data, function(index, val) {
@@ -232,13 +231,13 @@ es.Views.CRF = Backbone.View.extend({
             description: $.trim(esui.get("Description").getValue())
         };
         
-        console.log("质疑-请求", data);
+        console.log("supervise/saveDoubtColumn.do-请求", data);
         
         util.ajax.run({
-            url: "",
+            url: "supervise/saveDoubtColumn.do",
             data: data,
             success: function(response) {
-                console.log("质疑-响应", response);
+                console.log("supervise/saveDoubtColumn.do-响应", response);
                 
                 esui.get("DoubtDialog").hide();
                 
@@ -265,13 +264,13 @@ es.Views.CRF = Backbone.View.extend({
             menu: this.getMenuId()
         };
         
-        console.log("查看质疑-请求", data);
+        console.log("supervise/getDoubtRecord.do-请求", data);
         
         util.ajax.run({
-            url: "",
+            url: "supervise/getDoubtRecord.do",
             data: data,
             success: function(response) {
-                console.log("查看质疑-响应", response);
+                console.log("supervise/getDoubtRecord.do-响应", response);
                 
                 es.main.renderDoubtList(response.data);
             },

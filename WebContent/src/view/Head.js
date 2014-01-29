@@ -19,7 +19,8 @@ es.Views.Head = Backbone.View.extend({
         this.$el.html($.Mustache.render("tpl-head", {
             roleName: es.roleName,
             userName: es.userName,
-            hospitalName: es.hospitalName
+            hospitalName: es.hospitalName,
+            base: $("#BasePath").val()
         }));
     }
 });

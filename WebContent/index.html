@@ -10,16 +10,12 @@
 <div id="Head"></div>
 <div id="Nav">
     <a href="#index/" class="index">首页</a>
-    <!--药师-->
     <a href="#list/" class="list">观察表</a>
-    <!--CRM-->
     <a href="#supervise/" class="supervise">数据监察</a>
     <a href="#dict/" class="dict">数据字典</a>
     <!--<a href="#upload/" class="upload">图片上传</a>-->
-    <!--DM-->
     <a href="#stat/" class="stat">全局统计</a>
     <a href="#data/" class="data">数据管理</a>
-    <a href="#dict/" class="dict">数据字典</a>
     <a href="#account/" class="account">账户管理</a>
 </div>
 <div id="Main"></div>
@@ -29,11 +25,18 @@
 
 <input type="hidden" id="BasePath" value="commedc/" />
 <input type="hidden" id="RoleName" value="角色名称" />
-<input type="hidden" id="RoleId" value="2" />
+<input type="hidden" id="RoleId" value="1" />
 <input type="hidden" id="UserName" value="用户名称" />
 <input type="hidden" id="UserId" value="1" />
 <input type="hidden" id="HospitalName" value="医院名称" />
 
+<script>
+var Auth = {};
+Auth.CRO = true;
+Auth.LCRO = true;
+Auth.CRM = true;
+Auth.DM = true;
+</script>
 <script src="asset/js/lib.js"></script>
 <script src="asset/js/app.js"></script>
 </body>

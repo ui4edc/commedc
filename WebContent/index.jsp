@@ -13,23 +13,25 @@
 <div id="Head"></div>
 <div id="Nav">
     <a href="#index/" class="index">首页</a>
-    <!--药师-->
-    <shiro:hasRole name="CRO">  
+    
+    <shiro:hasRole name="CRO, LCRO">
     <a href="#list/" class="list">观察表</a>
-    </shiro:hasRole>  
-    <!--CRM-->
-    <shiro:hasRole name="CRM, LCRO">
+    </shiro:hasRole>
+    
+    <shiro:hasRole name="CRM, DM">
     <a href="#supervise/" class="supervise">数据监察</a>
     <a href="#dict/" class="dict">数据字典</a>
-    <a href="#upload/" class="upload">图片上传</a>
-    </shiro:hasRole> 
-    <!--DM-->
+    <!--<a href="#upload/" class="upload">图片上传</a>-->
+    </shiro:hasRole>
+    
     <shiro:hasRole name="DM">
     <a href="#stat/" class="stat">全局统计</a>
     <a href="#data/" class="data">数据管理</a>
-    <a href="#dict/" class="dict">数据字典</a>
+    </shiro:hasRole>
+    
+    <shiro:hasRole name="DM, LCRO">
     <a href="#account/" class="account">账户管理</a>
-    </shiro:hasRole> 
+    </shiro:hasRole>
 </div>
 <div id="Main"></div>
 <div id="Foot"></div>
@@ -43,6 +45,13 @@
 <input type="hidden" id="UserId" value="${userId}" />
 <input type="hidden" id="HospitalName" value="${organization}" />
 
+<script>
+var Auth = {};
+<shiro:hasRole name="CRO">Auth.CRO = true;</shiro:hasRole>
+<shiro:hasRole name="LCRO">Auth.LCRO = true;</shiro:hasRole>
+<shiro:hasRole name="CRM">Auth.CRM = true;</shiro:hasRole>
+<shiro:hasRole name="DM">Auth.DM = true;</shiro:hasRole>
+</script>
 <script src="asset/js/lib.js"></script>
 <script src="asset/js/app.js"></script>
 </body>

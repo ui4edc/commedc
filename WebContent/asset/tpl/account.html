@@ -4,19 +4,19 @@
     <h1 class="no-bottom no-border">
         <span>账户管理</span>
         <a class="btn new-account" href="javascript:void(0)">添加账户</a>
-        <a class="btn new-center" href="javascript:void(0)" style="display:none">添加中心</a>
+        {{#center}}<a class="btn new-center" href="javascript:void(0)" style="display:none">添加中心</a>{{/center}}
     </h1>
     <!--tab-->
     <div class="tabbar">
         <a href="javascript:void(0)" hidefocus="true" type="1" class="active">账户管理</a>
-        <a href="javascript:void(0)" hidefocus="true" type="2">中心管理</a>
+        {{#center}}<a href="javascript:void(0)" hidefocus="true" type="2">中心管理</a>{{/center}}
     </div>
     <!--查询结果-->
     <div class="no-result" style="display:none">暂无查询结果。</div>
     <div class="data" style="display:none">
         <div class="toolbar">
             <div ui="type:Button;id:DelAccount;">批量删除</div>
-            <div ui="type:Button;id:DelCenter;" style="display:none">批量删除</div>
+            {{#center}}<div ui="type:Button;id:DelCenter;" style="display:none">批量删除</div>{{/center}}
         </div>
         <div ui="type:Table;id:Grid;select:multi"></div>
     </div>

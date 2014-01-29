@@ -128,7 +128,7 @@ util.ajax = {
             
             statusCode: {
                 "302": function() {
-                    window.location.href = $("#BasePath").val() + "tologin.do";
+                    window.location.href = $("#BasePath").val() + "login.do";
                 }
             }
         });

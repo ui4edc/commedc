@@ -10,7 +10,7 @@
 <body>
 <div class="login-form password-form">
     <span class="tip" style="display:none"></span>
-    <form method="post" action="">
+    <form method="post" action="password.do">
         <div><label>原密码：</label><input type="password" class="elm" name="oldPassword" id="oldPassword" maxlength="32" /></div>
         <div><label>新密码：</label><input type="password" class="elm" name="newPassword" id="newPassword" maxlength="32" /></div>
         <div><label>确认密码：</label><input type="password" class="elm" name="repeatPassword" id="repeatPassword" maxlength="32" /></div>

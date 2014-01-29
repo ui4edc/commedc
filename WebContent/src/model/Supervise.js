@@ -13,13 +13,13 @@ es.Models.Supervise = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("获取列表-请求", args);
+        console.log("list/getPatientList.do-请求", args);
         
         util.ajax.run({
-            url: "",
+            url: "list/getPatientList.do",
             data: args,
             success: function(response) {
-                console.log("获取列表-响应", response);
+                console.log("list/getPatientList.do-响应", response);
                 
                 me.set({data: response});
             },

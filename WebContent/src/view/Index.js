@@ -31,7 +31,13 @@ es.Views.Index = Backbone.View.extend({
         
         var me = this;
         $.Mustache.load("asset/tpl/index.html").done(function() {
-            me.$el.mustache("tpl-index");
+            me.$el.mustache("tpl-index", {
+                row1: Auth.CRO || Auth.LCRO ? [1] : [],
+                row2: Auth.CRM || Auth.DM ? [1] : [],
+                row3: Auth.DM || Auth.LCRO ? [1] : [],
+                row31: Auth.DM ? [1] : [],
+                row32: Auth.DM ? [1] : []
+            });
             if (me.$(".phm").length != 0) {
                 me.$(".index-wrap").append($.Mustache.render("tpl-new-crf-dialog"));
                 me.$(".index-wrap").append($.Mustache.render("tpl-new-adr-dialog"));
@@ -98,13 +104,13 @@ es.Views.Index = Backbone.View.extend({
             no: $.trim(esui.get("No").getValue())
         };
         
-        console.log("新建ADR-请求", data);
+        console.log("crf/addADR.do-请求", data);
         
         util.ajax.run({
-            url: "",
+            url: "crf/addADR.do",
             data: data,
             success: function(response) {
-                console.log("新建ADR-响应", response);
+                console.log("crf/addADR.do-响应", response);
                 
                 esui.get("NewADRDialog").hide();
                 es.router.navigate("crf/updateadr/" + response.id, true);

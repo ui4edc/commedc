@@ -35,7 +35,9 @@ es.Views.Account = Backbone.View.extend({
         
         var me = this;
         $.Mustache.load("asset/tpl/account.html").done(function() {
-            me.$el.mustache("tpl-account");
+            me.$el.mustache("tpl-account", {
+                center: Auth.DM ? [1] : []
+            });
             me.$(".data").append($.Mustache.render("tpl-page"));
             
             me.initCtrl();
@@ -72,13 +74,16 @@ es.Views.Account = Backbone.View.extend({
             me.args.pageNo = page + 1;
             me.query(me.args);
         };
+        
         esui.get("DelAccount").onclick = this.delAccount;
         esui.get("NewAccountOK").onclick = this.newAccount;
         esui.get("EditAccountOK").onclick = this.editAccount;
         
-        esui.get("DelCenter").onclick = this.delCenter;
-        esui.get("NewCenterOK").onclick = this.newCenter;
-        esui.get("EditCenterOK").onclick = this.editCenter;
+        if (Auth.DM) {
+            esui.get("DelCenter").onclick = this.delCenter;
+            esui.get("NewCenterOK").onclick = this.newCenter;
+            esui.get("EditCenterOK").onclick = this.editCenter;
+        }
     },
     
     /*
