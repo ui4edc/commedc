@@ -245,4 +245,10 @@ public class UserService {
 		return users;
 	}
 
+	public Organization findUserOrganization(int userId) {
+		// TODO Auto-generated method stub
+		Organization organization = organizationMapper.findUserOrganization(userId);
+		return organization;
+	}
+
 }

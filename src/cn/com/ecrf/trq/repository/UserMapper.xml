@@ -11,7 +11,7 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="display_name" property="displayName" jdbcType="VARCHAR" />
     <result column="fk_organization_id" property="organizationId" jdbcType="INTEGER" />
-    <result column="fk_organization_name" property="displayName" jdbcType="VARCHAR" />
+    <result column="fk_organization_name" property="organizationName" jdbcType="VARCHAR" />
     <result column="fk_role_id" property="roleId" jdbcType="INTEGER" />
     <result column="fk_role_name" property="roleName" jdbcType="VARCHAR" />
     <result column="fk_adminuser_id" property="adminUserId" jdbcType="INTEGER" />
@@ -123,8 +123,18 @@
   </update>
   <select id="findUsers" resultMap="BaseResultMap" parameterType="map" >
 	select
-	<include refid="Base_Column_List" />
-    from ac_user
+	u.id as id, 
+	u.user_name as userName, 
+	u.display_name as displayName, 
+	u.fk_organization_id as organizationId, 
+	o.organization_name as organizationName, 
+	u.contact as contact, 
+	u.fk_role_id as roleId, 
+	r.role_desc as roleDesc, 
+	u.fk_adminuser_id as adminUserId, 
+	u2.display_name as adminUserName
+    from ac_user u left join ac_organization o on o.id=u.fk_organization_id left join ac_role r on u.fk_role_id=r.id
+    left join ac_user u2 on u.fk_adminuser_id=u2.id
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
      </if>
@@ -132,7 +142,7 @@
   <select id="findAdminUsers" resultMap="BaseResultMap" parameterType="map" >
     select 
     u.id, u.user_name, u.status, u.display_name
-    from ac_user u, ac_role r, ac_user_role ur where u.id=ur.user_id and ur.role_id=r.role_id and r.role_name='LCRO'
+    from ac_user u, ac_role r, ac_user_role ur where u.id=ur.user_id and ur.role_id=r.id and r.role_name='LCRO'
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
      </if>
@@ -140,7 +150,7 @@
   <select id="findCRMUsers" resultMap="BaseResultMap" parameterType="map" >
     select 
     u.id, u.user_name, u.status, u.display_name 
-    from ac_user u, ac_role r, ac_user_role ur where u.id=ur.user_id and ur.role_id=r.role_id and r.role_name='CRM'
+    from ac_user u, ac_role r, ac_user_role ur where u.id=ur.user_id and ur.role_id=r.id and r.role_name='CRM'
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
      </if>

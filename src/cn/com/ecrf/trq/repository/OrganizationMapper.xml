@@ -53,7 +53,9 @@
     select 
     <include refid="Base_Column_List" />
     from ac_organization
-     LIMIT #{limitStart},#{limitSize} 
+    <if test="limitStart != null and limitSize != null" >
+    LIMIT #{limitStart},#{limitSize}
+    </if>
   </select>
    <select id="getNum" resultType="int">
   	select count(*) from ac_organization
@@ -61,4 +63,11 @@
   <insert id="insertCRFNO" parameterType="int">
   	insert into crf_no(fk_organization_id, seq) values(#{id}, 1);
   </insert>
+  <select id="findUserOrganization" parameterType="int" resultType="cn.com.ecrf.trq.model.Organization">
+  	select o.id as id,
+  		   o.organization_name as name, 
+  		   o.code as code, 
+  		   o.organization_desc as organizationDesc
+  	from ac_organization o, ac_user u where u.id=#{userId} and o.id=u.fk_organization_id
+  </select>
 </mapper>

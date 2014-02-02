@@ -28,7 +28,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		User user = userService.findUserByLoginName("1");
 		Assert.notNull(user);
 	}
-	//@Ignore
+	@Ignore
 	@Test 
 	public void testInsertUser(){
 		User user = new User();
@@ -43,7 +43,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		org.junit.Assert.assertEquals(user.getUserName(), user2.getUserName());
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testUpdateUser(){
 		User user = new User();
@@ -59,7 +59,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		org.junit.Assert.assertEquals(user.getUserName(), user2.getUserName());
 		org.junit.Assert.assertNotEquals("张三", user2.getUserName());
 	}
-	//@Ignore
+	@Ignore
 	@Test
 	public void testDeleteUser(){
 		User user = new User();
@@ -90,7 +90,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		userService.deleteRoleById(role.getId());
 		
 	}
-	//@Ignore
+	@Ignore
 	@Test
 	public void findUsers(){
 		for (int i=0;i<20;i++){
@@ -105,7 +105,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		}
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void findUser(){
 		try{
@@ -122,16 +122,24 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		
 		
 	}
-	
+	@Ignore
 	@Test
 	public void findRoleByUser(){
 		List<Role> roles = userService.getRoleByUser("admin");
 		System.out.println(roles);
 	}
-	
+	@Ignore
 	@Test
 	public void findUserNum(){
 		System.out.println("num="+userMapper.getUserNum());
+	}
+
+	@Test
+	public void findAllUsers(){
+		List<User> users = userService.findUsers(1, 60);
+		for (int i=0;i<users.size();i++){
+			System.out.println(users.get(i).getRoleName()+",user:"+users.get(i).getAdminUserName()+",org:"+users.get(i).getOrganizationName());
+		}
 	}
 
 }

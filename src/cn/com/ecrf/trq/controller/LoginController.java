@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.service.UserService;
@@ -54,7 +55,8 @@ public class LoginController {
 			User user = userService.findUserByLoginName(userName);
 			model.put("user", userName);
 			model.put("userId", user.getId());
-			model.put("organization", user.getOrganizationName());
+			Organization organization = userService.findUserOrganization(user.getId());
+			model.put("organization", organization.getName());
 			List<Role> roles = userService.getRoleByUser(userName);
 			if (roles != null && roles.size() > 0){
 				model.put("role", roles.get(0).getDescription());
@@ -91,14 +93,13 @@ public class LoginController {
      * 登出
      * @return
      */
-    @RequestMapping(value = "/logout")  
-    @ResponseBody  
+    @RequestMapping(value = "/logout")   
     public String logout() {  
   
         Subject currentUser = SecurityUtils.getSubject();  
-        String result = "logout";  
+        
         currentUser.logout();  
-        return result;  
+        return "redirect:/login.do";
     }  
     
     /**
