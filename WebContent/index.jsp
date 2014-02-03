@@ -14,23 +14,24 @@
 <div id="Nav">
     <a href="#index/" class="index">首页</a>
     
-    <shiro:hasRole name="CRO, LCRO">
+    <shiro:hasRole name="CRO">
     <a href="#list/" class="list">观察表</a>
     </shiro:hasRole>
-    
-    <shiro:hasRole name="CRM, DM">
+    <shiro:hasRole name="LCRO">
+    <a href="#list/" class="list">观察表</a>
+    <a href="#account/" class="account">账户管理</a>
+    </shiro:hasRole> 
+    <shiro:hasRole name="CRM">
+    < <a href="#supervise/" class="supervise">数据监察</a>
+    <a href="#dict/" class="dict">数据字典</a>
+    </shiro:hasRole> 
+    <shiro:hasRole name="DM">
     <a href="#supervise/" class="supervise">数据监察</a>
     <a href="#dict/" class="dict">数据字典</a>
-    <!--<a href="#upload/" class="upload">图片上传</a>-->
-    </shiro:hasRole>
-    
-    <shiro:hasRole name="DM">
     <a href="#stat/" class="stat">全局统计</a>
     <a href="#data/" class="data">数据管理</a>
-    </shiro:hasRole>
-    
-    <shiro:hasRole name="DM, LCRO">
     <a href="#account/" class="account">账户管理</a>
+    <!--<a href="#upload/" class="upload">图片上传</a>-->
     </shiro:hasRole>
 </div>
 <div id="Main"></div>

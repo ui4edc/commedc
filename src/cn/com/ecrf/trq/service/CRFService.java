@@ -449,7 +449,7 @@ public class CRFService {
 		Map<String, Object> result;
 		try{
 			DrugUseCase drugUseCase =  convertorService.convertDrugUseInfoFromViewToModel(drugUseVo);
-			DiseaseInfoCase dbCase = cRFMapper.getDiseaseInfo(drugUseVo.getId());
+			DrugUseCase dbCase = cRFMapper.getDrugUseInfo(drugUseVo.getId());
 			if (dbCase != null && dbCase.getNo() != null)
 				cRFMapper.updateDrugUseInfo(drugUseCase);
 			else {

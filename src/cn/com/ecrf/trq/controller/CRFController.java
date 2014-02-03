@@ -169,16 +169,16 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/saveDrugUseInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> saveDrugUseInfo(/*@RequestBody DrugUseVo drugUseVo,*/ HttpServletRequest request) {
+	public Map<String, Object> saveDrugUseInfo(@RequestBody DrugUseVo drugUseVo, HttpServletRequest request) {
 		Map<String, Object> result  = null;
 		try {
-			InputStream in = request.getInputStream();
-			String json = StreamConvertorUtils.inputStream2String(in);
+			//InputStream in = request.getInputStream();
+			//String json = StreamConvertorUtils.inputStream2String(in);
 			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
-			System.out.println(json);
-			DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromJSONToView(json);
+			//System.out.println(json);
+			//DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromJSONToView(json);
 			result = cRFService.saveDrugUseInfo(drugUseVo);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

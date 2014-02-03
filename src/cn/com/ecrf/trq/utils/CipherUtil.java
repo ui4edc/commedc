@@ -84,6 +84,20 @@ public class CipherUtil {
 		return hexDigits[d1] + hexDigits[d2];
 	}
 	
+	/** 
+     * 加密解密算法 执行一次加密，两次解密 
+     */   
+    public static String convertMD5(String inStr){  
+  
+        char[] a = inStr.toCharArray();  
+        for (int i = 0; i < a.length; i++){  
+            a[i] = (char) (a[i] ^ 't');  
+        }  
+        String s = new String(a);  
+        return s;  
+  
+    }  
+    
 	public static void main(String[] args) {
 		String pwd1 = "admin";
 		String pwd2 = "";
@@ -99,5 +113,7 @@ public class CipherUtil {
 		} else {
 			System.out.println("閿欒");
 		}
+		
+		System.out.println("解密的：" + convertMD5(pwd2));
 	}
 }

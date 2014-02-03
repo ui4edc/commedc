@@ -23,6 +23,8 @@ public class DrugUseVo {
 		
 		private String adrtxt;
 		
+		private int ban;
+		
 		private String banColor;
 		
 		private String bantxt;
@@ -56,6 +58,7 @@ public class DrugUseVo {
 		private List<BanDrug> injection;
 		private String prepareTime;
 		private boolean prepareTimeUd;
+		private int location;
 		private int sameBottle;
 		private int sameGroup;
 		private int solvent;
@@ -342,6 +345,18 @@ public class DrugUseVo {
 		}
 		public void setWay3Unit(String way3Unit) {
 			this.way3Unit = way3Unit;
+		}
+		public int getBan() {
+			return ban;
+		}
+		public void setBan(int ban) {
+			this.ban = ban;
+		}
+		public int getLocation() {
+			return location;
+		}
+		public void setLocation(int location) {
+			this.location = location;
 		}
 		
 		

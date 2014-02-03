@@ -48,10 +48,15 @@ public class UserService {
 			Organization organization = organizationMapper.getOrganizationById(id);
 			user.setOrganizationName(organization.getName());
 		}*/
+		
 		if (user.getId() <= 0){
+			user.setPassword(CipherUtil.generatePassword(user.getPassword()));
 			userMapper.insertUser(user);
 		}else{
+			User user2 = userMapper.getUserById(user.getId());
 			userMapper.updateUser(user);
+			if (!user2.getPassword().equalsIgnoreCase(user.getPassword()))
+				userMapper.updatePassword(user);
 		}
 		return user.getId();
 	}

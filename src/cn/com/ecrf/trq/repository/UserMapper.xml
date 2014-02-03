@@ -102,7 +102,7 @@
   </select>
   <update id="updateUser" parameterType="cn.com.ecrf.trq.model.User">
   		update ac_user set
-		user_name=#{userName}, password=#{password}, display_name=#{displayName},
+		user_name=#{userName}, display_name=#{displayName},
 		status=#{status}, update_time= now()
 		<if test="organizationId != null" >
         	,fk_organization_id=#{organizationId}, fk_organization_name=#{organizationName}
@@ -158,7 +158,9 @@
   <select id="getUserNum" resultType="int">
   	select count(*) from ac_user
   </select>
-  
+  <update id="updatePassword" parameterType="cn.com.ecrf.trq.model.User">
+  	update ac_user set password=#{password} where id=#{id}
+  </update>
   <!-- role -->
   <!--<sql id="Role_Column_List" >
     id, role_name, role_desc, create_time, update_time, update_time, update_by
