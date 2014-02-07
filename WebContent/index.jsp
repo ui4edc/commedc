@@ -22,7 +22,7 @@
     <a href="#account/" class="account">账户管理</a>
     </shiro:hasRole> 
     <shiro:hasRole name="CRM">
-    < <a href="#supervise/" class="supervise">数据监察</a>
+    <a href="#supervise/" class="supervise">数据监察</a>
     <a href="#dict/" class="dict">数据字典</a>
     </shiro:hasRole> 
     <shiro:hasRole name="DM">
