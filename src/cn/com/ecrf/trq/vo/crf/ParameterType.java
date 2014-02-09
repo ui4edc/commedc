@@ -5,6 +5,7 @@ public class ParameterType {
 	private String no;
 	private String abbr;
 	private int times;
+	private int menu;
 	
 	public int getId() {
 		return id;
@@ -29,6 +30,12 @@ public class ParameterType {
 	}
 	public void setTimes(int times) {
 		this.times = times;
+	}
+	public int getMenu() {
+		return menu;
+	}
+	public void setMenu(int menu) {
+		this.menu = menu;
 	}
 	
 	

@@ -2,94 +2,83 @@ package cn.com.ecrf.trq.vo;
 
 import java.util.List;
 
+import cn.com.ecrf.trq.vo.lab.PlainExamVo;
+
 /**
  * ADR Vo
  * @author user
  *
  */
 public class ADRVo {
+	/**
+	 * {"id":5,"no":"001-0001","type":1,"blood":1,"name":"","sex":1,"birthday":"2014-01-01",
+	 * "ethic":1,"weight":"","contact":"","disease":"","patientNo":"","historyadr":1,
+	 * "historyadrtxt":"","familyadr":1,"familyadrtxt":"","relationship":1,"info":"",
+	 * "info6txt":"","info7txt":"","drug1":[{"f1":"","f2":"","f3":"","f4":"","f5":"","f6":"","f7":"","f8":""}],
+	 * "drug2":[{"f1":"","f2":"","f3":"","f4":"","f5":"","f6":"","f7":"","f8":""}],
+	 * "adr":"","adr1":"","adr2":"","adr3":"","adr4":"","adr5":"","adr6":"","adr7":"","adr8":"","adr9":"",
+	 * "adr10":"","adrtxt":"","adrDate":"2014-01-01","adrH":"","adrM":"","adrDescription":"",
+	 * "adrDeal":1,"adrDeal3":1,"adrDealDose":"","adrDeal3txt":"","adrDeal4txt":"","adrDealRemark":"",
+	 * "ending":1,"endingtxt":"","deathDate":"2014-01-01","deathReason":"","adrStop":1,"adrRestart":1,
+	 * "evaluate":1,"career":1,"careertxt":"","email":"","reportDate":"2014-01-01","remark":""}
+	 */
 	private int id;
 	//编号
 	private String no;
-	//报告类型
-	private int reportType;
-	//该患者是否采血
+	private int type;
 	private int blood;
-	//患者姓名
 	private String name;
-	//性别
 	private int sex;
-	//出生日期
 	private String birthday;
-	//民族
-	private String ethic;
-	//体重
+	private int ethic;
 	private String weight;
-	//联系方式
 	private String contact;
-	//原患疾病
-	private String yhjb;
-	//病历号/门诊号
-	private String patientId;
-	//既往药品不良反应/事件
-	private int jwypadr;
-	//既往药品不良反应/事件的名称
-	private String jwypadrmc;
-	//家族药品不良反应/事件
-	private int jzypadr;
-	//家族药品不良反应/事件名称
-	private String jzypadrmc;
-	//家族关系
-	private int jzgx;
-	//相关重要信息
-	private List<CheckBoxVo> xgzyxxlb;
-	//怀疑药品列表
-	private List<ADRDrugObject> hyyplb;
-	//并用药品列表
-	private List<ADRDrugObject> byyplb;
-	//不良反应/事件名称
-	private List<SubCheckBoxVo> adrlb;
-	//不良反应/事件发生时间, 日期
-	private String adrtimed;
-	//不良反应/事件发生时间, 小时
-	private String adrtimeh;
-	//不良反应/事件发生时间, 分钟
-	private String adrtimem;
-	//不良反应/事件过程描述（包括症状、体征、临床检验等）
-	private String adrProgressDesc;
-	//不良反应/事件处理情况
+	private String disease;
+	private String patientNo;
+	private int historyadr;
+	private String historyadrtxt;
+	private int familyadr;
+	private String familyadrtxt;
+	private int relationship;
+	private String info;
+	private String info6txt;
+	private String info7txt;
+	private List<PlainExamVo> drug1;
+	private List<PlainExamVo> drug2;
+	private String adr;
+	private String adr1;
+	private String adr2;
+	private String adr3;
+	private String adr4;
+	private String adr5;
+	private String adr6;
+	private String adr7;
+	private String adr8;
+	private String adr9;
+	private String adr10;
+	private String adrtxt;
+	private String adrDate;
+	private String adrH;
+	private String adrM;
+	private String adrDescription;
 	private int adrDeal;
-	//减少剂量剂量
-	private String jsjljl;
-	//对症支持治疗其他名称
-	private String dzzczlqtmc;
-	//不良反应/事件处理情况其他名称
-	private String adrDealqtmc;
-	//不良反应/事件处理情况备注
-	private String adrDealComment;
-	//不良反应/事件的结果
-	private int adrResult;
-	//不良反应/事件的结果，描述：表现 或直接死因
-	private String adrResultDesc;
-	//死亡时间
+	private int adrDeal3;
+	private String adrDealDose;
+	private String adrDeal3txt;
+	private String adrDeal4txt;
+	private String adrDealRemark;
+	private int ending;
+	private String endingtxt;
 	private String deathDate;
-	//停药或减量后，反应/事件是否消失或减轻
-	private int reduceResult;
-	//再次使用可疑药品后是否再次出现同样反应/事件
-	private int reuseResult;
-	//关联性评价
-	private int relativeEval;
-	//报告人信息,职业
-	private int reportCareer;
-	//报告人信息,职业其他
-	private String reportCareerOther;
-	//报告人信息,电子邮箱
-	private String reportEmail;
-	//报告日期
+	private String deathReason;
+	private int adrStop;
+	private int adrRestart;
+	private int evaluate;
+	private int career;
+	private String careertxt;
+	private String email;
 	private String reportDate;
-	//备注
-	private String comment;
-	
+	private String remark;
 	public int getId() {
 		return id;
 	}
@@ -102,11 +91,11 @@ public class ADRVo {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public int getReportType() {
-		return reportType;
+	public int getType() {
+		return type;
 	}
-	public void setReportType(int reportType) {
-		this.reportType = reportType;
+	public void setType(int type) {
+		this.type = type;
 	}
 	public int getBlood() {
 		return blood;
@@ -132,10 +121,10 @@ public class ADRVo {
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
-	public String getEthic() {
+	public int getEthic() {
 		return ethic;
 	}
-	public void setEthic(String ethic) {
+	public void setEthic(int ethic) {
 		this.ethic = ethic;
 	}
 	public String getWeight() {
@@ -150,95 +139,173 @@ public class ADRVo {
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
-	public String getYhjb() {
-		return yhjb;
+	public String getDisease() {
+		return disease;
 	}
-	public void setYhjb(String yhjb) {
-		this.yhjb = yhjb;
+	public void setDisease(String disease) {
+		this.disease = disease;
 	}
-	public String getPatientId() {
-		return patientId;
+	public String getPatientNo() {
+		return patientNo;
 	}
-	public void setPatientId(String patientId) {
-		this.patientId = patientId;
+	public void setPatientNo(String patientNo) {
+		this.patientNo = patientNo;
 	}
-	public int getJwypadr() {
-		return jwypadr;
+	public int getHistoryadr() {
+		return historyadr;
 	}
-	public void setJwypadr(int jwypadr) {
-		this.jwypadr = jwypadr;
+	public void setHistoryadr(int historyadr) {
+		this.historyadr = historyadr;
 	}
-	public String getJwypadrmc() {
-		return jwypadrmc;
+	public String getHistoryadrtxt() {
+		return historyadrtxt;
 	}
-	public void setJwypadrmc(String jwypadrmc) {
-		this.jwypadrmc = jwypadrmc;
+	public void setHistoryadrtxt(String historyadrtxt) {
+		this.historyadrtxt = historyadrtxt;
 	}
-	public int getJzypadr() {
-		return jzypadr;
+	public int getFamilyadr() {
+		return familyadr;
 	}
-	public void setJzypadr(int jzypadr) {
-		this.jzypadr = jzypadr;
+	public void setFamilyadr(int familyadr) {
+		this.familyadr = familyadr;
 	}
-	public String getJzypadrmc() {
-		return jzypadrmc;
+	public String getFamilyadrtxt() {
+		return familyadrtxt;
 	}
-	public void setJzypadrmc(String jzypadrmc) {
-		this.jzypadrmc = jzypadrmc;
+	public void setFamilyadrtxt(String familyadrtxt) {
+		this.familyadrtxt = familyadrtxt;
 	}
-	public int getJzgx() {
-		return jzgx;
+	public int getRelationship() {
+		return relationship;
 	}
-	public void setJzgx(int jzgx) {
-		this.jzgx = jzgx;
+	public void setRelationship(int relationship) {
+		this.relationship = relationship;
 	}
-	public List<CheckBoxVo> getXgzyxxlb() {
-		return xgzyxxlb;
+	public String getInfo() {
+		return info;
 	}
-	public void setXgzyxxlb(List<CheckBoxVo> xgzyxxlb) {
-		this.xgzyxxlb = xgzyxxlb;
+	public void setInfo(String info) {
+		this.info = info;
 	}
-	public List<ADRDrugObject> getHyyplb() {
-		return hyyplb;
+	public String getInfo6txt() {
+		return info6txt;
 	}
-	public void setHyyplb(List<ADRDrugObject> hyyplb) {
-		this.hyyplb = hyyplb;
+	public void setInfo6txt(String info6txt) {
+		this.info6txt = info6txt;
 	}
-	public List<ADRDrugObject> getByyplb() {
-		return byyplb;
+	public String getInfo7txt() {
+		return info7txt;
 	}
-	public void setByyplb(List<ADRDrugObject> byyplb) {
-		this.byyplb = byyplb;
+	public void setInfo7txt(String info7txt) {
+		this.info7txt = info7txt;
 	}
-	public List<SubCheckBoxVo> getAdrlb() {
-		return adrlb;
+	public List<PlainExamVo> getDrug1() {
+		return drug1;
 	}
-	public void setAdrlb(List<SubCheckBoxVo> adrlb) {
-		this.adrlb = adrlb;
+	public void setDrug1(List<PlainExamVo> drug1) {
+		this.drug1 = drug1;
 	}
-	public String getAdrtimed() {
-		return adrtimed;
+	public List<PlainExamVo> getDrug2() {
+		return drug2;
 	}
-	public void setAdrtimed(String adrtimed) {
-		this.adrtimed = adrtimed;
+	public void setDrug2(List<PlainExamVo> drug2) {
+		this.drug2 = drug2;
 	}
-	public String getAdrtimeh() {
-		return adrtimeh;
+	public String getAdr() {
+		return adr;
 	}
-	public void setAdrtimeh(String adrtimeh) {
-		this.adrtimeh = adrtimeh;
+	public void setAdr(String adr) {
+		this.adr = adr;
 	}
-	public String getAdrtimem() {
-		return adrtimem;
+	public String getAdr1() {
+		return adr1;
 	}
-	public void setAdrtimem(String adrtimem) {
-		this.adrtimem = adrtimem;
+	public void setAdr1(String adr1) {
+		this.adr1 = adr1;
 	}
-	public String getAdrProgressDesc() {
-		return adrProgressDesc;
+	public String getAdr2() {
+		return adr2;
 	}
-	public void setAdrProgressDesc(String adrProgressDesc) {
-		this.adrProgressDesc = adrProgressDesc;
+	public void setAdr2(String adr2) {
+		this.adr2 = adr2;
+	}
+	public String getAdr3() {
+		return adr3;
+	}
+	public void setAdr3(String adr3) {
+		this.adr3 = adr3;
+	}
+	public String getAdr4() {
+		return adr4;
+	}
+	public void setAdr4(String adr4) {
+		this.adr4 = adr4;
+	}
+	public String getAdr5() {
+		return adr5;
+	}
+	public void setAdr5(String adr5) {
+		this.adr5 = adr5;
+	}
+	public String getAdr6() {
+		return adr6;
+	}
+	public void setAdr6(String adr6) {
+		this.adr6 = adr6;
+	}
+	public String getAdr7() {
+		return adr7;
+	}
+	public void setAdr7(String adr7) {
+		this.adr7 = adr7;
+	}
+	public String getAdr8() {
+		return adr8;
+	}
+	public void setAdr8(String adr8) {
+		this.adr8 = adr8;
+	}
+	public String getAdr9() {
+		return adr9;
+	}
+	public void setAdr9(String adr9) {
+		this.adr9 = adr9;
+	}
+	public String getAdr10() {
+		return adr10;
+	}
+	public void setAdr10(String adr10) {
+		this.adr10 = adr10;
+	}
+	public String getAdrtxt() {
+		return adrtxt;
+	}
+	public void setAdrtxt(String adrtxt) {
+		this.adrtxt = adrtxt;
+	}
+	public String getAdrDate() {
+		return adrDate;
+	}
+	public void setAdrDate(String adrDate) {
+		this.adrDate = adrDate;
+	}
+	public String getAdrH() {
+		return adrH;
+	}
+	public void setAdrH(String adrH) {
+		this.adrH = adrH;
+	}
+	public String getAdrM() {
+		return adrM;
+	}
+	public void setAdrM(String adrM) {
+		this.adrM = adrM;
+	}
+	public String getAdrDescription() {
+		return adrDescription;
+	}
+	public void setAdrDescription(String adrDescription) {
+		this.adrDescription = adrDescription;
 	}
 	public int getAdrDeal() {
 		return adrDeal;
@@ -246,41 +313,47 @@ public class ADRVo {
 	public void setAdrDeal(int adrDeal) {
 		this.adrDeal = adrDeal;
 	}
-	public String getJsjljl() {
-		return jsjljl;
+	public int getAdrDeal3() {
+		return adrDeal3;
 	}
-	public void setJsjljl(String jsjljl) {
-		this.jsjljl = jsjljl;
+	public void setAdrDeal3(int adrDeal3) {
+		this.adrDeal3 = adrDeal3;
 	}
-	public String getDzzczlqtmc() {
-		return dzzczlqtmc;
+	public String getAdrDealDose() {
+		return adrDealDose;
 	}
-	public void setDzzczlqtmc(String dzzczlqtmc) {
-		this.dzzczlqtmc = dzzczlqtmc;
+	public void setAdrDealDose(String adrDealDose) {
+		this.adrDealDose = adrDealDose;
 	}
-	public String getAdrDealqtmc() {
-		return adrDealqtmc;
+	public String getAdrDeal3txt() {
+		return adrDeal3txt;
 	}
-	public void setAdrDealqtmc(String adrDealqtmc) {
-		this.adrDealqtmc = adrDealqtmc;
+	public void setAdrDeal3txt(String adrDeal3txt) {
+		this.adrDeal3txt = adrDeal3txt;
 	}
-	public String getAdrDealComment() {
-		return adrDealComment;
+	public String getAdrDeal4txt() {
+		return adrDeal4txt;
 	}
-	public void setAdrDealComment(String adrDealComment) {
-		this.adrDealComment = adrDealComment;
+	public void setAdrDeal4txt(String adrDeal4txt) {
+		this.adrDeal4txt = adrDeal4txt;
 	}
-	public int getAdrResult() {
-		return adrResult;
+	public String getAdrDealRemark() {
+		return adrDealRemark;
 	}
-	public void setAdrResult(int adrResult) {
-		this.adrResult = adrResult;
+	public void setAdrDealRemark(String adrDealRemark) {
+		this.adrDealRemark = adrDealRemark;
 	}
-	public String getAdrResultDesc() {
-		return adrResultDesc;
+	public int getEnding() {
+		return ending;
 	}
-	public void setAdrResultDesc(String adrResultDesc) {
-		this.adrResultDesc = adrResultDesc;
+	public void setEnding(int ending) {
+		this.ending = ending;
+	}
+	public String getEndingtxt() {
+		return endingtxt;
+	}
+	public void setEndingtxt(String endingtxt) {
+		this.endingtxt = endingtxt;
 	}
 	public String getDeathDate() {
 		return deathDate;
@@ -288,41 +361,47 @@ public class ADRVo {
 	public void setDeathDate(String deathDate) {
 		this.deathDate = deathDate;
 	}
-	public int getReduceResult() {
-		return reduceResult;
+	public String getDeathReason() {
+		return deathReason;
 	}
-	public void setReduceResult(int reduceResult) {
-		this.reduceResult = reduceResult;
+	public void setDeathReason(String deathReason) {
+		this.deathReason = deathReason;
 	}
-	public int getReuseResult() {
-		return reuseResult;
+	public int getAdrStop() {
+		return adrStop;
 	}
-	public void setReuseResult(int reuseResult) {
-		this.reuseResult = reuseResult;
+	public void setAdrStop(int adrStop) {
+		this.adrStop = adrStop;
 	}
-	public int getRelativeEval() {
-		return relativeEval;
+	public int getAdrRestart() {
+		return adrRestart;
 	}
-	public void setRelativeEval(int relativeEval) {
-		this.relativeEval = relativeEval;
+	public void setAdrRestart(int adrRestart) {
+		this.adrRestart = adrRestart;
 	}
-	public int getReportCareer() {
-		return reportCareer;
+	public int getEvaluate() {
+		return evaluate;
 	}
-	public void setReportCareer(int reportCareer) {
-		this.reportCareer = reportCareer;
+	public void setEvaluate(int evaluate) {
+		this.evaluate = evaluate;
 	}
-	public String getReportCareerOther() {
-		return reportCareerOther;
+	public int getCareer() {
+		return career;
 	}
-	public void setReportCareerOther(String reportCareerOther) {
-		this.reportCareerOther = reportCareerOther;
+	public void setCareer(int career) {
+		this.career = career;
 	}
-	public String getReportEmail() {
-		return reportEmail;
+	public String getCareertxt() {
+		return careertxt;
 	}
-	public void setReportEmail(String reportEmail) {
-		this.reportEmail = reportEmail;
+	public void setCareertxt(String careertxt) {
+		this.careertxt = careertxt;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getReportDate() {
 		return reportDate;
@@ -330,18 +409,12 @@ public class ADRVo {
 	public void setReportDate(String reportDate) {
 		this.reportDate = reportDate;
 	}
-	public String getComment() {
-		return comment;
+	public String getRemark() {
+		return remark;
 	}
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 }

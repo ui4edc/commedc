@@ -14,7 +14,7 @@ public class DrugSummaryVo {
 	//病程末次用药时间
 	private String endDate;
 	//痰热清注射液用药结局
-	private int result;
+	private int ending;
 	//直接死因
 	private String deathReason;
 	//死亡时间
@@ -22,20 +22,19 @@ public class DrugSummaryVo {
 	//是否出现ADR
 	private int adr;
 	//有无痰热清注射液用药不合理的现象
-	private int yybhlxx;
+	private int unreasonable;
 	//药师是否进行相关干预
-	private int yyjxxggy;
+	private int intervention;
 	//药师如何进行干预
-	private String yyjxgymc;
+	private String interventiontxt;
 	//治疗总费用
-	private String zlzfy;
+	private String treatmentCost;
 	//药品总费用
-	private String ypzfy;
+	private String drugCost;
 	//注射液费用
-	private String zsyfy;
+	private String trqCost;
 	//备注
-	private String comment;
-	
+	private String remark;
 	public int getId() {
 		return id;
 	}
@@ -60,11 +59,11 @@ public class DrugSummaryVo {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	public int getResult() {
-		return result;
+	public int getEnding() {
+		return ending;
 	}
-	public void setResult(int result) {
-		this.result = result;
+	public void setEnding(int ending) {
+		this.ending = ending;
 	}
 	public String getDeathReason() {
 		return deathReason;
@@ -84,48 +83,50 @@ public class DrugSummaryVo {
 	public void setAdr(int adr) {
 		this.adr = adr;
 	}
-	public int getYybhlxx() {
-		return yybhlxx;
+	public int getUnreasonable() {
+		return unreasonable;
 	}
-	public void setYybhlxx(int yybhlxx) {
-		this.yybhlxx = yybhlxx;
+	public void setUnreasonable(int unreasonable) {
+		this.unreasonable = unreasonable;
 	}
-	public int getYyjxxggy() {
-		return yyjxxggy;
+	public int getIntervention() {
+		return intervention;
 	}
-	public void setYyjxxggy(int yyjxxggy) {
-		this.yyjxxggy = yyjxxggy;
+	public void setIntervention(int intervention) {
+		this.intervention = intervention;
 	}
-	public String getYyjxgymc() {
-		return yyjxgymc;
+	public String getInterventiontxt() {
+		return interventiontxt;
 	}
-	public void setYyjxgymc(String yyjxgymc) {
-		this.yyjxgymc = yyjxgymc;
+	public void setInterventiontxt(String interventiontxt) {
+		this.interventiontxt = interventiontxt;
 	}
-	public String getZlzfy() {
-		return zlzfy;
+	public String getTreatmentCost() {
+		return treatmentCost;
 	}
-	public void setZlzfy(String zlzfy) {
-		this.zlzfy = zlzfy;
+	public void setTreatmentCost(String treatmentCost) {
+		this.treatmentCost = treatmentCost;
 	}
-	public String getYpzfy() {
-		return ypzfy;
+	public String getDrugCost() {
+		return drugCost;
 	}
-	public void setYpzfy(String ypzfy) {
-		this.ypzfy = ypzfy;
+	public void setDrugCost(String drugCost) {
+		this.drugCost = drugCost;
 	}
-	public String getZsyfy() {
-		return zsyfy;
+	public String getTrqCost() {
+		return trqCost;
 	}
-	public void setZsyfy(String zsyfy) {
-		this.zsyfy = zsyfy;
+	public void setTrqCost(String trqCost) {
+		this.trqCost = trqCost;
 	}
-	public String getComment() {
-		return comment;
+	public String getRemark() {
+		return remark;
 	}
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
+	
+	
 	
 	
 }

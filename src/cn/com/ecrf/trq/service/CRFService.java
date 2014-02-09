@@ -35,12 +35,17 @@ import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.LockStatusUtils;
 import cn.com.ecrf.trq.utils.ProcessUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
+import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DrugCombinationVo;
+import cn.com.ecrf.trq.vo.DrugSummaryVo;
 import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
+import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
+import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 import cn.com.ecrf.trq.vo.list.ListConditionVo;
 import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 import cn.com.ecrf.trq.vo.list.ListReturnVo;
@@ -483,6 +488,48 @@ public class CRFService {
 		}
 		
 		return result;
+	}
+
+	public Map<String, Object> saveDrugCombinationInfo(
+			DrugCombinationVo drugCombinationVo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> saveInHospitalExam(
+			InHospitalExamVo inHospitalExamVo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> saveDrugUseExam(DrugUseExamVo drugUseExamVo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> saveOutHospitalExam(DrugUseExamVo drugUseExamVo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> saveDrugSummary(DrugSummaryVo drugSummaryVo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> saveADR(ADRVo adrVo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> saveTotalCRF(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> getDoubtRecord(int id, int menu) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
