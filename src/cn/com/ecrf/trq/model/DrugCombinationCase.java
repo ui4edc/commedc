@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class DrugCombinationCase {
 	//id
-	private int id;
+	private int seq;
 	//观察表编号
 	private String no;
 	//通用名
@@ -14,19 +14,20 @@ public class DrugCombinationCase {
 	//结束时间
 	private Date endDate;
 	//单次用药剂量
-	private String dcyyjl;
+	private String dose;
 	//剂量单位
-	private String jldw;
+	private String unit;
 	//给药途径
-	private String gytj;
+	private String way;
 	//给药频次
-	private String gypc;
+	private String frequency;
 	
-	public int getId() {
-		return id;
+	
+	public int getSeq() {
+		return seq;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 	public String getNo() {
 		return no;
@@ -52,30 +53,31 @@ public class DrugCombinationCase {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public String getDcyyjl() {
-		return dcyyjl;
+	public String getDose() {
+		return dose;
 	}
-	public void setDcyyjl(String dcyyjl) {
-		this.dcyyjl = dcyyjl;
+	public void setDose(String dose) {
+		this.dose = dose;
 	}
-	public String getJldw() {
-		return jldw;
+	public String getUnit() {
+		return unit;
 	}
-	public void setJldw(String jldw) {
-		this.jldw = jldw;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
-	public String getGytj() {
-		return gytj;
+	public String getWay() {
+		return way;
 	}
-	public void setGytj(String gytj) {
-		this.gytj = gytj;
+	public void setWay(String way) {
+		this.way = way;
 	}
-	public String getGypc() {
-		return gypc;
+	public String getFrequency() {
+		return frequency;
 	}
-	public void setGypc(String gypc) {
-		this.gypc = gypc;
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
 	}
+	
 	
 	
 }

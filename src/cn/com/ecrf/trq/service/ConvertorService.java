@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
@@ -23,6 +25,7 @@ import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.MutilSelect;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
@@ -333,5 +336,60 @@ public class ConvertorService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public DrugCombinationCase convertDrugCombinationCaseFromViewToModel(
+			DrugInstanceObject drugInstanceObject, String no) {
+		// TODO Auto-generated method stub
+		DrugCombinationCase drugCombinationCase = new DrugCombinationCase();
+		drugCombinationCase.setName(drugInstanceObject.getName());
+		drugCombinationCase.setSeq(drugInstanceObject.getSeq());
+		drugCombinationCase.setNo(no);
+		drugCombinationCase.setDose(drugInstanceObject.getDose());
+		drugCombinationCase.setFrequency(drugInstanceObject.getFrequency());
+		drugCombinationCase.setUnit(drugInstanceObject.getUnit());
+		drugCombinationCase.setWay(drugInstanceObject.getWay());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if (StringUtils.isNotBlank(drugInstanceObject.getStart())){
+				Date startDate = sdf.parse(drugInstanceObject.getStart());
+				drugCombinationCase.setStartDate(startDate);
+			}
+			if (StringUtils.isNotBlank(drugInstanceObject.getEnd())){
+				Date endDate = sdf.parse(drugInstanceObject.getEnd());
+				drugCombinationCase.setEndDate(endDate);
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return drugCombinationCase;
+	}
+	
+	public  DrugInstanceObject convertDrugCombinationCaseFromModelToView(
+			DrugCombinationCase drugCombinationCase) {
+		// TODO Auto-generated method stub
+		DrugInstanceObject drugInstanceObject = new DrugInstanceObject();
+		try {
+			BeanUtils.copyProperties(drugInstanceObject, drugCombinationCase);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if (drugCombinationCase.getStartDate() != null){
+				String start = sdf.format(drugCombinationCase.getStartDate());
+				drugInstanceObject.setStart(start);
+			}
+			if (drugCombinationCase.getEndDate() != null){
+				String end = sdf.format(drugCombinationCase.getEndDate());
+				drugInstanceObject.setEnd(end);
+			}
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return drugInstanceObject;
+	}
+
+
 
 }

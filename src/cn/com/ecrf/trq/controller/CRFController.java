@@ -210,7 +210,8 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getDrugCombinationInfo(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		Map<String, Object> result = cRFService.getDrugCombinationInfo(""+parameterType.getId(), parameterType.getNo());
+		//Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
 		return result;
 	}
 	
@@ -225,7 +226,7 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getInHospitalExam(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		Map<String, Object> result = cRFService.getInHospitalExam(parameterType.getId());
 		return result;
 	}
 	

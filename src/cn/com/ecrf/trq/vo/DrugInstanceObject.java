@@ -1,15 +1,20 @@
 package cn.com.ecrf.trq.vo;
 
 public class DrugInstanceObject {
+	//通用名
 	private String name;
 	private String start;
 	private String end;
-	//同瓶用药剂量
+	//单次剂量
 	private String dose;
-	//同瓶用药剂量单位
+	//剂量单位
 	private String unit;
-	//百分比
+	//给药频次
 	private String frequency;
+	//给药途径
+	private String way;
+	
+	private int seq;
 	public String getName() {
 		return name;
 	}
@@ -45,6 +50,18 @@ public class DrugInstanceObject {
 	}
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
+	}
+	public String getWay() {
+		return way;
+	}
+	public void setWay(String way) {
+		this.way = way;
+	}
+	public int getSeq() {
+		return seq;
+	}
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 	
 	

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.CRFUserSign;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
 import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.PastHistoryCase;
@@ -39,6 +40,7 @@ import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
 import cn.com.ecrf.trq.vo.DrugCombinationVo;
+import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.DrugSummaryVo;
 import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
@@ -493,14 +495,61 @@ public class CRFService {
 	public Map<String, Object> saveDrugCombinationInfo(
 			DrugCombinationVo drugCombinationVo) {
 		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> result;
+		try{
+			List<DrugInstanceObject> drugs = drugCombinationVo.getDrug();
+			for (int i=0;drugs != null && i<drugs.size();i++){
+				DrugCombinationCase drugCombinationCase =  convertorService.convertDrugCombinationCaseFromViewToModel(drugs.get(i), drugCombinationVo.getNo());
+				if (drugCombinationCase.getSeq() > 0){
+					cRFMapper.updateDrugCombination(drugCombinationCase);
+				}else{
+					cRFMapper.insertDrugCombination(drugCombinationCase);
+				}
+			}
+			int progress = cRFMapper.getProgress(drugCombinationVo.getNo());
+			if (progress < ProcessUtils.DISEASE_INFO){
+				Map<String, Object> condition = new HashMap<String, Object>();
+				condition.put("progress", ProcessUtils.DISEASE_INFO);
+				condition.put("no", drugCombinationVo.getNo());
+				cRFMapper.updateProgress(condition);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			progress = cRFMapper.getProgress(drugCombinationVo.getNo());
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;
 	}
 
 	public Map<String, Object> saveInHospitalExam(
 			InHospitalExamVo inHospitalExamVo) {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		Map<String, Object> result;
+		try{
+			DrugUseCase drugUseCase =  convertorService.convertDrugUseInfoFromViewToModel(inHospitalExamVo);
+			DrugUseCase dbCase = cRFMapper.getDrugUseInfo(drugUseVo.getId());
+			if (dbCase != null && dbCase.getNo() != null)
+				cRFMapper.updateDrugUseInfo(drugUseCase);
+			else {
+				cRFMapper.insertDrugUseInfo(drugUseCase);
+			}
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("progress", ProcessUtils.DISEASE_INFO);
+			condition.put("no", drugUseVo.getNo());
+			cRFMapper.updateProgress(condition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			int progress = cRFMapper.getProgress(drugUseVo.getNo());
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;	
+		}
 
 	public Map<String, Object> saveDrugUseExam(DrugUseExamVo drugUseExamVo) {
 		// TODO Auto-generated method stub
@@ -530,6 +579,46 @@ public class CRFService {
 	public Map<String, Object> getDoubtRecord(int id, int menu) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Map<String, Object> getDrugCombinationInfo(String id, String no) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			List<DrugCombinationCase> drugCombinationCases = cRFMapper.getDrugCombinationList(Integer.parseInt(id));
+			DrugCombinationVo drugCombinationVo = new DrugCombinationVo();
+			drugCombinationVo.setId(Integer.parseInt(id));
+			drugCombinationVo.setNo(no);
+			List<DrugInstanceObject> drugInstanceObjects = new ArrayList<DrugInstanceObject>();
+			for (int i=0;drugCombinationCases!=null && i<drugCombinationCases.size();i++){
+				DrugInstanceObject drugInstanceObject = convertorService.convertDrugCombinationCaseFromModelToView(drugCombinationCases.get(i));
+				drugInstanceObjects.add(drugInstanceObject);
+			}
+			drugCombinationVo.setDrug(drugInstanceObjects);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugCombinationVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		return result;
+	}
+
+	public Map<String, Object> getInHospitalExam(int id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("Id", id);
+			condition.put("phase", 1);
+			DrugUseCase drugUseInfoCase = cRFMapper.getLabExam(condition);
+			DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromModelToView(drugUseInfoCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugUseVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
+		return result;
 	}
 
 
