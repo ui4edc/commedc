@@ -3,6 +3,7 @@ package cn.com.ecrf.trq.model;
 import java.util.Date;
 
 public class LabExamCase {
+	private int id;
 	private String no;
 	private String done;
 	private Date examDate;
@@ -107,6 +108,12 @@ public class LabExamCase {
 	}
 	public void setData6(String data6) {
 		this.data6 = data6;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

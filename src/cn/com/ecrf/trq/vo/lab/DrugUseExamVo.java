@@ -6,7 +6,7 @@ public class DrugUseExamVo {
 
 	private int id;
 	private String no;
-	private String done;
+	private int done;
 	private List<PlainExamVo> data1;
 	private List<PlainExamVo> data2;
 	private List<PlainExamVo> data3;
@@ -25,10 +25,10 @@ public class DrugUseExamVo {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public String getDone() {
+	public int getDone() {
 		return done;
 	}
-	public void setDone(String done) {
+	public void setDone(int done) {
 		this.done = done;
 	}
 	public List<PlainExamVo> getData1() {

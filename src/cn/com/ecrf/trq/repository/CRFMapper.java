@@ -5,7 +5,9 @@ import java.util.Map;
 
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
+import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
+import cn.com.ecrf.trq.model.LabExamCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
@@ -79,5 +81,13 @@ public interface CRFMapper {
 	public void insertDrugCombination(DrugCombinationCase drugCombinationCase);
 
 	public List<DrugCombinationCase> getDrugCombinationList(int parseInt);
+
+	public LabExamCase getLabExamCase(Map<String, Object> condition);
+
+	public void updateLabExamCase(LabExamCase labExamCase);
+
+	public void insertLabExamCase(LabExamCase labExamCase);
+
+	public DrugSummaryCase getDrugSummary(int id);
 
 }

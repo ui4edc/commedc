@@ -9,7 +9,7 @@ public class InHospitalExamVo {
 	private String examDate;
 	private int sample;
 	private String sampletxt;
-	private int result;
+	private String result;
 	private String resulttxt1;
 	private String resulttxt2;
 	private String resulttxt3;
@@ -56,10 +56,10 @@ public class InHospitalExamVo {
 	public void setSampletxt(String sampletxt) {
 		this.sampletxt = sampletxt;
 	}
-	public int getResult() {
+	public String getResult() {
 		return result;
 	}
-	public void setResult(int result) {
+	public void setResult(String result) {
 		this.result = result;
 	}
 	public String getResulttxt1() {

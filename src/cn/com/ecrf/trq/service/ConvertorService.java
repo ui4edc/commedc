@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
+import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
+import cn.com.ecrf.trq.model.LabExamCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
@@ -26,11 +28,15 @@ import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
 import cn.com.ecrf.trq.vo.DrugInstanceObject;
+import cn.com.ecrf.trq.vo.DrugSummaryVo;
 import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.MutilSelect;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
+import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
+import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
+import cn.com.ecrf.trq.vo.lab.PlainExamVo;
 
 @Service
 public class ConvertorService {
@@ -388,6 +394,161 @@ public class ConvertorService {
 			e.printStackTrace();
 		}
 		return drugInstanceObject;
+	}
+
+	public InHospitalExamVo convertLabExamFromModelToView(
+			LabExamCase labExamCase) {
+		// TODO Auto-generated method stub
+		InHospitalExamVo inHospitalExamVo = new InHospitalExamVo();
+		if (StringUtils.isNotBlank(labExamCase.getData1())){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			List<PlainExamVo> data1 = util.convertFromString(labExamCase.getData1());
+			inHospitalExamVo.setData1(data1);
+		}
+		if (StringUtils.isNotBlank(labExamCase.getData2())){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			List<PlainExamVo> data2 = util.convertFromString(labExamCase.getData2());
+			inHospitalExamVo.setData2(data2);
+		}
+		if (StringUtils.isNotBlank(labExamCase.getData3())){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			List<PlainExamVo> data3 = util.convertFromString(labExamCase.getData3());
+			inHospitalExamVo.setData3(data3);
+		}
+		if (StringUtils.isNotBlank(labExamCase.getData4())){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			List<PlainExamVo> data4 = util.convertFromString(labExamCase.getData4());
+			inHospitalExamVo.setData1(data4);
+		}
+		if (StringUtils.isNotBlank(labExamCase.getData5())){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			List<PlainExamVo> data5 = util.convertFromString(labExamCase.getData5());
+			inHospitalExamVo.setData5(data5);
+		}
+		if (StringUtils.isNotBlank(labExamCase.getData6())){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			List<PlainExamVo> data6 = util.convertFromString(labExamCase.getData6());
+			inHospitalExamVo.setData6(data6);
+		}
+		inHospitalExamVo.setId(labExamCase.getId());
+		FormEnumObject doneObj = new FormEnumObject(labExamCase.getDone(), FormEnumValue.DONE);
+		inHospitalExamVo.setDone(convertContentToID(doneObj));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if (labExamCase.getExamDate() != null){
+			String examDate = sdf.format(labExamCase.getExamDate());
+			inHospitalExamVo.setExamDate(examDate);
+		}
+		inHospitalExamVo.setId(labExamCase.getId());
+		inHospitalExamVo.setNo(labExamCase.getNo());
+		inHospitalExamVo.setResult(labExamCase.getResult());
+		inHospitalExamVo.setResulttxt1(labExamCase.getResulttxt1());
+		inHospitalExamVo.setResulttxt2(labExamCase.getResulttxt2());
+		inHospitalExamVo.setResulttxt3(labExamCase.getResulttxt3());
+		FormEnumObject sampleObj = new FormEnumObject(labExamCase.getSample(), FormEnumValue.SJYB);
+		inHospitalExamVo.setSample(convertContentToID(sampleObj));
+		inHospitalExamVo.setSampletxt(sampleObj.getOther());
+		return inHospitalExamVo;
+	}
+
+	public LabExamCase convertLabExamFromViewToModel(
+			InHospitalExamVo inHospitalExamVo, int phase) {
+		// TODO Auto-generated method stub
+		LabExamCase labExamCase = new LabExamCase();
+		if (inHospitalExamVo.getData1() != null && inHospitalExamVo.getData1().size() > 0){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			labExamCase.setData1(util.convertFromList(inHospitalExamVo.getData1()));
+		}
+		if (inHospitalExamVo.getData2() != null && inHospitalExamVo.getData2().size() > 0){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			labExamCase.setData2(util.convertFromList(inHospitalExamVo.getData2()));
+		}
+		if (inHospitalExamVo.getData3() != null && inHospitalExamVo.getData3().size() > 0){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			labExamCase.setData3(util.convertFromList(inHospitalExamVo.getData3()));
+		}
+		if (inHospitalExamVo.getData4() != null && inHospitalExamVo.getData4().size() > 0){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			labExamCase.setData4(util.convertFromList(inHospitalExamVo.getData4()));
+		}
+		if (inHospitalExamVo.getData5() != null && inHospitalExamVo.getData5().size() > 0){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			labExamCase.setData5(util.convertFromList(inHospitalExamVo.getData5()));
+		}
+		if (inHospitalExamVo.getData6() != null && inHospitalExamVo.getData6().size() > 0){
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			labExamCase.setData6(util.convertFromList(inHospitalExamVo.getData6()));
+		}
+		FormEnumObject doneObj = new FormEnumObject(inHospitalExamVo.getDone(), null, FormEnumValue.DONE);
+		labExamCase.setDone(convertIDToContent(doneObj));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if (StringUtils.isNotBlank(inHospitalExamVo.getExamDate())){
+			Date examDate;
+			try {
+				examDate = sdf.parse(inHospitalExamVo.getExamDate());
+				labExamCase.setExamDate(examDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		labExamCase.setId(inHospitalExamVo.getId());
+		labExamCase.setNo(inHospitalExamVo.getNo());
+		labExamCase.setPhase(phase);
+		labExamCase.setResult(inHospitalExamVo.getResult());
+		labExamCase.setResulttxt1(inHospitalExamVo.getResulttxt1());
+		labExamCase.setResulttxt2(inHospitalExamVo.getResulttxt2());
+		labExamCase.setResulttxt3(inHospitalExamVo.getResulttxt3());
+		FormEnumObject sampleObj = new FormEnumObject(inHospitalExamVo.getSample(), inHospitalExamVo.getSampletxt(), FormEnumValue.DONE);
+		labExamCase.setSample(convertIDToContent(sampleObj));
+		return labExamCase;
+	}
+
+	public InHospitalExamVo convertOtherLabExamToInHospitalExam(
+			DrugUseExamVo drugUseExamVo) {
+		// TODO Auto-generated method stub
+		InHospitalExamVo inHospitalExamVo = new InHospitalExamVo();
+		inHospitalExamVo.setData1(drugUseExamVo.getData1());
+		inHospitalExamVo.setData2(drugUseExamVo.getData2());
+		inHospitalExamVo.setData3(drugUseExamVo.getData3());
+		inHospitalExamVo.setData4(drugUseExamVo.getData4());
+		inHospitalExamVo.setData5(drugUseExamVo.getData5());
+		inHospitalExamVo.setData6(drugUseExamVo.getData6());
+		inHospitalExamVo.setDone(drugUseExamVo.getDone());
+		return inHospitalExamVo;
+	}
+	
+	public DrugUseExamVo convertInHospitalExamToOtherLabExam(
+			InHospitalExamVo inHospitalExamVo) {
+		// TODO Auto-generated method stub
+		DrugUseExamVo drugUseExamVo = new DrugUseExamVo();
+		drugUseExamVo.setData1(inHospitalExamVo.getData1());
+		drugUseExamVo.setData2(inHospitalExamVo.getData2());
+		drugUseExamVo.setData3(inHospitalExamVo.getData3());
+		drugUseExamVo.setData4(inHospitalExamVo.getData4());
+		drugUseExamVo.setData5(inHospitalExamVo.getData5());
+		drugUseExamVo.setData6(inHospitalExamVo.getData6());
+		drugUseExamVo.setDone(inHospitalExamVo.getDone());
+		return drugUseExamVo;
+	}
+
+	public DrugSummaryVo convertDrugSummaryFromModelToView(
+			DrugSummaryCase drugSummaryCase) {
+		// TODO Auto-generated method stub
+		DrugSummaryVo drugSummaryVo = new DrugSummaryVo();
+		FormEnumObject adrObj = new FormEnumObject(drugSummaryCase.getAdr(), FormEnumValue.YES_NO);
+		drugSummaryVo.setAdr(convertContentToID(adrObj));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if (drugSummaryCase.getDeathDate() != null){
+			String deathDate = sdf.format(drugSummaryCase.getDeathDate());
+			drugSummaryVo.setDeathDate(deathDate);
+		}
+		drugSummaryVo.setDeathReason(drugSummaryCase.getDeathReason());
+		drugSummaryVo.setDrugCost(drugSummaryCase.getDrugCost());
+		if (drugSummaryCase.getEndDate() != null){
+			String endDate = sdf.format(drugSummaryCase.getEndDate());
+			drugSummaryVo.setEndDate(endDate);
+		}
+		return drugSummaryVo;
 	}
 
 

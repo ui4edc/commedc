@@ -241,7 +241,7 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getDrugUseExam(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		Map<String, Object> result = cRFService.getDrugUseExam(parameterType.getId());
 		return result;
 	}
 	
@@ -256,7 +256,7 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getOutHospitalExam(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		Map<String, Object> result = cRFService.getOutHospitalExam(parameterType.getId());
 		return result;
 	}
 	
@@ -271,7 +271,7 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getDrugSummary(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		Map<String, Object> result = cRFService.getDrugSummary(parameterType.getId());
 		return result;
 	}
 	
