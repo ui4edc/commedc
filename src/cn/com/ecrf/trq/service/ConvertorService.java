@@ -13,6 +13,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.ecrf.trq.model.ADRCase;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
@@ -26,6 +27,7 @@ import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
+import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
 import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.DrugSummaryVo;
@@ -548,7 +550,165 @@ public class ConvertorService {
 			String endDate = sdf.format(drugSummaryCase.getEndDate());
 			drugSummaryVo.setEndDate(endDate);
 		}
+		FormEnumObject endObj = new FormEnumObject(drugSummaryCase.getEnding(), FormEnumValue.YES_NO);
+		drugSummaryVo.setEnding(convertContentToID(endObj));
+		drugSummaryVo.setId(drugSummaryCase.getId());
+		FormEnumObject interventionObj = new FormEnumObject(drugSummaryCase.getIntervention(), FormEnumValue.YES_NO);
+		drugSummaryVo.setIntervention(convertContentToID(interventionObj));
+		drugSummaryVo.setInterventiontxt(drugSummaryCase.getInterventiontxt());
+		drugSummaryVo.setNo(drugSummaryCase.getNo());
+		drugSummaryVo.setRemark(drugSummaryCase.getRemark());
+		drugSummaryVo.setTreatmentCost(drugSummaryCase.getTreatmentCost());
+		drugSummaryVo.setTrqCost(drugSummaryCase.getTrqCost());
+		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryCase.getUnreasonable(), FormEnumValue.YES_NO);
+		drugSummaryVo.setUnreasonable(convertContentToID(unreasonableObj));
 		return drugSummaryVo;
+	}
+
+	public DrugSummaryCase convertDrugSummaryFromViewToModel(
+			DrugSummaryVo drugSummaryVo) {
+		// TODO Auto-generated method stub
+		DrugSummaryCase drugSummaryCase = new DrugSummaryCase();
+		FormEnumObject adrObj = new FormEnumObject(drugSummaryVo.getAdr(), null, FormEnumValue.YES_NO);
+		drugSummaryCase.setAdr(convertIDToContent(adrObj));
+		if (StringUtils.isNotBlank(drugSummaryVo.getDeathDate())){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date deathDate = sdf.parse(drugSummaryVo.getDeathDate());
+				drugSummaryCase.setDeathDate(deathDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		drugSummaryCase.setDeathReason(drugSummaryVo.getDeathReason());
+		drugSummaryCase.setDrugCost(drugSummaryVo.getEndDate());
+		if (StringUtils.isNotBlank(drugSummaryVo.getEndDate())){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date endDate = sdf.parse(drugSummaryVo.getEndDate());
+				drugSummaryCase.setEndDate(endDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		FormEnumObject endingObj = new FormEnumObject(drugSummaryVo.getEnding(), null, FormEnumValue.YES_NO);
+		drugSummaryCase.setEnding(convertIDToContent(endingObj));
+		drugSummaryCase.setId(drugSummaryVo.getId());
+		FormEnumObject interventionObj = new FormEnumObject(drugSummaryVo.getIntervention(), null, FormEnumValue.YES_NO);
+		drugSummaryCase.setIntervention(convertIDToContent(interventionObj));
+		drugSummaryCase.setInterventiontxt(drugSummaryVo.getInterventiontxt());
+		drugSummaryCase.setNo(drugSummaryVo.getNo());
+		drugSummaryCase.setRemark(drugSummaryVo.getRemark());
+		if (StringUtils.isNotBlank(drugSummaryVo.getStartDate())){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date startDate = sdf.parse(drugSummaryVo.getStartDate());
+				drugSummaryCase.setStartDate(startDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		drugSummaryCase.setTreatmentCost(drugSummaryVo.getTreatmentCost());
+		drugSummaryCase.setTrqCost(drugSummaryVo.getTrqCost());
+		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryVo.getUnreasonable(), null, FormEnumValue.YES_NO);
+		drugSummaryCase.setUnreasonable(convertIDToContent(unreasonableObj));
+		//drugSummaryCase.setEnding(ending);
+		return drugSummaryCase;
+	}
+
+	public ADRCase convertADRFromViewToModel(ADRVo adrVo) {
+		// TODO Auto-generated method stub
+		ADRCase aDRCase = new ADRCase();
+		try {
+			BeanUtils.copyProperties(aDRCase, adrVo);
+			if (StringUtils.isNotBlank(adrVo.getAdrDate())){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					Date adrDateDate = sdf.parse(adrVo.getAdrDate());
+					aDRCase.setAdrDateDate(adrDateDate);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FormEnumObject adrDeal3Obj = new FormEnumObject(adrVo.getAdrDeal3(), adrVo.getAdrDeal3txt(), FormEnumValue.YES_NO);
+			aDRCase.setAdrDeal3Str(convertIDToContent(adrDeal3Obj));
+			FormEnumObject adrDealObj = new FormEnumObject(adrVo.getAdrDeal(), null, FormEnumValue.YES_NO);
+			aDRCase.setAdrDealStr(convertIDToContent(adrDealObj));
+			FormEnumObject adrRestartObj = new FormEnumObject(adrVo.getAdrRestart(), null, FormEnumValue.YES_NO);
+			aDRCase.setAdrRestartStr(convertIDToContent(adrRestartObj));
+			FormEnumObject adrStopObj = new FormEnumObject(adrVo.getAdrStop(), null, FormEnumValue.YES_NO);
+			aDRCase.setAdrStopStr(convertIDToContent(adrStopObj));
+			if (StringUtils.isNotBlank(adrVo.getBirthday())){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					Date birthdayDate = sdf.parse(adrVo.getBirthday());
+					aDRCase.setBirthdayDate(birthdayDate);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FormEnumObject bloodObj = new FormEnumObject(adrVo.getBlood(), null, FormEnumValue.YES_NO);
+			aDRCase.setBloodStr(convertIDToContent(bloodObj));
+			FormEnumObject careerObj = new FormEnumObject(adrVo.getCareer(), adrVo.getCareertxt(), FormEnumValue.CAREER);
+			aDRCase.setCareerStr(convertIDToContent(careerObj));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			if (adrVo.getDrug1() != null && adrVo.getDrug1().size() > 0)
+				aDRCase.setDrug1Str(util.convertFromList(adrVo.getDrug1()));
+			if (adrVo.getDrug2() != null && adrVo.getDrug2().size() > 0)
+				aDRCase.setDrug2Str(util.convertFromList(adrVo.getDrug2()));
+			FormEnumObject endingObj = new FormEnumObject(adrVo.getEnding(), adrVo.getEndingtxt(), FormEnumValue.ADR_ENDING);
+			aDRCase.setEndingStr(convertIDToContent(endingObj));
+			FormEnumObject ethicObj = new FormEnumObject(adrVo.getEthic(), null, FormEnumValue.ETHIC);
+			aDRCase.setEthicStr(convertIDToContent(ethicObj));
+			FormEnumObject evaluateObj = new FormEnumObject(adrVo.getEvaluate(), null, FormEnumValue.YES_NO);
+			aDRCase.setEvaluateStr(convertIDToContent(evaluateObj));
+			FormEnumObject familyadrObj = new FormEnumObject(adrVo.getFamilyadr(), adrVo.getFamilyadrtxt(), FormEnumValue.YES_NO);
+			aDRCase.setFamilyadrStr(convertIDToContent(familyadrObj));
+			FormEnumObject historyadrObj = new FormEnumObject(adrVo.getHistoryadr(), adrVo.getHistoryadrtxt(), FormEnumValue.YES_NO);
+			aDRCase.setHistoryadrStr(convertIDToContent(historyadrObj));
+			FormEnumObject relationshipObj = new FormEnumObject(adrVo.getRelationship(), null, FormEnumValue.YES_NO);
+			aDRCase.setRelationshipStr(convertIDToContent(relationshipObj));
+			if (StringUtils.isNotBlank(adrVo.getDeathDate())){
+				try {
+					Date deathDateDate = sdf.parse(adrVo.getDeathDate());
+					aDRCase.setDeathDateDate(deathDateDate);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (StringUtils.isNotBlank(adrVo.getReportDate())){
+				try {
+					Date reportDateDate = sdf.parse(adrVo.getReportDate());
+					aDRCase.setReportDateDate(reportDateDate);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FormEnumObject sexObj = new FormEnumObject(adrVo.getSex(), null, FormEnumValue.SEX);
+			aDRCase.setSexStr(convertIDToContent(sexObj));
+			FormEnumObject typeObj = new FormEnumObject(adrVo.getType(), null, FormEnumValue.ADR_TYPE);
+			aDRCase.setTypeStr(convertIDToContent(typeObj));
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return aDRCase;
+	}
+
+	public ADRVo convertADRFromModelToView(ADRCase adrCase) {
+		// TODO Auto-generated method stub
+		
+		return null;
 	}
 
 

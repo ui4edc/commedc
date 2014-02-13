@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +15,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.ecrf.trq.model.ADRCase;
 import cn.com.ecrf.trq.model.CRFUserSign;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DoubtRecord;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
+import cn.com.ecrf.trq.model.FieldDict;
 import cn.com.ecrf.trq.model.LabExamCase;
 import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.PastHistoryCase;
@@ -30,6 +34,7 @@ import cn.com.ecrf.trq.model.User;
 import cn.com.ecrf.trq.model.list.ListCondition;
 import cn.com.ecrf.trq.model.list.ListReturn;
 import cn.com.ecrf.trq.repository.CRFMapper;
+import cn.com.ecrf.trq.repository.DoubtRecordMapper;
 import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
@@ -41,6 +46,7 @@ import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DoubtRecordSubmitVo;
 import cn.com.ecrf.trq.vo.DrugCombinationVo;
 import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.DrugSummaryVo;
@@ -48,6 +54,7 @@ import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
+import cn.com.ecrf.trq.vo.crf.FieldDictVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 import cn.com.ecrf.trq.vo.list.ListConditionVo;
@@ -64,6 +71,8 @@ public class CRFService {
 	private ConvertorService convertorService;
 	@Autowired
 	private UserSignMapper userSignMapper;
+	@Autowired
+	private DoubtRecordMapper doubtRecordMapper;
 	
 	public ListNotifyVo getNotifyInfo() {
 		// TODO Auto-generated method stub
@@ -87,10 +96,27 @@ public class CRFService {
 			sqlCondition.setUserName(userName);
 			int type = condition.getType();
 			List<ListReturn> list = null;
-			if (type == 0 || type == 1 || type == 3){//草稿,提交，审核通过
+			/*if (type == 0 || type == 1 || type == 3){//草稿,提交，审核通过
 				list = cRFMapper.getPatientList(sqlCondition);
 			}else if (type == 2){//质疑
 				list = cRFMapper.getDoutSummaryList(sqlCondition);
+			}*/
+			switch(type){
+			case 0:
+				list = cRFMapper.getPatientListByCRO(sqlCondition);
+				break;
+			case 1:
+				list = cRFMapper.getPatientListByCRO(sqlCondition);
+				break;
+			case 2:
+				list = cRFMapper.getDoutSummaryListByCRO(sqlCondition);
+			case 3: 
+				list = cRFMapper.getPatientListByCRO(sqlCondition);
+				break;
+			case 4:
+				//监察，
+			case 5:
+			case 6: 
 			}
 			listVo = convertListReturn(list);
 		}catch(Exception e){
@@ -532,23 +558,83 @@ public class CRFService {
 
 	public Map<String, Object> saveDrugSummary(DrugSummaryVo drugSummaryVo) {
 		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> result;
+		try{
+			DrugSummaryCase drugSummaryCase =  convertorService.convertDrugSummaryFromViewToModel(drugSummaryVo);
+			DrugSummaryCase dbCase = cRFMapper.getDrugSummary(drugSummaryVo.getId());
+			if (dbCase != null && dbCase.getNo() != null)
+				cRFMapper.updateDrugSummary(drugSummaryCase);
+			else {
+				cRFMapper.insertDrugSummary(drugSummaryCase);
+			}
+			int progress = cRFMapper.getProgress(drugSummaryVo.getNo());
+			if (progress < ProcessUtils.DRUG_SUMMARY){
+				Map<String, Object> condition = new HashMap<String, Object>();
+				condition.put("progress", ProcessUtils.DISEASE_INFO);
+				condition.put("no", drugSummaryVo.getNo());
+				cRFMapper.updateProgress(condition);
+				progress = cRFMapper.getProgress(drugSummaryVo.getNo());
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;
 	}
 
 	public Map<String, Object> saveADR(ADRVo adrVo) {
 		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> result;
+		try{
+			ADRCase aDRCase =  convertorService.convertADRFromViewToModel(adrVo);
+			ADRCase dbCase = cRFMapper.getADR(adrVo.getId());
+			if (dbCase != null && dbCase.getNo() != null)
+				cRFMapper.updateADR(aDRCase);
+			else {
+				cRFMapper.insertADR(aDRCase);
+			}
+			int progress = cRFMapper.getProgress(adrVo.getNo());
+			if (progress < ProcessUtils.ADR){
+				Map<String, Object> condition = new HashMap<String, Object>();
+				condition.put("progress", ProcessUtils.ADR);
+				condition.put("no", adrVo.getNo());
+				cRFMapper.updateProgress(condition);
+				progress = cRFMapper.getProgress(adrVo.getNo());
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			result.put("progress", progress + "%");
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;
 	}
 
 	public Map<String, Object> saveTotalCRF(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		Map<String, Object> result;
+		try{
+			CRFUserSign userSign = new CRFUserSign();
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(id);
+			userSign.setNo(patientInfoCase.getNo());
+			userSign.setLockStatus(LockStatusUtils.submit);
+			userSign.setCroSignTime(new Date());
+			userSignMapper.updateUserSign(userSign);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		
+		return result;
 	}
 
-	public Map<String, Object> getDoubtRecord(int id, int menu) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	public Map<String, Object> getDrugCombinationInfo(String id, String no) {
 		// TODO Auto-generated method stub
@@ -694,6 +780,93 @@ public class CRFService {
 		}
 		
 		return result;	
+	}
+
+	public Map<String, Object> getADR(int id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			ADRCase adrCase = cRFMapper.getADR(id);
+			ADRVo adrVo = convertorService.convertADRFromModelToView(adrCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, adrVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		return result;
+	}
+
+	public Map<String, Object> saveDoubtRecord(
+			DoubtRecordSubmitVo doubtRecordSubmitVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			DoubtRecord doubtRecord = new DoubtRecord();
+			doubtRecord.setDescription(doubtRecordSubmitVo.getDescription());
+			doubtRecord.setDoubtDate(new Date());
+			Subject subject = SecurityUtils.getSubject();
+			String userName = (String) subject.getPrincipal();
+			doubtRecord.setDoubter(userName);
+			doubtRecord.setFieldId(doubtRecordSubmitVo.getFieldId());
+			doubtRecord.setId(doubtRecordSubmitVo.getId());
+			doubtRecord.setMenuId(doubtRecordSubmitVo.getMenu());
+			doubtRecordMapper.insertDoubtRecord(doubtRecord);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		return result;
+	}
+	
+	public Map<String, Object> getDoubtRecord(int id, int menu) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			DoubtRecord doubtRecord = new DoubtRecord();
+			doubtRecord.setId(id);
+			doubtRecord.setMenuId(menu);
+			List<DoubtRecord> doubtRecords = doubtRecordMapper.getDoubtRecord(doubtRecord);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, doubtRecords);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
+		return result;
+	}
+
+	public Map<String, Object> getDoubtDict(int menu) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			List<FieldDict> data = doubtRecordMapper.getCRFFieldDict(menu);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, data);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		return result;
+	}
+
+	public Map<String, Object> commitDoubtColumn(
+			DoubtRecordSubmitVo doubtRecordSubmitVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			DoubtRecord doubtRecord = new DoubtRecord();
+			doubtRecord.setFieldId(doubtRecordSubmitVo.getFieldId());
+			doubtRecord.setId(doubtRecordSubmitVo.getId());
+			doubtRecord.setMenuId(doubtRecordSubmitVo.getMenu());
+			doubtRecord.setCommitDate(new Date());
+			doubtRecord.setFlag(1);
+			doubtRecordMapper.saveDoubtRecord(doubtRecord);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		return result;
 	}
 
 

@@ -11,4 +11,7 @@ public class FormEnumValue {
 	public static final String YES_NO = "yn";
 	public static final String SJYB = "sjyb";
 	public static final String DONE = "done";
+	public static final String CAREER = "career";
+	public static final String ADR_ENDING = "adr_ending";
+	public static final String ADR_TYPE = "adr_type";
 }

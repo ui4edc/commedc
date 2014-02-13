@@ -6,4 +6,27 @@
   	insert into crf_user_sign(no, lockstatus, cro_name, cro_createtime, progress)
   	values(#{no}, #{lockStatus}, #{croName}, current_timestamp(), #{progress});
   </insert>
+  <update id="updateUserSign" parameterType="cn.com.ecrf.trq.model.CRFUserSign">
+  	update crf_user_sign set lockstatus=#{lockStatus}
+  	<if test="croName != null" >
+       ,cro_name=#{croName}
+    </if>
+    <if test="croSignTime != null" >
+       ,cro_signtime=#{croSignTime}
+    </if>
+    <if test="crmName != null" >
+       ,crm_name=#{crmName}
+    </if>
+    <if test="crmSignTime != null" >
+       ,crm_signname=#{crmSignTime}
+    </if>
+    <if test="dmName != null" >
+       ,dm_name=#{dmName}
+    </if>
+    <if test="dmSignTime != null" >
+       ,dm_signname=#{dmSignTime}
+    </if>
+  	where no=#{no}
+  </update>
+  
 </mapper>

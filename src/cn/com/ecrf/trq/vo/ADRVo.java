@@ -79,6 +79,7 @@ public class ADRVo {
 	private String email;
 	private String reportDate;
 	private String remark;
+
 	public int getId() {
 		return id;
 	}

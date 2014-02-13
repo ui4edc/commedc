@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.com.ecrf.trq.repository.DoubtRecordMapper" >
+  <insert id="insertDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord">
+  	insert into crf_doubt(id, no, doubt_time, commit_time, flag, doubter, fieldid, description, menuid)
+  	values(#{id}, #{no}, #{doubtDate}, #{commitDate}, #{flag}, #{doubter}, #{fieldId}, #{description}, #{menuId});
+  </insert>
+  <select id="getDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord" resultType="cn.com.ecrf.trq.model.DoubtRecord">
+  	select id as id,
+  		   no as no,
+  		   doubt_time as doubtDate,
+  		   commit_time as commitDate,
+  		   flag as flag,
+  		   doubter as doubter,
+  		   d.fieldid as fieldId,
+  		   v.name as fieldName,
+  		   description as description,
+  		   menuid as menuId
+  	from crf_doubt d, dt_crfstage_var v where v.menuid=d.menuid and d.menuid=#{menuId} and id=#{id} and flag!=1
+  </select>
+  <select id="getCRFFieldDict" parameterType="int" resultType="cn.com.ecrf.trq.model.FieldDict">
+  	select v.id as id,
+  			v.name as name
+  	from dt_crfstage s, dt_crfstage_var v where s.menuid=v.menuid and v.menuid=#{menuId} order by v.id asc
+  </select>
+  <update id="saveDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord">
+  	update crf_doubt set commit_time=#{commitDate}, flag=#{flag} 
+  	where id=#{id} and fieldid=#{fieldId} and menuid=#{menuId}
+  </update>
+</mapper>

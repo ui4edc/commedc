@@ -286,7 +286,7 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getADR(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, null);
+		Map<String, Object> result = cRFService.getADR(parameterType.getId());
 		return result;
 	}
 	
@@ -297,19 +297,14 @@ public class CRFController {
 		return result;
 	}
 	
-	@RequestMapping(value="/crf/saveADR", method = RequestMethod.POST)
+	@RequestMapping(value="/crf/saveTotalCRF", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> saveTotalCRF(ParameterType parameterType, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.saveTotalCRF(parameterType.getId());
 		return result;
 	}
 	
-	@RequestMapping(value="/crf/getDoubtRecord", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getDoubtRecord(ParameterType parameterType, HttpServletRequest request) {
-		Map<String, Object> result = cRFService.getDoubtRecord(parameterType.getId(), parameterType.getMenu());
-		return result;
-	}
+	
 	
 	
 	

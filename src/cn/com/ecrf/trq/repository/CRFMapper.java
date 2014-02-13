@@ -3,7 +3,9 @@ package cn.com.ecrf.trq.repository;
 import java.util.List;
 import java.util.Map;
 
+import cn.com.ecrf.trq.model.ADRCase;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DoubtRecord;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
@@ -89,5 +91,24 @@ public interface CRFMapper {
 	public void insertLabExamCase(LabExamCase labExamCase);
 
 	public DrugSummaryCase getDrugSummary(int id);
+
+	public void updateDrugSummary(DrugSummaryCase drugSummaryCase);
+
+	public void insertDrugSummary(DrugSummaryCase drugSummaryCase);
+
+	public ADRCase getADR(int id);
+
+	public void updateADR(ADRCase aDRCase);
+
+	public void insertADR(ADRCase aDRCase);
+
+	public List<ListReturn> getPatientListByCRO(ListCondition condition);
+
+	public List<ListReturn> getDoutSummaryListByCRO(ListCondition condition);
+	
+	public List<ListReturn> getPatientListByCRM(ListCondition condition);
+
+	public List<ListReturn> getDoutSummaryListByCRM(ListCondition condition);
+
 
 }
