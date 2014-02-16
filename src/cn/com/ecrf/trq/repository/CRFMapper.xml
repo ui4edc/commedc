@@ -75,6 +75,9 @@
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
+      	<if test="userName != null">
+      		and (us.cro_name=#{userName} or us.crm_name=#{userName} or us.dm_name=#{userName})
+      	</if>
       	<if test="limitSize > 0">
       		LIMIT #{limitStart},#{limitSize}
       	</if>
@@ -340,6 +343,59 @@
 		batchNumber=#{batchNumber}, bottlelb=#{bottlelb}
   		where no=#{no} and seq=#{times}
 	</update>
-	
-	
+	<select id="getDrugCombinationList" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugCombinationCase">
+		select d.seq as seq,
+			   d.no as no,
+			   d.name as name,
+			   d.startDate as startDate,
+			   d.endDate as endDate,
+			   d.dose as dose,
+			   d.unit as unit,
+			   d.way as way,
+			   d.frequency as frequency
+		from crf_drugcombination_info d, crf_patient_info p where p.id=#{id} and p.no=d.no order by seq asc
+	</select>
+	<insert id="insertDrugCombination" parameterType="cn.com.ecrf.trq.model.DrugCombinationCase">
+		<selectKey resultType="Integer" order="AFTER" keyProperty="seq">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into crf_drugcombination_info(seq,no,name,startDate,endDate,dose,unit,way,frequency) values(#{seq}, #{no}, #{name}, #{startDate}, #{endDate}, #{dose}, #{unit}, #{way}, #{frequency});
+	</insert>
+	<update id="updateDrugCombination" parameterType="cn.com.ecrf.trq.model.DrugCombinationCase">
+		update crf_drugcombination_info set no=#{no}, name=#{name}, startDate=#{startDate}, endDate=#{endDate}, dose=#{dose}, unit=#{unit},
+		way=#{way}, frequency=#{frequency} where seq=#{seq}
+	</update>
+	<delete id="deleteDrugCombination" parameterType="string">
+		delete from crf_drugcombination_info where no=#{no}
+	</delete>
+	<select id="getLabExamCase" parameterType="map" resultType="cn.com.ecrf.trq.model.LabExamCase">
+		select
+			   l.no as no,
+			   l.done as done,
+			   l.examdate as examDate,
+			   sample as sample,
+			   result as result,
+			   resulttxt1 as resulttxt1,
+			   resulttxt2 as resulttxt2,
+			   resulttxt3 as resulttxt3,
+			   data1 as data1,
+			   data2 as data2,
+			   data3 as data3,
+			   data4 as data4,
+			   data5 as data5,
+			   data6 as data6,
+			   l.phase as phase
+		from crf_labexam_info l, crf_patient_info p where p.id=#{id} and p.no=l.no and phase=#{phase}
+	</select>
+	<insert id="insertLabExamCase" parameterType="cn.com.ecrf.trq.model.LabExamCase">
+		insert into crf_labexam_info(no, done, examdate, sample, result, resulttxt1, resulttxt2, resulttxt3, 
+		data1, data2, data3, data4, data5, data6, phase) values(#{no} #{done}, #{examDate}, #{sample},
+		#{result}, #{resulttxt1}, #{resulttxt2}, #{resulttxt3}, #{data1}, #{data2}, #{data3}, #{data4},
+		#{data5}, #{data6}, #{phase});
+	</insert>
+	<update id="updateLabExamCase" parameterType="cn.com.ecrf.trq.model.LabExamCase">
+		update crf_labexam_info set done=#{done},examdate=#{examDate}, sample=#{sample}, resulttxt1=#{resulttxt1},
+		resulttxt2=#{resulttxt2}, resulttxt3=#{resulttxt3}, data1=#{data1}, data2=#{data2}, data3#{data3},
+		data4=#{data4}, data5=#{data5}, data6=#{data6} where no=#{no} and phase=#{phase}
+	</update>
 </mapper>

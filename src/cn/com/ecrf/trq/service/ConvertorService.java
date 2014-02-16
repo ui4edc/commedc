@@ -401,6 +401,8 @@ public class ConvertorService {
 	public InHospitalExamVo convertLabExamFromModelToView(
 			LabExamCase labExamCase) {
 		// TODO Auto-generated method stub
+		if (labExamCase == null)
+			return null;
 		InHospitalExamVo inHospitalExamVo = new InHospitalExamVo();
 		if (StringUtils.isNotBlank(labExamCase.getData1())){
 			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);

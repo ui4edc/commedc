@@ -102,13 +102,8 @@ public interface CRFMapper {
 
 	public void insertADR(ADRCase aDRCase);
 
-	public List<ListReturn> getPatientListByCRO(ListCondition condition);
-
-	public List<ListReturn> getDoutSummaryListByCRO(ListCondition condition);
+	public void deleteDrugCombination(String no);
 	
-	public List<ListReturn> getPatientListByCRM(ListCondition condition);
-
-	public List<ListReturn> getDoutSummaryListByCRM(ListCondition condition);
 
 
 }

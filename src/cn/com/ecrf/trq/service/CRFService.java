@@ -103,20 +103,26 @@ public class CRFService {
 			}*/
 			switch(type){
 			case 0:
-				list = cRFMapper.getPatientListByCRO(sqlCondition);
+				list = cRFMapper.getPatientList(sqlCondition);
 				break;
 			case 1:
-				list = cRFMapper.getPatientListByCRO(sqlCondition);
+				list = cRFMapper.getPatientList(sqlCondition);
 				break;
 			case 2:
-				list = cRFMapper.getDoutSummaryListByCRO(sqlCondition);
+				list = cRFMapper.getDoutSummaryList(sqlCondition);
 			case 3: 
-				list = cRFMapper.getPatientListByCRO(sqlCondition);
+				list = cRFMapper.getPatientList(sqlCondition);
 				break;
 			case 4:
 				//监察，
+				list = cRFMapper.getPatientList(sqlCondition);
+				break;
 			case 5:
+				list = cRFMapper.getDoutSummaryList(sqlCondition);
+				break;
 			case 6: 
+				list = cRFMapper.getPatientList(sqlCondition);
+				break;
 			}
 			listVo = convertListReturn(list);
 		}catch(Exception e){
@@ -157,14 +163,13 @@ public class CRFService {
 		int lockStatus = 0;
 		if (condition.getType() == 0)
 			lockStatus = 10;
-		if (condition.getType() == 1)
+		if (condition.getType() == 1 || condition.getType() == 4)
 			lockStatus = 20;
-		if (condition.getType() == 2)
+		if (condition.getType() == 2 || condition.getType() == 5)
 			lockStatus = 30;
-		if (condition.getType() == 3)
+		if (condition.getType() == 3 || condition.getType() == 6)
 			lockStatus = 40;
-		if (condition.getType() == 4)
-			lockStatus = 50;
+		
 		sqlCondition.setLockStatus(lockStatus);
 		sqlCondition.setAbbr(condition.getAbbr());
 		String progress = condition.getProgress();
@@ -531,6 +536,7 @@ public class CRFService {
 				if (drugCombinationCase.getSeq() > 0){
 					cRFMapper.updateDrugCombination(drugCombinationCase);
 				}else{
+					cRFMapper.deleteDrugCombination(drugCombinationVo.getNo());
 					cRFMapper.insertDrugCombination(drugCombinationCase);
 				}
 			}
