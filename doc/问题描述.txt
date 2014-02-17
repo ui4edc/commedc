@@ -53,3 +53,8 @@ DM:级超级管理员，导航栏是首页，监察，数据字典，图片上�
 4)数据监察地址和同观察表，都是/commedc/getPatientList，参数也一样
 5)数据管理,地址也是/commedc/getPatientList，参数也一样。
 6)全局统计待定
+
+2014.2.17
+1. crf/getCRFSumm.do，返回值增加每个表单的质疑数，见1.2.0.1
+2. supervise/getDoubtRecord.do，返回值增加doubtId，见1.2.0.4
+3. 增加解决质疑接口，见1.2.0.5
