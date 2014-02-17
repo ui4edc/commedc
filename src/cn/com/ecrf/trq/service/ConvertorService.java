@@ -36,6 +36,7 @@ import cn.com.ecrf.trq.vo.MutilSelect;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
+import cn.com.ecrf.trq.vo.crf.BanDrug;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 import cn.com.ecrf.trq.vo.lab.PlainExamVo;
@@ -316,9 +317,16 @@ public class ConvertorService {
 			if (drugUseInfoCase != null){
 				drugUseVo = new DrugUseVo();
 				BeanUtils.copyProperties(drugUseVo, drugUseInfoCase);
+				JSONUtils<BanDrug> util = new JSONUtils<BanDrug>(BanDrug.class);
+				if (StringUtils.isNotBlank(drugUseInfoCase.getBanDruglb()))
+					drugUseVo.setBanDrug(util.convertFromString(drugUseInfoCase.getBanDruglb()));
+				if (StringUtils.isNotBlank(drugUseInfoCase.getBottlelb()))
+					drugUseVo.setBottle(util.convertFromString(drugUseInfoCase.getBottlelb()));
+				if (StringUtils.isNotBlank(drugUseInfoCase.getInjectionlb()))
+					drugUseVo.setInjection(util.convertFromString(drugUseInfoCase.getInjectionlb()));
 			}
 			
-		} catch (IllegalAccessException | InvocationTargetException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -332,6 +340,13 @@ public class ConvertorService {
 			if (drugUseVo != null){
 				drugUseCase = new DrugUseCase();
 				BeanUtils.copyProperties(drugUseCase, drugUseVo);
+				JSONUtils<BanDrug> util = new JSONUtils<BanDrug>(BanDrug.class);
+				if (drugUseVo.getBanDrug()!= null && drugUseVo.getBanDrug().size() > 0)
+					drugUseCase.setBanDruglb(util.convertFromList(drugUseVo.getBanDrug()));
+				if (drugUseVo.getBottle() != null && drugUseVo.getBottle().size() > 0)
+					drugUseCase.setBottlelb(util.convertFromList(drugUseVo.getBottle()));
+				if (drugUseVo.getInjection() != null && drugUseVo.getInjection().size() > 0)
+					drugUseCase.setInjectionlb(util.convertFromList(drugUseVo.getInjection()));
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
@@ -502,7 +517,7 @@ public class ConvertorService {
 		labExamCase.setResulttxt1(inHospitalExamVo.getResulttxt1());
 		labExamCase.setResulttxt2(inHospitalExamVo.getResulttxt2());
 		labExamCase.setResulttxt3(inHospitalExamVo.getResulttxt3());
-		FormEnumObject sampleObj = new FormEnumObject(inHospitalExamVo.getSample(), inHospitalExamVo.getSampletxt(), FormEnumValue.DONE);
+		FormEnumObject sampleObj = new FormEnumObject(inHospitalExamVo.getSample(), inHospitalExamVo.getSampletxt(), FormEnumValue.SJYB);
 		labExamCase.setSample(convertIDToContent(sampleObj));
 		return labExamCase;
 	}
@@ -518,6 +533,8 @@ public class ConvertorService {
 		inHospitalExamVo.setData5(drugUseExamVo.getData5());
 		inHospitalExamVo.setData6(drugUseExamVo.getData6());
 		inHospitalExamVo.setDone(drugUseExamVo.getDone());
+		inHospitalExamVo.setNo(drugUseExamVo.getNo());
+		inHospitalExamVo.setId(drugUseExamVo.getId());
 		return inHospitalExamVo;
 	}
 	
@@ -532,6 +549,8 @@ public class ConvertorService {
 		drugUseExamVo.setData5(inHospitalExamVo.getData5());
 		drugUseExamVo.setData6(inHospitalExamVo.getData6());
 		drugUseExamVo.setDone(inHospitalExamVo.getDone());
+		drugUseExamVo.setId(inHospitalExamVo.getId());
+		drugUseExamVo.setNo(inHospitalExamVo.getNo());
 		return drugUseExamVo;
 	}
 
@@ -552,7 +571,7 @@ public class ConvertorService {
 			String endDate = sdf.format(drugSummaryCase.getEndDate());
 			drugSummaryVo.setEndDate(endDate);
 		}
-		FormEnumObject endObj = new FormEnumObject(drugSummaryCase.getEnding(), FormEnumValue.YES_NO);
+		FormEnumObject endObj = new FormEnumObject(drugSummaryCase.getEnding(), FormEnumValue.DM_ENDING);
 		drugSummaryVo.setEnding(convertContentToID(endObj));
 		drugSummaryVo.setId(drugSummaryCase.getId());
 		FormEnumObject interventionObj = new FormEnumObject(drugSummaryCase.getIntervention(), FormEnumValue.YES_NO);

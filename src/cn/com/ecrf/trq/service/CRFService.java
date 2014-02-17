@@ -691,7 +691,9 @@ public class CRFService {
 			condition.put("phase", 2);
 			LabExamCase labExamCase = cRFMapper.getLabExamCase(condition);
 			InHospitalExamVo inHospitalExamVo = convertorService.convertLabExamFromModelToView(labExamCase);
-			DrugUseExamVo drugUseExamVo = convertorService.convertInHospitalExamToOtherLabExam(inHospitalExamVo);
+			DrugUseExamVo drugUseExamVo = null;
+			if (inHospitalExamVo  != null)
+			drugUseExamVo = convertorService.convertInHospitalExamToOtherLabExam(inHospitalExamVo);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugUseExamVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -710,7 +712,9 @@ public class CRFService {
 			condition.put("phase", 3);
 			LabExamCase labExamCase = cRFMapper.getLabExamCase(condition);
 			InHospitalExamVo inHospitalExamVo = convertorService.convertLabExamFromModelToView(labExamCase);
-			DrugUseExamVo drugUseExamVo = convertorService.convertInHospitalExamToOtherLabExam(inHospitalExamVo);
+			DrugUseExamVo drugUseExamVo = null;
+			if (inHospitalExamVo  != null)
+				drugUseExamVo = convertorService.convertInHospitalExamToOtherLabExam(inHospitalExamVo);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugUseExamVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -725,7 +729,9 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			DrugSummaryCase drugSummaryCase = cRFMapper.getDrugSummary(id);
-			DrugSummaryVo drugSummaryVo = convertorService.convertDrugSummaryFromModelToView(drugSummaryCase);
+			DrugSummaryVo drugSummaryVo = null;
+			if (drugSummaryCase != null)
+				drugSummaryVo = convertorService.convertDrugSummaryFromModelToView(drugSummaryCase);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugSummaryVo);
 		}catch(Exception e){
 			e.printStackTrace();

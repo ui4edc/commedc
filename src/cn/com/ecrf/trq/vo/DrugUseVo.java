@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.vo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,11 +30,11 @@ public class DrugUseVo {
 		
 		private String bantxt;
 		
-		private List<BanDrug> banDrug;
+		private List<BanDrug> banDrug = new ArrayList<BanDrug>();
 		
 		private String batchNumber;
 		
-		private List<BanDrug> bottle;
+		private List<BanDrug> bottle = new ArrayList<BanDrug>();
 		
 		private String dose;
 		
@@ -55,7 +56,7 @@ public class DrugUseVo {
 		private int	hasBan;
 		private int	hasFood;
 		private int	hasInjection;
-		private List<BanDrug> injection;
+		private List<BanDrug> injection = new ArrayList<BanDrug>();
 		private String prepareTime;
 		private boolean prepareTimeUd;
 		private int location;

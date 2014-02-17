@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.com.ecrf.trq.model.CRFUserSign;
+import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
 import cn.com.ecrf.trq.model.list.ListCondition;
@@ -20,7 +21,9 @@ import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.LockStatusUtils;
+import cn.com.ecrf.trq.vo.DrugSummaryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
+import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 
 public class CRFInsertTest extends SpringControllerTest{
 
@@ -52,7 +55,7 @@ public class CRFInsertTest extends SpringControllerTest{
 		patientInfoVo.setFeemodetxt("其他医疗方式");
 		cRFService.savePatientInfo(patientInfoVo);
 	}
-	
+	@Ignore
 	@Test
 	public void testUpdatePatientInfo() {
 		PatientInfoVo patientInfoVo = new PatientInfoVo();
@@ -122,12 +125,12 @@ public class CRFInsertTest extends SpringControllerTest{
 		int total = cRFMapper.getTotalPatientNum(condition);
 		System.out.println("total:"+total);
 	}
-	
+	@Ignore
 	@Test
 	public void testGetPersonHistory(){
 		PersonAllergicHistoryCase person = cRFMapper.getPersonHistory(7);
 	}
-	
+	@Ignore
 	@Test
 	public void testServiceGetPersonHistory(){
 		 Map<String, Object> result = cRFService.getPersonHistory("8");
@@ -135,5 +138,28 @@ public class CRFInsertTest extends SpringControllerTest{
 		 System.out.println(obj);
 	}
 	
+	@Ignore
+	@Test
+	public void testSaveInHospitalExam(){
+		InHospitalExamVo inHospitalExamVo = new InHospitalExamVo();
+		inHospitalExamVo.setId(5);
+		inHospitalExamVo.setNo("001-0001");
+		cRFService.saveInHospitalExam(inHospitalExamVo);
+	}
+	
+	@Test
+	public void testSaveDrugSummary(){
+		DrugSummaryVo drugSummaryVo = new DrugSummaryVo();
+		drugSummaryVo.setId(5);
+		drugSummaryVo.setNo("001-0001");
+		drugSummaryVo.setRemark("remark");
+		cRFService.saveDrugSummary(drugSummaryVo);
+		Map<String, Object> result = cRFService.getDrugSummary(drugSummaryVo.getId());
+		Assert.assertEquals("remark", ((DrugSummaryVo)result.get("data")).getRemark());
+		drugSummaryVo.setRemark("remark1");
+		cRFService.saveDrugSummary(drugSummaryVo);
+		result = cRFService.getDrugSummary(drugSummaryVo.getId());
+		Assert.assertEquals("remark1", ((DrugSummaryVo)result.get("data")).getRemark());
+	}
 
 }

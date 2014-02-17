@@ -196,7 +196,7 @@
   		where no=#{no}
 	</update>
 	<update id="updateProgress" parameterType="int">
-		update crf_user_sign us set us.progress=#{progress} where us.no=#{no} and us.progress>#{progress}
+		update crf_user_sign us set us.progress=#{progress} where us.no=#{no}
 	</update>
 	<select id="getPastHistory" parameterType="int" resultType="cn.com.ecrf.trq.model.PastHistoryCase">
 		select 
@@ -388,14 +388,41 @@
 		from crf_labexam_info l, crf_patient_info p where p.id=#{id} and p.no=l.no and phase=#{phase}
 	</select>
 	<insert id="insertLabExamCase" parameterType="cn.com.ecrf.trq.model.LabExamCase">
-		insert into crf_labexam_info(no, done, examdate, sample, result, resulttxt1, resulttxt2, resulttxt3, 
-		data1, data2, data3, data4, data5, data6, phase) values(#{no} #{done}, #{examDate}, #{sample},
-		#{result}, #{resulttxt1}, #{resulttxt2}, #{resulttxt3}, #{data1}, #{data2}, #{data3}, #{data4},
-		#{data5}, #{data6}, #{phase});
+		insert into crf_labexam_info(no, done, examdate, sample, result, resulttxt1, resulttxt2, resulttxt3, data1, data2, data3, data4, data5, data6, phase) values(#{no}, #{done}, #{examDate}, #{sample},#{result}, #{resulttxt1}, #{resulttxt2}, #{resulttxt3}, #{data1}, #{data2}, #{data3}, #{data4},#{data5}, #{data6}, #{phase});
 	</insert>
 	<update id="updateLabExamCase" parameterType="cn.com.ecrf.trq.model.LabExamCase">
-		update crf_labexam_info set done=#{done},examdate=#{examDate}, sample=#{sample}, resulttxt1=#{resulttxt1},
-		resulttxt2=#{resulttxt2}, resulttxt3=#{resulttxt3}, data1=#{data1}, data2=#{data2}, data3#{data3},
+		update crf_labexam_info set done=#{done},examdate=#{examDate}, sample=#{sample}, result=#{result}, resulttxt1=#{resulttxt1},
+		resulttxt2=#{resulttxt2}, resulttxt3=#{resulttxt3}, data1=#{data1}, data2=#{data2}, data3=#{data3},
 		data4=#{data4}, data5=#{data5}, data6=#{data6} where no=#{no} and phase=#{phase}
+	</update>
+	<select id="getDrugSummary" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugSummaryCase">
+		select 	d.no as no,
+				d.startDate as startDate,
+				d.endDate as endDate,
+				d.ending as ending,
+				d.deathReason as deathReason,
+				d.deathDate as deathDate,
+				d.adr as adr,
+				d.unreasonable as unreasonable,
+				d.intervention as intervention,
+				d.interventiontxt as interventiontxt,
+				d.treatmentCost as treatmentCost,
+				d.drugCost as drugCost,
+				d.trqCost as trqCost,
+				d.remark as remark
+		from crf_drugsummary_info d, crf_patient_info p where p.id=#{id} and p.no=d.no
+	</select>
+	<insert id="insertDrugSummary" parameterType="cn.com.ecrf.trq.model.DrugSummaryCase">
+		insert into crf_drugsummary_info (no, startDate, endDate, ending, deathReason, deathDate,
+		adr, unreasonable, intervention, interventiontxt, treatmentCost, drugCost, trqCost, remark)
+		values (#{no}, #{startDate}, #{endDate}, #{ending}, #{deathReason}, #{deathDate}, 
+		#{adr}, #{unreasonable}, #{intervention}, #{interventiontxt}, #{treatmentCost}, #{drugCost},
+		#{trqCost}, #{remark});
+	</insert>
+	<update id="updateDrugSummary" parameterType="cn.com.ecrf.trq.model.DrugSummaryCase">
+		update crf_drugsummary_info set no=#{no}, startDate=#{startDate}, endDate=#{endDate},
+		ending=#{ending},deathReason=#{deathReason}, deathDate=#{adr}, unreasonable=#{unreasonable},
+		intervention=#{intervention}, interventiontxt=#{interventiontxt}, treatmentCost=#{treatmentCost},
+		drugCost=#{drugCost}, trqCost=#{trqCost}, remark=#{remark} where no=#{no}
 	</update>
 </mapper>
