@@ -728,6 +728,86 @@ public class ConvertorService {
 
 	public ADRVo convertADRFromModelToView(ADRCase adrCase) {
 		// TODO Auto-generated method stub
+		ADRVo aDRVo = new ADRVo();
+		try {
+			BeanUtils.copyProperties(aDRVo, adrCase);
+			if (adrCase.getAdrDateDate() != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					String adrDate = sdf.format(adrCase.getAdrDateDate());
+					aDRVo.setAdrDate(adrDate);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FormEnumObject adrDeal3Obj = new FormEnumObject(adrCase.getAdrDeal3Str(), FormEnumValue.ADR_DEAL3);
+			aDRVo.setAdrDeal3(convertContentToID(adrDeal3Obj));
+			FormEnumObject adrDealObj = new FormEnumObject(adrCase.getAdrDealStr(), FormEnumValue.ADR_DEAL);
+			aDRVo.setAdrDeal(convertContentToID(adrDealObj));
+			FormEnumObject adrRestartObj = new FormEnumObject(adrCase.getAdrRestartStr(), FormEnumValue.ADR_RESTART);
+			aDRVo.setAdrRestart(convertContentToID(adrRestartObj));
+			FormEnumObject adrStopObj = new FormEnumObject(adrCase.getAdrStopStr(), FormEnumValue.ADR_STOP);
+			aDRVo.setAdrStop(convertContentToID(adrStopObj));
+			if (adrCase.getBirthdayDate() != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					String birthday = sdf.format(adrCase.getBirthdayDate());
+					aDRVo.setBirthday(birthday);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FormEnumObject bloodObj = new FormEnumObject(adrCase.getBloodStr(), FormEnumValue.ADR_NAME1);
+			aDRVo.setBlood(convertContentToID(bloodObj));
+			FormEnumObject careerObj = new FormEnumObject(adrCase.getCareerStr(), FormEnumValue.CAREER);
+			aDRVo.setCareer(convertContentToID(careerObj));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			if (StringUtils.isNotBlank(adrCase.getDrug1Str()))
+				aDRVo.setDrug1(util.convertFromString(adrCase.getDrug1Str()));
+			if (StringUtils.isNotBlank(adrCase.getDrug2Str()))
+				aDRVo.setDrug2(util.convertFromString(adrCase.getDrug2Str()));
+			FormEnumObject endingObj = new FormEnumObject(adrCase.getEndingStr(), FormEnumValue.ADR_ENDING);
+			aDRVo.setEnding(convertContentToID(endingObj));
+			FormEnumObject ethicObj = new FormEnumObject(adrCase.getEthicStr(), FormEnumValue.ETHIC);
+			aDRVo.setEthic(convertContentToID(ethicObj));
+			FormEnumObject evaluateObj = new FormEnumObject(adrCase.getEvaluateStr(), FormEnumValue.YES_NO);
+			aDRVo.setEvaluate(convertContentToID(evaluateObj));
+			FormEnumObject familyadrObj = new FormEnumObject(adrCase.getFamilyadrStr(), FormEnumValue.YES_NO);
+			aDRVo.setFamilyadr(convertContentToID(familyadrObj));
+			FormEnumObject historyadrObj = new FormEnumObject(adrCase.getHistoryadrStr(), FormEnumValue.YES_NO);
+			aDRVo.setHistoryadr(convertContentToID(historyadrObj));
+			FormEnumObject relationshipObj = new FormEnumObject(adrCase.getRelationshipStr(), FormEnumValue.YES_NO);
+			aDRVo.setRelationship(convertContentToID(relationshipObj));
+			if (adrCase.getDeathDateDate() != null){
+				try {
+					String deathDate = sdf.format(adrCase.getDeathDateDate());
+					aDRVo.setDeathDate(deathDate);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (adrCase.getReportDateDate() != null){
+				try {
+					String reportDate = sdf.format(adrCase.getReportDateDate());
+					aDRVo.setReportDate(reportDate);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FormEnumObject sexObj = new FormEnumObject(adrCase.getSexStr(), FormEnumValue.SEX);
+			aDRVo.setSex(convertContentToID(sexObj));
+			FormEnumObject typeObj = new FormEnumObject(adrCase.getTypeStr(), FormEnumValue.ADR_TYPE);
+			aDRVo.setType(convertContentToID(typeObj));
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return null;
 	}
