@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class DoubtRecord {
 	private int id;
+	private int doubtId;
 	private int menuId;
 	private String menuName;
 	private int fieldId;
@@ -13,7 +14,9 @@ public class DoubtRecord {
 	private String doubter;
 	private String description;
 	private Date commitDate;
-	private int flag; 
+	private int flag;
+	private int total;
+	private int unDeal;
 	
 	public int getId() {
 		return id;
@@ -81,6 +84,24 @@ public class DoubtRecord {
 	}
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public int getUnDeal() {
+		return unDeal;
+	}
+	public void setUnDeal(int unDeal) {
+		this.unDeal = unDeal;
+	}
+	public int getDoubtId() {
+		return doubtId;
+	}
+	public void setDoubtId(int doubtId) {
+		this.doubtId = doubtId;
 	}
 	
 	

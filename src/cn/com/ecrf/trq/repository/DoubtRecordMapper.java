@@ -15,4 +15,6 @@ public interface DoubtRecordMapper {
 
 	void saveDoubtRecord(DoubtRecord doubtRecord);
 
+	List<DoubtRecord> getDoubtSumm(String id);
+
 }

@@ -3,11 +3,15 @@
 
 <mapper namespace="cn.com.ecrf.trq.repository.DoubtRecordMapper" >
   <insert id="insertDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord">
-  	insert into crf_doubt(id, no, doubt_time, commit_time, flag, doubter, fieldid, description, menuid)
-  	values(#{id}, #{no}, #{doubtDate}, #{commitDate}, #{flag}, #{doubter}, #{fieldId}, #{description}, #{menuId});
+  	<selectKey resultType="Integer" order="AFTER" keyProperty="doubtId">
+	SELECT LAST_INSERT_ID()
+	</selectKey>
+  	insert into crf_doubt(doubtId, id, no, doubt_time, commit_time, flag, doubter, fieldid, description, menuid)
+  	values(#{doubtId}, #{id}, #{no}, #{doubtDate}, #{commitDate}, #{flag}, #{doubter}, #{fieldId}, #{description}, #{menuId});
   </insert>
   <select id="getDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord" resultType="cn.com.ecrf.trq.model.DoubtRecord">
-  	select id as id,
+  	select doubtId as doubtId,
+  			id as id,
   		   no as no,
   		   doubt_time as doubtDate,
   		   commit_time as commitDate,
@@ -26,6 +30,11 @@
   </select>
   <update id="saveDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord">
   	update crf_doubt set commit_time=#{commitDate}, flag=#{flag} 
-  	where id=#{id} and fieldid=#{fieldId} and menuid=#{menuId}
+  	where id=#{id} and doubtId=#{doubtId}
   </update>
+  <select id="getDoubtSumm" parameterType="int" resultType="cn.com.ecrf.trq.model.DoubtRecord">
+  	select menuid as menuId, 
+  		   count(1) as unDeal
+  	from crf_doubt where flag=0 and id=#{id} group by menuid asc
+  </select>
 </mapper>

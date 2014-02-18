@@ -286,6 +286,12 @@ public class CRFService {
 			result.put("abbr", listReturn.getAbbr());
 			result.put("no", listReturn.getNo());
 			result.put("progress", listReturn.getProgress() + "%");
+			List<DoubtRecord> doubt = doubtRecordMapper.getDoubtSumm(id);
+			Map<String, Object> doubtSumm = new HashMap<String, Object>();
+			for (int i=0;doubt != null && i < doubt.size(); i++){
+				doubtSumm.put(""+doubt.get(i).getMenuId(), doubt.get(i).getUnDeal());
+			}
+			result.put("doubt", doubtSumm);
 		}catch(Exception e){
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
