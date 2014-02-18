@@ -33,12 +33,14 @@ public class PatientInfoCase {
 	private int height;
 	//用药科室
 	private String yyks;
+	private String yykstxt;
 	//入院日期
 	private Date ryrq;
 	//出院日期
 	private Date cyrq;
 	//医疗费用方式
 	private String ylfyfs;
+	private String ylfyfstxt;
 	
 	private boolean heightud;
 	
@@ -161,6 +163,18 @@ public class PatientInfoCase {
 	}
 	public void setCreateBy(String createBy) {
 		this.createBy = createBy;
+	}
+	public String getYykstxt() {
+		return yykstxt;
+	}
+	public void setYykstxt(String yykstxt) {
+		this.yykstxt = yykstxt;
+	}
+	public String getYlfyfstxt() {
+		return ylfyfstxt;
+	}
+	public void setYlfyfstxt(String ylfyfstxt) {
+		this.ylfyfstxt = ylfyfstxt;
 	}
 	
 	

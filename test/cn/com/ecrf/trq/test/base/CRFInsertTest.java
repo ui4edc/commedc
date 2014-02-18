@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.com.ecrf.trq.model.ADRCase;
 import cn.com.ecrf.trq.model.CRFUserSign;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
@@ -21,6 +22,7 @@ import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.LockStatusUtils;
+import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.DrugSummaryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
@@ -161,5 +163,17 @@ public class CRFInsertTest extends SpringControllerTest{
 		result = cRFService.getDrugSummary(drugSummaryVo.getId());
 		Assert.assertEquals("remark1", ((DrugSummaryVo)result.get("data")).getRemark());
 	}
-
+	
+	@Test
+	public void testSaveADR(){
+		ADRCase adrCase = cRFMapper.getADR(5);
+		ADRVo adrVo = new ADRVo();
+		adrVo.setId(5);
+		adrVo.setNo("001-0001");
+		adrVo.setName("abc");
+		cRFService.saveADR(adrVo);
+		adrVo.setName("abc1");
+		cRFService.saveADR(adrVo);
+		
+	}
 }

@@ -9,6 +9,7 @@ public class FormEnumValue {
 	public static final String YYKS = "yyks";
 	public static final String YES_NO_UNKNOWN = "ywbx";
 	public static final String YES_NO = "yn";
+	public static final String HAS_OR_NOT = "yw";
 	public static final String SJYB = "sjyb";
 	public static final String DONE = "done";
 	public static final String CAREER = "career";

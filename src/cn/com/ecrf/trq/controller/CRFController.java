@@ -201,7 +201,7 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/savePastHistory", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> savePastHistory(@RequestBody PastHistoryVo pastHistoryVo, HttpServletRequest request) {
+	public Map<String, Object> savePastHistory(PastHistoryVo pastHistoryVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.savePastHistory(pastHistoryVo);
 		return result;
 	}

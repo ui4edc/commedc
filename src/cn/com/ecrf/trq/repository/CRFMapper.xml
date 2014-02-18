@@ -421,8 +421,91 @@
 	</insert>
 	<update id="updateDrugSummary" parameterType="cn.com.ecrf.trq.model.DrugSummaryCase">
 		update crf_drugsummary_info set no=#{no}, startDate=#{startDate}, endDate=#{endDate},
-		ending=#{ending},deathReason=#{deathReason}, deathDate=#{adr}, unreasonable=#{unreasonable},
+		ending=#{ending},deathReason=#{deathReason}, deathDate=#{deathDate}, adr=#{adr}, unreasonable=#{unreasonable},
 		intervention=#{intervention}, interventiontxt=#{interventiontxt}, treatmentCost=#{treatmentCost},
 		drugCost=#{drugCost}, trqCost=#{trqCost}, remark=#{remark} where no=#{no}
+	</update>
+	<select id="getADR" parameterType="int" resultType="cn.com.ecrf.trq.model.ADRCase">
+		select id as id,
+			   a.no as no,
+			   a.type as typeStr,
+			   a.blood as bloodStr,
+			   a.name as name,
+			   a.sex as sexStr,
+			   a.birthday as birthdayDate,
+			   a.ethic as ethicStr,
+			   a.weight as weight,
+			   a.contact as contact,
+			   a.disease as disease,
+			   a.patientNo as patientNo,
+			   a.historyadr as historyadrStr,
+			   a.historyadrtxt as historyadrtxt,
+			   a.familyadr as familyadrStr,
+			   a.familyadrtxt as familyadrtxt,
+			   a.relationship as relationshipStr,
+			   a.info as info,
+			   a.info6txt as info6txt,
+			   a.info7txt as info7txt,
+			   a.drug1 as drug1Str,
+			   a.drug2 as drug2Str,
+			   a.adr as adr,
+			   a.adr1 as adr1,
+			   a.adr2 as adr2,
+			   a.adr3 as adr3,
+			   a.adr4 as adr4,
+			   a.adr5 as adr5,
+			   a.adr6 as adr6,
+			   a.adr7 as adr7,
+			   a.adr8 as adr8,
+			   a.adr9 as adr9,
+			   a.adr10 as adr10,
+			   a.adrtxt as adrtxt,
+			   a.adrDate as adrDateDate,
+			   a.adrH as adrH,
+			   a.adrM as adrM,
+			   a.adrDescription as adrDescription,
+			   a.adrDeal as adrDealStr,
+			   a.adrDeal3 as adrDeal3Str,
+			   a.adrDeal3txt as adrDeal3txt,
+			   a.adrDealDose as adrDealDose,
+			   a.adrDeal4txt as adrDeal4txt,
+			   a.adrDealRemark as adrDealRemark,
+			   a.ending as endingStr,
+			   a.endingtxt as endingtxt,
+			   a.deathDate as deathDateDate,
+			   a.deathReason as deathReason,
+			   a.adrStop as adrStopStr,
+			   a.adrRestart as adrRestartStr,
+			   a.evaluate as evaluateStr,
+			   a.career as careerStr,
+			   a.careertxt as careertxt,
+			   a.email as email,
+			   a.reportDate as reportDateDate,
+			   a.remark as remark
+			   from crf_adr_info a, crf_patient_info p where a.no=p.no and p.id=#{id}
+	</select>
+	<insert id="insertADR" parameterType="cn.com.ecrf.trq.model.ADRCase">
+		insert into crf_adr_info(no, type, blood, name, sex, birthday, ethic, weight, contact, disease,
+		patientNo, historyadr, historyadrtxt, familyadr, familyadrtxt, relationship, info, info6txt,
+		info7txt, drug1, drug2, adr, adr1, adr2, adr3, adr4, adr5, adr6, adr7, adr8, adr9, adr10,
+		adrtxt, adrDate, adrH, adrM, adrDescription, adrDeal, adrDeal3, adrDeal3txt, adrDealDose, 
+		adrDeal4txt, adrDealRemark, ending, endingtxt, deathDate, deathReason, adrStop, adrRestart,
+		evaluate, career, careertxt, email, reportDate, remark) 
+		values(#{no},#{typeStr},#{bloodStr},#{name},#{sexStr},#{birthdayDate},#{ethicStr},#{weight},#{contact}, #{disease},
+		#{patientNo},#{historyadrStr},#{historyadrtxt},#{familyadrStr},#{familyadrtxt},#{relationshipStr},#{info},#{info6txt},
+		#{info7txt},#{drug1Str},#{drug2Str},#{adr},#{adr1},#{adr2},#{adr3},#{adr4},#{adr5},#{adr6},#{adr7},#{adr8},#{adr9},#{adr10},
+		#{adrtxt},#{adrDateDate},#{adrH},#{adrM},#{adrDescription},#{adrDealStr},#{adrDeal3Str},#{adrDeal3txt},#{adrDealDose},
+		#{adrDeal4txt},#{adrDealRemark},#{endingStr},#{endingtxt},#{deathDateDate},#{deathReason},#{adrStopStr},#{adrRestartStr},
+		#{evaluateStr},#{careerStr},#{careertxt},#{email},#{reportDateDate},#{remark});
+	</insert> 
+	<update id="updateADR" parameterType="cn.com.ecrf.trq.model.ADRCase">
+		update crf_adr_info set 
+			type=#{typeStr},blood=#{bloodStr},name=#{name},sex=#{sexStr},birthday=#{birthdayDate},ethic=#{ethicStr},weight=#{weight},contact=#{contact},disease=#{disease},
+			patientNo=#{patientNo},historyadr=#{historyadrStr},historyadrtxt=#{historyadrtxt},familyadr=#{familyadrStr},familyadrtxt=#{familyadrtxt},relationship=#{relationshipStr},info=#{info},info6txt=#{info6txt},
+			info7txt=#{info7txt},drug1=#{drug1Str},drug2=#{drug2Str},adr=#{adr},adr1=#{adr1},adr2=#{adr2},adr3=#{adr3},adr4=#{adr4},adr5=#{adr5},adr6=#{adr6},adr7=#{adr7},adr8=#{adr8},adr9=#{adr9},adr10=#{adr10},
+			adrtxt=#{adrtxt},adrDate=#{adrDateDate},adrH=#{adrH},adrM=#{adrM},adrDescription=#{adrDescription},adrDeal=#{adrDealStr},adrDeal3=#{adrDeal3Str},adrDeal3txt=#{adrDeal3txt},adrDealDose=#{adrDealDose},
+			adrDeal4txt=#{adrDeal4txt},adrDealRemark=#{adrDealRemark},ending=#{endingStr},endingtxt=#{endingtxt},deathDate=#{deathDateDate},deathReason=#{deathReason},adrStop=#{adrStopStr},adrRestart=#{adrRestartStr},
+			evaluate=#{evaluateStr},career=#{careerStr},careertxt=#{careertxt},email=#{email},reportDate=#{reportDateDate},remark=#{remark} 
+		where no=#{no}
 	</update>
 </mapper>

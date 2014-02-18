@@ -48,9 +48,8 @@ public class ADRCase {
 	//不良反应/事件处理情况
 	private String adrDealStr;
 	private String adrDeal3Str;
-	private String drDeal3txt;
-	private String adrDealDose;
 	private String adrDeal3txt;
+	private String adrDealDose;
 	private String adrDeal4txt;
 	//备注
 	private String adrDealRemark;
@@ -309,12 +308,7 @@ public class ADRCase {
 	public void setAdrDeal3Str(String adrDeal3Str) {
 		this.adrDeal3Str = adrDeal3Str;
 	}
-	public String getDrDeal3txt() {
-		return drDeal3txt;
-	}
-	public void setDrDeal3txt(String drDeal3txt) {
-		this.drDeal3txt = drDeal3txt;
-	}
+	
 	public String getAdrDealDose() {
 		return adrDealDose;
 	}

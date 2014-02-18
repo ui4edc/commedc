@@ -805,7 +805,9 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			ADRCase adrCase = cRFMapper.getADR(id);
-			ADRVo adrVo = convertorService.convertADRFromModelToView(adrCase);
+			ADRVo adrVo = null;
+			if (adrCase != null)
+				adrVo = convertorService.convertADRFromModelToView(adrCase);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, adrVo);
 		}catch(Exception e){
 			e.printStackTrace();

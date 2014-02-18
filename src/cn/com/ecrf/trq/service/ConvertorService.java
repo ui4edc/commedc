@@ -207,7 +207,7 @@ public class ConvertorService {
 		if (personalHistoryVo.getFood() != null && personalHistoryVo.getFood().size() > 0)
 			personalHistoryCase.setFoodlb(util.convertFromList(personalHistoryVo.getFood()));
 		if (personalHistoryVo.getOther() != null && personalHistoryVo.getOther().size() > 0)
-			personalHistoryCase.setOther(util.convertFromList(personalHistoryVo.getOther()));
+			personalHistoryCase.setOtherlb(util.convertFromList(personalHistoryVo.getOther()));
 		return personalHistoryCase;
 	}
 
@@ -450,8 +450,10 @@ public class ConvertorService {
 			inHospitalExamVo.setData6(data6);
 		}
 		inHospitalExamVo.setId(labExamCase.getId());
-		FormEnumObject doneObj = new FormEnumObject(labExamCase.getDone(), FormEnumValue.DONE);
-		inHospitalExamVo.setDone(convertContentToID(doneObj));
+		if (StringUtils.isNotBlank(labExamCase.getDone())){
+			FormEnumObject doneObj = new FormEnumObject(labExamCase.getDone(), FormEnumValue.DONE);
+			inHospitalExamVo.setDone(convertContentToID(doneObj));
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		if (labExamCase.getExamDate() != null){
 			String examDate = sdf.format(labExamCase.getExamDate());
@@ -463,9 +465,11 @@ public class ConvertorService {
 		inHospitalExamVo.setResulttxt1(labExamCase.getResulttxt1());
 		inHospitalExamVo.setResulttxt2(labExamCase.getResulttxt2());
 		inHospitalExamVo.setResulttxt3(labExamCase.getResulttxt3());
-		FormEnumObject sampleObj = new FormEnumObject(labExamCase.getSample(), FormEnumValue.SJYB);
-		inHospitalExamVo.setSample(convertContentToID(sampleObj));
-		inHospitalExamVo.setSampletxt(sampleObj.getOther());
+		if (StringUtils.isNotBlank(labExamCase.getSample())){
+			FormEnumObject sampleObj = new FormEnumObject(labExamCase.getSample(), FormEnumValue.SJYB);
+			inHospitalExamVo.setSample(convertContentToID(sampleObj));
+			inHospitalExamVo.setSampletxt(sampleObj.getOther());
+		}
 		return inHospitalExamVo;
 	}
 
@@ -497,8 +501,10 @@ public class ConvertorService {
 			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
 			labExamCase.setData6(util.convertFromList(inHospitalExamVo.getData6()));
 		}
-		FormEnumObject doneObj = new FormEnumObject(inHospitalExamVo.getDone(), null, FormEnumValue.DONE);
-		labExamCase.setDone(convertIDToContent(doneObj));
+		if (inHospitalExamVo.getDone() > 0){
+			FormEnumObject doneObj = new FormEnumObject(inHospitalExamVo.getDone(), null, FormEnumValue.DONE);
+			labExamCase.setDone(convertIDToContent(doneObj));
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		if (StringUtils.isNotBlank(inHospitalExamVo.getExamDate())){
 			Date examDate;
@@ -517,8 +523,10 @@ public class ConvertorService {
 		labExamCase.setResulttxt1(inHospitalExamVo.getResulttxt1());
 		labExamCase.setResulttxt2(inHospitalExamVo.getResulttxt2());
 		labExamCase.setResulttxt3(inHospitalExamVo.getResulttxt3());
-		FormEnumObject sampleObj = new FormEnumObject(inHospitalExamVo.getSample(), inHospitalExamVo.getSampletxt(), FormEnumValue.SJYB);
-		labExamCase.setSample(convertIDToContent(sampleObj));
+		if (inHospitalExamVo.getSample() > 0){
+			FormEnumObject sampleObj = new FormEnumObject(inHospitalExamVo.getSample(), inHospitalExamVo.getSampletxt(), FormEnumValue.SJYB);
+			labExamCase.setSample(convertIDToContent(sampleObj));
+		}
 		return labExamCase;
 	}
 
@@ -604,7 +612,7 @@ public class ConvertorService {
 			
 		}
 		drugSummaryCase.setDeathReason(drugSummaryVo.getDeathReason());
-		drugSummaryCase.setDrugCost(drugSummaryVo.getEndDate());
+		drugSummaryCase.setDrugCost(drugSummaryVo.getDrugCost());
 		if (StringUtils.isNotBlank(drugSummaryVo.getEndDate())){
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try {
@@ -615,10 +623,10 @@ public class ConvertorService {
 				e.printStackTrace();
 			}
 		}
-		FormEnumObject endingObj = new FormEnumObject(drugSummaryVo.getEnding(), null, FormEnumValue.YES_NO);
+		FormEnumObject endingObj = new FormEnumObject(drugSummaryVo.getEnding(), null, FormEnumValue.DM_ENDING);
 		drugSummaryCase.setEnding(convertIDToContent(endingObj));
 		drugSummaryCase.setId(drugSummaryVo.getId());
-		FormEnumObject interventionObj = new FormEnumObject(drugSummaryVo.getIntervention(), null, FormEnumValue.YES_NO);
+		FormEnumObject interventionObj = new FormEnumObject(drugSummaryVo.getIntervention(), null, FormEnumValue.HAS_OR_NOT);
 		drugSummaryCase.setIntervention(convertIDToContent(interventionObj));
 		drugSummaryCase.setInterventiontxt(drugSummaryVo.getInterventiontxt());
 		drugSummaryCase.setNo(drugSummaryVo.getNo());
@@ -656,13 +664,13 @@ public class ConvertorService {
 					e.printStackTrace();
 				}
 			}
-			FormEnumObject adrDeal3Obj = new FormEnumObject(adrVo.getAdrDeal3(), adrVo.getAdrDeal3txt(), FormEnumValue.YES_NO);
+			FormEnumObject adrDeal3Obj = new FormEnumObject(adrVo.getAdrDeal3(), adrVo.getAdrDeal3txt(), FormEnumValue.ADR_DEAL3);
 			aDRCase.setAdrDeal3Str(convertIDToContent(adrDeal3Obj));
-			FormEnumObject adrDealObj = new FormEnumObject(adrVo.getAdrDeal(), null, FormEnumValue.YES_NO);
+			FormEnumObject adrDealObj = new FormEnumObject(adrVo.getAdrDeal(), null, FormEnumValue.ADR_DEAL);
 			aDRCase.setAdrDealStr(convertIDToContent(adrDealObj));
-			FormEnumObject adrRestartObj = new FormEnumObject(adrVo.getAdrRestart(), null, FormEnumValue.YES_NO);
+			FormEnumObject adrRestartObj = new FormEnumObject(adrVo.getAdrRestart(), null, FormEnumValue.ADR_RESTART);
 			aDRCase.setAdrRestartStr(convertIDToContent(adrRestartObj));
-			FormEnumObject adrStopObj = new FormEnumObject(adrVo.getAdrStop(), null, FormEnumValue.YES_NO);
+			FormEnumObject adrStopObj = new FormEnumObject(adrVo.getAdrStop(), null, FormEnumValue.ADR_STOP);
 			aDRCase.setAdrStopStr(convertIDToContent(adrStopObj));
 			if (StringUtils.isNotBlank(adrVo.getBirthday())){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -689,13 +697,13 @@ public class ConvertorService {
 			aDRCase.setEndingStr(convertIDToContent(endingObj));
 			FormEnumObject ethicObj = new FormEnumObject(adrVo.getEthic(), null, FormEnumValue.ETHIC);
 			aDRCase.setEthicStr(convertIDToContent(ethicObj));
-			FormEnumObject evaluateObj = new FormEnumObject(adrVo.getEvaluate(), null, FormEnumValue.YES_NO);
+			FormEnumObject evaluateObj = new FormEnumObject(adrVo.getEvaluate(), null, FormEnumValue.ADR_EVALUATE);
 			aDRCase.setEvaluateStr(convertIDToContent(evaluateObj));
-			FormEnumObject familyadrObj = new FormEnumObject(adrVo.getFamilyadr(), adrVo.getFamilyadrtxt(), FormEnumValue.YES_NO);
+			FormEnumObject familyadrObj = new FormEnumObject(adrVo.getFamilyadr(), adrVo.getFamilyadrtxt(), FormEnumValue.YES_NO_UNKNOWN);
 			aDRCase.setFamilyadrStr(convertIDToContent(familyadrObj));
-			FormEnumObject historyadrObj = new FormEnumObject(adrVo.getHistoryadr(), adrVo.getHistoryadrtxt(), FormEnumValue.YES_NO);
+			FormEnumObject historyadrObj = new FormEnumObject(adrVo.getHistoryadr(), adrVo.getHistoryadrtxt(), FormEnumValue.YES_NO_UNKNOWN);
 			aDRCase.setHistoryadrStr(convertIDToContent(historyadrObj));
-			FormEnumObject relationshipObj = new FormEnumObject(adrVo.getRelationship(), null, FormEnumValue.YES_NO);
+			FormEnumObject relationshipObj = new FormEnumObject(adrVo.getRelationship(), null, FormEnumValue.ADR_RELATIONSHIP);
 			aDRCase.setRelationshipStr(convertIDToContent(relationshipObj));
 			if (StringUtils.isNotBlank(adrVo.getDeathDate())){
 				try {
@@ -759,7 +767,7 @@ public class ConvertorService {
 					e.printStackTrace();
 				}
 			}
-			FormEnumObject bloodObj = new FormEnumObject(adrCase.getBloodStr(), FormEnumValue.ADR_NAME1);
+			FormEnumObject bloodObj = new FormEnumObject(adrCase.getBloodStr(), FormEnumValue.YES_NO);
 			aDRVo.setBlood(convertContentToID(bloodObj));
 			FormEnumObject careerObj = new FormEnumObject(adrCase.getCareerStr(), FormEnumValue.CAREER);
 			aDRVo.setCareer(convertContentToID(careerObj));
@@ -774,13 +782,13 @@ public class ConvertorService {
 			aDRVo.setEnding(convertContentToID(endingObj));
 			FormEnumObject ethicObj = new FormEnumObject(adrCase.getEthicStr(), FormEnumValue.ETHIC);
 			aDRVo.setEthic(convertContentToID(ethicObj));
-			FormEnumObject evaluateObj = new FormEnumObject(adrCase.getEvaluateStr(), FormEnumValue.YES_NO);
+			FormEnumObject evaluateObj = new FormEnumObject(adrCase.getEvaluateStr(), FormEnumValue.ADR_EVALUATE);
 			aDRVo.setEvaluate(convertContentToID(evaluateObj));
-			FormEnumObject familyadrObj = new FormEnumObject(adrCase.getFamilyadrStr(), FormEnumValue.YES_NO);
+			FormEnumObject familyadrObj = new FormEnumObject(adrCase.getFamilyadrStr(), FormEnumValue.YES_NO_UNKNOWN);
 			aDRVo.setFamilyadr(convertContentToID(familyadrObj));
-			FormEnumObject historyadrObj = new FormEnumObject(adrCase.getHistoryadrStr(), FormEnumValue.YES_NO);
+			FormEnumObject historyadrObj = new FormEnumObject(adrCase.getHistoryadrStr(), FormEnumValue.YES_NO_UNKNOWN);
 			aDRVo.setHistoryadr(convertContentToID(historyadrObj));
-			FormEnumObject relationshipObj = new FormEnumObject(adrCase.getRelationshipStr(), FormEnumValue.YES_NO);
+			FormEnumObject relationshipObj = new FormEnumObject(adrCase.getRelationshipStr(), FormEnumValue.ADR_RELATIONSHIP);
 			aDRVo.setRelationship(convertContentToID(relationshipObj));
 			if (adrCase.getDeathDateDate() != null){
 				try {
