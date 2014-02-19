@@ -116,6 +116,8 @@ util.ajax = {
             
             error: function(jqXHR, textStatus, errorThrown) {
                 util.ajax.showError(textStatus + ": " + errorThrown);
+                if (jqXHR.responseText.indexOf("登录")>-1)
+                    window.location.href = $("#BasePath").val() + "login.do";
             },
             
             success: function(data, textStatus, jqXHR) {
