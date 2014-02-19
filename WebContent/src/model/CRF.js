@@ -28,7 +28,20 @@ es.Models.CRF = Backbone.Model.extend({
                 success: true,
                 no: "333-1234",
                 abbr: "XM",
-                progress: "10%"
+                progress: "10%",
+                doubt: {
+                    "11": 10,
+                    "12": 200,
+                    "13": 3,
+                    "20": 1,
+                    "30": 1,
+                    "40": 1,
+                    "51": 0,
+                    "52": 0,
+                    "53": 0,
+                    "60": 0,
+                    "70": 0
+                }
             }
         });
     }

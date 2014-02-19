@@ -92,12 +92,29 @@ es.Views.CRF = Backbone.View.extend({
         this.form = null;
         
         //创建菜单
+        var me = this;
         this.menu = new Tree({
             container: ".sidenav",
             data: CRF_MENU,
+            defaultId: this.selectADR ? 70 : 11,
             onClick: this.onMenuClick,
-            defaultId: this.selectADR ? 70 : 11
+            onLoad: function() {
+                if (Auth.CRO || Auth.LCRO) {
+                    me.addDoubt(data.doubt);
+                }
+            }
         });
+    },
+    
+    /*
+     * 添加质疑数
+     */
+    addDoubt: function(doubt) {
+        for (var i in doubt) {
+            if (doubt[i] !== 0) {
+                this.$(".sidenav a[id=TreeNode" + i + "]").append('<span title="' + doubt[i] + '项质疑">' + doubt[i] + '</span>');
+            }
+        }
     },
     
     /*
@@ -112,7 +129,11 @@ es.Views.CRF = Backbone.View.extend({
     /*
      * 切换表单
      */
-    onMenuClick: function(id) {
+    onMenuClick: function(id, target) {
+        if (Auth.CRO || Auth.LCRO) {
+            target.find("span").fadeOut(3000);
+        }
+        
         var me = es.main;
         me.destroyForm();
         
@@ -279,12 +300,14 @@ es.Views.CRF = Backbone.View.extend({
                 success: true,
                 data: [
                     {
+                        doubtId: 1,
                         doubter: "doubter",
                         doubtField: "身高",
                         description: "非人类",
                         doubtDate: "2014-01-03 00:00:00"
                     },
                     {
+                        doubtId: 2,
                         doubter: "doubter",
                         doubtField: "身高",
                         description: "非人类",
@@ -297,34 +320,75 @@ es.Views.CRF = Backbone.View.extend({
     
     renderDoubtList: function(data) {
         var table = esui.get("Doubtlist");
-        table.datasource = data;
-        table.fields = [
-            {
-                field: "doubter",
-                title: "质疑人",
-                sortable: true,
-                content: function(item) {return item.doubter;}
-            },
-            {
-                field: "doubtField",
-                title: "质疑字段",
-                sortable: true,
-                content: function(item) {return item.doubtField;}
-            },
-            {
-                field: "description",
-                title: "说明",
-                content: function(item) {return item.description;}
-            },
-            {
-                field: "doubtDate",
-                title: "质疑时间",
-                sortable: true,
-                content: function(item) {return item.doubtDate;}
+        
+        if (data == null || data.length == 0) {
+            $(table.main).hide();
+            $(".no-doubt").show();
+        } else {
+            $(table.main).show();
+            $(".no-doubt").hide();
+            
+            table.datasource = data;
+            table.fields = [
+                {
+                    field: "doubter",
+                    title: "质疑人",
+                    content: function(item) {return item.doubter;}
+                },
+                {
+                    field: "doubtField",
+                    title: "质疑字段",
+                    content: function(item) {return item.doubtField;}
+                },
+                {
+                    field: "description",
+                    title: "说明",
+                    content: function(item) {return item.description;}
+                },
+                {
+                    field: "doubtDate",
+                    title: "质疑时间",
+                    content: function(item) {return item.doubtDate;}
+                }
+            ];
+            
+            if (Auth.CRO || Auth.LCRO) {
+                table.fields.push({
+                    field: "op",
+                    title: "操作",
+                    content: function(item) {
+                        return '<a href="javascript:void(0)" class="fix" onclick="es.main.fixDoubt(' + item.doubtId + ', this)">解决</a>';
+                    }
+                });
             }
-        ];
-        table.render();
+            
+            table.render();
+        }
         
         esui.get("CheckDoubtDialog").show();
+    },
+    
+    fixDoubt: function(id, el) {
+        var data = {
+            id: this.crfId,
+            menu: this.getMenuId(),
+            doubtId: id
+        };
+        
+        console.log("supervise/commitDoubtColumn-请求", data);
+        
+        util.ajax.run({
+            url: "supervise/commitDoubtColumn.do",
+            data: data,
+            success: function(response) {
+                console.log("supervise/commitDoubtColumn-响应", response);
+                
+                $(el).after("已解决").remove();
+            },
+            mock: MOCK,
+            mockData: {
+                success: true
+            }
+        });
     }
 });
