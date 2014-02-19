@@ -89,7 +89,7 @@ es.Views.Form30 = Backbone.View.extend({
                     bottle: data.data.bottle,
                     disabled: disabled
                 }));
-                me.$(".injections").prepend($.Mustache.render("tpl-form30-injection", {
+                me.$(".injections-tip").after($.Mustache.render("tpl-form30-injection", {
                     injection: data.data.injection,
                     disabled: disabled
                 }));
@@ -116,7 +116,7 @@ es.Views.Form30 = Backbone.View.extend({
                 bottle: data.data.bottle,
                 disabled: disabled
             }));
-            this.$(".injections").prepend($.Mustache.render("tpl-form30-injection", {
+            this.$(".injections-tip").after($.Mustache.render("tpl-form30-injection", {
                 injection: data.data.injection,
                 disabled: disabled
             }));

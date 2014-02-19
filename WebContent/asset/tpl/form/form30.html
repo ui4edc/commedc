@@ -111,12 +111,11 @@
 </div>
 
 <div class="row">
-    <span class="label">是否同组用药</span>
+    <span class="label">是否使用间隔液</span>
     <input type="radio" hidefocus="true" title="是" name="same-group" value="1" ui="type:Radio;id:SameGroup1;{{disabled}}" />
     <input type="radio" hidefocus="true" title="否" name="same-group" value="2" ui="type:Radio;id:SameGroup2;{{disabled}}" checked />
 </div>
 <div class="row sub auto group" style="display:none">
-    <div><strong>间隔液为：</strong></div>
     <div>
         <input type="radio" hidefocus="true" title="葡萄糖注射液(5%)" name="gp-solvent" value="1" ui="type:Radio;id:GpSolvent1;{{disabled}}" checked />，
         <input type="text" class="en" value="{{data.gpSolvent1Dose}}" ui="type:TextInput;id:GpSolvent1Dose;width:50;{{disabled}}" /> ml
@@ -139,6 +138,7 @@
     <input type="radio" hidefocus="true" title="否" name="has-injection" value="2" ui="type:Radio;id:HasInjection2;{{disabled}}" checked />
 </div>
 <div class="row sub auto injections" style="display:none">
+    <div class="injections-tip"><strong>（不同通路同时静点）</strong></div>
     {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-injection add-btn">添加一行</a></div>{{/save}}
 </div>
 
