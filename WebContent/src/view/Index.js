@@ -57,6 +57,7 @@ es.Views.Index = Backbone.View.extend({
      */
     openNewCRF: function() {
         esui.get("NewAbbr").setValue("");
+        $("#CrfError").empty();
         esui.get("NewCRFDialog").show();
     },
     
@@ -67,6 +68,16 @@ es.Views.Index = Backbone.View.extend({
         var data = {
             abbr: $.trim(esui.get("NewAbbr").getValue())
         };
+        
+        //验证
+        if (data.abbr === "") {
+            $("#CrfError").html("请输入患者姓名缩写");
+            return;
+        }
+        if (!/^[a-z]+$/i.test(data.abbr)) {
+            $("#CrfError").html("患者姓名缩写必须为字母");
+            return;
+        }
         
         console.log("crf/addCRF.do-请求", data);
         
@@ -93,6 +104,7 @@ es.Views.Index = Backbone.View.extend({
      */
     openNewADR: function() {
         esui.get("No").setValue("");
+        $("#AdrError").empty();
         esui.get("NewADRDialog").show();
     },
     
@@ -103,6 +115,16 @@ es.Views.Index = Backbone.View.extend({
         var data = {
             no: $.trim(esui.get("No").getValue())
         };
+        
+        //验证
+        if (data.no === "") {
+            $("#AdrError").html("请输入观察表编号");
+            return;
+        }
+        if (!/^\d{3}-\d{4}$/.test(data.no)) {
+            $("#AdrError").html("格式不正确");
+            return;
+        }
         
         console.log("crf/addADR.do-请求", data);
         

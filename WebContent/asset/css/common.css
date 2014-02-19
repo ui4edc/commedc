@@ -10,6 +10,8 @@ input.en{ime-mode:disabled}
 img{border:0}
 a{color:#06c}
 
+.error-tip{color:red}
+
 /*页面框架*/
 #Head{height:70px; overflow:hidden; color:#666}
 #Head .logo{float:left; width:440px; height:70px; background-image:url(images/logo.jpg)}
@@ -94,6 +96,7 @@ h1 .btn:hover{background:#3498db}
 /*无结果提示*/
 .no-result{text-align:center; font-size:14px; color:#666; padding:30px 0}
 
+/*按钮*/
 .add-btn{background:url(images/icon-add.png) left center no-repeat; padding-left:15px}
 
 /*esui*/

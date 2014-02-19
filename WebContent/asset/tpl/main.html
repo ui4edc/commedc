@@ -49,6 +49,7 @@ Copyright &copy; {{year}}
         <div class="query-form">
             <span>患者姓名缩写：</span>
             <input ui="type:TextInput;id:NewAbbr;width:80" type="text" class="en" />
+            <span class="error-tip" id="CrfError"></span>
         </div>
     </div>
     <div>
@@ -65,7 +66,8 @@ Copyright &copy; {{year}}
     <div>
         <div class="query-form">
             <span>请输入对应观察表编号：</span>
-            <input ui="type:TextInput;id:No;width:80" type="text" class="en" />
+            <input ui="type:TextInput;id:No;width:80" type="text" class="en" maxlength="8" />
+            <span class="error-tip" id="AdrError"></span>
         </div>
     </div>
     <div>

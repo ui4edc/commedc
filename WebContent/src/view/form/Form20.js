@@ -107,6 +107,26 @@ es.Views.Form20 = Backbone.View.extend({
            zytxt: $.trim(esui.get("CustomZYName").getValue())
        };
        
+       //验证
+       if (data.disease1 == ""
+           && data.fy1 == ""
+           && data.fy2 == ""
+           && data.disease2 == ""
+           && data.disease3 == ""
+           && data.diseasetxt == ""
+       ) {
+           esui.Dialog.alert({title: "提示", content: "请选择疾病诊断"});
+           return;
+       }
+       if (data.diagnosis == "") {
+           esui.Dialog.alert({title: "提示", content: "请输入第一诊断"});
+           return;
+       }
+       if (data.zy == 6 && data.zytxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请输入中医诊断"});
+           return;
+       }
+       
        console.log("crf/saveDeseaseInfo.do-请求", data);
        
        util.ajax.run({

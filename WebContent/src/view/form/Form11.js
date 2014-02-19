@@ -145,6 +145,10 @@ es.Views.Form11 = Backbone.View.extend({
        };
        
        //验证
+       if (data.ethic == 0) {
+           esui.Dialog.alert({title: "提示", content: "请选择民族"});
+           return;
+       }
        var weight = data.weight,
            height = data.height,
            floatPattern = /^\d+(\.\d+)?$/;
@@ -153,7 +157,11 @@ es.Views.Form11 = Backbone.View.extend({
            return;
        }
        if (!data.weightud && weight != "" && !floatPattern.test(weight)) {
-           esui.Dialog.alert({title: "提示", content: "体重填写不正确"});
+           esui.Dialog.alert({title: "提示", content: "体重应为数字"});
+           return;
+       }
+       if (parseFloat(weight) > 150) {
+           esui.Dialog.alert({title: "提示", content: "体重范围不正确"});
            return;
        }
        if (!data.heightud && height == "") {
@@ -161,11 +169,11 @@ es.Views.Form11 = Backbone.View.extend({
            return;
        }
        if (!data.heightud && height != "" && !floatPattern.test(height)) {
-           esui.Dialog.alert({title: "提示", content: "身高填写不正确"});
+           esui.Dialog.alert({title: "提示", content: "身高应为数字"});
            return;
        }
-       if (parseFloat(height) > 300 || parseFloat(height) < 100) {
-           esui.Dialog.alert({title: "提示", content: "身高填写不正确"});
+       if (parseFloat(height) > 200 || parseFloat(height) < 10) {
+           esui.Dialog.alert({title: "提示", content: "身高范围不正确"});
            return;
        }
        var indate = T.date.parse(data.indate).getTime(),

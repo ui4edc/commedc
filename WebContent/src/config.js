@@ -33,7 +33,7 @@ var BIRTHDAY_RANGE = {
 };
 
 var CRF_RANGE = {
-    begin: new Date(2000, 0, 1),
+    begin: new Date(2014, 0, 1),
     end: new Date()
 };
 
@@ -61,6 +61,7 @@ var PAGE_SIZE = {
 };
 
 var NATION = [
+    {value: 0, name: "请选择"},
     {value: 1, name: "汉"},
     {value: 2, name: "壮族"},
     {value: 3, name: "满族"},

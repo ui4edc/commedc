@@ -8,8 +8,8 @@ es.Models.Form11 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-            birthday: "2014-01-01",
-            ethic: 1,
+            birthday: T.date.format(new Date(), "yyyy-MM-dd"),
+            ethic: 0,
             sex: 1,
             hys: 3,
             weight: null,

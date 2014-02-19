@@ -202,7 +202,10 @@ es.Views.Form30 = Backbone.View.extend({
         
         //事件
         var me = this;
-        esui.get("Start").onchange = function(value) {esui.get("Start").setValueAsDate(value);};
+        esui.get("Start").onchange = function(value) {
+            esui.get("Start").setValueAsDate(value);
+            esui.get("End").setValueAsDate(value);
+        };
         esui.get("End").onchange = function(value) {esui.get("End").setValueAsDate(value);};
         esui.get("SameBottle1").onclick = function() {me.$(".bottles").show();};
         esui.get("SameBottle2").onclick = function() {me.$(".bottles").hide();};
@@ -344,6 +347,76 @@ es.Views.Form30 = Backbone.View.extend({
                unit: $.trim(esui.get("DrugUnit" + no).getValue())
            });
        });
+       
+       //验证
+       var floatPattern = /^\d+(\.\d+)?$/,
+           intPattern = /^\d+$/;
+       /*if (data.history == 1 && data.adr == 1 && data.adrtxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请输入不良反应表现"});
+           return;
+       }
+       if (data.batchNumber == "") {
+           esui.Dialog.alert({title: "提示", content: "请输入批号"});
+           return;
+       }
+       if (!intPattern.test(data.dose) || parseFloat(data.dose) > 100) {
+           esui.Dialog.alert({title: "提示", content: "单次用药量应为不大于100的数字"});
+           return;
+       }
+       if (!intPattern.test(data.startH) || parseInt(data.startH) > 24
+         || !intPattern.test(data.startM) || parseInt(data.startM) > 60
+         || !intPattern.test(data.endH) || parseInt(data.endH) > 24
+         || !intPattern.test(data.endM) || parseInt(data.endM) > 60) {
+           esui.Dialog.alert({title: "提示", content: "用药时间输入不正确"});
+           return;
+       }
+       var start = T.date.parse(data.startDate + " " + data.startH + ":" + data.startM).getTime(),
+           end = T.date.parse(data.endDate + " " + data.endH + ":" + data.endM).getTime();
+       if (start > end) {
+           esui.Dialog.alert({title: "提示", content: "用药开始时间不能晚于结束时间"});
+           return;
+       }
+       if (!intPattern.test(data.solventDose) || parseInt(data.solventDose) % 50 != 0 || data.solventDose == "0") {
+           esui.Dialog.alert({title: "提示", content: "单次溶媒剂量应为50的倍数"});
+           return;
+       }
+       if (data.solvent == 3) {
+           if (data.solventName == "") {
+               esui.Dialog.alert({title: "提示", content: "请输入其他溶媒名称"});
+               return;
+           }
+           if (!floatPattern.test(data.solventPercent)) {
+               esui.Dialog.alert({title: "提示", content: "溶媒浓度应为数字"});
+               return;
+           }
+       }
+       if (!data.prepareTimeUd && !intPattern.test(data.prepareTime)) {
+           esui.Dialog.alert({title: "提示", content: "请输入配液至给药时间"});
+           return;
+       }
+       if (data.way == 1 && data.way1Speed == "" && data.way1Time == "") {
+           esui.Dialog.alert({title: "提示", content: "请输入静脉滴注速度或时间"});
+           return;
+       }
+       if (data.way1Speed != "" && !intPattern.test(data.way1Speed)) {
+           esui.Dialog.alert({title: "提示", content: "静脉滴注速度应为数字"});
+           return;
+       }
+       if (data.way1Time != "" && !intPattern.test(data.way1Time)) {
+           esui.Dialog.alert({title: "提示", content: "静脉滴注时间应为数字"});
+           return;
+       }
+       if (data.way == 2 && !intPattern.test(data.way2Speed)) {
+           esui.Dialog.alert({title: "提示", content: "请输入静脉泵入速度"});
+           return;
+       }
+       if (data.way == 3 && (data.way3Name == "" || data.way3Speed == "" || data.way3Unit == "")) {
+           esui.Dialog.alert({title: "提示", content: "请输入其他途径"});
+           return;
+       }*/
+       if (data.sameBottle == 1) {
+           
+       }
        
        console.log("crf/saveDrugUseInfo.do-请求", data);
        
