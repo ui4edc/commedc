@@ -264,7 +264,7 @@ es.Views.Form30 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
-           times: parseInt(me.$(".tabbar .active").attr("times"), 10),
+           times: parseInt(me.$(".times .active").attr("times"), 10),
            
            history: parseInt(esui.get("History1").getGroup().getValue(), 10),
            adr: parseInt(esui.get("ADR1").getGroup().getValue(), 10),
