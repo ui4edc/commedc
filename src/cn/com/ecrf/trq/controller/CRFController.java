@@ -67,18 +67,18 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/addCRF", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> addCRF(HttpServletRequest request) {
+	public Map<String, Object> addCRF(ParameterType parameterType, HttpServletRequest request) {
 		String abbr = request.getParameter("abbr");
-		Map<String, Object> result = cRFService.genCRFNo(abbr);
+		Map<String, Object> result = cRFService.genCRFNo(parameterType.getAbbr());
 		
 		return result;
 	}
 	
 	@RequestMapping(value="/crf/getCRFSumm", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getCRFSumm(HttpServletRequest request) {
+	public Map<String, Object> getCRFSumm(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getCRFSumm(id);
+		Map<String, Object> result = cRFService.getCRFSumm(""+parameterType.getId());
 		
 		return result;
 	}

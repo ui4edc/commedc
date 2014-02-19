@@ -3,8 +3,8 @@
 
 <mapper namespace="cn.com.ecrf.trq.repository.UserSignMapper" >
   <insert id="insertUserSign" parameterType="cn.com.ecrf.trq.model.CRFUserSign">
-  	insert into crf_user_sign(no, lockstatus, cro_name, cro_createtime, progress)
-  	values(#{no}, #{lockStatus}, #{croName}, current_timestamp(), #{progress});
+  	insert into crf_user_sign(no, lockstatus, cro_name, cro_createtime, cro_updatetime, progress)
+  	values(#{no}, #{lockStatus}, #{croName}, current_timestamp(), current_timestamp(), #{progress});
   </insert>
   <update id="updateUserSign" parameterType="cn.com.ecrf.trq.model.CRFUserSign">
   	update crf_user_sign set lockstatus=#{lockStatus}
@@ -28,5 +28,7 @@
     </if>
   	where no=#{no}
   </update>
-  
+  <update id="updateUserSignDate" parameterType="cn.com.ecrf.trq.model.CRFUserSign">
+  	update crf_user_sign set cro_updatetime=current_timestamp() where no=#{no}
+  </update>
 </mapper>

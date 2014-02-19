@@ -104,6 +104,12 @@ public class ListReturn {
 	public void setDoubter(String doubter) {
 		this.doubter = doubter;
 	}
+	public int getDoubtNumber() {
+		return doubtNumber;
+	}
+	public void setDoubtNumber(int doubtNumber) {
+		this.doubtNumber = doubtNumber;
+	}
 	
 	
 }

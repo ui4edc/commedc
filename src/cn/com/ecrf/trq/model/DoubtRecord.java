@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class DoubtRecord {
 	private int id;
+	private String no;
 	private int doubtId;
 	private int menuId;
 	private String menuName;
@@ -102,6 +103,12 @@ public class DoubtRecord {
 	}
 	public void setDoubtId(int doubtId) {
 		this.doubtId = doubtId;
+	}
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
 	}
 	
 	

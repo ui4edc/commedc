@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.ADRCase;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
+import cn.com.ecrf.trq.model.DoubtRecord;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
@@ -29,6 +30,7 @@ import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DoubtRecordGetVo;
 import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.DrugSummaryVo;
 import cn.com.ecrf.trq.vo.DrugUseVo;
@@ -818,6 +820,19 @@ public class ConvertorService {
 		}
 		
 		return null;
+	}
+
+	public DoubtRecordGetVo convertDoubtRecordFromModelToView(DoubtRecord record) {
+		// TODO Auto-generated method stub
+		DoubtRecordGetVo doubtRecordVo = new DoubtRecordGetVo();
+		doubtRecordVo.setDescription(record.getDescription());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if (record.getDoubtDate() != null)
+			doubtRecordVo.setDoubtDate(sdf.format(record.getDoubtDate()));
+		doubtRecordVo.setDoubter(record.getDoubter());
+		doubtRecordVo.setDoubtField(record.getFieldName());
+		doubtRecordVo.setDoubtId(record.getDoubtId());
+		return doubtRecordVo;
 	}
 
 

@@ -34,7 +34,7 @@
 	</insert>
 	<update id="updatePatientInfo" parameterType="cn.com.ecrf.trq.model.PatientInfoCase" >
 	    update crf_patient_info set birthday=#{birthday}, age=#{age},
-	      weight=#{weight}, sex=#{sex}, ethic=#{ethic}, hys=#{hys}, height=#{height}, yyks=#{yyks}, ryrq=#{ryrq}, cyrq=#{cyrq}, ylfyfs=#{ylfyfs}，
+	      weight=#{weight}, sex=#{sex}, ethic=#{ethic}, hys=#{hys}, height=#{height}, yyks=#{yyks}, ryrq=#{ryrq}, cyrq=#{cyrq}, ylfyfs=#{ylfyfs},
 	      weightud=#{weightud},heightud=#{heightud}
 		where id=#{id}
 	</update>
@@ -120,8 +120,12 @@
 			p.id as id,
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
-			us.progress as progress
-		 from crf_patient_info p, crf_user_sign us where c.lockstatus=#{lockStatus} and p.no=us.no
+			us.progress as progress,
+		 	d.doubter as doubter,
+			count(1) as doubtNumber
+		 from crf_patient_info p, crf_user_sign us, crf_doubt d where 
+		 p.no=us.no and d.no=p.no and p.id=#{id}
+		 group by no
 		 <if test="abbr != null" >
         	and p.abbr=#{abbr}
       	</if>

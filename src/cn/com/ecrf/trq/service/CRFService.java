@@ -46,6 +46,7 @@ import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.CheckBoxVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
+import cn.com.ecrf.trq.vo.DoubtRecordGetVo;
 import cn.com.ecrf.trq.vo.DoubtRecordSubmitVo;
 import cn.com.ecrf.trq.vo.DrugCombinationVo;
 import cn.com.ecrf.trq.vo.DrugInstanceObject;
@@ -322,20 +323,12 @@ public class CRFService {
 			if (patientInfoVo.getId() > 0){
 				//update
 				cRFMapper.updatePatientInfo(patientInfoCase);
-				Map<String, Object> condition = new HashMap<String, Object>();
-				condition.put("progress", ProcessUtils.BASIC_INFO);
-				condition.put("no", patientInfoVo.getNo());
-				cRFMapper.updateProgress(condition);
 			}else{
 				//insert
 				cRFMapper.insertPatientInfo(patientInfoCase);
-				Map<String, Object> condition = new HashMap<String, Object>();
-				condition.put("progress", ProcessUtils.BASIC_INFO);
-				condition.put("no", patientInfoVo.getNo());
-				cRFMapper.updateProgress(condition);
 			}
+			updateProcessAndModifyDate(patientInfoVo.getNo(), ProcessUtils.BASIC_INFO);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
-			
 			int progress = cRFMapper.getProgress(patientInfoCase.getNo());
 			result.put("progress", progress + "%");
 		}catch(Exception e){
@@ -344,6 +337,19 @@ public class CRFService {
 		}
 		
 		return result;
+	}
+	
+	private void updateProcessAndModifyDate(String no, int phase){
+		int progress = cRFMapper.getProgress(no);
+		if (progress < phase){
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("progress", phase);
+			condition.put("no", no);
+			cRFMapper.updateProgress(condition);
+		}
+		CRFUserSign userSign = new CRFUserSign();
+		userSign.setNo(no);
+		userSignMapper.updateUserSignDate(userSign);
 	}
 	
 	public Map<String, Object> getPersonHistory(String id) {
@@ -375,10 +381,7 @@ public class CRFService {
 			else {
 				cRFMapper.insertPersonHistory(personAllergicHistoryCase);
 			}
-			Map<String, Object> condition = new HashMap<String, Object>();
-			condition.put("progress", ProcessUtils.PERSON_HISTORY);
-			condition.put("no", personalHistoryVo.getNo());
-			cRFMapper.updateProgress(condition);
+			updateProcessAndModifyDate(personalHistoryVo.getNo(), ProcessUtils.PERSON_HISTORY);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(personAllergicHistoryCase.getNo());
 			result.put("progress", progress + "%");
@@ -416,10 +419,7 @@ public class CRFService {
 			else {
 				cRFMapper.insertPastHistory(pastHistoryCase);
 			}
-			Map<String, Object> condition = new HashMap<String, Object>();
-			condition.put("progress", ProcessUtils.PASS_HISTORY);
-			condition.put("no", pastHistoryVo.getNo());
-			cRFMapper.updateProgress(condition);
+			updateProcessAndModifyDate(pastHistoryVo.getNo(), ProcessUtils.PASS_HISTORY);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(pastHistoryCase.getNo());
 			result.put("progress", progress + "%");
@@ -460,10 +460,7 @@ public class CRFService {
 			else {
 				cRFMapper.insertDiseaseInfo(diseaseInfoCase);
 			}
-			Map<String, Object> condition = new HashMap<String, Object>();
-			condition.put("progress", ProcessUtils.DISEASE_INFO);
-			condition.put("no", diseaseInfoVo.getNo());
-			cRFMapper.updateProgress(condition);
+			updateProcessAndModifyDate(diseaseInfoVo.getNo(), ProcessUtils.DISEASE_INFO);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(diseaseInfoVo.getNo());
 			result.put("progress", progress + "%");
@@ -501,10 +498,7 @@ public class CRFService {
 			else {
 				cRFMapper.insertDrugUseInfo(drugUseCase);
 			}
-			Map<String, Object> condition = new HashMap<String, Object>();
-			condition.put("progress", ProcessUtils.DISEASE_INFO);
-			condition.put("no", drugUseVo.getNo());
-			cRFMapper.updateProgress(condition);
+			updateProcessAndModifyDate(drugUseVo.getNo(), ProcessUtils.DRUG_USING);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			int progress = cRFMapper.getProgress(drugUseVo.getNo());
 			result.put("progress", progress + "%");
@@ -546,15 +540,9 @@ public class CRFService {
 					cRFMapper.insertDrugCombination(drugCombinationCase);
 				}
 			}
-			int progress = cRFMapper.getProgress(drugCombinationVo.getNo());
-			if (progress < ProcessUtils.DISEASE_INFO){
-				Map<String, Object> condition = new HashMap<String, Object>();
-				condition.put("progress", ProcessUtils.DISEASE_INFO);
-				condition.put("no", drugCombinationVo.getNo());
-				cRFMapper.updateProgress(condition);
-			}
+			updateProcessAndModifyDate(drugCombinationVo.getNo(), ProcessUtils.COMBINIATION_DRUG);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
-			progress = cRFMapper.getProgress(drugCombinationVo.getNo());
+			int progress = cRFMapper.getProgress(drugCombinationVo.getNo());
 			result.put("progress", progress + "%");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -579,15 +567,9 @@ public class CRFService {
 			else {
 				cRFMapper.insertDrugSummary(drugSummaryCase);
 			}
-			int progress = cRFMapper.getProgress(drugSummaryVo.getNo());
-			if (progress < ProcessUtils.DRUG_SUMMARY){
-				Map<String, Object> condition = new HashMap<String, Object>();
-				condition.put("progress", ProcessUtils.DISEASE_INFO);
-				condition.put("no", drugSummaryVo.getNo());
-				cRFMapper.updateProgress(condition);
-				progress = cRFMapper.getProgress(drugSummaryVo.getNo());
-			}
+			updateProcessAndModifyDate(drugSummaryVo.getNo(), ProcessUtils.DRUG_SUMMARY);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			int progress = cRFMapper.getProgress(drugSummaryVo.getNo());
 			result.put("progress", progress + "%");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -608,15 +590,9 @@ public class CRFService {
 			else {
 				cRFMapper.insertADR(aDRCase);
 			}
-			int progress = cRFMapper.getProgress(adrVo.getNo());
-			if (progress < ProcessUtils.ADR){
-				Map<String, Object> condition = new HashMap<String, Object>();
-				condition.put("progress", ProcessUtils.ADR);
-				condition.put("no", adrVo.getNo());
-				cRFMapper.updateProgress(condition);
-				progress = cRFMapper.getProgress(adrVo.getNo());
-			}
+			updateProcessAndModifyDate(adrVo.getNo(), ProcessUtils.ADR);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			int progress = cRFMapper.getProgress(adrVo.getNo());
 			result.put("progress", progress + "%");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -642,7 +618,6 @@ public class CRFService {
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
-		
 		return result;
 	}
 
@@ -829,6 +804,8 @@ public class CRFService {
 			doubtRecord.setDoubter(userName);
 			doubtRecord.setFieldId(doubtRecordSubmitVo.getFieldId());
 			doubtRecord.setId(doubtRecordSubmitVo.getId());
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(doubtRecordSubmitVo.getId());
+			doubtRecord.setNo(patientInfoCase.getNo());
 			doubtRecord.setMenuId(doubtRecordSubmitVo.getMenu());
 			doubtRecordMapper.insertDoubtRecord(doubtRecord);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
@@ -847,7 +824,15 @@ public class CRFService {
 			doubtRecord.setId(id);
 			doubtRecord.setMenuId(menu);
 			List<DoubtRecord> doubtRecords = doubtRecordMapper.getDoubtRecord(doubtRecord);
-			result = AjaxReturnUtils.generateAjaxReturn(true, null, doubtRecords);
+			List<DoubtRecordGetVo> doubtRecordVos = new ArrayList<DoubtRecordGetVo>();
+			if (doubtRecords != null){
+				for (DoubtRecord record : doubtRecords){
+					DoubtRecordGetVo doubtRecordVo = convertorService.convertDoubtRecordFromModelToView(record);
+					doubtRecordVos.add(doubtRecordVo);
+				}
+			}
+			
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, doubtRecordVos);
 		}catch(Exception e){
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, null);
