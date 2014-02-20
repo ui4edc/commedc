@@ -178,8 +178,8 @@
 
 <script id="tpl-form30-bottle" type="text/html">
 {{#bottle}}
-<div class="bottle">同瓶药品{{no}}：<input type="text" value="{{name}}" ui="type:TextInput;id:BottleName{{no}};width:100;{{disabled}}" />
-剂量{{no}}：<input type="text" value="{{dose}}" ui="type:TextInput;id:BottleDose{{no}};width:50;{{disabled}}" />
+<div class="bottle">同瓶药品{{no}}：<input type="text" class="sug" value="{{name}}" ui="type:TextInput;id:BottleName{{no}};width:100;{{disabled}}" />
+剂量{{no}}：<input type="text" class="en" value="{{dose}}" ui="type:TextInput;id:BottleDose{{no}};width:50;{{disabled}}" />
 （单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:BottleUnit{{no}};width:50;{{disabled}}" />）
 </div>
 {{/bottle}}
@@ -187,8 +187,8 @@
 
 <script id="tpl-form30-injection" type="text/html">
 {{#injection}}
-<div class="injection">注射剂{{no}}：<input type="text" value="{{name}}" ui="type:TextInput;id:InjectionName{{no}};width:100;{{disabled}}" />
-剂量{{no}}：<input type="text" value="{{dose}}" ui="type:TextInput;id:InjectionDose{{no}};width:50;{{disabled}}" />
+<div class="injection">注射剂{{no}}：<input type="text" class="sug" value="{{name}}" ui="type:TextInput;id:InjectionName{{no}};width:100;{{disabled}}" />
+剂量{{no}}：<input type="text" class="en" value="{{dose}}" ui="type:TextInput;id:InjectionDose{{no}};width:50;{{disabled}}" />
 （单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:InjectionUnit{{no}};width:50;{{disabled}}" />）
 </div>
 {{/injection}}
@@ -196,8 +196,8 @@
 
 <script id="tpl-form30-drug" type="text/html">
 {{#banDrug}}
-<div class="ban-drug">药品名称{{no}}：<input type="text" value="{{name}}" ui="type:TextInput;id:DrugName{{no}};width:100;{{disabled}}" />
-剂量{{no}}：<input type="text" value="{{dose}}" ui="type:TextInput;id:DrugDose{{no}};width:50;{{disabled}}" />
+<div class="ban-drug">药品名称{{no}}：<input type="text" class="sug" value="{{name}}" ui="type:TextInput;id:DrugName{{no}};width:100;{{disabled}}" />
+剂量{{no}}：<input type="text" class="en" value="{{dose}}" ui="type:TextInput;id:DrugDose{{no}};width:50;{{disabled}}" />
 （单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:DrugUnit{{no}};width:50;{{disabled}}" />）
 </div>
 {{/banDrug}}

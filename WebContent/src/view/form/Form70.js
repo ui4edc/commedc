@@ -18,6 +18,8 @@ es.Views.Form70 = Backbone.View.extend({
     },
     
     destroy: function() {
+        $("body").undelegate(".ui-table-editor input", "focus");
+        $(".ui-table-editor input").autocomplete("destroy");
         esui.dispose();
         this.model.unbind();
         this.$el.unbind();
@@ -278,14 +280,36 @@ es.Views.Form70 = Backbone.View.extend({
         //事件
         var me = this;
         
+        //自动提示
+        $("body").delegate(".ui-table-editor input", "focus", function(e) {
+            var index = esui.get(esui.Table.Editor.edittingTable).activeColumn;
+            if (index == 2) {
+                $(e.target).autocomplete({source: util.getDrugName});
+            } else {
+                $(e.target).autocomplete({source: []});
+            }
+        });
+        
         esui.get("Drug1").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            var txt = $.trim(value);
+            if (txt == "") {
+                esui.Dialog.alert({title: "提示", content: "请填写内容"});
+                return false;
+            }
+            
+            this.datasource[options.rowIndex][options.field.field] = txt;
+            this.setCellText(txt, options.rowIndex, options.columnIndex);
             editor.stop();
         };
         esui.get("Drug2").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            var txt = $.trim(value);
+            if (txt == "") {
+                esui.Dialog.alert({title: "提示", content: "请填写内容"});
+                return false;
+            }
+            
+            this.datasource[options.rowIndex][options.field.field] = txt;
+            this.setCellText(txt, options.rowIndex, options.columnIndex);
             editor.stop();
         };
         
@@ -392,6 +416,103 @@ es.Views.Form70 = Backbone.View.extend({
            reportDate: esui.get("ReportDate").getValue(),
            remark: $.trim(esui.get("Remark").getValue())
        };
+       
+       //验证
+       var floatPattern = /^\d+(\.\d+)?$/,
+           intPattern = /^\d+$/;
+       if (data.name == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写患者姓名"});
+           return;
+       }
+       if (data.ethic == 0) {
+           esui.Dialog.alert({title: "提示", content: "请选择民族"});
+           return;
+       }
+       if (!floatPattern.test(data.weight)) {
+           esui.Dialog.alert({title: "提示", content: "请填写体重"});
+           return;
+       }
+       if (parseFloat(data.weight) > 150) {
+           esui.Dialog.alert({title: "提示", content: "体重范围不正确"});
+           return;
+       }
+       if (data.contact == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写联系方式"});
+           return;
+       }
+       if (data.disease == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写原患疾病"});
+           return;
+       }
+       if (data.patientNo == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写病历号/门诊号"});
+           return;
+       }
+       if (data.historyadr == 1 && data.historyadrtxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写既往药品不良反应/事件"});
+           return;
+       }
+       if (data.familyadr == 1 && data.familyadrtxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写家族药品不良反应/事件"});
+           return;
+       }
+       if (data.info == "") {
+           esui.Dialog.alert({title: "提示", content: "请选择相关重要信息"});
+           return;
+       }
+       if (data.info.indexOf("6") != -1 && data.info6txt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写过敏史"});
+           return;
+       }
+       if (data.info.indexOf("7") != -1 && data.info7txt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写其他相关重要信息"});
+           return;
+       }
+       if (data.adr == "") {
+           esui.Dialog.alert({title: "提示", content: "请选择不良反应/事件名称"});
+           return;
+       }
+       if (data.adr.indexOf("11") != -1 && data.adrtxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写其他不良反应/事件名称"});
+           return;
+       }
+       if (!intPattern.test(data.adrH) || parseInt(data.adrH) > 24
+        || !intPattern.test(data.adrM) || parseInt(data.adrM) > 60) {
+           esui.Dialog.alert({title: "提示", content: "请填写不良反应/事件发生时间"});
+           return;
+       }
+       if (data.adrDescription == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写不良反应/事件过程描述"});
+           return;
+       }
+       if (data.adrDeal == 2 && !intPattern.test(data.adrDealDose)) {
+           esui.Dialog.alert({title: "提示", content: "请填写减少剂量"});
+           return;
+       }
+       if (data.adrDeal == 3 && data.adrDeal3 == 5 && data.adrDeal3txt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写其他对症支持治疗"});
+           return;
+       }
+       if (data.adrDeal == 4 && data.adrDeal4txt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写其他不良反应/事件处理情况"});
+           return;
+       }
+       if (data.ending == 5 && data.endingtxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写后遗症表现"});
+           return;
+       }
+       if (data.ending == 6 && data.deathReason == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写直接死因"});
+           return;
+       }
+       if (data.career == 4 && data.careertxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写其他职业"});
+           return;
+       }
+       if (data.email == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写电子邮箱"});
+           return;
+       }
        
        console.log("crf/saveADR.do-请求", data);
        

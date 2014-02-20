@@ -119,11 +119,11 @@ es.Views.Form20 = Backbone.View.extend({
            return;
        }
        if (data.diagnosis == "") {
-           esui.Dialog.alert({title: "提示", content: "请输入第一诊断"});
+           esui.Dialog.alert({title: "提示", content: "请填写第一诊断"});
            return;
        }
        if (data.zy == 6 && data.zytxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请输入中医诊断"});
+           esui.Dialog.alert({title: "提示", content: "请填写中医诊断"});
            return;
        }
        

@@ -71,7 +71,7 @@ es.Views.Index = Backbone.View.extend({
         
         //验证
         if (data.abbr === "") {
-            $("#CrfError").html("请输入患者姓名缩写");
+            $("#CrfError").html("请填写患者姓名缩写");
             return;
         }
         if (!/^[a-z]+$/i.test(data.abbr)) {
@@ -118,7 +118,7 @@ es.Views.Index = Backbone.View.extend({
         
         //验证
         if (data.no === "") {
-            $("#AdrError").html("请输入观察表编号");
+            $("#AdrError").html("请填写观察表编号");
             return;
         }
         if (!/^\d{3}-\d{4}$/.test(data.no)) {

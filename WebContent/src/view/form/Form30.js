@@ -26,6 +26,7 @@ es.Views.Form30 = Backbone.View.extend({
     
     destroy: function() {
         esui.dispose();
+        this.$("input.sug").autocomplete("destroy");
         this.model.unbind();
         this.$el.unbind();
         this.$el.empty();
@@ -219,6 +220,8 @@ es.Views.Form30 = Backbone.View.extend({
         esui.get("HasFood2").onclick = function() {me.$(".food").hide();};
         esui.get("HasFood3").onclick = function() {me.$(".food").hide();};
         
+        this.$("input.sug").autocomplete({source: util.getDrugName});
+        
         if (!this.rendered) {
             esui.get("History1").onclick = function() {me.$(".history").show();};
             esui.get("History2").onclick = function() {me.$(".history").hide();};
@@ -238,27 +241,33 @@ es.Views.Form30 = Backbone.View.extend({
     },
     
     addBottle: function(e) {
+        var no = this.$(".bottle").length + 1;
         $(e.target).parent().before($.Mustache.render("tpl-form30-bottle", {
-            bottle: [{no: this.$(".bottle").length + 1}],
+            bottle: [{no: no}],
             disabled: ""
         }));
         esui.init();
+        this.$("#ctrltextBottleName" + no).autocomplete({source: util.getDrugName});
     },
     
     addInjection: function(e) {
+        var no = this.$(".injection").length + 1;
         $(e.target).parent().before($.Mustache.render("tpl-form30-injection", {
-            injection: [{no: this.$(".injection").length + 1}],
+            injection: [{no: no}],
             disabled: ""
         }));
         esui.init();
+        this.$("#ctrltextInjectionName" + no).autocomplete({source: util.getDrugName});
     },
     
     addDrug: function(e) {
+        var no = this.$(".ban-drug").length + 1;
         $(e.target).parent().before($.Mustache.render("tpl-form30-drug", {
-            banDrug: [{no: this.$(".ban-drug").length + 1}],
+            banDrug: [{no: no}],
             disabled: ""
         }));
         esui.init();
+        this.$("#ctrltextDrugName" + no).autocomplete({source: util.getDrugName});
     },
     
     save: function() {
@@ -301,7 +310,7 @@ es.Views.Form30 = Backbone.View.extend({
            sameGroup: parseInt(esui.get("SameGroup1").getGroup().getValue(), 10),
            gpSolvent: parseInt(esui.get("GpSolvent1").getGroup().getValue(), 10),
            gpSolvent1Dose: $.trim(esui.get("GpSolvent1Dose").getValue()),
-           gSolvent2Dose: $.trim(esui.get("GpSolvent2Dose").getValue()),
+           gpSolvent2Dose: $.trim(esui.get("GpSolvent2Dose").getValue()),
            gpSolvent3Name: $.trim(esui.get("GpSolvent3Name").getValue()),
            gpSolvent3Percent: $.trim(esui.get("GpSolvent3Percent").getValue()),
            gpSolvent3Dose: $.trim(esui.get("GpSolvent3Dose").getValue()),
@@ -351,12 +360,12 @@ es.Views.Form30 = Backbone.View.extend({
        //验证
        var floatPattern = /^\d+(\.\d+)?$/,
            intPattern = /^\d+$/;
-       /*if (data.history == 1 && data.adr == 1 && data.adrtxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请输入不良反应表现"});
+       if (data.history == 1 && data.adr == 1 && data.adrtxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写不良反应表现"});
            return;
        }
        if (data.batchNumber == "") {
-           esui.Dialog.alert({title: "提示", content: "请输入批号"});
+           esui.Dialog.alert({title: "提示", content: "请填写批号"});
            return;
        }
        if (!intPattern.test(data.dose) || parseFloat(data.dose) > 100) {
@@ -382,7 +391,7 @@ es.Views.Form30 = Backbone.View.extend({
        }
        if (data.solvent == 3) {
            if (data.solventName == "") {
-               esui.Dialog.alert({title: "提示", content: "请输入其他溶媒名称"});
+               esui.Dialog.alert({title: "提示", content: "请填写其他溶媒名称"});
                return;
            }
            if (!floatPattern.test(data.solventPercent)) {
@@ -391,11 +400,11 @@ es.Views.Form30 = Backbone.View.extend({
            }
        }
        if (!data.prepareTimeUd && !intPattern.test(data.prepareTime)) {
-           esui.Dialog.alert({title: "提示", content: "请输入配液至给药时间"});
+           esui.Dialog.alert({title: "提示", content: "请填写配液至给药时间"});
            return;
        }
        if (data.way == 1 && data.way1Speed == "" && data.way1Time == "") {
-           esui.Dialog.alert({title: "提示", content: "请输入静脉滴注速度或时间"});
+           esui.Dialog.alert({title: "提示", content: "请填写静脉滴注速度或时间"});
            return;
        }
        if (data.way1Speed != "" && !intPattern.test(data.way1Speed)) {
@@ -407,15 +416,95 @@ es.Views.Form30 = Backbone.View.extend({
            return;
        }
        if (data.way == 2 && !intPattern.test(data.way2Speed)) {
-           esui.Dialog.alert({title: "提示", content: "请输入静脉泵入速度"});
+           esui.Dialog.alert({title: "提示", content: "请填写静脉泵入速度"});
            return;
        }
        if (data.way == 3 && (data.way3Name == "" || data.way3Speed == "" || data.way3Unit == "")) {
-           esui.Dialog.alert({title: "提示", content: "请输入其他途径"});
+           esui.Dialog.alert({title: "提示", content: "请填写其他途径"});
            return;
-       }*/
+       }
        if (data.sameBottle == 1) {
-           
+           for (var i = 0, n = data.bottle.length; i < n; i++) {
+               var item = data.bottle[i], seq = i + 1;
+               if (item.name == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个同瓶药品名称"});
+                   return false;
+               }
+               if (!intPattern.test(item.dose)) {
+                   esui.Dialog.alert({title: "提示", content: "请选择第 " + seq + " 个同瓶药品剂量"});
+                   return false;
+               }
+               if (item.unit == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个同瓶药品单位"});
+                   return false;
+               }
+           }
+       }
+       if (data.sameGroup == 1) {
+           if (data.gpSolvent == 1 && !intPattern.test(data.gpSolvent1Dose)) {
+               esui.Dialog.alert({title: "提示", content: "请填写葡萄糖注射液剂量"});
+               return;
+           }
+           if (data.gpSolvent == 2 && !intPattern.test(data.gpSolvent2Dose)) {
+               esui.Dialog.alert({title: "提示", content: "请填写氯化钠注射液剂量"});
+               return;
+           }
+           if (data.gpSolvent == 3 && (data.gpSolvent3Name == "" || !floatPattern.test(data.gpSolvent3Percent) || !intPattern.test(data.gpSolvent3Dose))) {
+               esui.Dialog.alert({title: "提示", content: "请填写间隔液"});
+               return;
+           }
+       }
+       if (data.hasInjection == 1) {
+           for (var i = 0, n = data.injection.length; i < n; i++) {
+               var item = data.injection[i], seq = i + 1;
+               if (item.name == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他注射剂名称"});
+                   return false;
+               }
+               if (!intPattern.test(item.dose)) {
+                   esui.Dialog.alert({title: "提示", content: "请选择第 " + seq + " 个其他注射剂剂量"});
+                   return false;
+               }
+               if (item.unit == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他注射剂单位"});
+                   return false;
+               }
+           }
+       }
+       if (data.hasBan == 1) {
+           if (data.ban == 3 && data.banColor == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写颜色"});
+               return;
+           }
+           if (data.ban == 4 && data.bantxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写其他配伍禁忌现象"});
+               return;
+           }
+           for (var i = 0, n = data.banDrug.length; i < n; i++) {
+               var item = data.banDrug[i], seq = i + 1;
+               if (item.name == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个配伍禁忌药品名称"});
+                   return false;
+               }
+               if (!intPattern.test(item.dose)) {
+                   esui.Dialog.alert({title: "提示", content: "请选择第 " + seq + " 个配伍禁忌药品剂量"});
+                   return false;
+               }
+               if (item.unit == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个配伍禁忌药品单位"});
+                   return false;
+               }
+           }
+       }
+       if (data.hasFood == 1) {
+           if (data.food == "") {
+               esui.Dialog.alert({title: "提示", content: "请选择易致敏物质"});
+               return;
+           }
+           if (data.food.indexOf("5") != -1 && data.foodtxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写其他易致敏物质"});
+               return;
+           }
        }
        
        console.log("crf/saveDrugUseInfo.do-请求", data);

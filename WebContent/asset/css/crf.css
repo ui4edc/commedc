@@ -32,7 +32,8 @@ h1 .check-doubt:hover{background:#e74c3c}
 #ctrltableExam3 .ui-table-hcell-text,
 #ctrltableExam4 .ui-table-hcell-text,
 #ctrltableDrug1 .ui-table-hcell-text,
-#ctrltableDrug2 .ui-table-hcell-text{height:auto; overflow:visible}
+#ctrltableDrug2 .ui-table-hcell-text,
+#ctrltableMerge .ui-table-hcell-text{height:auto; overflow:visible}
 
 .times{width:650px; overflow:hidden; margin:10px 0}
 .times a{float:left; width:70px; height:20px; line-height:20px; margin:0 5px 5px 0; text-align:center; background:#fff; border:1px #a8bfd1 solid; color:#000; text-decoration:none; border-radius:3px}

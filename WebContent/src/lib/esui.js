@@ -10545,7 +10545,7 @@ esui.Table.prototype = {
         if ( this.editable && field.editable && edittype ) {
             return '<div class="' + this.__getClass( 'cell-editentry' ) + '" onclick="' 
                         + this.__getStrCall( 'startEdit', edittype, rowIndex, columnIndex ) 
-                        + '"></div>'
+                        + '"></div>';
         }
         return '';
     },
@@ -11290,6 +11290,7 @@ esui.Table.prototype = {
      * @param {number}      columnIndex 列序号
      */
     startEdit: function ( type, rowIndex, columnIndex ) {
+        this.activeColumn = columnIndex;
         if ( this.editable ) {
             var entrance    = baidu.g( this._getBodyCellId( rowIndex, columnIndex ) );
             var tlOffset    = -5;
@@ -11421,6 +11422,7 @@ esui.Table.EditorManager = function () {
          * @param {Object} options 启动参数表
          */
         startEdit: function (control, type, options) {
+            esui.Table.Editor.edittingTable = control.id;
             var editor = editorMap[type];
             if (editor) {
                 editor.start(control, options);

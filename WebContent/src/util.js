@@ -116,8 +116,9 @@ util.ajax = {
             
             error: function(jqXHR, textStatus, errorThrown) {
                 util.ajax.showError(textStatus + ": " + errorThrown);
-                if (jqXHR.responseText.indexOf("登录")>-1)
+                if (jqXHR.responseText.indexOf("登录") > -1) {
                     window.location.href = $("#BasePath").val() + "login.do";
+                }
             },
             
             success: function(data, textStatus, jqXHR) {
@@ -163,4 +164,63 @@ util.getAge = function(birthday) {
             return age;
         }
     }
+};
+
+/*
+ * 获取药品名称
+ */
+
+util.getDrugName = function(request, response) {
+    util.ajax.run({
+        url: "",
+        data: {keyword: $.trim(request.term)},
+        success: function(data) {
+            console.log("获取药品名称", data);
+            
+            response($.map(data.data, function(item) {
+                return {
+                    label: item.name,
+                    value: item.name,
+                    id: item.id
+                };
+            }));
+        },
+        mock: MOCK,
+        mockData: {
+            success: true,
+            data: [
+                {name: "药品1", id: 1},
+                {name: "药品2", id: 2}
+            ]
+        }
+    });
+};
+
+/*
+ * 获取给药途径
+ */
+util.getDrugWay = function(request, response) {
+    util.ajax.run({
+        url: "",
+        data: {keyword: $.trim(request.term)},
+        success: function(data) {
+            console.log("获取给药途径", data);
+            
+            response($.map(data.data, function(item) {
+                return {
+                    label: item.name,
+                    value: item.name,
+                    id: item.id
+                };
+            }));
+        },
+        mock: MOCK,
+        mockData: {
+            success: true,
+            data: [
+                {name: "途径1", id: 1},
+                {name: "途径2", id: 2}
+            ]
+        }
+    });
 };

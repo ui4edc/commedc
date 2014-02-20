@@ -18,6 +18,8 @@ es.Views.Form40 = Backbone.View.extend({
     },
     
     destroy: function() {
+        $("body").undelegate(".ui-table-editor input", "focus");
+        $(".ui-table-editor input").autocomplete("destroy");
         esui.dispose();
         this.model.unbind();
         this.$el.unbind();
@@ -52,9 +54,69 @@ es.Views.Form40 = Backbone.View.extend({
             esui.get("Save").onclick = this.save;
         }
         
+        //自动提示
+        $("body").delegate(".ui-table-editor input", "focus", function(e) {
+            var index = esui.get("Merge").activeColumn;
+            if (index == 0) {
+                $(e.target).autocomplete({source: util.getDrugName});
+            } else if (index == 5) {
+                $(e.target).autocomplete({source: util.getDrugWay});
+            } else {
+                $(e.target).autocomplete({source: []});
+            }
+        });
+        
         esui.get("Merge").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            var txt = $.trim(value),
+                datePattern = /^\d{4}-(0[1-9]|1[0-2])-([0-2][1-9]|3[0-1])$/,
+                intPattern = /^\d+$/;
+            //验证
+            switch (options.field.field) {
+                case "name":
+                    if (txt == "") {
+                        esui.Dialog.alert({title: "提示", content: "请填写通用名"});
+                        return false;
+                    }
+                    break;
+                case "start":
+                    if (!datePattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写开始日期"});
+                        return false;
+                    }
+                    break;
+                case "end":
+                    if (!datePattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写结束日期"});
+                        return false;
+                    }
+                    break;
+                case "dose":
+                    if (!intPattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写单次用药剂量"});
+                        return false;
+                    }
+                    break;
+                case "unit":
+                    if (txt == "") {
+                        esui.Dialog.alert({title: "提示", content: "请填写剂量单位"});
+                        return false;
+                    }
+                    break;
+                case "way":
+                    if (txt == "") {
+                        esui.Dialog.alert({title: "提示", content: "请填写给药途径"});
+                        return false;
+                    }
+                    break;
+                case "frequency":
+                    if (txt == "") {
+                        esui.Dialog.alert({title: "提示", content: "请填写给药频次"});
+                        return false;
+                    }
+            }
+            
+            this.datasource[options.rowIndex][options.field.field] = txt;
+            this.setCellText(txt, options.rowIndex, options.columnIndex);
             editor.stop();
         };
         
@@ -65,21 +127,25 @@ es.Views.Form40 = Backbone.View.extend({
         table.fields = [
             {
                 field: "name",
-                title: "通用名",
+                title: "通用名称",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.name;}
             },
             {
                 field: "start",
-                title: "开始日期",
+                title: "开始日期<br>（YYYY-MM-DD）",
+                width: 120,
+                stable: true,
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.start;}
             },
             {
                 field: "end",
-                title: "停止日期",
+                title: "停止日期<br>（YYYY-MM-DD）",
+                width: 120,
+                stable: true,
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.end;}

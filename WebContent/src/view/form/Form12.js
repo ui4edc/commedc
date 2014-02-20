@@ -214,7 +214,7 @@ es.Views.Form12 = Backbone.View.extend({
        for (var i = 0, n = data.food.length; i <n; i++) {
            var item = data.food[i], seq = i + 1;
            if (item.name == "") {
-               esui.Dialog.alert({title: "提示", content: "请输入第 " + seq + " 个过敏食物名称"});
+               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个过敏食物名称"});
                return false;
            }
            if (item.value == "") {
@@ -222,14 +222,14 @@ es.Views.Form12 = Backbone.View.extend({
                return false;
            }
            if (item.value.indexOf("8") != -1 && item.txt == "") {
-               esui.Dialog.alert({title: "提示", content: "请输入第 " + seq + " 个其他食物过敏表现"});
+               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他食物过敏表现"});
                return false;
            }
        }
        for (var i = 0, n = data.drug.length; i <n; i++) {
            var item = data.drug[i], seq = i + 1;
            if (item.name == "") {
-               esui.Dialog.alert({title: "提示", content: "请输入第 " + seq + " 个过敏药物名称"});
+               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个过敏药物名称"});
                return false;
            }
            if (item.value == "") {
@@ -237,14 +237,14 @@ es.Views.Form12 = Backbone.View.extend({
                return false;
            }
            if (item.value.indexOf("8") != -1 && item.txt == "") {
-               esui.Dialog.alert({title: "提示", content: "请输入第 " + seq + " 个其他药物过敏表现"});
+               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他药物过敏表现"});
                return false;
            }
        }
        for (var i = 0, n = data.other.length; i <n; i++) {
            var item = data.other[i], seq = i + 1;
            if (item.name == "") {
-               esui.Dialog.alert({title: "提示", content: "请输入第 " + seq + " 个过敏物质名称"});
+               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个过敏物质名称"});
                return false;
            }
            if (item.value == "") {
@@ -252,7 +252,7 @@ es.Views.Form12 = Backbone.View.extend({
                return false;
            }
            if (item.value.indexOf("8") != -1 && item.txt == "") {
-               esui.Dialog.alert({title: "提示", content: "请输入第 " + seq + " 个其他物质过敏表现"});
+               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他物质过敏表现"});
                return false;
            }
        }

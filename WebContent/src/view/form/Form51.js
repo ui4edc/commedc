@@ -67,10 +67,10 @@ es.Views.Form51 = Backbone.View.extend({
         table1.fields = [
             {
                 field: "f1",
-                title: "检查日期<br>（YY-MM-DD）",
+                title: "检查日期<br>（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
-                width: 100,
+                width: 120,
                 stable: true,
                 content: function(item) {return item.f1;}
             },
@@ -117,7 +117,7 @@ es.Views.Form51 = Backbone.View.extend({
         table2.fields = [
             {
                 field: "f1",
-                title: "检查日期（YY-MM-DD）",
+                title: "检查日期（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f1;}
@@ -144,10 +144,10 @@ es.Views.Form51 = Backbone.View.extend({
         table3.fields = [
             {
                 field: "f1",
-                title: "检查日期<br>（YY-MM-DD）",
+                title: "检查日期<br>（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
-                width: 100,
+                width: 120,
                 stable: true,
                 content: function(item) {return item.f1;}
             },
@@ -213,10 +213,10 @@ es.Views.Form51 = Backbone.View.extend({
         table4.fields = [
             {
                 field: "f1",
-                title: "检查日期<br>（YY-MM-DD）",
+                title: "检查日期<br>（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
-                width: 100,
+                width: 120,
                 stable: true,
                 content: function(item) {return item.f1;}
             },
@@ -273,7 +273,7 @@ es.Views.Form51 = Backbone.View.extend({
         table5.fields = [
             {
                 field: "f1",
-                title: "检查日期（YY-MM-DD）",
+                title: "检查日期（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f1;}
@@ -300,7 +300,7 @@ es.Views.Form51 = Backbone.View.extend({
         table6.fields = [
             {
                 field: "f1",
-                title: "检查日期（YY-MM-DD）",
+                title: "检查日期（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f1;}
@@ -334,8 +334,50 @@ es.Views.Form51 = Backbone.View.extend({
         esui.get("ExamDay").onchange = function(value) {esui.get("ExamDay").setValueAsDate(value);};
         
         esui.get("Exam1").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
+            var txt = $.trim(value),
+                datePattern = /^\d{4}-(0[1-9]|1[0-2])-([0-2][1-9]|3[0-1])$/,
+                floatPattern = /^\d+(\.\d+)?$/;
+            //验证
+            switch (options.field.field) {
+                case "f1":
+                    if (!datePattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写检查日期"});
+                        return false;
+                    }
+                    break;
+                case "f2":
+                    if (!floatPattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写体温"});
+                        return false;
+                    }
+                    break;
+                case "f3":
+                    if (!floatPattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写呼吸"});
+                        return false;
+                    }
+                    break;
+                case "f4":
+                    if (!floatPattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写收缩压"});
+                        return false;
+                    }
+                    break;
+                case "f5":
+                    if (!floatPattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写舒张压"});
+                        return false;
+                    }
+                    break;
+                case "f6":
+                    if (!floatPattern.test(txt)) {
+                        esui.Dialog.alert({title: "提示", content: "请填写心率"});
+                        return false;
+                    }
+            }
+            
+            this.datasource[options.rowIndex][options.field.field] = txt;
+            this.setCellText(txt, options.rowIndex, options.columnIndex);
             editor.stop();
         };
         esui.get("Exam2").onedit = function (value, options, editor) {
@@ -378,20 +420,6 @@ es.Views.Form51 = Backbone.View.extend({
     save: function() {
        var me = es.main;
        
-       if (esui.get("Done1").isChecked()) {
-           var bodyExam = esui.get("Exam1").datasource;
-           if (bodyExam[0].f1 == ""
-               || bodyExam[0].f2 == ""
-               || bodyExam[0].f3 == ""
-               || bodyExam[0].f4 == ""
-               || bodyExam[0].f5 == ""
-               || bodyExam[0].f6 == ""
-           ) {
-               esui.Dialog.alert({title: "提示", content: "请将体格检查填写完整"});
-               return;
-           }
-       }
-       
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
@@ -403,13 +431,32 @@ es.Views.Form51 = Backbone.View.extend({
            resulttxt1: $.trim(esui.get("Result1Content").getValue()),
            resulttxt2: $.trim(esui.get("Result2Content").getValue()),
            resulttxt3: $.trim(esui.get("Result3Content").getValue()),
-           data1: bodyExam,
+           data1: esui.get("Exam1").datasource,
            data2: esui.get("Exam2").datasource,
            data3: esui.get("Exam3").datasource,
            data4: esui.get("Exam4").datasource,
            data5: esui.get("Exam5").datasource,
            data6: esui.get("Exam6").datasource
        };
+       
+       //验证
+       if (data.sample == 3 && data.sampletxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写其他送检样本"});
+           return;
+       }
+       if (data.done == 1) {
+           var bodyExam = data.data1;
+           if (bodyExam[0].f1 == ""
+               || bodyExam[0].f2 == ""
+               || bodyExam[0].f3 == ""
+               || bodyExam[0].f4 == ""
+               || bodyExam[0].f5 == ""
+               || bodyExam[0].f6 == ""
+           ) {
+               esui.Dialog.alert({title: "提示", content: "请将体格检查填写完整"});
+               return;
+           }
+       }
        
        console.log("crf/saveInHospitalExam.do-请求", data);
        

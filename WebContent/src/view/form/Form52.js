@@ -57,10 +57,10 @@ es.Views.Form52 = Backbone.View.extend({
         table1.fields = [
             {
                 field: "f1",
-                title: "检查日期<br>（YY-MM-DD）",
+                title: "检查日期<br>（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
-                width: 100,
+                width: 120,
                 stable: true,
                 content: function(item) {return item.f1;}
             },
@@ -107,7 +107,7 @@ es.Views.Form52 = Backbone.View.extend({
         table2.fields = [
             {
                 field: "f1",
-                title: "检查日期（YY-MM-DD）",
+                title: "检查日期（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f1;}
@@ -134,10 +134,10 @@ es.Views.Form52 = Backbone.View.extend({
         table3.fields = [
             {
                 field: "f1",
-                title: "检查日期<br>（YY-MM-DD）",
+                title: "检查日期<br>（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
-                width: 100,
+                width: 120,
                 stable: true,
                 content: function(item) {return item.f1;}
             },
@@ -203,10 +203,10 @@ es.Views.Form52 = Backbone.View.extend({
         table4.fields = [
             {
                 field: "f1",
-                title: "检查日期<br>（YY-MM-DD）",
+                title: "检查日期<br>（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
-                width: 100,
+                width: 120,
                 stable: true,
                 content: function(item) {return item.f1;}
             },
@@ -263,7 +263,7 @@ es.Views.Form52 = Backbone.View.extend({
         table5.fields = [
             {
                 field: "f1",
-                title: "检查日期（YY-MM-DD）",
+                title: "检查日期（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f1;}
@@ -290,7 +290,7 @@ es.Views.Form52 = Backbone.View.extend({
         table6.fields = [
             {
                 field: "f1",
-                title: "检查日期（YY-MM-DD）",
+                title: "检查日期（YYYY-MM-DD）",
                 editable: editable,
                 edittype: "string",
                 content: function(item) {return item.f1;}

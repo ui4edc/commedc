@@ -13,7 +13,7 @@ es.Models.Form70 = Backbone.Model.extend({
             name: null,
             sex: 1,
             birthday: "2014-01-01",
-            ethic: 1,
+            ethic: 0,
             weight: null,
             contact: null,
             disease: null,

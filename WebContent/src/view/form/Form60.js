@@ -133,6 +133,31 @@ es.Views.Form60 = Backbone.View.extend({
            remark: $.trim(esui.get("Remark").getValue())
        };
        
+       //验证
+       var start = T.date.parse(data.startDate).getTime(),
+           end = T.date.parse(data.endDate).getTime();
+       if (start > end) {
+           esui.Dialog.alert({title: "提示", content: "首次用药时间不能晚于末次用药时间"});
+           return;
+       }
+       if (data.intervention == 1 && data.interventiontxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写药师如何进行干预"});
+           return;
+       }
+       var floatPattern = /^\d+(\.\d+)?$/;
+       if (data.treatmentCost != "" && !floatPattern.test(data.treatmentCost)) {
+           esui.Dialog.alert({title: "提示", content: "治疗总费用应为数字"});
+           return;
+       }
+       if (data.drugCost != "" && !floatPattern.test(data.drugCost)) {
+           esui.Dialog.alert({title: "提示", content: "药品总费用应为数字"});
+           return;
+       }
+       if (!floatPattern.test(data.trqCost)) {
+           esui.Dialog.alert({title: "提示", content: "请填写痰热清注射液费用"});
+           return;
+       }
+       
        console.log("crf/saveDrugSummary.do-请求", data);
        
        util.ajax.run({

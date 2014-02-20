@@ -155,7 +155,7 @@ es.Views.Form13 = Backbone.View.extend({
            return;
        }
        if (data.hasDisease == 1 && data.disease.indexOf("8") != -1 && data.diseasetxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请输入其他常见疾病"});
+           esui.Dialog.alert({title: "提示", content: "请填写其他常见疾病"});
            return;
        }
        if (data.hasAllergy == 1 && data.allergy == "") {
@@ -163,7 +163,7 @@ es.Views.Form13 = Backbone.View.extend({
            return;
        }
        if (data.hasAllergy == 1 && data.allergy.indexOf("6") != -1 && data.allergytxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请输入其他过敏性疾病史"});
+           esui.Dialog.alert({title: "提示", content: "请填写其他过敏性疾病史"});
            return;
        }
        
