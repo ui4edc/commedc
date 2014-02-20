@@ -22,7 +22,7 @@ public class PatientInfoCase {
 	//年龄
 	private int age;
 	//体重
-	private float weight;
+	private String weight;
 	//性别
 	private String sex;
 	//民族
@@ -30,7 +30,7 @@ public class PatientInfoCase {
 	//怀孕史：妊娠期，怀孕期，无
 	private String hys;
 	//身高
-	private int height;
+	private String height;
 	//用药科室
 	private String yyks;
 	private String yykstxt;
@@ -86,12 +86,7 @@ public class PatientInfoCase {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public float getWeight() {
-		return weight;
-	}
-	public void setWeight(float weight) {
-		this.weight = weight;
-	}
+	
 	public String getSex() {
 		return sex;
 	}
@@ -110,12 +105,7 @@ public class PatientInfoCase {
 	public void setHys(String hys) {
 		this.hys = hys;
 	}
-	public int getHeight() {
-		return height;
-	}
-	public void setHeight(int height) {
-		this.height = height;
-	}
+	
 	public String getYyks() {
 		return yyks;
 	}
@@ -175,6 +165,18 @@ public class PatientInfoCase {
 	}
 	public void setYlfyfstxt(String ylfyfstxt) {
 		this.ylfyfstxt = ylfyfstxt;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+	public String getHeight() {
+		return height;
+	}
+	public void setHeight(String height) {
+		this.height = height;
 	}
 	
 	

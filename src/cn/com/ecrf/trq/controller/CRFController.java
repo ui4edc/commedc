@@ -304,6 +304,12 @@ public class CRFController {
 		return result;
 	}
 	
+	@RequestMapping(value="/crf/getStaticDict", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getStaticDict(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.getStaticDict(parameterType.getKeyword(), parameterType.getType());
+		return result;
+	}
 	
 	
 	

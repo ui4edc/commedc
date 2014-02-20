@@ -15,6 +15,7 @@
 	    <result column="hys" property="hys" jdbcType="VARCHAR" />
 	    <result column="height" property="height" jdbcType="INTEGER" />
 	    <result column="yyks" property="yyks" jdbcType="VARCHAR" />
+	    <result column="yykstxt" property="yykstxt" jdbcType="VARCHAR" />
 	    <result column="ryrq" property="ryrq" jdbcType="TIMESTAMP" />
 	    <result column="cyrq" property="cyrq" jdbcType="TIMESTAMP" />
 	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -27,15 +28,15 @@
 		SELECT LAST_INSERT_ID()
 		</selectKey>
 	    insert into crf_patient_info (id, no, name, abbr, birthday, age,
-	      weight, sex, ethic, hys, height, yyks, ryrq, cyrq, ylfyfs, create_time, create_by)
+	      weight, sex, ethic, hys, height, yyks, ryrq, cyrq, ylfyfs, create_time, create_by, yykstxt, ylfyfstxt)
 	    values (#{id}, #{no}, #{name}, #{abbr}, #{birthday}, #{age}, 
 	      #{weight}, #{sex}, #{ethic}, #{hys}, #{height}, #{yyks}, #{ryrq}, #{cyrq}, #{ylfyfs}, 
-	      current_timestamp(), #{createBy})
+	      current_timestamp(), #{createBy}, #{yykstxt}, #{ylfyfstxt})
 	</insert>
 	<update id="updatePatientInfo" parameterType="cn.com.ecrf.trq.model.PatientInfoCase" >
 	    update crf_patient_info set birthday=#{birthday}, age=#{age},
 	      weight=#{weight}, sex=#{sex}, ethic=#{ethic}, hys=#{hys}, height=#{height}, yyks=#{yyks}, ryrq=#{ryrq}, cyrq=#{cyrq}, ylfyfs=#{ylfyfs},
-	      weightud=#{weightud},heightud=#{heightud}
+	      weightud=#{weightud},heightud=#{heightud}, yykstxt=#{yykstxt}, ylfyfstxt=#{ylfyfstxt}
 		where id=#{id}
 	</update>
 	<select id="getDoubtCRFNum" parameterType="string" resultType="int">
@@ -117,15 +118,13 @@
 		select 
 			p.abbr as abbr,
 			p.no as no,
-			p.id as id,
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
 			us.progress as progress,
 		 	d.doubter as doubter,
 			count(1) as doubtNumber
 		 from crf_patient_info p, crf_user_sign us, crf_doubt d where 
-		 p.no=us.no and d.no=p.no and p.id=#{id}
-		 group by no
+		 p.no=us.no and d.no=p.no
 		 <if test="abbr != null" >
         	and p.abbr=#{abbr}
       	</if>
@@ -138,6 +137,7 @@
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
+      	group by p.no
 	</select>
 	<select id="getProgress" parameterType="string" resultType="int">
 		select progress from crf_user_sign where no=#{no}
@@ -168,11 +168,16 @@
 			height as height,
 			heightud as heightud,
 			yyks as yyks,
+			yykstxt as yykstxt,
 			ryrq as ryrq,
 			cyrq as cyrq,
-			ylfyfs as ylfyfs
+			ylfyfs as ylfyfs,
+			ylfyfstxt as ylfyfstxt
 			from crf_patient_info where id=#{id}
 	</select>
+	<delete id="deletePatientInfo" parameterType="int">
+		delete from crf_patient_info where id=#{id}
+	</delete>
 	<select id="getPersonHistory" parameterType="int" resultType="cn.com.ecrf.trq.model.PersonAllergicHistoryCase">
 		select 
 			pi.id as id,

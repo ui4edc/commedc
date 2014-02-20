@@ -50,7 +50,7 @@ public class LoginController {
 	public String index(HttpServletRequest request, Map<String, Object> model) {
 		Subject currentUser = SecurityUtils.getSubject();
 		try {
-			SecurityUtils.getSubject().getSession().setTimeout(300000);
+			//SecurityUtils.getSubject().getSession().setTimeout(300000);
 			currentUser = SecurityUtils.getSubject();  
 			String userName = (String)currentUser.getPrincipal();
 			User user = userService.findUserByLoginName(userName);

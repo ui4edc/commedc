@@ -39,12 +39,14 @@ public class ListController {
 	public Map<String, Object> getPatientList(ListConditionVo condition, HttpServletRequest request) {
 		List<ListReturnVo> list = null;
 		int total = 0;
+		Map<String, Object> result = null;
 		if (condition.isCrf()){
-			list = cRFService.getCRFList(condition);
-			total = cRFService.getCRFTotal(condition);
+			result = cRFService.getCRFList(condition);
+			//list = cRFService.getCRFList(condition);
+			//total = cRFService.getCRFTotal(condition);
 		}
 		
-		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, list, total);
+		 
 		return result;
 	}
 	

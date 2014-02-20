@@ -64,7 +64,7 @@ public interface CRFMapper {
 
 	public void updateNextSeq(int id);
 
-	public void deletePatientInfo(int id);
+	public void delete(int id);
 
 	public DiseaseInfoCase getDiseaseInfo(int id);
 
@@ -103,6 +103,26 @@ public interface CRFMapper {
 	public void insertADR(ADRCase aDRCase);
 
 	public void deleteDrugCombination(String no);
+
+	public void deletePatientInfo(int id);
+
+	public void deleteADR(int id);
+
+	public void deleteADR(String no);
+
+	public void deleteDiseaseInfo(String no);
+
+	public void deleteDrugCombinationList(String no);
+
+	public void deleteDrugUseInfo(String no);
+
+	public void deleteLabExamCase(String no);
+
+	public void deletePastHistory(String no);
+
+	public void deletePersonHistory(String no);
+
+	public void deleteDrugSummary(String no);
 	
 
 

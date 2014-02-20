@@ -13,12 +13,11 @@ import cn.com.ecrf.trq.vo.crf.BanDrug;
  */
 public class DrugUseVo {
 		private int id;
-		//观察表编号
-		private String no;
+
 		
 		private String times;
 		
-		private int history;
+		
 		
 		private int adr;
 		
@@ -47,19 +46,24 @@ public class DrugUseVo {
 		private String food;
 		
 		private String foodtxt;
-		private String gSolvent2Dose;
+		
 		private int gpSolvent;
-		private	String gpSolvent1Dose;
+		private	String  gpSolvent1Dose;
+		private String  gpSolvent2Dose;
 		private String	gpSolvent3Dose;
 		private String	gpSolvent3Name;
 		private String	gpSolvent3Percent;
 		private int	hasBan;
 		private int	hasFood;
 		private int	hasInjection;
+		private int history;
 		private List<BanDrug> injection = new ArrayList<BanDrug>();
+		private int location;
+		//观察表编号
+		private String no;
 		private String prepareTime;
 		private boolean prepareTimeUd;
-		private int location;
+		
 		private int sameBottle;
 		private int sameGroup;
 		private int solvent;
@@ -179,11 +183,12 @@ public class DrugUseVo {
 		public void setFoodtxt(String foodtxt) {
 			this.foodtxt = foodtxt;
 		}
-		public String getgSolvent2Dose() {
-			return gSolvent2Dose;
+		
+		public String getGpSolvent2Dose() {
+			return gpSolvent2Dose;
 		}
-		public void setgSolvent2Dose(String gSolvent2Dose) {
-			this.gSolvent2Dose = gSolvent2Dose;
+		public void setGpSolvent2Dose(String gpSolvent2Dose) {
+			this.gpSolvent2Dose = gpSolvent2Dose;
 		}
 		public int getGpSolvent() {
 			return gpSolvent;

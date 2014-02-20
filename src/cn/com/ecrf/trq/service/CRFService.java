@@ -87,8 +87,9 @@ public class CRFService {
 		return notify;
 	}
 
-	public List<ListReturnVo> getCRFList(ListConditionVo condition) {
+	public Map<String, Object> getCRFList(ListConditionVo condition) {
 		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
 		List<ListReturnVo> listVo = null;
 		try{
 			ListCondition sqlCondition = convertCondition(condition);
@@ -97,6 +98,7 @@ public class CRFService {
 			sqlCondition.setUserName(userName);
 			int type = condition.getType();
 			List<ListReturn> list = null;
+			int total = 0;
 			/*if (type == 0 || type == 1 || type == 3){//草稿,提交，审核通过
 				list = cRFMapper.getPatientList(sqlCondition);
 			}else if (type == 2){//质疑
@@ -126,17 +128,20 @@ public class CRFService {
 				break;
 			}
 			listVo = convertListReturn(list);
+			total = cRFMapper.getTotalPatientNum(sqlCondition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, listVo, total);
 		}catch(Exception e){
 			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
 		}
 		
-		return listVo;
+		return result;
 	}
 	
 	private List<ListReturnVo> convertListReturn(List<ListReturn> list) {
 		// TODO Auto-generated method stub
 		List<ListReturnVo> listVo = new ArrayList<ListReturnVo>();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if (list != null){
 			for (ListReturn result : list){
 				ListReturnVo resultVo = new ListReturnVo();
@@ -438,7 +443,19 @@ public class CRFService {
 			if (StringUtils.isNotBlank(id)){
 				String[] idArray = id.split(",");
 				for (String str : idArray){
-					cRFMapper.deletePatientInfo(Integer.parseInt(str));
+					int key = Integer.parseInt(str);
+					PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(key);
+					String no = patientInfoCase.getNo();
+					cRFMapper.deletePatientInfo(key);
+					userSignMapper.deleteUserSign(no);
+					cRFMapper.deleteADR(no);
+					cRFMapper.deleteDiseaseInfo(no);
+					cRFMapper.deleteDrugCombinationList(no);
+					cRFMapper.deleteDrugUseInfo(no);
+					cRFMapper.deleteLabExamCase(no);
+					cRFMapper.deletePastHistory(no);
+					cRFMapper.deletePersonHistory(no);
+					cRFMapper.deleteDrugSummary(no);
 				}
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
@@ -872,6 +889,11 @@ public class CRFService {
 			result = AjaxReturnUtils.generateAjaxReturn(false, null);
 		}
 		return result;
+	}
+
+	public Map<String, Object> getStaticDict(String keyword, String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

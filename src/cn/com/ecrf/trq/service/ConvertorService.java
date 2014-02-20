@@ -65,7 +65,7 @@ public class ConvertorService {
 			patientInfoCase.setCyrq(sdf.parse(patientInfoVo.getOutdate()));
 		FormEnumObject ethicObj = new FormEnumObject(patientInfoVo.getEthic(), null, FormEnumValue.ETHIC);
 		patientInfoCase.setEthic(convertIDToContent(ethicObj));
-		patientInfoCase.setHeight(Integer.parseInt(patientInfoVo.getHeight()));
+		patientInfoCase.setHeight(patientInfoVo.getHeight());
 		patientInfoCase.setHeightud(patientInfoVo.isHeightud());
 		FormEnumObject hysObj = new FormEnumObject(patientInfoVo.getHys(), null, FormEnumValue.HYS);
 		patientInfoCase.setHys(convertIDToContent(hysObj));
@@ -76,10 +76,11 @@ public class ConvertorService {
 			patientInfoCase.setRyrq(sdf.parse(patientInfoVo.getIndate()));
 		FormEnumObject sexObj = new FormEnumObject(patientInfoVo.getSex(), null, FormEnumValue.SEX);
 		patientInfoCase.setSex(convertIDToContent(sexObj));
-		patientInfoCase.setWeight(Float.parseFloat(patientInfoVo.getWeight()));
+		patientInfoCase.setWeight(patientInfoVo.getWeight());
 		patientInfoCase.setWeightud(patientInfoVo.isWeightud());
-		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getFeemode(), patientInfoVo.getFeemodetxt(), FormEnumValue.YLFYFS);
+		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoVo.getFeemode(), null, FormEnumValue.YLFYFS);
 		patientInfoCase.setYlfyfs(convertIDToContent(ylfyfsObj));
+		patientInfoCase.setYlfyfstxt(patientInfoVo.getFeemodetxt());
 /*		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
 		//JSONArray jsonArray = new JSONArray();
 		for (int i=0;patientInfoVo.getYyks() != null && i< patientInfoVo.getYyks().size();i++){
@@ -90,8 +91,9 @@ public class ConvertorService {
 		}
 		JSONUtils<FormEnumObject> util = new JSONUtils<FormEnumObject>(FormEnumObject.class);
 		patientInfoCase.setYyks(util.convertFromList(yyksobjs));*/
-		FormEnumObject yyksObj = new FormEnumObject(patientInfoVo.getYyks(), patientInfoVo.getYykstxt(), FormEnumValue.YYKS);
+		FormEnumObject yyksObj = new FormEnumObject(patientInfoVo.getYyks(), null, FormEnumValue.YYKS);
 		patientInfoCase.setYyks(convertIDToContent(yyksObj));
+		patientInfoCase.setYykstxt(patientInfoVo.getYykstxt());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,43 +113,37 @@ public class ConvertorService {
 			patientInfoVo.setBirthday(sdf.format(patientInfoCase.getBirthday()));
 		if (patientInfoCase.getCyrq() != null)
 			patientInfoVo.setOutdate(sdf.format(patientInfoCase.getCyrq()));
-		FormEnumObject ethicObj = new FormEnumObject(patientInfoCase.getEthic(), FormEnumValue.ETHIC);
-		patientInfoVo.setEthic(convertContentToID(ethicObj));
-		patientInfoVo.setHeight(""+patientInfoCase.getHeight());
+		if (StringUtils.isNotBlank(patientInfoCase.getEthic())){
+			FormEnumObject ethicObj = new FormEnumObject(patientInfoCase.getEthic(), FormEnumValue.ETHIC);
+			patientInfoVo.setEthic(convertContentToID(ethicObj));
+		}
+		patientInfoVo.setHeight(patientInfoCase.getHeight());
 		patientInfoVo.setHeightud(patientInfoCase.isHeightud());
-		FormEnumObject hysObj = new FormEnumObject(patientInfoCase.getHys(), FormEnumValue.HYS);
-		patientInfoVo.setHys(convertContentToID(hysObj));
+		if (StringUtils.isNotBlank(patientInfoCase.getHys())){
+			FormEnumObject hysObj = new FormEnumObject(patientInfoCase.getHys(), FormEnumValue.HYS);
+			patientInfoVo.setHys(convertContentToID(hysObj));
+		}
 		patientInfoVo.setId(patientInfoCase.getId());
 		//patientInfoCase.setName(patientInfoVo.getName());
 		patientInfoVo.setNo(patientInfoCase.getNo());
 		if (patientInfoCase.getRyrq() != null)
 			patientInfoVo.setIndate(sdf.format(patientInfoCase.getRyrq()));
-		FormEnumObject sexObj = new FormEnumObject(patientInfoCase.getSex(), FormEnumValue.SEX);
-		patientInfoVo.setSex(convertContentToID(sexObj));
-		patientInfoVo.setWeight(""+(int)patientInfoCase.getWeight());
-		patientInfoVo.setWeightud(patientInfoCase.isWeightud());
-		FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoCase.getYlfyfs(), FormEnumValue.YLFYFS);
-		patientInfoVo.setYyks(convertContentToID(ylfyfsObj));
-		if (StringUtils.isNotBlank(ylfyfsObj.getOther()))
-			patientInfoVo.setYykstxt(ylfyfsObj.getOther());
-/*		List<FormEnumObject> yyksobjs = new ArrayList<FormEnumObject>();
-		//JSONArray jsonArray = new JSONArray();
-		for (int i=0;patientInfoVo.getYyks() != null && i< patientInfoVo.getYyks().size();i++){
-			CheckBoxVo checkBoxVo = (CheckBoxVo)patientInfoVo.getYyks().get(i);
-			FormEnumObject yyksObj = new FormEnumObject(checkBoxVo.getId(), checkBoxVo.getOther(), FormEnumValue.YYKS);
-			convertIDToContent(yyksObj);
-			yyksobjs.add(yyksObj);
+		if (StringUtils.isNotBlank(patientInfoCase.getSex())){
+			FormEnumObject sexObj = new FormEnumObject(patientInfoCase.getSex(), FormEnumValue.SEX);
+			patientInfoVo.setSex(convertContentToID(sexObj));
 		}
-		JSONUtils<FormEnumObject> util = new JSONUtils<FormEnumObject>(FormEnumObject.class);
-		patientInfoCase.setYyks(util.convertFromList(yyksobjs));*/
-		FormEnumObject yyksObj = new FormEnumObject(patientInfoCase.getYyks(), FormEnumValue.YYKS);
-		patientInfoVo.setYyks(convertContentToID(yyksObj));
-		if (StringUtils.isNotBlank(yyksObj.getOther()))
-			patientInfoVo.setYykstxt(yyksObj.getOther());
-		FormEnumObject yyfyfsObj = new FormEnumObject(patientInfoCase.getYlfyfs(), FormEnumValue.YLFYFS);
-		patientInfoVo.setFeemode(convertContentToID(yyksObj));
-		if (StringUtils.isNotBlank(yyfyfsObj.getOther()))
-			patientInfoVo.setFeemodetxt(yyfyfsObj.getOther());
+		patientInfoVo.setWeight(patientInfoCase.getWeight());
+		patientInfoVo.setWeightud(patientInfoCase.isWeightud());
+		if (StringUtils.isNotBlank(patientInfoCase.getYlfyfs())){
+			FormEnumObject ylfyfsObj = new FormEnumObject(patientInfoCase.getYlfyfs(), FormEnumValue.YLFYFS);
+			patientInfoVo.setFeemode(convertContentToID(ylfyfsObj));
+		}
+		patientInfoVo.setFeemodetxt(patientInfoCase.getYlfyfstxt());
+		if (StringUtils.isNotBlank(patientInfoCase.getYyks())){
+			FormEnumObject yyksObj = new FormEnumObject(patientInfoCase.getYyks(), FormEnumValue.YYKS);
+			patientInfoVo.setYyks(convertContentToID(yyksObj));
+		}
+		patientInfoVo.setYykstxt(patientInfoCase.getYykstxt());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -159,6 +155,7 @@ public class ConvertorService {
 			PersonAllergicHistoryCase personAllergicHistoryCase) {
 		// TODO Auto-generated method stub
 		PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
+		personalHistoryVo.setId(personAllergicHistoryCase.getId());
 		FormEnumObject drinkObj = new FormEnumObject(personAllergicHistoryCase.getDrink(), FormEnumValue.YES_NO_UNKNOWN);
 		personalHistoryVo.setDrink(convertContentToID(drinkObj));
 		FormEnumObject smokeObj = new FormEnumObject(personAllergicHistoryCase.getSmoke(), FormEnumValue.YES_NO_UNKNOWN);
@@ -192,6 +189,7 @@ public class ConvertorService {
 			PersonalHistoryVo personalHistoryVo) {
 		// TODO Auto-generated method stub
 		PersonAllergicHistoryCase  personalHistoryCase = new PersonAllergicHistoryCase();
+		personalHistoryCase.setId(personalHistoryVo.getId());
 		personalHistoryCase.setNo(personalHistoryVo.getNo());
 		FormEnumObject drinkObj = new FormEnumObject(personalHistoryVo.getDrink(), null, FormEnumValue.YES_NO_UNKNOWN);
 		personalHistoryCase.setDrink(convertIDToContent(drinkObj));
@@ -266,13 +264,13 @@ public class ConvertorService {
 		condition.put("name", obj.getName());
 		condition.put("type", obj.getType());
 		int seq = cRFMapper.getFormEnumValueByName(condition);
-		if (seq == 0){
+		/*if (seq == 0){
 			condition = new HashMap<String, Object>();
 			condition.put("name", FormEnumValue.OTHER);
 			condition.put("type", obj.getType());
 			seq = cRFMapper.getFormEnumValueByName(condition);
 			obj.setOther(obj.getName());
-		}
+		}*/
 		obj.setSeq(seq);
 		return obj.getSeq();
 	}
