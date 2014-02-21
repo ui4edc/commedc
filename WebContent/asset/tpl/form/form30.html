@@ -112,10 +112,10 @@
 
 <div class="row">
     <span class="label">是否使用间隔液</span>
-    <input type="radio" hidefocus="true" title="是" name="same-group" value="1" ui="type:Radio;id:SameGroup1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="否" name="same-group" value="2" ui="type:Radio;id:SameGroup2;{{disabled}}" checked />
+    <input type="radio" hidefocus="true" title="是" name="same-group" value="1" ui="type:Radio;id:SameGroup1;{{disabled}}" checked />
+    <input type="radio" hidefocus="true" title="否" name="same-group" value="2" ui="type:Radio;id:SameGroup2;{{disabled}}" />
 </div>
-<div class="row sub auto group" style="display:none">
+<div class="row sub auto gap">
     <div>
         <input type="radio" hidefocus="true" title="葡萄糖注射液(5%)" name="gp-solvent" value="1" ui="type:Radio;id:GpSolvent1;{{disabled}}" checked />，
         <input type="text" class="en" value="{{data.gpSolvent1Dose}}" ui="type:TextInput;id:GpSolvent1Dose;width:50;{{disabled}}" /> ml
@@ -130,6 +130,9 @@
         <input type="text" class="en" value="{{data.gpSolvent3Percent}}" ui="type:TextInput;id:GpSolvent3Percent;width:50;{{disabled}}" /> %，
         <input type="text" class="en" value="{{data.gpSolvent3Dose}}" ui="type:TextInput;id:GpSolvent3Dose;width:50;{{disabled}}" /> ml
     </div>
+</div>
+<div class="row sub auto groups" style="display:none">
+    {{#save}}<div><a href="javascript:void(0)" hidefocus="true" class="add-group add-btn">添加一行</a></div>{{/save}}
 </div>
 
 <div class="row">
@@ -183,6 +186,15 @@
 （单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:BottleUnit{{no}};width:50;{{disabled}}" />）
 </div>
 {{/bottle}}
+</script>
+
+<script id="tpl-form30-group" type="text/html">
+{{#group}}
+<div class="group">同组药品{{no}}：<input type="text" class="sug" value="{{name}}" ui="type:TextInput;id:GroupName{{no}};width:100;{{disabled}}" />
+剂量{{no}}：<input type="text" class="en" value="{{dose}}" ui="type:TextInput;id:GroupDose{{no}};width:50;{{disabled}}" />
+（单位{{no}}：<input type="text" value="{{unit}}" ui="type:TextInput;id:GroupUnit{{no}};width:50;{{disabled}}" />）
+</div>
+{{/group}}
 </script>
 
 <script id="tpl-form30-injection" type="text/html">

@@ -284,7 +284,7 @@ es.Views.Form70 = Backbone.View.extend({
         $("body").delegate(".ui-table-editor input", "focus", function(e) {
             var index = esui.get(esui.Table.Editor.edittingTable).activeColumn;
             if (index == 2) {
-                $(e.target).autocomplete({source: util.getDrugName});
+                $(e.target).autocomplete({source: util.getSuggestion("drug")});
             } else {
                 $(e.target).autocomplete({source: []});
             }

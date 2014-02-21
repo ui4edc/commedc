@@ -58,9 +58,9 @@ es.Views.Form40 = Backbone.View.extend({
         $("body").delegate(".ui-table-editor input", "focus", function(e) {
             var index = esui.get("Merge").activeColumn;
             if (index == 0) {
-                $(e.target).autocomplete({source: util.getDrugName});
+                $(e.target).autocomplete({source: util.getSuggestion("drug")});
             } else if (index == 5) {
-                $(e.target).autocomplete({source: util.getDrugWay});
+                $(e.target).autocomplete({source: util.getSuggestion("way")});
             } else {
                 $(e.target).autocomplete({source: []});
             }

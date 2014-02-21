@@ -141,7 +141,6 @@ util.ajax = {
 /*
  * 计算年龄
  */
-
 util.getAge = function(birthday) {
     var year = birthday.getFullYear(),
         month = birthday.getMonth(),
@@ -167,60 +166,34 @@ util.getAge = function(birthday) {
 };
 
 /*
- * 获取药品名称
+ * 获取自动提示
  */
-
-util.getDrugName = function(request, response) {
-    util.ajax.run({
-        url: "",
-        data: {keyword: $.trim(request.term)},
-        success: function(data) {
-            console.log("获取药品名称", data);
-            
-            response($.map(data.data, function(item) {
-                return {
-                    label: item.name,
-                    value: item.name,
-                    id: item.id
-                };
-            }));
-        },
-        mock: MOCK,
-        mockData: {
-            success: true,
-            data: [
-                {name: "药品1", id: 1},
-                {name: "药品2", id: 2}
-            ]
-        }
-    });
-};
-
-/*
- * 获取给药途径
- */
-util.getDrugWay = function(request, response) {
-    util.ajax.run({
-        url: "",
-        data: {keyword: $.trim(request.term)},
-        success: function(data) {
-            console.log("获取给药途径", data);
-            
-            response($.map(data.data, function(item) {
-                return {
-                    label: item.name,
-                    value: item.name,
-                    id: item.id
-                };
-            }));
-        },
-        mock: MOCK,
-        mockData: {
-            success: true,
-            data: [
-                {name: "途径1", id: 1},
-                {name: "途径2", id: 2}
-            ]
-        }
-    });
+util.getSuggestion = function(type) {
+    return function(request, response) {
+        util.ajax.run({
+            url: "crf/getStaticDict.do",
+            data: {
+                type: type,
+                keyword: $.trim(request.term)
+            },
+            success: function(data) {
+                console.log("crf/getStaticDict.do", data);
+                response($.map(data.data, function(item) {
+                    return {
+                        label: item.name,
+                        value: item.name,
+                        id: item.id
+                    };
+                }));
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: [
+                    {name: type + "1", id: 1},
+                    {name: type + "2", id: 2}
+                ]
+            }
+        });
+    };
 };

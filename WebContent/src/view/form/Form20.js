@@ -52,15 +52,11 @@ es.Views.Form20 = Backbone.View.extend({
                 esui.get("Disease1_" + val).setChecked(true);
             });
         }
-        if (data.fy1 != "") {
-            $.each(data.fy1.split(","), function(index, val) {
-                esui.get("Disease1_4_1_" + val).setChecked(true);
-            });
-        }
-        if (data.fy2 != "") {
-            $.each(data.fy2.split(","), function(index, val) {
-                esui.get("Disease1_4_2_" + val).setChecked(true);
-            });
+        switch (data.fy) {
+            case 1: esui.get("Fy1").setChecked(true); break;
+            case 2: esui.get("Fy2").setChecked(true); break;
+            case 3: esui.get("Fy3").setChecked(true); break;
+            case 4: esui.get("Fy4").setChecked(true);
         }
         if (data.disease2 != "") {
             $.each(data.disease2.split(","), function(index, val) {
@@ -97,8 +93,7 @@ es.Views.Form20 = Backbone.View.extend({
            id: me.crfId,
            no: me.model.get("data").no,
            disease1: esui.get("Disease1_1").getGroup().getValue(),
-           fy1: esui.get("Disease1_4_1_1").getGroup().getValue(),
-           fy2: esui.get("Disease1_4_2_1").getGroup().getValue(),
+           fy: parseInt(esui.get("Fy1").getGroup().getValue(), 10),
            disease2: esui.get("Disease2_1").getGroup().getValue(),
            disease3: esui.get("Disease3_1").getGroup().getValue(),
            diseasetxt: $.trim(esui.get("CustomDiseaseName").getValue()),
@@ -109,8 +104,6 @@ es.Views.Form20 = Backbone.View.extend({
        
        //验证
        if (data.disease1 == ""
-           && data.fy1 == ""
-           && data.fy2 == ""
            && data.disease2 == ""
            && data.disease3 == ""
            && data.diseasetxt == ""

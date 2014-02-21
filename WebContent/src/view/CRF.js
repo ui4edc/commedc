@@ -99,9 +99,7 @@ es.Views.CRF = Backbone.View.extend({
             defaultId: this.selectADR ? 70 : 11,
             onClick: this.onMenuClick,
             onLoad: function() {
-                if (Auth.CRO || Auth.LCRO) {
-                    me.addDoubt(data.doubt);
-                }
+                me.addDoubt(data.doubt);
             }
         });
     },
@@ -130,9 +128,7 @@ es.Views.CRF = Backbone.View.extend({
      * 切换表单
      */
     onMenuClick: function(id, target) {
-        if (Auth.CRO || Auth.LCRO) {
-            target.find("span").fadeOut(3000);
-        }
+        target.find("span").fadeOut(3000);
         
         var me = es.main;
         me.destroyForm();
@@ -349,18 +345,15 @@ es.Views.CRF = Backbone.View.extend({
                     field: "doubtDate",
                     title: "质疑时间",
                     content: function(item) {return item.doubtDate;}
-                }
-            ];
-            
-            if (Auth.CRO || Auth.LCRO) {
-                table.fields.push({
+                },
+                {
                     field: "op",
                     title: "操作",
                     content: function(item) {
                         return '<a href="javascript:void(0)" class="fix" onclick="es.main.fixDoubt(' + item.doubtId + ', this)">解决</a>';
                     }
-                });
-            }
+                }
+            ];
             
             table.render();
         }

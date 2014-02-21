@@ -41,13 +41,16 @@ es.Models.Form30 = Backbone.Model.extend({
 				{name: null, dose: null, unit: null}
 			],
 			
-			sameGroup: 2,
+			sameGroup: 1,
 			gpSolvent: 1,
 			gpSolvent1Dose: null,
 			gSolvent2Dose: null,
 			gpSolvent3Name: null,
 			gpSolvent3Percent: null,
 			gpSolvent3Dose: null,
+			group: [
+                {name: null, dose: null, unit: null}
+            ],
 			
 			hasInjection: 2,
 			injection: [
@@ -83,6 +86,9 @@ es.Models.Form30 = Backbone.Model.extend({
                     response.data = me.get("def");
                 }
                 $.each(response.data.bottle, function(index, val) {
+                    val.no = index + 1;
+                });
+                $.each(response.data.group, function(index, val) {
                     val.no = index + 1;
                 });
                 $.each(response.data.injection, function(index, val) {

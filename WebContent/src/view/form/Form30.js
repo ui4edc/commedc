@@ -11,6 +11,7 @@ es.Views.Form30 = Backbone.View.extend({
         "click .times a": "switchTimes",
         "click .times span": "addTimes",
         "click .add-bottle": "addBottle",
+        "click .add-group": "addGroup",
         "click .add-injection": "addInjection",
         "click .add-drug": "addDrug"
     },
@@ -90,6 +91,10 @@ es.Views.Form30 = Backbone.View.extend({
                     bottle: data.data.bottle,
                     disabled: disabled
                 }));
+                me.$(".groups").prepend($.Mustache.render("tpl-form30-group", {
+                    group: data.data.group,
+                    disabled: disabled
+                }));
                 me.$(".injections-tip").after($.Mustache.render("tpl-form30-injection", {
                     injection: data.data.injection,
                     disabled: disabled
@@ -115,6 +120,10 @@ es.Views.Form30 = Backbone.View.extend({
             }));
             this.$(".bottles").prepend($.Mustache.render("tpl-form30-bottle", {
                 bottle: data.data.bottle,
+                disabled: disabled
+            }));
+            this.$(".groups").prepend($.Mustache.render("tpl-form30-group", {
+                group: data.data.group,
                 disabled: disabled
             }));
             this.$(".injections-tip").after($.Mustache.render("tpl-form30-injection", {
@@ -170,9 +179,10 @@ es.Views.Form30 = Backbone.View.extend({
             esui.get("SameBottle1").setChecked(true);
             this.$(".bottles").show();
         }
-        if (data.sameGroup == 1) {
-            esui.get("SameGroup1").setChecked(true);
-            this.$(".group").show();
+        if (data.sameGroup == 2) {
+            esui.get("SameGroup2").setChecked(true);
+            this.$(".gap").hide();
+            this.$(".groups").show();
         }
         switch (data.gpSolvent) {
             case 2: esui.get("GpSolvent2").setChecked(true); break;
@@ -210,8 +220,8 @@ es.Views.Form30 = Backbone.View.extend({
         esui.get("End").onchange = function(value) {esui.get("End").setValueAsDate(value);};
         esui.get("SameBottle1").onclick = function() {me.$(".bottles").show();};
         esui.get("SameBottle2").onclick = function() {me.$(".bottles").hide();};
-        esui.get("SameGroup1").onclick = function() {me.$(".group").show();};
-        esui.get("SameGroup2").onclick = function() {me.$(".group").hide();};
+        esui.get("SameGroup1").onclick = function() {me.$(".gap").show(); me.$(".groups").hide();};
+        esui.get("SameGroup2").onclick = function() {me.$(".gap").hide(); me.$(".groups").show();};
         esui.get("HasInjection1").onclick = function() {me.$(".injections").show();};
         esui.get("HasInjection2").onclick = function() {me.$(".injections").hide();};
         esui.get("HasBan1").onclick = function() {me.$(".ban").show();};
@@ -220,7 +230,7 @@ es.Views.Form30 = Backbone.View.extend({
         esui.get("HasFood2").onclick = function() {me.$(".food").hide();};
         esui.get("HasFood3").onclick = function() {me.$(".food").hide();};
         
-        this.$("input.sug").autocomplete({source: util.getDrugName});
+        this.$("input.sug").autocomplete({source: util.getSuggestion("drug")});
         
         if (!this.rendered) {
             esui.get("History1").onclick = function() {me.$(".history").show();};
@@ -247,7 +257,17 @@ es.Views.Form30 = Backbone.View.extend({
             disabled: ""
         }));
         esui.init();
-        this.$("#ctrltextBottleName" + no).autocomplete({source: util.getDrugName});
+        this.$("#ctrltextBottleName" + no).autocomplete({source: util.getSuggestion("drug")});
+    },
+    
+    addGroup: function(e) {
+        var no = this.$(".group").length + 1;
+        $(e.target).parent().before($.Mustache.render("tpl-form30-group", {
+            group: [{no: no}],
+            disabled: ""
+        }));
+        esui.init();
+        this.$("#ctrltextGroupName" + no).autocomplete({source: util.getSuggestion("drug")});
     },
     
     addInjection: function(e) {
@@ -257,7 +277,7 @@ es.Views.Form30 = Backbone.View.extend({
             disabled: ""
         }));
         esui.init();
-        this.$("#ctrltextInjectionName" + no).autocomplete({source: util.getDrugName});
+        this.$("#ctrltextInjectionName" + no).autocomplete({source: util.getSuggestion("drug")});
     },
     
     addDrug: function(e) {
@@ -267,7 +287,7 @@ es.Views.Form30 = Backbone.View.extend({
             disabled: ""
         }));
         esui.init();
-        this.$("#ctrltextDrugName" + no).autocomplete({source: util.getDrugName});
+        this.$("#ctrltextDrugName" + no).autocomplete({source: util.getSuggestion("drug")});
     },
     
     save: function() {
@@ -314,6 +334,7 @@ es.Views.Form30 = Backbone.View.extend({
            gpSolvent3Name: $.trim(esui.get("GpSolvent3Name").getValue()),
            gpSolvent3Percent: $.trim(esui.get("GpSolvent3Percent").getValue()),
            gpSolvent3Dose: $.trim(esui.get("GpSolvent3Dose").getValue()),
+           group: [],
            
            hasInjection: parseInt(esui.get("HasInjection1").getGroup().getValue(), 10),
            injection: [],
@@ -336,6 +357,15 @@ es.Views.Form30 = Backbone.View.extend({
                name: $.trim(esui.get("BottleName" + no).getValue()),
                dose: $.trim(esui.get("BottleDose" + no).getValue()),
                unit: $.trim(esui.get("BottleUnit" + no).getValue())
+           });
+       });
+       var group = me.$(".group");
+       $.each(group, function(index, val) {
+           var no = index + 1;
+           data.group.push({
+               name: $.trim(esui.get("GroupName" + no).getValue()),
+               dose: $.trim(esui.get("GroupDose" + no).getValue()),
+               unit: $.trim(esui.get("GroupUnit" + no).getValue())
            });
        });
        var injection = me.$(".injection");
@@ -452,6 +482,23 @@ es.Views.Form30 = Backbone.View.extend({
            if (data.gpSolvent == 3 && (data.gpSolvent3Name == "" || !floatPattern.test(data.gpSolvent3Percent) || !intPattern.test(data.gpSolvent3Dose))) {
                esui.Dialog.alert({title: "提示", content: "请填写间隔液"});
                return;
+           }
+       }
+       if (data.sameGroup == 2) {
+           for (var i = 0, n = data.group.length; i < n; i++) {
+               var item = data.group[i], seq = i + 1;
+               if (item.name == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个同组药品名称"});
+                   return false;
+               }
+               if (!intPattern.test(item.dose)) {
+                   esui.Dialog.alert({title: "提示", content: "请选择第 " + seq + " 个同组药品剂量"});
+                   return false;
+               }
+               if (item.unit == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个同组药品单位"});
+                   return false;
+               }
            }
        }
        if (data.hasInjection == 1) {
