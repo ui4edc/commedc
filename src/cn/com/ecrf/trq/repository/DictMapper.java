@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.com.ecrf.trq.model.dict.DictRow;
 import cn.com.ecrf.trq.model.dict.DictSnapshot;
+import cn.com.ecrf.trq.model.dict.StaticDict;
 
 public interface DictMapper {
 
@@ -12,5 +13,6 @@ public interface DictMapper {
 	List<DictRow> getDictRowList(int id);
 	List<DictRow> getBasicList(String name);
 	void addItemToBase(Map<String, Object> condition);
+	List<StaticDict> getStaticDict(StaticDict staticDict);
 
 }

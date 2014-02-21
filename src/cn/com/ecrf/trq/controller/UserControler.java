@@ -28,6 +28,7 @@ import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.CipherUtil;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
 import cn.com.ecrf.trq.utils.StringUtils;
+import cn.com.ecrf.trq.vo.account.UserDescriptionVo;
 
 @Controller
 public class UserControler {
@@ -203,7 +204,7 @@ public class UserControler {
     @RequestMapping(value = "/account/getAdminList", method = RequestMethod.POST)  
     @ResponseBody  
     public Map<String, Object> getAdminList(HttpServletRequest request){
-		List<User> users = userService.getAdminUserList();
+		List<UserDescriptionVo> users = userService.getAdminUserList();
 		int total = 0;
 		if (users != null)
 			total = users.size();
@@ -214,7 +215,7 @@ public class UserControler {
     @RequestMapping(value = "/account/getCRMList", method = RequestMethod.POST)  
     @ResponseBody  
     public Map<String, Object> getCRMList(HttpServletRequest request){
-		List<User> users = userService.getCRMList();
+		List<UserDescriptionVo> users = userService.getCRMList();
 		int total = 0;
 		if (users != null)
 			total = users.size();

@@ -19,12 +19,12 @@ public class DictService {
 	public List<DictSnapshot> getDictSnapshot() {
 		// TODO Auto-generated method stub
 		List<DictSnapshot> dictSnapshots = dictMapper.getUnDealDictList();
-		if (dictSnapshots != null){
+/*		if (dictSnapshots != null){
 			for (DictSnapshot dictSnapshot : dictSnapshots){
 				if (dictSnapshot.getUntreated() > 0)
 					dictSnapshot.setName(dictSnapshot.getName()+"("+dictSnapshot.getUntreated()+")个未处理");
 			}
-		}
+		}*/
 		return dictSnapshots;
 	}
 

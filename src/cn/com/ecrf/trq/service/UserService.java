@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
 import cn.com.ecrf.trq.utils.CipherUtil;
 import cn.com.ecrf.trq.utils.StringUtils;
+import cn.com.ecrf.trq.vo.account.UserDescriptionVo;
 
 
 
@@ -151,6 +153,7 @@ public class UserService {
 	public Organization getOrganization(int id) {
 		// TODO Auto-generated method stub
 		Organization organization = organizationMapper.getOrganizationById(id);
+		organization.setAdminUserId(organization.getCrmUserId());
 		return organization;
 	}
 
@@ -166,6 +169,7 @@ public class UserService {
 
 	public void saveOrganization(Organization organization) {
 		// TODO Auto-generated method stub
+		organization.setCrmUserId(organization.getAdminUserId());
 		if (organization.getId() > 0){
 			organizationMapper.updateOrganization(organization);
 		}else{
@@ -238,16 +242,34 @@ public class UserService {
 		return result;
 	}
 
-	public List<User> getAdminUserList() {
+	public List<UserDescriptionVo> getAdminUserList() {
 		// TODO Auto-generated method stub
 		List<User> users = userMapper.findAdminUsers();
-		return users;
+		List<UserDescriptionVo> userVos = new ArrayList<UserDescriptionVo>();
+		if (users != null){
+			for (User user : users){
+				UserDescriptionVo desc = new UserDescriptionVo();
+				desc.setId(user.getId());
+				desc.setDescription(user.getDisplayName());
+				userVos.add(desc);
+			}
+		}
+		return userVos;
 	}
 
-	public List<User> getCRMList() {
+	public List<UserDescriptionVo> getCRMList() {
 		// TODO Auto-generated method stub
 		List<User> users = userMapper.findCRMUsers();
-		return users;
+		List<UserDescriptionVo> userVos = new ArrayList<UserDescriptionVo>();
+		if (users != null){
+			for (User user : users){
+				UserDescriptionVo desc = new UserDescriptionVo();
+				desc.setId(user.getId());
+				desc.setDescription(user.getDisplayName());
+				userVos.add(desc);
+			}
+		}
+		return userVos;
 	}
 
 	public Organization findUserOrganization(int userId) {

@@ -16,7 +16,8 @@ public class Organization {
 	private String mailAddress;
 	private int instanceNumber;
 	private int adminUserId;
-	private String adminUserName;
+	private int crmUserId;
+	private String crmUserName;
 	
 	public int getId() {
 		return id;
@@ -96,12 +97,19 @@ public class Organization {
 	public void setAdminUserId(int adminUserId) {
 		this.adminUserId = adminUserId;
 	}
-	public String getAdminUserName() {
-		return adminUserName;
+	public int getCrmUserId() {
+		return crmUserId;
 	}
-	public void setAdminUserName(String adminUserName) {
-		this.adminUserName = adminUserName;
+	public void setCrmUserId(int crmUserId) {
+		this.crmUserId = crmUserId;
 	}
+	public String getCrmUserName() {
+		return crmUserName;
+	}
+	public void setCrmUserName(String crmUserName) {
+		this.crmUserName = crmUserName;
+	}
+	
 	
 	
 }

@@ -32,5 +32,9 @@
 	<update id="addItemToBase" parameterType="map">
 		update dt_itemdict set fk_base_id=#{baseItemId} where id=#{selectedItemId}
 	</update>
+	<select id="getStaticDict" parameterType="cn.com.ecrf.trq.model.dict.StaticDict" resultType="cn.com.ecrf.trq.model.dict.StaticDict">
+		select id as id, name as name
+		from dt_staticdict where name like #{name}||% and typeabbr=#{typeabbr} 
+	</select>
   
 </mapper>

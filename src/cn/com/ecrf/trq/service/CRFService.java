@@ -31,9 +31,11 @@ import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
 import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
+import cn.com.ecrf.trq.model.dict.StaticDict;
 import cn.com.ecrf.trq.model.list.ListCondition;
 import cn.com.ecrf.trq.model.list.ListReturn;
 import cn.com.ecrf.trq.repository.CRFMapper;
+import cn.com.ecrf.trq.repository.DictMapper;
 import cn.com.ecrf.trq.repository.DoubtRecordMapper;
 import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
@@ -56,6 +58,7 @@ import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
 import cn.com.ecrf.trq.vo.crf.FieldDictVo;
+import cn.com.ecrf.trq.vo.dict.StaticDictVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 import cn.com.ecrf.trq.vo.list.ListConditionVo;
@@ -74,6 +77,8 @@ public class CRFService {
 	private UserSignMapper userSignMapper;
 	@Autowired
 	private DoubtRecordMapper doubtRecordMapper;
+	@Autowired
+	private DictMapper dictMapper;
 	
 	public ListNotifyVo getNotifyInfo() {
 		// TODO Auto-generated method stub
@@ -113,15 +118,16 @@ public class CRFService {
 				break;
 			case 2:
 				list = cRFMapper.getDoutSummaryList(sqlCondition);
+				break;
 			case 3: 
 				list = cRFMapper.getPatientList(sqlCondition);
 				break;
 			case 4:
 				//监察，
-				list = cRFMapper.getPatientList(sqlCondition);
+				list = cRFMapper.getPatientListByCRM(sqlCondition);
 				break;
 			case 5:
-				list = cRFMapper.getDoutSummaryList(sqlCondition);
+				list = cRFMapper.getDoutSummaryListByCRM(sqlCondition);
 				break;
 			case 6: 
 				list = cRFMapper.getPatientList(sqlCondition);
@@ -184,21 +190,23 @@ public class CRFService {
 		sqlCondition.setProgressType(condition.getProgressType());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			if (StringUtils.isNotBlank(condition.getCreateDateForm())){		
+			if (StringUtils.isNotBlank(condition.getCreateDateForm()) && StringUtils.isNotBlank(condition.getCreateDateTo())){		
 				sqlCondition.setCreateDateForm(sdf.parse(condition.getCreateDateForm()));
 				sqlCondition.setCreateDateTo(sdf.parse(condition.getCreateDateTo()));
 			}
-			if (StringUtils.isNotBlank(condition.getLastModifiedFrom())){
-				sqlCondition.setLastModifiedFrom(sdf.parse(condition.getCreateDateForm()));
-				sqlCondition.setLastModifiedTo(sdf.parse(condition.getCreateDateTo()));
+			if (StringUtils.isNotBlank(condition.getLastModifiedFrom()) && StringUtils.isNotBlank(condition.getLastModifiedTo())){
+				sqlCondition.setLastModifiedFrom(sdf.parse(condition.getLastModifiedFrom()));
+				sqlCondition.setLastModifiedTo(sdf.parse(condition.getLastModifiedTo()));
 			}
-			if (StringUtils.isNotBlank(condition.getDoubtDateFrom())){
-				sqlCondition.setDoubtDateFrom(sdf.parse(condition.getCreateDateForm()));
-				sqlCondition.setDoubtDateTo(sdf.parse(condition.getCreateDateTo()));
+			if (StringUtils.isNotBlank(condition.getDoubtDateFrom()) && StringUtils.isNotBlank(condition.getDoubtDateTo())){
+				sqlCondition.setDoubtDateFrom(sdf.parse(condition.getDoubtDateFrom()));
+				sqlCondition.setDoubtDateTo(sdf.parse(condition.getDoubtDateTo()));
 			}
 			sqlCondition.setCrf(condition.isCrf());
 			sqlCondition.setDesc(condition.isDesc());
 			sqlCondition.setNo(condition.getNo());
+			sqlCondition.setOrderBy(condition.getOrderBy());
+			sqlCondition.setDesc(condition.isDesc());
 			if (condition.getPageNo() > 0 && condition.getPageSize() > 0){
 				int pageNo = condition.getPageNo();
 				int pageSize = condition.getPageSize();
@@ -374,6 +382,16 @@ public class CRFService {
 		return result;
 	}
 
+	public void validDateRange(Date date, int id, String fieldName) throws Exception{
+		PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(id);
+		Date startDate = patientInfoCase.getRyrq();
+		Date endDate = patientInfoCase.getCyrq();
+		if (date == null)
+			throw new Exception(fieldName+"不能为空");
+		if (date.getTime()<startDate.getTime() || date.getTime() > endDate.getTime())
+			throw new Exception(fieldName+"不在入院日期和出院日期之间");
+	}
+	
 	public Map<String, Object> savePersonHistory(
 			PersonalHistoryVo personalHistoryVo) {
 		// TODO Auto-generated method stub
@@ -510,6 +528,18 @@ public class CRFService {
 		try{
 			DrugUseCase drugUseCase =  convertorService.convertDrugUseInfoFromViewToModel(drugUseVo);
 			DrugUseCase dbCase = cRFMapper.getDrugUseInfo(drugUseVo.getId());
+			Date startDate = null, endDate = null;
+			try{
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				if (StringUtils.isNotBlank(drugUseCase.getStartDate()))
+					startDate = sdf.parse(drugUseCase.getStartDate());
+				if (StringUtils.isNotBlank(drugUseCase.getEndDate()))
+					endDate = sdf.parse(drugUseCase.getEndDate());
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			validDateRange(startDate, drugUseVo.getId(), "用药开始时间");
+			validDateRange(endDate, drugUseVo.getId(), "用药结束时间");
 			if (dbCase != null && dbCase.getNo() != null)
 				cRFMapper.updateDrugUseInfo(drugUseCase);
 			else {
@@ -527,7 +557,7 @@ public class CRFService {
 		return result;
 	}
 
-	public Map<String, Object> gettDrugUseInfo(String id) {
+	public Map<String, Object> getDrugUseInfo(String id) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
 		try{
@@ -550,6 +580,8 @@ public class CRFService {
 			List<DrugInstanceObject> drugs = drugCombinationVo.getDrug();
 			for (int i=0;drugs != null && i<drugs.size();i++){
 				DrugCombinationCase drugCombinationCase =  convertorService.convertDrugCombinationCaseFromViewToModel(drugs.get(i), drugCombinationVo.getNo());
+				validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
+				validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间");
 				if (drugCombinationCase.getSeq() > 0){
 					cRFMapper.updateDrugCombination(drugCombinationCase);
 				}else{
@@ -578,6 +610,8 @@ public class CRFService {
 		Map<String, Object> result;
 		try{
 			DrugSummaryCase drugSummaryCase =  convertorService.convertDrugSummaryFromViewToModel(drugSummaryVo);
+			validDateRange(drugSummaryCase.getStartDate(), drugSummaryVo.getId(), "病程首次用药时间");
+			validDateRange(drugSummaryCase.getEndDate(), drugSummaryVo.getId(), "病程末次用药时间");
 			DrugSummaryCase dbCase = cRFMapper.getDrugSummary(drugSummaryVo.getId());
 			if (dbCase != null && dbCase.getNo() != null)
 				cRFMapper.updateDrugSummary(drugSummaryCase);
@@ -602,6 +636,7 @@ public class CRFService {
 		try{
 			ADRCase aDRCase =  convertorService.convertADRFromViewToModel(adrVo);
 			ADRCase dbCase = cRFMapper.getADR(adrVo.getId());
+			validDateRange(aDRCase.getAdrDateDate(), adrVo.getId(), "不良反应/事件发生时间");
 			if (dbCase != null && dbCase.getNo() != null)
 				cRFMapper.updateADR(aDRCase);
 			else {
@@ -765,6 +800,7 @@ public class CRFService {
 		Map<String, Object> result;
 		try{
 			LabExamCase labExamCase =  convertorService.convertLabExamFromViewToModel(inHospitalExamVo, phase);
+			validDateRange(labExamCase.getExamDate(), inHospitalExamVo.getId(), "送检日期");
 			Map<String, Object> condition = new HashMap<String, Object>();
 			condition.put("id", inHospitalExamVo.getId());
 			condition.put("phase", phase);
@@ -800,6 +836,15 @@ public class CRFService {
 			ADRVo adrVo = null;
 			if (adrCase != null)
 				adrVo = convertorService.convertADRFromModelToView(adrCase);
+			else{
+				adrVo = new ADRVo();
+				PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(id);
+				PatientInfoVo patientInfoVo = convertorService.convertPatientFromModelToView(patientInfoCase);
+				adrVo.setBirthday(patientInfoVo.getBirthday());
+				adrVo.setSex(patientInfoVo.getSex());
+				adrVo.setEthic(patientInfoVo.getEthic());
+				adrVo.setWeight(patientInfoVo.getWeight());
+			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, adrVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -893,7 +938,46 @@ public class CRFService {
 
 	public Map<String, Object> getStaticDict(String keyword, String type) {
 		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> result = null;
+		try{
+			StaticDict staticDict = new StaticDict();
+			staticDict.setTypeabbr(type);
+			staticDict.setName(keyword);
+			List<StaticDict> dicts = dictMapper.getStaticDict(staticDict);
+			List<StaticDictVo> dictVos = new ArrayList<StaticDictVo>();
+			if (dicts != null){
+				for (StaticDict dict : dicts){
+					StaticDictVo staticDictVo = new StaticDictVo();
+					staticDictVo.setId(dict.getId());
+					staticDictVo.setName(dict.getName());
+					dictVos.add(staticDictVo);
+				}
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, dictVos);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		return result;
+	}
+
+	public Map<String, Object> addADR(String no) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfoIdByNo(no);
+			if (patientInfoCase != null){
+				result = AjaxReturnUtils.generateAjaxReturn(true, null);
+				result.put("id", patientInfoCase.getId());
+			}else{
+				result = AjaxReturnUtils.generateAjaxReturn(false, "观察表编号不存在");
+			}
+				
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
 	}
 
 

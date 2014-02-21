@@ -79,10 +79,97 @@
       	<if test="userName != null">
       		and (us.cro_name=#{userName} or us.crm_name=#{userName} or us.dm_name=#{userName})
       	</if>
+		<choose>
+		    <when test="orderBy == 'no'">
+		      order by p.no
+		    </when>
+		    <when test="orderBy == 'abbr'">
+		      order by p.abbr
+		    </when>
+		    <when test="orderBy == 'createDate'">
+		      order by us.cro_createtime
+		    </when>
+		    <when test="orderBy == 'lastModified'">
+		      order by us.cro_updatetime
+		    </when>
+		    <otherwise>
+		      order by us.cro_createtime
+		    </otherwise>
+		  </choose>
+		 <choose>
+		    <when test="desc == true">
+		       desc
+		    </when>
+		    <otherwise>
+		       asc
+		    </otherwise>
+		 </choose>
       	<if test="limitSize > 0">
       		LIMIT #{limitStart},#{limitSize}
       	</if>
 	</select>
+	<select id="getPatientListByCRM" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
+		select 
+			p.abbr as abbr,
+			p.no as no,
+			p.id as id,
+			us.cro_createtime as createDate,
+			us.cro_updatetime as lastModified,
+			us.progress as progress
+		 from crf_patient_info p, crf_user_sign us, ac_user cro, ac_user crm, ac_organization o where us.lockstatus=#{lockStatus} and p.no=us.no
+		  and us.cro_name=cro.user_name and cro.fk_organization_id=o.id and o.fk_crmuser_id=crm.id and crm.user_name=#{userName}
+		 <if test="abbr != null and abbr != ''" >
+        	and p.abbr=#{abbr}
+      	</if>
+      	<if test="no != null and  no != ''" >
+        	and p.no=#{no}
+      	</if>
+		<choose>
+			<when test="progressType == 1">
+				and us.progress >= #{progress}
+			</when>
+			<when test="progressType == 2">
+				and #{progress} >= us.progress
+			</when>
+		    <otherwise>    
+            </otherwise>    
+		</choose>
+      	<if test="createDateForm != null" >
+        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	</if>
+      	<if test="lastModifiedFrom != null" >
+        	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
+      	</if>
+		<choose>
+		    <when test="orderBy == 'no'">
+		      order by p.no
+		    </when>
+		    <when test="orderBy == 'abbr'">
+		      order by p.abbr
+		    </when>
+		    <when test="orderBy == 'createDate'">
+		      order by us.cro_createtime
+		    </when>
+		    <when test="orderBy == 'lastModified'">
+		      order by us.cro_updatetime
+		    </when>
+		    <otherwise>
+		      order by us.cro_createtime
+		    </otherwise>
+		  </choose>
+		 <choose>
+		    <when test="desc == true">
+		       desc
+		    </when>
+		    <otherwise>
+		       asc
+		    </otherwise>
+		 </choose>
+      	<if test="limitSize > 0">
+      		LIMIT #{limitStart},#{limitSize}
+      	</if>
+	</select>
+	
 	
 	<select id="getTotalPatientNum" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="int">
 		select 
@@ -250,11 +337,13 @@
 	    insert into crf_patient_info (no, abbr, create_time, create_by)
 	    values (#{no}, #{abbr}, current_timestamp(), #{createBy})
 	</insert>
-	<select id="getFormEnumValueByName" parameterType="map" resultType="int">
-		select seq from crf_form_enum where name=#{name} and abbr=#{type}
+	<select id="getFormEnumValueByName" parameterType="map" resultType="cn.com.ecrf.trq.model.CRFFormEnum">
+		select seq as seq
+		from crf_form_enum where name=#{name} and abbr=#{type}
 	</select>
-	<select id="getFormEnumValue" parameterType="map" resultType="string">
-		select name from crf_form_enum where abbr=#{type} and seq=#{seq}
+	<select id="getFormEnumValue" parameterType="map" resultType="cn.com.ecrf.trq.model.CRFFormEnum">
+		select name as name
+		from crf_form_enum where abbr=#{type} and seq=#{seq}
 	</select>
 	<select id="getDiseaseInfo" parameterType="int" resultType="cn.com.ecrf.trq.model.DiseaseInfoCase">
 		select 
@@ -265,22 +354,21 @@
 			disease2 as disease2,
 			disease3 as disease3,
 			diseasetxt as diseasetxt,
-			fy1 as fy1,
-			fy2 as fy2,
+			fy as fy,
 			zy as zy,
 			zytxt as zytxt
 			from crf_disease_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
 	</select>
 	<insert id="insertDiseaseInfo" parameterType="cn.com.ecrf.trq.model.DiseaseInfoCase">
-	    insert into crf_disease_info (no, diagnosis, disease1, disease2, disease3, diseasetxt, fy1, fy2,
+	    insert into crf_disease_info (no, diagnosis, disease1, disease2, disease3, diseasetxt, fy,
 	    zy, zytxt, create_time)
-	    values (#{no}, #{diagnosis}, #{disease1}, #{disease2}, #{disease3}, #{diseasetxt}, #{fy1}, #{fy2}, #{zy}, #{zytxt},
+	    values (#{no}, #{diagnosis}, #{disease1}, #{disease2}, #{disease3}, #{diseasetxt}, #{fy}, #{zy}, #{zytxt},
 	    current_timestamp());
 	</insert>
 	<update id="updateDiseaseInfo" parameterType="cn.com.ecrf.trq.model.DiseaseInfoCase" >
 		update crf_disease_info set
 		diagnosis=#{diagnosis}, disease1=#{disease1}, disease2=#{disease2},
-		disease3=#{disease3}, diseasetxt=#{diseasetxt}, fy1=#{fy1},fy2=#{fy2},
+		disease3=#{disease3}, diseasetxt=#{diseasetxt}, fy=#{fy},
 		zy=#{zy}, zytxt=#{zytxt}, update_time=now()
   		where no=#{no}
 	</update>
@@ -317,6 +405,7 @@
 			prepareTimeUd as prepareTimeUd,
 			sameBottle as sameBottle,
 			sameGroup as sameGroup,
+			grouplb as grouplb,
 			solvent as solvent,
 			solventDose as solventDose,
 			solventName as solventName,
@@ -338,18 +427,18 @@
 	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gSolvent2Dose, gpSolvent1Dose,
 	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
 	    prepareTime, prepareTimeUd, sameBottle, sameGroup, solvent, solventDose, solventName, solventPercent,
-	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit)
+	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,grouplb)
 	    values (#{no}, #{times}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, 
 	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gSolvent2Dose}, #{gpSolvent1Dose},
 	    #{gpSolvent3Dose}, #{gpSolvent3Name},#{gpSolvent3Percent}, #{hasBan}, #{hasFood}, #{hasInjection}, #{injectionlb}, 
 	    #{prepareTime}, #{prepareTimeUd}, #{sameBottle}, #{sameGroup},#{solvent}, #{solventDose}, #{solventName}, #{solventPercent},
-	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit});
+	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit},#{grouplb});
 	</insert>
 	<update id="updateDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase" >
 		update crf_druguse_info set
 		history=#{history}, adr=#{adr},
 		adrtxt=#{adrtxt}, banColor=#{banColor}, bantxt=#{bantxt},banDruglb=#{banDruglb},
-		batchNumber=#{batchNumber}, bottlelb=#{bottlelb}
+		batchNumber=#{batchNumber}, bottlelb=#{bottlelb},grouplb=#{grouplb}
   		where no=#{no} and seq=#{times}
 	</update>
 	<select id="getDrugCombinationList" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugCombinationCase">
@@ -517,4 +606,7 @@
 			evaluate=#{evaluateStr},career=#{careerStr},careertxt=#{careertxt},email=#{email},reportDate=#{reportDateDate},remark=#{remark} 
 		where no=#{no}
 	</update>
+	<select id="getBasicInfoIdByNo" parameterType="string" resultType="cn.com.ecrf.trq.model.PatientInfoCase">
+		select id as id from crf_patient_info where no=#{no}
+	</select>
 </mapper>

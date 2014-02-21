@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.ecrf.trq.model.ADRCase;
+import cn.com.ecrf.trq.model.CRFFormEnum;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DoubtRecord;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
@@ -22,9 +23,9 @@ public interface CRFMapper {
 	
 	public void updatePatientInfo(PatientInfoCase patientInfo);
 
-	public String getFormEnumValue(Map<String, Object> condition);
+	public CRFFormEnum getFormEnumValue(Map<String, Object> condition);
 
-	public int getFormEnumValueByName(Map<String, Object> condition);
+	public CRFFormEnum getFormEnumValueByName(Map<String, Object> condition);
 
 	public int getNextSeq(int id);
 
@@ -123,6 +124,12 @@ public interface CRFMapper {
 	public void deletePersonHistory(String no);
 
 	public void deleteDrugSummary(String no);
+
+	public PatientInfoCase getBasicInfoIdByNo(String no);
+
+	public List<ListReturn> getPatientListByCRM(ListCondition sqlCondition);
+
+	public List<ListReturn> getDoutSummaryListByCRM(ListCondition sqlCondition);
 	
 
 

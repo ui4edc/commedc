@@ -35,6 +35,8 @@ public class DrugUseCase {
 	
 	private String bottlelb;
 	
+	private String grouplb;
+	
 	private String dose;
 	
 	private String endDate;
@@ -343,6 +345,12 @@ public class DrugUseCase {
 	}
 	public void setAdrtxt(String adrtxt) {
 		this.adrtxt = adrtxt;
+	}
+	public String getGrouplb() {
+		return grouplb;
+	}
+	public void setGrouplb(String grouplb) {
+		this.grouplb = grouplb;
 	}
 	
 	

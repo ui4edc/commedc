@@ -168,7 +168,7 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getDrugUseInfo(ParameterType parameterType, HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.gettDrugUseInfo(""+parameterType.getId());
+		Map<String, Object> result = cRFService.getDrugUseInfo(""+parameterType.getId());
 		return result;
 	}
 	
@@ -308,6 +308,13 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> getStaticDict(ParameterType parameterType, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.getStaticDict(parameterType.getKeyword(), parameterType.getType());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/addADR", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> addADR(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.addADR(parameterType.getNo());
 		return result;
 	}
 	

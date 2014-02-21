@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.ADRCase;
+import cn.com.ecrf.trq.model.CRFFormEnum;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DoubtRecord;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
@@ -250,10 +251,10 @@ public class ConvertorService {
 		if (obj.getSeq() > 0){
 			condition.put("seq", obj.getSeq());
 			condition.put("type", obj.getType());
-			String value = cRFMapper.getFormEnumValue(condition);
-			if (!StringUtils.isNotBlank(value) || "其他".equals(value))
-				value = obj.getOther();
-			obj.setName(value);
+			CRFFormEnum formEnum = cRFMapper.getFormEnumValue(condition);
+			if (formEnum != null)
+				obj.setName(formEnum.getName());
+			
 		}
 		return obj.getName();
 	}
@@ -263,7 +264,7 @@ public class ConvertorService {
 		Map<String, Object> condition = new HashMap<String, Object>();
 		condition.put("name", obj.getName());
 		condition.put("type", obj.getType());
-		int seq = cRFMapper.getFormEnumValueByName(condition);
+		CRFFormEnum formEnum = cRFMapper.getFormEnumValueByName(condition);
 		/*if (seq == 0){
 			condition = new HashMap<String, Object>();
 			condition.put("name", FormEnumValue.OTHER);
@@ -271,6 +272,9 @@ public class ConvertorService {
 			seq = cRFMapper.getFormEnumValueByName(condition);
 			obj.setOther(obj.getName());
 		}*/
+		int seq = 0;
+		if (formEnum != null)
+			seq = formEnum.getSeq();
 		obj.setSeq(seq);
 		return obj.getSeq();
 	}
@@ -324,6 +328,8 @@ public class ConvertorService {
 					drugUseVo.setBottle(util.convertFromString(drugUseInfoCase.getBottlelb()));
 				if (StringUtils.isNotBlank(drugUseInfoCase.getInjectionlb()))
 					drugUseVo.setInjection(util.convertFromString(drugUseInfoCase.getInjectionlb()));
+				if (StringUtils.isNotBlank(drugUseInfoCase.getGrouplb()))
+					drugUseVo.setGroup(util.convertFromString(drugUseInfoCase.getGrouplb()));
 			}
 			
 		} catch (Exception e) {
@@ -347,6 +353,8 @@ public class ConvertorService {
 					drugUseCase.setBottlelb(util.convertFromList(drugUseVo.getBottle()));
 				if (drugUseVo.getInjection() != null && drugUseVo.getInjection().size() > 0)
 					drugUseCase.setInjectionlb(util.convertFromList(drugUseVo.getInjection()));
+				if (drugUseVo.getGroup() != null && drugUseVo.getGroup().size() > 0)
+					drugUseCase.setGrouplb(util.convertFromList(drugUseVo.getGroup()));
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
@@ -817,7 +825,7 @@ public class ConvertorService {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return aDRVo;
 	}
 
 	public DoubtRecordGetVo convertDoubtRecordFromModelToView(DoubtRecord record) {

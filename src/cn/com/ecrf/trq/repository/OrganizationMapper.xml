@@ -15,26 +15,25 @@
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
     <result column="fk_adminuser_id" property="adminUserId" jdbcType="INTEGER" />
-    <result column="fk_adminuser_name" property="adminUserName" jdbcType="VARCHAR" />
+    <result column="fk_crmuser_id" property="crmUserId" jdbcType="INTEGER" />
   </resultMap>
   
   <!-- organization -->
   <sql id="Base_Column_List" >
     id, organization_name, code, organization_desc, create_time, update_time, update_time, update_by, instance_number,
-    fk_adminuser_id, fk_adminuser_name
+    fk_adminuser_id, fk_crmuser_id
   </sql>
   <insert id="insertOrganization" parameterType="cn.com.ecrf.trq.model.Organization">
 	<selectKey resultType="Integer" order="AFTER" keyProperty="id">
 		SELECT LAST_INSERT_ID()
 	</selectKey>
   	insert into ac_organization(id, organization_name, code, organization_desc, create_time, create_by, instance_number, 
-  	fk_adminuser_id, fk_adminuser_name) values(#{id}, #{name}, #{code}, #{organizationDesc}, now(), #{createBy}, #{instanceNumber},
-  	#{adminUserId}, #{adminUserName});
+  	fk_crmuser_id) values(#{id}, #{name}, #{code}, #{organizationDesc}, now(), #{createBy}, #{instanceNumber},
+  	#{crmUserId});
   </insert>
   <update id="updateOrganization" parameterType="cn.com.ecrf.trq.model.Organization">
   	update ac_organization set organization_name=#{name}, organization_desc=#{organizationDesc}, update_time=now(),
-  	update_by=#{updateBy}, instance_number=#{instanceNumber},fk_adminuser_id=#{adminUserId},
-  	fk_adminuser_name=#{adminUserName} where id=#{id}
+  	update_by=#{updateBy}, instance_number=#{instanceNumber},fk_crmuser_id=#{crmUserId} where id=#{id}
   </update>
   <delete id="deleteOrganizationById" parameterType="int">
   	delete from ac_organization where id=#{id}
@@ -47,12 +46,19 @@
   <select id="findOrganizationByName" parameterType="string" resultMap="OrganizationResultMap">
   	select 
     <include refid="Base_Column_List" />
-    from ac_organization where id=#{name}
+    from ac_organization where organization_name=#{name}
   </select>
-  <select id="findOrganizations" resultMap="OrganizationResultMap" parameterType="map" >
+  <select id="findOrganizations" resultMap="cn.com.ecrf.trq.model.Organization" parameterType="map" >
     select 
-    <include refid="Base_Column_List" />
-    from ac_organization
+    	id as id,
+   		organization_name as name,
+    	code as code,
+    	organization_desc as organizationDesc,
+    	instance_number as instanceNumber,
+    	fk_adminuser_id as adminUserId,
+    	fk_crmuser_id as crmUserId,
+    	u.user_name as crmUserName
+    from ac_organization o left join ac_user u on o.fk_crmuser_id=u.id
     <if test="limitStart != null and limitSize != null" >
     LIMIT #{limitStart},#{limitSize}
     </if>

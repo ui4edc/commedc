@@ -66,6 +66,7 @@ public class DrugUseVo {
 		
 		private int sameBottle;
 		private int sameGroup;
+		private List<BanDrug> group = new ArrayList<BanDrug>();
 		private int solvent;
 		private String solventDose;
 		private String solventName;
@@ -363,6 +364,12 @@ public class DrugUseVo {
 		}
 		public void setLocation(int location) {
 			this.location = location;
+		}
+		public List<BanDrug> getGroup() {
+			return group;
+		}
+		public void setGroup(List<BanDrug> group) {
+			this.group = group;
 		}
 		
 		

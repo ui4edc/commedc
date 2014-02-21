@@ -13,8 +13,7 @@ public class DiseaseInfoVo {
 	private String disease2;
 	private String disease3;
 	private String diseasetxt;
-	private String fy1;
-	private String fy2;
+	private int fy;
 	private int zy;
 	private String zytxt;
 	
@@ -60,18 +59,7 @@ public class DiseaseInfoVo {
 	public void setDiseasetxt(String diseasetxt) {
 		this.diseasetxt = diseasetxt;
 	}
-	public String getFy1() {
-		return fy1;
-	}
-	public void setFy1(String fy1) {
-		this.fy1 = fy1;
-	}
-	public String getFy2() {
-		return fy2;
-	}
-	public void setFy2(String fy2) {
-		this.fy2 = fy2;
-	}
+	
 	public int getZy() {
 		return zy;
 	}
