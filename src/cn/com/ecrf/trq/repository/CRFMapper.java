@@ -130,6 +130,12 @@ public interface CRFMapper {
 	public List<ListReturn> getPatientListByCRM(ListCondition sqlCondition);
 
 	public List<ListReturn> getDoutSummaryListByCRM(ListCondition sqlCondition);
+
+	public int getTotalPatientNumByCRM(ListCondition sqlCondition);
+
+	public List<ListReturn> getPatientListByDM(ListCondition sqlCondition);
+
+	public int getTotalPatientNumByDM(ListCondition sqlCondition);
 	
 
 

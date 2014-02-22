@@ -48,4 +48,6 @@ public interface UserMapper {
 
 	List<User> findCRMUsers();
 
+	List<User> getAdminUserByOrganizationId(int id);
+
 }

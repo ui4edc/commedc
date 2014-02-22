@@ -40,25 +40,42 @@ public class UserService {
 
 	public User findUserByLoginName(String username) {
 		System.out.println("findUserByLoginName call!");
-		return userMapper.findUserByLoginName(username);
+		User user = null;
+		try{
+			user = userMapper.findUserByLoginName(username);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return user;
 	}
 	
-	public int saveUser(User user){
+	public int saveUser(User user) throws Exception{
 		int id = 0;
 		/*int organizaitonId = user.getOrganizationId();
 		if (organizaitonId > 0){
 			Organization organization = organizationMapper.getOrganizationById(id);
 			user.setOrganizationName(organization.getName());
 		}*/
-		
+		Role role = roleMapper.getRoleById(user.getRoleId());
+		if ("LCRO".equalsIgnoreCase(role.getRoleName())){
+			List<User> adminUsers = userMapper.getAdminUserByOrganizationId(user.getOrganizationId());
+			if (adminUsers != null && adminUsers.size() > 0){
+				if (adminUsers.get(0).getId() != user.getId()){
+					throw new Exception("已经有一个医院管理员，如欲替换，请先修改 "+adminUsers.get(0).getUserName()+" 的权限");
+				}
+			}
+		}
 		if (user.getId() <= 0){
 			user.setPassword(CipherUtil.generatePassword(user.getPassword()));
 			userMapper.insertUser(user);
 		}else{
 			User user2 = userMapper.getUserById(user.getId());
 			userMapper.updateUser(user);
-			if (!user2.getPassword().equalsIgnoreCase(user.getPassword()))
+			if (!user2.getPassword().equalsIgnoreCase(user.getPassword())){
+				user.setPassword(CipherUtil.generatePassword(user.getPassword()));
 				userMapper.updatePassword(user);
+			}
+				
 		}
 		return user.getId();
 	}
@@ -145,6 +162,11 @@ public class UserService {
 			condition.put(AjaxReturnValue.limitSize, pageSize);
 		}
 		List<Organization> organizations =  organizationMapper.findOrganizations(condition);
+		if (organizations != null){
+			for (Organization organization : organizations){
+				organization.setAdminUserName(organization.getCrmUserName());
+			}
+		}
 		int total = organizationMapper.getNum();
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, organizations, total);
 		return result;

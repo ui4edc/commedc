@@ -60,6 +60,9 @@
       	<if test="no != null and  no != ''" >
         	and p.no=#{no}
       	</if>
+      	<if test="crf == false">
+      		and p.no in (select no from crf_adr_info)
+      	</if>
 		<choose>
 			<when test="progressType == 1">
 				and us.progress >= #{progress}
@@ -70,13 +73,13 @@
 		    <otherwise>    
             </otherwise>    
 		</choose>
-      	<if test="createDateForm != null" >
-        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	<if test="createDateFrom != null" >
+        	and us.cro_createtime>=#{createDateFrom} and #{createDateTo}>=us.cro_createtime
       	</if>
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
-      	<if test="userName != null">
+      	<if test="userName != null and roleName!='DM'">
       		and (us.cro_name=#{userName} or us.crm_name=#{userName} or us.dm_name=#{userName})
       	</if>
 		<choose>
@@ -124,6 +127,9 @@
       	<if test="no != null and  no != ''" >
         	and p.no=#{no}
       	</if>
+      	<if test="crf == false">
+      		and p.no in (select no from crf_adr_info)
+      	</if>
 		<choose>
 			<when test="progressType == 1">
 				and us.progress >= #{progress}
@@ -134,8 +140,8 @@
 		    <otherwise>    
             </otherwise>    
 		</choose>
-      	<if test="createDateForm != null" >
-        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	<if test="createDateFrom != null" >
+        	and us.cro_createtime>=#{createDateFrom} and #{createDateTo}>=us.cro_createtime
       	</if>
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
@@ -181,6 +187,9 @@
       	<if test="no != null and  no != ''" >
         	and p.no=#{no}
       	</if>
+      	<if test="crf == false">
+      		and p.no in (select no from crf_adr_info)
+      	</if>
 		<choose>
 			<when test="progressType == 1">
 				and us.progress >= #{progress}
@@ -191,14 +200,48 @@
 		    <otherwise>    
             </otherwise>    
 		</choose>
-      	<if test="createDateForm != null" >
-        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	<if test="createDateFrom != null" >
+        	and us.cro_createtime>=#{createDateFrom} and #{createDateTo}>=us.cro_createtime
+      	</if>
+      	<if test="lastModifiedFrom != null" >
+        	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
+      	</if>
+      	<if test="userName != null and roleName!='DM'">
+      		and (us.cro_name=#{userName} or us.crm_name=#{userName} or us.dm_name=#{userName})
+      	</if>
+	</select>
+	
+	<select id="getTotalPatientNumByCRM" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="int">
+		select 
+			count(*)
+		 from crf_patient_info p, crf_user_sign us, ac_user cro, ac_user crm, ac_organization o where us.lockstatus=#{lockStatus} and p.no=us.no
+		  and us.cro_name=cro.user_name and cro.fk_organization_id=o.id and o.fk_crmuser_id=crm.id and crm.user_name=#{userName}
+		 <if test="abbr != null and abbr != ''" >
+        	and p.abbr=#{abbr}
+      	</if>
+      	<if test="no != null and  no != ''" >
+        	and p.no=#{no}
+      	</if>
+      	<if test="crf == false">
+      		and p.no in (select no from crf_adr_info)
+      	</if>
+		<choose>
+			<when test="progressType == 1">
+				and us.progress >= #{progress}
+			</when>
+			<when test="progressType == 2">
+				and #{progress} >= us.progress
+			</when>
+		    <otherwise>    
+            </otherwise>    
+		</choose>
+      	<if test="createDateFrom != null" >
+        	and us.cro_createtime>=#{createDateFrom} and #{createDateTo}>=us.cro_createtime
       	</if>
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
 	</select>
-	
 	
 	
 	<select id="getDoutSummaryList" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
@@ -218,8 +261,11 @@
       	<if test="no != null" >
         	and p.no=#{no}
       	</if>
-      	<if test="createDateForm != null" >
-        	and us.cro_createtime>=#{createDateForm} and #{createDateTo}>=us.cro_createtime
+      	<if test="crf == false">
+      		and p.no in (select no from crf_adr_info)
+      	</if>
+      	<if test="createDateFrom != null" >
+        	and us.cro_createtime>=#{createDateFrom} and #{createDateTo}>=us.cro_createtime
       	</if>
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime

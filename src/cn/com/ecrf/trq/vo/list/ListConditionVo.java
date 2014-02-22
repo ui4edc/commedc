@@ -4,7 +4,7 @@ public class ListConditionVo {
 	private boolean crf;
 	private String abbr;
 	private String no;
-	private String createDateForm;
+	private String createDateFrom;
 	private String createDateTo;
 	private String lastModifiedFrom;
 	private String lastModifiedTo;
@@ -37,11 +37,12 @@ public class ListConditionVo {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public String getCreateDateForm() {
-		return createDateForm;
+	
+	public String getCreateDateFrom() {
+		return createDateFrom;
 	}
-	public void setCreateDateForm(String createDateForm) {
-		this.createDateForm = createDateForm;
+	public void setCreateDateFrom(String createDateFrom) {
+		this.createDateFrom = createDateFrom;
 	}
 	public String getCreateDateTo() {
 		return createDateTo;

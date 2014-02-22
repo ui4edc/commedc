@@ -4,24 +4,20 @@
 <mapper namespace="cn.com.ecrf.trq.repository.UserMapper" >
 	
 	
-  <resultMap id="BaseResultMap" type="cn.com.ecrf.trq.model.User" >
+  <!--  <resultMap id="BaseResultMap" type="cn.com.ecrf.trq.model.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="display_name" property="displayName" jdbcType="VARCHAR" />
     <result column="fk_organization_id" property="organizationId" jdbcType="INTEGER" />
-    <result column="fk_organization_name" property="organizationName" jdbcType="VARCHAR" />
     <result column="fk_role_id" property="roleId" jdbcType="INTEGER" />
-    <result column="fk_role_name" property="roleName" jdbcType="VARCHAR" />
-    <result column="fk_adminuser_id" property="adminUserId" jdbcType="INTEGER" />
-    <result column="fk_crmuser_id" property="crmUserId" jdbcType="INTEGER" />
     <result column="contact" property="contact" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
-  </resultMap>
+  </resultMap>-->
   
   <resultMap id="RoleResultMap" type="cn.com.ecrf.trq.model.Role" >
     <id column="id" property="id" jdbcType="INTEGER" />
@@ -34,13 +30,19 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-    id, user_name, status, display_name, fk_organization_id, fk_organization_name, contact, fk_role_id, fk_role_name, fk_adminuser_id, fk_adminuser_name, create_time, update_time, update_by
+    id, user_name, status, display_name, fk_organization_id,  contact, fk_role_id, create_time, update_time, update_by
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int" >
+  <select id="selectByPrimaryKey" resultType="cn.com.ecrf.trq.model.User" parameterType="int" >
     select 
-    <include refid="Base_Column_List" />, password 
-    from ac_user
-    where id = #{id,jdbcType=INTEGER}
+    	u.id as id, 
+		u.user_name as userName, 
+		u.display_name as displayName, 
+		u.fk_organization_id as organizationId, 
+		u.contact as contact, 
+		u.fk_role_id as roleId, 
+		u.password   as password
+    from ac_user u
+    where u.id = #{id}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="int" >
     delete from ac_user
@@ -51,11 +53,10 @@
 	SELECT LAST_INSERT_ID()
 	</selectKey>
     insert into ac_user (id, user_name, status, 
-      password, display_name, fk_organization_id, contact, create_time, fk_role_id, fk_adminuser_id, 
-      fk_organization_name, fk_role_name, fk_adminuser_name)
+      password, display_name, fk_organization_id, contact, create_time, fk_role_id,fk_adminuser_id)
     values (#{id}, #{userName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{password,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR},#{organizationId,jdbcType=VARCHAR},
-      #{contact,jdbcType=VARCHAR},current_timestamp(), #{roleId}, #{adminUserId}, #{organizationName}, #{roleName}, #{adminUserName})
+      #{contact,jdbcType=VARCHAR},current_timestamp(), #{roleId}, #{adminUserId})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.ecrf.trq.model.User" >
     insert into ac_user
@@ -88,30 +89,42 @@
       </if>
     </trim>
   </insert>
-  <select id="findUserByLoginName" resultMap="BaseResultMap" parameterType="string" >
+  <select id="findUserByLoginName" resultType="cn.com.ecrf.trq.model.User" parameterType="string" >
     select 
-    <include refid="Base_Column_List" />, password
-    from ac_user
-    where user_name = #{userName}
+    	u.id as id, 
+		u.user_name as userName, 
+		u.display_name as displayName, 
+		u.fk_organization_id as organizationId, 
+		u.contact as contact, 
+		u.fk_role_id as roleId, 
+		u.password   as password
+    from ac_user u
+    where u.user_name = #{userName}
   </select>
-  <select id="getUserById" resultMap="BaseResultMap" parameterType="string">
-  	select 
-  	<include refid="Base_Column_List" />, password
-  	from ac_user
-  	where id=#{id}
+  <select id="getUserById" resultType="cn.com.ecrf.trq.model.User" parameterType="string">
+  	select
+  		u.id as id, 
+		u.user_name as userName, 
+		u.display_name as displayName, 
+		u.fk_organization_id as organizationId, 
+		u.contact as contact, 
+		u.fk_role_id as roleId, 
+		u.password as password
+    from ac_user u
+  	where u.id=#{id}
   </select>
   <update id="updateUser" parameterType="cn.com.ecrf.trq.model.User">
   		update ac_user set
 		user_name=#{userName}, display_name=#{displayName},
 		status=#{status}, update_time= now()
 		<if test="organizationId != null" >
-        	,fk_organization_id=#{organizationId}, fk_organization_name=#{organizationName}
+        	,fk_organization_id=#{organizationId} 
       	</if>
       	<if test="roleId != null" >
-        	,fk_role_id=#{roleId}, fk_role_name=#{roleName}
+        	,fk_role_id=#{roleId} 
       	</if>
       	<if test="adminUserId != null" >
-        	,fk_adminuser_id=#{adminUserId}, fk_adminuser_name=#{adminUserName}
+        	,fk_adminuser_id=#{adminUserId} 
       	</if>
       	<if test="contact != null" >
         	,contact=#{contact}
@@ -121,36 +134,42 @@
       	</if>
   		where id=#{id}
   </update>
-  <select id="findUsers" resultMap="BaseResultMap" parameterType="map" >
+  <select id="findUsers" resultType="cn.com.ecrf.trq.model.User" parameterType="map" >
 	select
-	u.id as id, 
-	u.user_name as userName, 
-	u.display_name as displayName, 
-	u.fk_organization_id as organizationId, 
-	o.organization_name as organizationName, 
-	u.contact as contact, 
-	u.fk_role_id as roleId, 
-	r.role_desc as roleDesc, 
-	u.fk_adminuser_id as adminUserId, 
+	u.id as id,
+	u.user_name as userName,
+	u.display_name as displayName,
+	u.fk_organization_id as organizationId,
+	o.organization_name as organizationName,
+	u.contact as contact,
+	u.fk_role_id as roleId,
+	r.role_desc as roleDesc,
+	u2.id as adminUserId,
 	u2.display_name as adminUserName,
 	r.role_name as roleName
     from ac_user u left join ac_organization o on o.id=u.fk_organization_id left join ac_role r on u.fk_role_id=r.id
-    left join ac_user u2 on u.fk_adminuser_id=u2.id
+    left join ac_user u2 on o.id=u2.fk_organization_id and u2.fk_role_id in (select id from ac_role where role_name='LCRO')
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
      </if>
   </select>
-  <select id="findAdminUsers" resultMap="BaseResultMap" parameterType="map" >
+  <select id="findAdminUsers" resultType="cn.com.ecrf.trq.model.User" parameterType="map" >
     select 
-    u.id, u.user_name, u.status, u.display_name 
+    u.id as id, 
+	u.user_name as userName, 
+	u.display_name as displayName, 
+	u.fk_organization_id as organizationId 
     from ac_user u, ac_role r where u.fk_role_id=r.id and r.role_name='LCRO'
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
      </if>
   </select>
-  <select id="findCRMUsers" resultMap="BaseResultMap">
+  <select id="findCRMUsers" resultType="cn.com.ecrf.trq.model.User">
     select 
-    u.id, u.user_name, u.status, u.display_name 
+	    u.id as id, 
+		u.user_name as userName, 
+		u.display_name as displayName, 
+		u.fk_organization_id as organizationId 
     from ac_user u, ac_role r where u.fk_role_id=r.id and r.role_name='CRM'
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
@@ -162,6 +181,17 @@
   <update id="updatePassword" parameterType="cn.com.ecrf.trq.model.User">
   	update ac_user set password=#{password} where id=#{id}
   </update>
+  <delete id="deleteUserById" parameterType="int">
+  	delete from ac_user where id=#{id}
+  </delete>
+  <select id="getAdminUserByOrganizationId" parameterType="int" resultType="cn.com.ecrf.trq.model.User">
+  	select 
+  		u.id as id, 
+		u.user_name as userName, 
+		u.display_name as displayName, 
+		u.fk_organization_id as organizationId 
+  	from ac_user u, ac_organization o, ac_role r where o.id=u.fk_organization_id and o.id=#{id} and u.fk_role_id=r.id and r.role_name='LCRO'
+  </select>
   <!-- role -->
   <!--<sql id="Role_Column_List" >
     id, role_name, role_desc, create_time, update_time, update_time, update_by

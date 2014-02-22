@@ -6,7 +6,7 @@ public class ListCondition {
 	private boolean crf;
 	private String abbr;
 	private String no;
-	private Date createDateForm;
+	private Date createDateFrom;
 	private Date createDateTo;
 	private Date lastModifiedFrom;
 	private String orderBy;
@@ -24,6 +24,7 @@ public class ListCondition {
 	private Date doubtDateTo;
 	private Date lastModifiedTo;
 	private String userName;
+	private String roleName;
 	
 	public boolean isCrf() {
 		return crf;
@@ -88,11 +89,11 @@ public class ListCondition {
 	public void setLockStatus(int lockStatus) {
 		this.lockStatus = lockStatus;
 	}
-	public Date getCreateDateForm() {
-		return createDateForm;
+	public Date getCreateDateFrom() {
+		return createDateFrom;
 	}
-	public void setCreateDateForm(Date createDateForm) {
-		this.createDateForm = createDateForm;
+	public void setCreateDateFrom(Date createDateFrom) {
+		this.createDateFrom = createDateFrom;
 	}
 	public Date getCreateDateTo() {
 		return createDateTo;
@@ -141,6 +142,12 @@ public class ListCondition {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	
 	

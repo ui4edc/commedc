@@ -37,6 +37,7 @@ import cn.com.ecrf.trq.model.list.ListReturn;
 import cn.com.ecrf.trq.repository.CRFMapper;
 import cn.com.ecrf.trq.repository.DictMapper;
 import cn.com.ecrf.trq.repository.DoubtRecordMapper;
+import cn.com.ecrf.trq.repository.RoleMapper;
 import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
@@ -79,6 +80,8 @@ public class CRFService {
 	private DoubtRecordMapper doubtRecordMapper;
 	@Autowired
 	private DictMapper dictMapper;
+	@Autowired
+	private RoleMapper roleMapper;
 	
 	public ListNotifyVo getNotifyInfo() {
 		// TODO Auto-generated method stub
@@ -102,6 +105,12 @@ public class CRFService {
 			String userName = (String) subject.getPrincipal();
 			sqlCondition.setUserName(userName);
 			int type = condition.getType();
+			List<Role> roles = roleMapper.getRoleByUserName(userName);
+			String roleName = null;
+			if (roles != null && roles.size() > 0){
+				roleName = roles.get(0).getRoleName();
+				sqlCondition.setRoleName(roleName);
+			}
 			List<ListReturn> list = null;
 			int total = 0;
 			/*if (type == 0 || type == 1 || type == 3){//草稿,提交，审核通过
@@ -112,29 +121,68 @@ public class CRFService {
 			switch(type){
 			case 0:
 				list = cRFMapper.getPatientList(sqlCondition);
+				total = cRFMapper.getTotalPatientNum(sqlCondition);
 				break;
 			case 1:
 				list = cRFMapper.getPatientList(sqlCondition);
+				total = cRFMapper.getTotalPatientNum(sqlCondition);
 				break;
 			case 2:
 				list = cRFMapper.getDoutSummaryList(sqlCondition);
+				total = cRFMapper.getTotalPatientNum(sqlCondition);
 				break;
 			case 3: 
 				list = cRFMapper.getPatientList(sqlCondition);
+				total = cRFMapper.getTotalPatientNum(sqlCondition);
 				break;
 			case 4:
 				//监察，
-				list = cRFMapper.getPatientListByCRM(sqlCondition);
+				if ("CRM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientListByCRM(sqlCondition);
+					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
+				}else if ("DM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientList(sqlCondition);
+					total = cRFMapper.getTotalPatientNum(sqlCondition);
+				}
 				break;
 			case 5:
-				list = cRFMapper.getDoutSummaryListByCRM(sqlCondition);
+				if ("CRM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientListByCRM(sqlCondition);
+					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
+				}else if ("DM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientList(sqlCondition);
+					total = cRFMapper.getTotalPatientNum(sqlCondition);
+				}
 				break;
 			case 6: 
-				list = cRFMapper.getPatientList(sqlCondition);
+				if ("CRM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientListByCRM(sqlCondition);
+					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
+				}else if ("DM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientList(sqlCondition);
+					total = cRFMapper.getTotalPatientNum(sqlCondition);
+				}
+				break;
+			case 7: 
+				if ("CRM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientListByCRM(sqlCondition);
+					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
+				}else if ("DM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientList(sqlCondition);
+					total = cRFMapper.getTotalPatientNum(sqlCondition);
+				}
+				break;
+			case 8: 
+				if ("CRM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientListByCRM(sqlCondition);
+					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
+				}else if ("DM".equalsIgnoreCase(roleName)){
+					list = cRFMapper.getPatientList(sqlCondition);
+					total = cRFMapper.getTotalPatientNum(sqlCondition);
+				}
 				break;
 			}
 			listVo = convertListReturn(list);
-			total = cRFMapper.getTotalPatientNum(sqlCondition);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, listVo, total);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -175,9 +223,9 @@ public class CRFService {
 		int lockStatus = 0;
 		if (condition.getType() == 0)
 			lockStatus = 10;
-		if (condition.getType() == 1 || condition.getType() == 4)
+		if (condition.getType() == 1 || condition.getType() == 4 || condition.getType() == 7)
 			lockStatus = 20;
-		if (condition.getType() == 2 || condition.getType() == 5)
+		if (condition.getType() == 2 || condition.getType() == 5 || condition.getType() == 8)
 			lockStatus = 30;
 		if (condition.getType() == 3 || condition.getType() == 6)
 			lockStatus = 40;
@@ -190,8 +238,8 @@ public class CRFService {
 		sqlCondition.setProgressType(condition.getProgressType());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			if (StringUtils.isNotBlank(condition.getCreateDateForm()) && StringUtils.isNotBlank(condition.getCreateDateTo())){		
-				sqlCondition.setCreateDateForm(sdf.parse(condition.getCreateDateForm()));
+			if (StringUtils.isNotBlank(condition.getCreateDateFrom()) && StringUtils.isNotBlank(condition.getCreateDateTo())){		
+				sqlCondition.setCreateDateFrom(sdf.parse(condition.getCreateDateFrom()));
 				sqlCondition.setCreateDateTo(sdf.parse(condition.getCreateDateTo()));
 			}
 			if (StringUtils.isNotBlank(condition.getLastModifiedFrom()) && StringUtils.isNotBlank(condition.getLastModifiedTo())){
@@ -240,14 +288,6 @@ public class CRFService {
 		
 		return null;
 	}
-
-	
-
-	
-	
-	
-
-	
 
 	public Map<String, Object> genCRFNo(String abbr) {
 		// TODO Auto-generated method stub
@@ -585,7 +625,7 @@ public class CRFService {
 				if (drugCombinationCase.getSeq() > 0){
 					cRFMapper.updateDrugCombination(drugCombinationCase);
 				}else{
-					cRFMapper.deleteDrugCombination(drugCombinationVo.getNo());
+					//cRFMapper.deleteDrugCombination(drugCombinationVo.getNo());
 					cRFMapper.insertDrugCombination(drugCombinationCase);
 				}
 			}
@@ -922,7 +962,7 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			DoubtRecord doubtRecord = new DoubtRecord();
-			doubtRecord.setFieldId(doubtRecordSubmitVo.getFieldId());
+			doubtRecord.setDoubtId(doubtRecordSubmitVo.getDoubtId());
 			doubtRecord.setId(doubtRecordSubmitVo.getId());
 			doubtRecord.setMenuId(doubtRecordSubmitVo.getMenu());
 			doubtRecord.setCommitDate(new Date());

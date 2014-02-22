@@ -81,6 +81,9 @@ public class DrugUseVo {
 		private String way3Name;
 		private String way3Speed;
 		private String way3Unit;
+		
+		private int total;
+		
 		public int getId() {
 			return id;
 		}
@@ -370,6 +373,12 @@ public class DrugUseVo {
 		}
 		public void setGroup(List<BanDrug> group) {
 			this.group = group;
+		}
+		public int getTotal() {
+			return total;
+		}
+		public void setTotal(int total) {
+			this.total = total;
 		}
 		
 		

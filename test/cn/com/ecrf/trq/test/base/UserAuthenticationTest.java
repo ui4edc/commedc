@@ -37,7 +37,13 @@ public class UserAuthenticationTest extends SpringControllerTest {
 		user.setPassword(CipherUtil.generatePassword("123456"));
 		user.setStatus(1);
 		user.setOrganizationName("XX医院");
-		int id = userService.saveUser(user);
+		int id = 0;
+		try {
+			id = userService.saveUser(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		User user2 = userService.getUserById(id);
 		System.out.println("id="+id);
 		org.junit.Assert.assertEquals(user.getUserName(), user2.getUserName());
@@ -45,7 +51,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 	
 	@Ignore
 	@Test
-	public void testUpdateUser(){
+	public void testUpdateUser() throws Exception{
 		User user = new User();
 		user.setUserName("zhangsan1");
 		user.setDisplayName("张三");
@@ -61,7 +67,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 	}
 	@Ignore
 	@Test
-	public void testDeleteUser(){
+	public void testDeleteUser() throws Exception{
 		User user = new User();
 		user.setUserName("zhangsan1");
 		user.setDisplayName("张三");
@@ -92,7 +98,7 @@ public class UserAuthenticationTest extends SpringControllerTest {
 	}
 	@Ignore
 	@Test
-	public void findUsers(){
+	public void findUsers() throws Exception{
 		for (int i=0;i<20;i++){
 			User user = new User();
 			user.setUserName("user"+i);

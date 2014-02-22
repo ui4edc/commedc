@@ -109,7 +109,7 @@ public class CRFInsertTest extends SpringControllerTest{
 	public void testGetPatientList(){
 		ListCondition condition = new ListCondition();
 		condition.setAbbr("");
-		condition.setCreateDateForm(null);
+		condition.setCreateDateFrom(null);
 		condition.setLockStatus(10);
 		condition.setProgressType(1);
 		condition.setProgress(0);

@@ -38,10 +38,12 @@ public class DataController {
 		return result;
 	}
 	
-	@RequestMapping(value="/data/export", method = RequestMethod.POST)
+	@RequestMapping(value="/data/export", method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView export(HttpServletRequest request, HttpServletResponse response){
 		String fileType = request.getParameter("type");
+		String crf = request.getParameter("crf");
+		String id = request.getParameter("id");
 		int fileTypeNum = Integer.parseInt(fileType);
 		if (fileTypeNum == 0){
 			/*String fileName = "下载的文件名.xsl";
@@ -49,8 +51,7 @@ public class DataController {
 			response.setHeader("Content-disposition","attachment;filename="+fileName);*/
 			List list = new ArrayList();   
 		    Map model = new HashMap();   
-		    list.add("test1");   
-		    list.add("test2");   
+		    
 		    model.put("list", list);   
 		    ViewExcel viewExcel = new ViewExcel();   
 		    try {

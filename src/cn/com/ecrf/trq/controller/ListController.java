@@ -40,11 +40,9 @@ public class ListController {
 		List<ListReturnVo> list = null;
 		int total = 0;
 		Map<String, Object> result = null;
-		if (condition.isCrf()){
-			result = cRFService.getCRFList(condition);
+		result = cRFService.getCRFList(condition);
 			//list = cRFService.getCRFList(condition);
 			//total = cRFService.getCRFTotal(condition);
-		}
 		
 		 
 		return result;

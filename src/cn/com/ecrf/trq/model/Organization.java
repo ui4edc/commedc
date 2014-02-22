@@ -16,6 +16,7 @@ public class Organization {
 	private String mailAddress;
 	private int instanceNumber;
 	private int adminUserId;
+	private String adminUserName;
 	private int crmUserId;
 	private String crmUserName;
 	
@@ -108,6 +109,12 @@ public class Organization {
 	}
 	public void setCrmUserName(String crmUserName) {
 		this.crmUserName = crmUserName;
+	}
+	public String getAdminUserName() {
+		return adminUserName;
+	}
+	public void setAdminUserName(String adminUserName) {
+		this.adminUserName = adminUserName;
 	}
 	
 	
