@@ -18,11 +18,30 @@ es.Views.Form30 = Backbone.View.extend({
     
     initialize: function() {
         this.model.bind("change:data", this.renderForm, this);
-        this.model.getData({
-            id: es.main.crfId,
-            times: 1
+        
+        //获取用药情况列表
+        var me = this;
+        util.ajax.run({
+            url: "",
+            data: {id: es.main.crfId},
+            success: function(response) {
+                console.log("", response);
+                me.drugUseIdList = response.data.drugUseIdList;
+                //获取第1次
+                me.rendered = false;
+                me.model.getData({
+                    id: es.main.crfId,
+                    drugUseId: me.drugUseIdList[0]
+                });
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: {
+                    drugUseIdList: [1, 2, 3]
+                }
+            }
         });
-        this.rendered = false;
     },
     
     destroy: function() {
@@ -44,15 +63,31 @@ es.Views.Form30 = Backbone.View.extend({
         
         this.model.getData({
             id: es.main.crfId,
-            times: parseInt(me.attr("times"), 10)
+            drugUseId: parseInt(me.attr("id"), 10)
         });
     },
     
     addTimes: function(e) {
-        var me = $(e.target);
-        me.before($.Mustache.render("tpl-form30-times", {
-            n: this.$(".times a").length + 1
-        }));
+        var me = $(e.target),
+            view = this;
+        util.ajax.run({
+            url: "",
+            data: {id: es.main.crfId},
+            success: function(response) {
+                console.log("", response);
+                me.before($.Mustache.render("tpl-form30-times", {
+                    n: view.$(".times a").length + 1,
+                    id: response.data.drugUseId
+                }));
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                data: {
+                    drugUseId: 4
+                }
+            }
+        });
     },
     
     renderForm: function(model, data) {
@@ -74,11 +109,12 @@ es.Views.Form30 = Backbone.View.extend({
                 });
                 //用药次数
                 var btnHtml = [];
-                for (var i = 0, n = data.data.total; i < n; i++) {
+                $.each(me.drugUseIdList, function(index, val) {
                     btnHtml.push($.Mustache.render("tpl-form30-times", {
-                        n: i + 1
+                        n: index + 1,
+                        id: val
                     }));
-                }
+                });
                 me.$(".times").prepend(btnHtml.join(""));
                 me.$(".times a:first").addClass("active");
                 //用药情况
@@ -242,6 +278,7 @@ es.Views.Form30 = Backbone.View.extend({
             }
             if (es.main.editable) {
                 esui.get("Save").onclick = this.save;
+                esui.get("Delete").onclick = this.onDel;
             }
         }
         if (!es.main.editable) {
@@ -290,13 +327,62 @@ es.Views.Form30 = Backbone.View.extend({
         this.$("#ctrltextDrugName" + no).autocomplete({source: util.getSuggestion("drug")});
     },
     
+    onDel: function() {
+        if ($(".times a").length == 1) {
+            esui.Dialog.alert({title: "提示", content: "不能删除"});
+        } else {
+            esui.Dialog.confirm({
+                title: "删除",
+                content: "确定删除本次用药情况？",
+                onok: es.main.form.del
+            });
+        }
+    },
+    
+    del: function() {
+        var me = es.main.form;
+        
+        var data = {
+            id: es.main.crfId,
+            drugUseId: parseInt(me.$(".times .active").attr("id"), 10)
+        };
+        
+        console.log("", data);
+        
+        util.ajax.run({
+            url: "",
+            data: data,
+            success: function(response) {
+                console.log("", response);
+                me.$(".times .active").remove();
+                
+                //重新编号
+                me.$(".times a").each(function(index, val) {
+                    $(val).html("第" + (index + 1) + "次用药");
+                });
+                
+                //获取第1次
+                var first = me.$(".times a:first");
+                first.addClass("active");
+                me.model.getData({
+                    id: es.main.crfId,
+                    drugUseId: parseInt(first.attr("id"), 10)
+                });
+            },
+            mock: MOCK,
+            mockData: {
+                success: true
+            }
+        });
+    },
+    
     save: function() {
        var me = es.main;
        
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
-           times: parseInt(me.$(".times .active").attr("times"), 10),
+           drugUseId: parseInt(me.$(".times .active").attr("id"), 10),
            
            history: parseInt(esui.get("History1").getGroup().getValue(), 10),
            adr: parseInt(esui.get("ADR1").getGroup().getValue(), 10),
