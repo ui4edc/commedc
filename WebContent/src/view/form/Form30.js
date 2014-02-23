@@ -243,10 +243,10 @@ es.Views.Form30 = Backbone.View.extend({
             if (es.main.editable) {
                 esui.get("Save").onclick = this.save;
             }
-            if (!es.main.editable) {
-                esui.get("Start").disable();
-                esui.get("End").disable();
-            }
+        }
+        if (!es.main.editable) {
+            esui.get("Start").disable();
+            esui.get("End").disable();
         }
     },
     
