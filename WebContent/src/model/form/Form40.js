@@ -9,6 +9,7 @@ es.Models.Form40 = Backbone.Model.extend({
         data: null,
         def: {
 			drug: [{
+			    id: null,
 				name: "",
 				start: "",
 				end: "",

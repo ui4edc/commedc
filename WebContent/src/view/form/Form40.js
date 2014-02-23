@@ -192,6 +192,7 @@ es.Views.Form40 = Backbone.View.extend({
     addRow: function() {
         var table = esui.get("Merge");
         table.datasource.push({
+            id: null,
             name: "",
             start: "",
             end: "",

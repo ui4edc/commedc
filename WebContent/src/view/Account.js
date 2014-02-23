@@ -430,7 +430,7 @@ es.Views.Account = Backbone.View.extend({
     newCenter: function() {
         var data = {
             name: $.trim(esui.get("Name").getValue()),
-            code: parseInt($.trim(esui.get("Code").getValue()), 10),
+            code: $.trim(esui.get("Code").getValue()),
             instanceNumber: parseInt($.trim(esui.get("InstanceNumber").getValue()), 10),
             adminUserId: esui.get("Superviser").value
         };
@@ -492,7 +492,7 @@ es.Views.Account = Backbone.View.extend({
         var data = {
             id: es.main.curCenterId,
             name: $.trim(esui.get("EName").getValue()),
-            code: parseInt($.trim(esui.get("ECode").getValue()), 10),
+            code: $.trim(esui.get("ECode").getValue()),
             instanceNumber: parseInt($.trim(esui.get("EInstanceNumber").getValue()), 10),
             adminUserId: esui.get("ESuperviser").value
         };
