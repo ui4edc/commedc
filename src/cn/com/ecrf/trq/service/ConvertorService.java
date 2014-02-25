@@ -373,7 +373,7 @@ public class ConvertorService {
 		// TODO Auto-generated method stub
 		DrugCombinationCase drugCombinationCase = new DrugCombinationCase();
 		drugCombinationCase.setName(drugInstanceObject.getName());
-		drugCombinationCase.setSeq(drugInstanceObject.getSeq());
+		drugCombinationCase.setSeq(drugInstanceObject.getId());
 		drugCombinationCase.setNo(no);
 		drugCombinationCase.setDose(drugInstanceObject.getDose());
 		drugCombinationCase.setFrequency(drugInstanceObject.getFrequency());
@@ -411,6 +411,7 @@ public class ConvertorService {
 				String end = sdf.format(drugCombinationCase.getEndDate());
 				drugInstanceObject.setEnd(end);
 			}
+			drugInstanceObject.setId(drugCombinationCase.getSeq());
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

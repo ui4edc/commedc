@@ -20,6 +20,7 @@ import cn.com.ecrf.trq.model.list.ListReturn;
 import cn.com.ecrf.trq.repository.CRFMapper;
 import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.service.CRFService;
+import cn.com.ecrf.trq.service.StatService;
 import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.LockStatusUtils;
 import cn.com.ecrf.trq.vo.ADRVo;
@@ -35,6 +36,8 @@ public class CRFInsertTest extends SpringControllerTest{
 	private UserSignMapper userSignMapper;
 	@Autowired
 	private CRFMapper cRFMapper;
+	@Autowired
+	private StatService statService;
 	
 	@Ignore
 	@Test
@@ -163,7 +166,7 @@ public class CRFInsertTest extends SpringControllerTest{
 		result = cRFService.getDrugSummary(drugSummaryVo.getId());
 		Assert.assertEquals("remark1", ((DrugSummaryVo)result.get("data")).getRemark());
 	}
-	
+	@Ignore
 	@Test
 	public void testSaveADR(){
 		ADRCase adrCase = cRFMapper.getADR(5);
@@ -175,5 +178,18 @@ public class CRFInsertTest extends SpringControllerTest{
 		adrVo.setName("abc1");
 		cRFService.saveADR(adrVo);
 		
+	}
+	@Ignore
+	@Test
+	public void testGetDrugUse(){
+		cRFService.getDrugUseNum(5);
+		
+	}
+	
+	@Test
+	public void testGetStat(){
+		statService.getSexStat();
+		statService.getAgeStat();
+		statService.getHospitalStat();
 	}
 }

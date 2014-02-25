@@ -35,6 +35,6 @@
   <select id="getDoubtSumm" parameterType="int" resultType="cn.com.ecrf.trq.model.DoubtRecord">
   	select menuid as menuId, 
   		   count(1) as unDeal
-  	from crf_doubt where flag=0 and id=#{id} group by menuid asc
+  	from crf_doubt where flag=0 and id=#{id} group by menuid
   </select>
 </mapper>

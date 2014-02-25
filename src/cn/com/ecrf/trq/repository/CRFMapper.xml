@@ -270,6 +270,17 @@
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
+      	<choose>
+			<when test="undealed == true">
+				and d.flag=0
+			</when>
+		    <otherwise>
+		    	and d.flag=1    
+            </otherwise>    
+		</choose>
+      	<if test="undealed == true">
+      		and d.flag=0
+      	</if>
       	group by p.no
 	</select>
 	<select id="getProgress" parameterType="string" resultType="int">
@@ -418,11 +429,11 @@
 		zy=#{zy}, zytxt=#{zytxt}, update_time=now()
   		where no=#{no}
 	</update>
-	<select id="getDrugUseInfo" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugUseCase">
+	<select id="getDrugUseInfo" parameterType="map" resultType="cn.com.ecrf.trq.model.DrugUseCase">
 		select 
 			pi.id as id,
 			ph.no as no,
-			seq as times,
+			ph.seq as drugUseId,
 			history as history,
 			adr as adr,
 			adrtxt as adrtxt,
@@ -466,15 +477,20 @@
 			way3Name as way3Name,
 			way3Speed as way3Speed,
 			way3Unit as way3Unit
-		from crf_druguse_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no
+		from crf_druguse_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no 
+		<if test="drugUseId != null">
+      		and ph.seq={drugUseId}
+      	</if> 
+      	order by ph.seq asc
 	</select>
+	
 	<insert id="insertDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase">
 	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, banColor, bantxt, banDruglb,
 	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gSolvent2Dose, gpSolvent1Dose,
 	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
 	    prepareTime, prepareTimeUd, sameBottle, sameGroup, solvent, solventDose, solventName, solventPercent,
 	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,grouplb)
-	    values (#{no}, #{times}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, 
+	    values (#{no}, #{drugUseId}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, 
 	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gSolvent2Dose}, #{gpSolvent1Dose},
 	    #{gpSolvent3Dose}, #{gpSolvent3Name},#{gpSolvent3Percent}, #{hasBan}, #{hasFood}, #{hasInjection}, #{injectionlb}, 
 	    #{prepareTime}, #{prepareTimeUd}, #{sameBottle}, #{sameGroup},#{solvent}, #{solventDose}, #{solventName}, #{solventPercent},
@@ -484,8 +500,18 @@
 		update crf_druguse_info set
 		history=#{history}, adr=#{adr},
 		adrtxt=#{adrtxt}, banColor=#{banColor}, bantxt=#{bantxt},banDruglb=#{banDruglb},
-		batchNumber=#{batchNumber}, bottlelb=#{bottlelb},grouplb=#{grouplb}
-  		where no=#{no} and seq=#{times}
+		batchNumber=#{batchNumber}, bottlelb=#{bottlelb},dose=#{dose}, endDate=#{endDate}, endH=#{endH}, endM=#{endM}, food=#{food}, foodtxt=#{foodtxt}, 
+		gSolvent2Dose=#{gSolvent2Dose}, gpSolvent1Dose=#{gpSolvent1Dose},
+	    gpSolvent3Dose=#{gpSolvent3Dose}, gpSolvent3Name=#{gpSolvent3Name}, gpSolvent3Percent=#{gpSolvent3Percent}, hasBan=#{hasBan}, hasFood=#{hasFood}, hasInjection=#{hasInjection}, injectionlb=#{injectionlb},
+	    prepareTime=#{prepareTime}, prepareTimeUd=#{prepareTimeUd}, sameBottle=#{sameBottle}, sameGroup=#{sameGroup}, solvent=#{solvent}, solventDose=#{solventDose}, solventName=#{solventName}, solventPercent=#{solventPercent},
+	    startDate=#{startDate}, startH=#{startH}, startM=#{startM}, way=#{way}, way1Speed=#{way1Speed}, way1Time=#{way1Time}, way2Speed=#{way2Speed}, way3Name=#{way3Name}, way3Speed=#{way3Speed}, way3Unit=#{way3Unit}, grouplb=#{grouplb}
+  		where no=#{no} and seq=#{drugUseId}
+	</update>
+	<update id="updateAllDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase">
+		update crf_druguse_info set
+		history=#{history}, adr=#{adr},
+		adrtxt=#{adrtxt}
+		where no=#{no}
 	</update>
 	<select id="getDrugCombinationList" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugCombinationCase">
 		select d.seq as seq,
@@ -654,5 +680,23 @@
 	</update>
 	<select id="getBasicInfoIdByNo" parameterType="string" resultType="cn.com.ecrf.trq.model.PatientInfoCase">
 		select id as id from crf_patient_info where no=#{no}
+	</select>
+	<select id="getSexStat" resultType="cn.com.ecrf.trq.model.stat.AgeStat">
+		select sex as name,
+		       count(1) as number 
+		from crf_patient_info group by sex order by sex;
+	</select>
+	<select id="getAgeStat" resultType="int" parameterType="map">
+		select 
+		       count(*) as number 
+		from crf_patient_info where age>=#{start} and #{end}>=age
+	</select>
+		<select id="getHospitalStat" resultType="cn.com.ecrf.trq.model.stat.HospitalStat">
+		select organization_name as name,
+				lockstatus as lockStatus, 
+				count(1) as number
+		from ac_organization o, ac_user u, crf_patient_info p, crf_user_sign s
+		where p.no=s.no and s.cro_name=u.user_name and u.fk_organization_id=o.id
+		group by organization_name, lockstatus
 	</select>
 </mapper>

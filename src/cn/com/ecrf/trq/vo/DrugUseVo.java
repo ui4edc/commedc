@@ -15,7 +15,7 @@ public class DrugUseVo {
 		private int id;
 
 		
-		private String times;
+		private int drugUseId;
 		
 		
 		
@@ -96,11 +96,12 @@ public class DrugUseVo {
 		public void setNo(String no) {
 			this.no = no;
 		}
-		public String getTimes() {
-			return times;
+		
+		public int getDrugUseId() {
+			return drugUseId;
 		}
-		public void setTimes(String times) {
-			this.times = times;
+		public void setDrugUseId(int drugUseId) {
+			this.drugUseId = drugUseId;
 		}
 		public int getHistory() {
 			return history;

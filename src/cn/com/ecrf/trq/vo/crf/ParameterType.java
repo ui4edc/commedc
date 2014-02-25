@@ -2,6 +2,7 @@ package cn.com.ecrf.trq.vo.crf;
 
 public class ParameterType {
 	private int id;
+	private int drugUseId;
 	private String no;
 	private String abbr;
 	private int times;
@@ -50,6 +51,12 @@ public class ParameterType {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public int getDrugUseId() {
+		return drugUseId;
+	}
+	public void setDrugUseId(int drugUseId) {
+		this.drugUseId = drugUseId;
 	}
 	
 	

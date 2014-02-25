@@ -1,6 +1,7 @@
 package cn.com.ecrf.trq.vo;
 
 public class DrugInstanceObject {
+	private int id;
 	//通用名
 	private String name;
 	private String start;
@@ -62,6 +63,12 @@ public class DrugInstanceObject {
 	}
 	public void setSeq(int seq) {
 		this.seq = seq;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

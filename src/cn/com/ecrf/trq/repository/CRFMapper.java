@@ -16,6 +16,8 @@ import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
 import cn.com.ecrf.trq.model.list.ListCondition;
 import cn.com.ecrf.trq.model.list.ListReturn;
+import cn.com.ecrf.trq.model.stat.AgeStat;
+import cn.com.ecrf.trq.model.stat.HospitalStat;
 
 public interface CRFMapper {
 	
@@ -73,7 +75,7 @@ public interface CRFMapper {
 
 	public void insertDiseaseInfo(DiseaseInfoCase diseaseInfoCase);
 
-	public DrugUseCase getDrugUseInfo(int id);
+	public List<DrugUseCase> getDrugUseInfo(Map<String, Object> condition);
 
 	public void updateDrugUseInfo(DrugUseCase drugUseCase);
 
@@ -136,6 +138,13 @@ public interface CRFMapper {
 	public List<ListReturn> getPatientListByDM(ListCondition sqlCondition);
 
 	public int getTotalPatientNumByDM(ListCondition sqlCondition);
+
+	public int getAgeStat(Map<String, Object> condition);
+
+
+	public List<HospitalStat> getHospitalStat();
+
+	public List<AgeStat> getSexStat();
 	
 
 

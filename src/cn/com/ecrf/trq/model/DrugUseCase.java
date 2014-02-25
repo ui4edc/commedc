@@ -17,7 +17,7 @@ public class DrugUseCase {
 	//观察表编号
 	private String no;
 	
-	private int times;
+	private int drugUseId;
 	
 	private int history;
 	
@@ -88,11 +88,12 @@ public class DrugUseCase {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public int getTimes() {
-		return times;
+	
+	public int getDrugUseId() {
+		return drugUseId;
 	}
-	public void setTimes(int times) {
-		this.times = times;
+	public void setDrugUseId(int drugUseId) {
+		this.drugUseId = drugUseId;
 	}
 	public int getHistory() {
 		return history;

@@ -167,8 +167,14 @@ public class CRFController {
 	@RequestMapping(value="/crf/getDrugUseInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getDrugUseInfo(ParameterType parameterType, HttpServletRequest request) {
-		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getDrugUseInfo(""+parameterType.getId());
+		Map<String, Object> result = cRFService.getDrugUseInfo(parameterType.getId(), parameterType.getDrugUseId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/getDrugUseNum", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugUseNum(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.getDrugUseNum(parameterType.getId());
 		return result;
 	}
 	

@@ -29,4 +29,14 @@ public class AjaxReturnUtils {
 		result.put(AjaxReturnValue.total, total);
 		return result;
 	}
+
+	public static Map<String, Object> generateAjaxReturn(boolean success,
+			String errorMsg, Map<String, Object> list) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(AjaxReturnValue.success, success);
+		result.put(AjaxReturnValue.errorMsg, errorMsg == null ? "" : errorMsg);
+		result.put(AjaxReturnValue.data, list);
+		return result;
+	}
 }

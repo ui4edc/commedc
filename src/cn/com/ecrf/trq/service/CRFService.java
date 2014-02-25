@@ -31,6 +31,7 @@ import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
 import cn.com.ecrf.trq.model.PhaseSignPage;
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
+import cn.com.ecrf.trq.model.dict.DictRow;
 import cn.com.ecrf.trq.model.dict.StaticDict;
 import cn.com.ecrf.trq.model.list.ListCondition;
 import cn.com.ecrf.trq.model.list.ListReturn;
@@ -174,10 +175,10 @@ public class CRFService {
 				break;
 			case 8: 
 				if ("CRM".equalsIgnoreCase(roleName)){
-					list = cRFMapper.getPatientListByCRM(sqlCondition);
-					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
+					list = cRFMapper.getDoutSummaryList(sqlCondition);
+					total = cRFMapper.getTotalPatientNum(sqlCondition);
 				}else if ("DM".equalsIgnoreCase(roleName)){
-					list = cRFMapper.getPatientList(sqlCondition);
+					list = cRFMapper.getDoutSummaryList(sqlCondition);
 					total = cRFMapper.getTotalPatientNum(sqlCondition);
 				}
 				break;
@@ -255,6 +256,7 @@ public class CRFService {
 			sqlCondition.setNo(condition.getNo());
 			sqlCondition.setOrderBy(condition.getOrderBy());
 			sqlCondition.setDesc(condition.isDesc());
+			sqlCondition.setUndealed(condition.isUndealed());
 			if (condition.getPageNo() > 0 && condition.getPageSize() > 0){
 				int pageNo = condition.getPageNo();
 				int pageSize = condition.getPageSize();
@@ -567,7 +569,13 @@ public class CRFService {
 		Map<String, Object> result;
 		try{
 			DrugUseCase drugUseCase =  convertorService.convertDrugUseInfoFromViewToModel(drugUseVo);
-			DrugUseCase dbCase = cRFMapper.getDrugUseInfo(drugUseVo.getId());
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("id", drugUseVo.getId());
+			condition.put("drugUseId", drugUseVo.getDrugUseId());
+			List<DrugUseCase> drugUseInfoCases = cRFMapper.getDrugUseInfo(condition);
+			DrugUseCase dbCase = null;
+			if (drugUseInfoCases != null && drugUseInfoCases.size() > 0)
+				dbCase = drugUseInfoCases.get(0);
 			Date startDate = null, endDate = null;
 			try{
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -580,8 +588,9 @@ public class CRFService {
 			}
 			validDateRange(startDate, drugUseVo.getId(), "用药开始时间");
 			validDateRange(endDate, drugUseVo.getId(), "用药结束时间");
-			if (dbCase != null && dbCase.getNo() != null)
+			if (dbCase != null && dbCase.getNo() != null){
 				cRFMapper.updateDrugUseInfo(drugUseCase);
+			}
 			else {
 				cRFMapper.insertDrugUseInfo(drugUseCase);
 			}
@@ -597,12 +606,18 @@ public class CRFService {
 		return result;
 	}
 
-	public Map<String, Object> getDrugUseInfo(String id) {
+	public Map<String, Object> getDrugUseInfo(int id, int drugUseId) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
 		try{
-			DrugUseCase drugUseInfoCase = cRFMapper.getDrugUseInfo(Integer.parseInt(id));
-			DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromModelToView(drugUseInfoCase);
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("id", id);
+			condition.put("drugUseId", drugUseId);
+			List<DrugUseCase> drugUseInfoCases = cRFMapper.getDrugUseInfo(condition);
+			DrugUseVo drugUseVo = null;
+			if (drugUseInfoCases != null && drugUseInfoCases.size() > 0){
+				drugUseVo = convertorService.convertDrugUseInfoFromModelToView(drugUseInfoCases.get(0));
+			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugUseVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -620,8 +635,8 @@ public class CRFService {
 			List<DrugInstanceObject> drugs = drugCombinationVo.getDrug();
 			for (int i=0;drugs != null && i<drugs.size();i++){
 				DrugCombinationCase drugCombinationCase =  convertorService.convertDrugCombinationCaseFromViewToModel(drugs.get(i), drugCombinationVo.getNo());
-				validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
-				validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间");
+				//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
+				//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间");
 				if (drugCombinationCase.getSeq() > 0){
 					cRFMapper.updateDrugCombination(drugCombinationCase);
 				}else{
@@ -983,16 +998,22 @@ public class CRFService {
 			StaticDict staticDict = new StaticDict();
 			staticDict.setTypeabbr(type);
 			staticDict.setName(keyword);
-			List<StaticDict> dicts = dictMapper.getStaticDict(staticDict);
 			List<StaticDictVo> dictVos = new ArrayList<StaticDictVo>();
-			if (dicts != null){
-				for (StaticDict dict : dicts){
-					StaticDictVo staticDictVo = new StaticDictVo();
-					staticDictVo.setId(dict.getId());
-					staticDictVo.setName(dict.getName());
-					dictVos.add(staticDictVo);
+			if ("way".equalsIgnoreCase(type)){
+				List<StaticDict> dicts = dictMapper.getStaticDict(staticDict);
+				if (dicts != null){
+					for (StaticDict dict : dicts){
+						StaticDictVo staticDictVo = new StaticDictVo();
+						staticDictVo.setId(dict.getId());
+						staticDictVo.setName(dict.getName());
+						dictVos.add(staticDictVo);
+					}
 				}
+			}else if ("drug".equalsIgnoreCase(type)){
+				List<DictRow> dictRows = dictMapper.getBasicList(keyword);
+				
 			}
+			
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, dictVos);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1012,7 +1033,27 @@ public class CRFService {
 			}else{
 				result = AjaxReturnUtils.generateAjaxReturn(false, "观察表编号不存在");
 			}
-				
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	public Map<String, Object> getDrugUseNum(int id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("id", id);
+			List<DrugUseCase> drugUseCases = cRFMapper.getDrugUseInfo(condition);
+			List<Integer> drugUseLists = new ArrayList<Integer>();
+			Map<String, Object> data = new HashMap<String, Object>();
+			for (int i=0;drugUseCases!=null && i<drugUseCases.size();i++){
+				drugUseLists.add(drugUseCases.get(i).getDrugUseId());
+			}
+			data.put("drugUseIdList", data);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, data);
 		}catch(Exception e){
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
