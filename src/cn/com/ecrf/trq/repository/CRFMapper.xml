@@ -479,12 +479,15 @@
 			way3Unit as way3Unit
 		from crf_druguse_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no 
 		<if test="drugUseId != null">
-      		and ph.seq={drugUseId}
+      		and ph.seq=#{drugUseId}
       	</if> 
       	order by ph.seq asc
 	</select>
 	
 	<insert id="insertDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase">
+		<selectKey resultType="Integer" order="AFTER" keyProperty="drugUseId">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
 	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, banColor, bantxt, banDruglb,
 	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gSolvent2Dose, gpSolvent1Dose,
 	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
@@ -699,4 +702,11 @@
 		where p.no=s.no and s.cro_name=u.user_name and u.fk_organization_id=o.id
 		group by organization_name, lockstatus
 	</select>
+	<delete id="deleteDrugUseInfoByDrugUseId" parameterType="map">
+		delete from crf_druguse_info where no in (select no from crf_patient_info where id=#{id})
+      	and drugUseId=#{drugUseId}
+	</delete>
+	<delete id="deleteDrugUseInfoByNo" parameterType="string">
+		delete from crf_druguse_info where no=#{no}
+	</delete>
 </mapper>

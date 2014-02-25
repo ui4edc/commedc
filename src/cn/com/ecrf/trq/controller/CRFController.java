@@ -171,10 +171,17 @@ public class CRFController {
 		return result;
 	}
 	
-	@RequestMapping(value="/crf/getDrugUseNum", method = RequestMethod.POST)
+	@RequestMapping(value="/crf/getDrugUseInfoNum", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getDrugUseNum(ParameterType parameterType, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.getDrugUseNum(parameterType.getId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/addNewDrugUseInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> addNewDrugUseInfo(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.addNewDrugUseInfo(parameterType.getId());
 		return result;
 	}
 	
@@ -189,6 +196,25 @@ public class CRFController {
 			//System.out.println(json);
 			//DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromJSONToView(json);
 			result = cRFService.saveDrugUseInfo(drugUseVo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/deleteDrugUseInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteDrugUseInfo(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result  = null;
+		try {
+			//InputStream in = request.getInputStream();
+			//String json = StreamConvertorUtils.inputStream2String(in);
+			//JSONUtils<PersonalHistoryVo> util = new JSONUtils<PersonalHistoryVo>(PersonalHistoryVo.class);
+			//System.out.println(json);
+			//DrugUseVo drugUseVo = convertorService.convertDrugUseInfoFromJSONToView(json);
+			result = cRFService.deleteDrugUseInfo(parameterType.getId(), parameterType.getDrugUseId());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -117,7 +117,7 @@ public interface CRFMapper {
 
 	public void deleteDrugCombinationList(String no);
 
-	public void deleteDrugUseInfo(String no);
+	public void deleteDrugUseInfoByDrugUseId(Map<String, Object> condition);
 
 	public void deleteLabExamCase(String no);
 
@@ -145,6 +145,10 @@ public interface CRFMapper {
 	public List<HospitalStat> getHospitalStat();
 
 	public List<AgeStat> getSexStat();
+
+	public void deleteDrugUseInfoByNo(String no);
+
+	public void updateAllDrugUseInfo(DrugUseCase drugUseCase);
 	
 
 

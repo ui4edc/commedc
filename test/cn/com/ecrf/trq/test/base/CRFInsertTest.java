@@ -191,5 +191,6 @@ public class CRFInsertTest extends SpringControllerTest{
 		statService.getSexStat();
 		statService.getAgeStat();
 		statService.getHospitalStat();
+		cRFService.getDrugUseInfo(5, 1);
 	}
 }

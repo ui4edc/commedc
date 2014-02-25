@@ -23,6 +23,21 @@
   		   d.menuid as menuId
   	from crf_doubt d, dt_crfstage_var v where v.menuid=d.menuid and d.menuid=#{menuId} and d.id=#{id} and d.fieldid=v.fieldid and flag!=1
   </select>
+   <select id="getUndealDoubtRecord" parameterType="int" resultType="cn.com.ecrf.trq.model.DoubtRecord">
+  	select doubtId as doubtId,
+  			d.id as id,
+  		   no as no,
+  		   doubt_time as doubtDate,
+  		   commit_time as commitDate,
+  		   flag as flag,
+  		   doubter as doubter,
+  		   d.fieldid as fieldId,
+  		   v.name as fieldName,
+  		   description as description,
+  		   d.menuid as menuId
+  	from crf_doubt d where d.id=#{id} and flag!=1
+  </select>
+  
   <select id="getCRFFieldDict" parameterType="int" resultType="cn.com.ecrf.trq.model.FieldDict">
   	select v.id as id,
   			v.name as name
@@ -37,4 +52,5 @@
   		   count(1) as unDeal
   	from crf_doubt where flag=0 and id=#{id} group by menuid
   </select>
+  
 </mapper>

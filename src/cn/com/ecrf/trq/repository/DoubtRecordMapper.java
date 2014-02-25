@@ -17,4 +17,6 @@ public interface DoubtRecordMapper {
 
 	List<DoubtRecord> getDoubtSumm(String id);
 
+	List<DoubtRecord> getUndealDoubtRecord(int id);
+
 }

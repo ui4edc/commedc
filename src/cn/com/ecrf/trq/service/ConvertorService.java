@@ -330,6 +330,8 @@ public class ConvertorService {
 					drugUseVo.setInjection(util.convertFromString(drugUseInfoCase.getInjectionlb()));
 				if (StringUtils.isNotBlank(drugUseInfoCase.getGrouplb()))
 					drugUseVo.setGroup(util.convertFromString(drugUseInfoCase.getGrouplb()));
+				if (drugUseInfoCase.getFood() == null)
+					drugUseVo.setFood("");
 			}
 			
 		} catch (Exception e) {

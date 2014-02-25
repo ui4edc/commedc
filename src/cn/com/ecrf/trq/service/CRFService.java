@@ -511,7 +511,7 @@ public class CRFService {
 					cRFMapper.deleteADR(no);
 					cRFMapper.deleteDiseaseInfo(no);
 					cRFMapper.deleteDrugCombinationList(no);
-					cRFMapper.deleteDrugUseInfo(no);
+					cRFMapper.deleteDrugUseInfoByNo(no);
 					cRFMapper.deleteLabExamCase(no);
 					cRFMapper.deletePastHistory(no);
 					cRFMapper.deletePersonHistory(no);
@@ -586,13 +586,14 @@ public class CRFService {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			validDateRange(startDate, drugUseVo.getId(), "用药开始时间");
-			validDateRange(endDate, drugUseVo.getId(), "用药结束时间");
-			if (dbCase != null && dbCase.getNo() != null){
+			//validDateRange(startDate, drugUseVo.getId(), "用药开始时间");
+			//validDateRange(endDate, drugUseVo.getId(), "用药结束时间");
+			if (dbCase != null && dbCase.getNo() != null && dbCase.getDrugUseId() > 0){
 				cRFMapper.updateDrugUseInfo(drugUseCase);
-			}
-			else {
+				cRFMapper.updateAllDrugUseInfo(drugUseCase);
+			}else {
 				cRFMapper.insertDrugUseInfo(drugUseCase);
+				cRFMapper.updateAllDrugUseInfo(drugUseCase);
 			}
 			updateProcessAndModifyDate(drugUseVo.getNo(), ProcessUtils.DRUG_USING);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
@@ -717,8 +718,26 @@ public class CRFService {
 			CRFUserSign userSign = new CRFUserSign();
 			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(id);
 			userSign.setNo(patientInfoCase.getNo());
-			userSign.setLockStatus(LockStatusUtils.submit);
-			userSign.setCroSignTime(new Date());
+			Subject subject = SecurityUtils.getSubject();
+			String userName = (String) subject.getPrincipal();
+			List<Role> roles = roleMapper.getRoleByUserName(userName);
+			String roleName = null;
+			if (roles != null && roles.size() > 0){
+				roleName = roles.get(0).getRoleName();
+			}
+			if ("CRM".equalsIgnoreCase(roleName)){
+				userSign.setLockStatus(LockStatusUtils.pass);
+				userSign.setCrmSignTime(new Date());
+				userSign.setCrmName(userName);
+			}else if ("DM".equalsIgnoreCase(roleName)){
+				userSign.setLockStatus(LockStatusUtils.pass);
+				userSign.setDmSignTime(new Date());
+				userSign.setDmName(userName);
+			}else{
+				userSign.setLockStatus(LockStatusUtils.submit);
+				userSign.setCroSignTime(new Date());
+				userSign.setCroName(userName);
+			}
 			userSignMapper.updateUserSign(userSign);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 		}catch(Exception e){
@@ -925,6 +944,13 @@ public class CRFService {
 			doubtRecord.setNo(patientInfoCase.getNo());
 			doubtRecord.setMenuId(doubtRecordSubmitVo.getMenu());
 			doubtRecordMapper.insertDoubtRecord(doubtRecord);
+			List<DoubtRecord> records = doubtRecordMapper.getUndealDoubtRecord(doubtRecordSubmitVo.getId());
+			if (records != null && records.size() > 0){
+				CRFUserSign userSign = new CRFUserSign();
+				userSign.setNo(patientInfoCase.getNo());
+				userSign.setLockStatus(LockStatusUtils.doubt);
+				userSignMapper.updateUserSign(userSign);
+			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -983,6 +1009,15 @@ public class CRFService {
 			doubtRecord.setCommitDate(new Date());
 			doubtRecord.setFlag(1);
 			doubtRecordMapper.saveDoubtRecord(doubtRecord);
+			List<DoubtRecord> records = doubtRecordMapper.getUndealDoubtRecord(doubtRecordSubmitVo.getId());
+			if (records == null || records.size() == 0){
+				CRFUserSign userSign = new CRFUserSign();
+				PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(doubtRecordSubmitVo.getId());
+				userSign.setNo(patientInfoCase.getNo());
+				userSign.setLockStatus(LockStatusUtils.pass);
+				userSign.setCrmSignTime(new Date());
+				userSignMapper.updateUserSign(userSign);
+			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1052,12 +1087,49 @@ public class CRFService {
 			for (int i=0;drugUseCases!=null && i<drugUseCases.size();i++){
 				drugUseLists.add(drugUseCases.get(i).getDrugUseId());
 			}
-			data.put("drugUseIdList", data);
+			data.put("drugUseIdList", drugUseLists);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, data);
 		}catch(Exception e){
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
+		return result;
+	}
+
+	public Map<String, Object> addNewDrugUseInfo(int id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			DrugUseCase drugUseCase = new DrugUseCase();
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(id);
+			drugUseCase.setNo(patientInfoCase.getNo());
+			drugUseCase.setId(id);
+			cRFMapper.insertDrugUseInfo(drugUseCase);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("drugUseId", drugUseCase.getDrugUseId());
+			result.put("data", data);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	public Map<String, Object> deleteDrugUseInfo(int id, int drugUseId) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("id", id);
+			condition.put("drugUseId", drugUseId);
+			cRFMapper.deleteDrugUseInfoByDrugUseId(condition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, null);
+		}
+		
 		return result;
 	}
 

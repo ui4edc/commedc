@@ -43,7 +43,7 @@ public class DrugUseVo {
 		
 		private String endM;
 		
-		private String food;
+		private String food = "";
 		
 		private String foodtxt;
 		

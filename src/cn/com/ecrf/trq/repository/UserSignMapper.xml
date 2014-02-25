@@ -24,7 +24,7 @@
        ,dm_name=#{dmName}
     </if>
     <if test="dmSignTime != null" >
-       ,dm_signname=#{dmSignTime}
+       ,dm_signtime=#{dmSignTime}
     </if>
   	where no=#{no}
   </update>
