@@ -187,9 +187,9 @@ var STAT_MENU = [
     {
         name: "总量统计",
         children: [
-            {name: "各值统计", id: 1},
-            {name: "年龄", id: 2},
-            {name: "性别", id: 3}
+            {name: "医院统计", id: 1},
+            {name: "年龄统计", id: 2},
+            {name: "性别统计", id: 3}
         ]
     }
 ];

@@ -22,10 +22,10 @@ es.Views.Form30 = Backbone.View.extend({
         //获取用药情况列表
         var me = this;
         util.ajax.run({
-            url: "",
+            url: "crf/getDrugUseInfoNum",
             data: {id: es.main.crfId},
             success: function(response) {
-                console.log("", response);
+                console.log("crf/getDrugUseInfoNum", response);
                 me.drugUseIdList = response.data.drugUseIdList;
                 //获取第1次
                 me.rendered = false;
@@ -71,10 +71,10 @@ es.Views.Form30 = Backbone.View.extend({
         var me = $(e.target),
             view = this;
         util.ajax.run({
-            url: "",
+            url: "crf/addNewDrugUseInfo",
             data: {id: es.main.crfId},
             success: function(response) {
-                console.log("", response);
+                console.log("crf/addNewDrugUseInfo", response);
                 me.before($.Mustache.render("tpl-form30-times", {
                     n: view.$(".times a").length + 1,
                     id: response.data.drugUseId
@@ -347,13 +347,13 @@ es.Views.Form30 = Backbone.View.extend({
             drugUseId: parseInt(me.$(".times .active").attr("id"), 10)
         };
         
-        console.log("", data);
+        console.log("crf/deleteDrugUseInfo", data);
         
         util.ajax.run({
-            url: "",
+            url: "crf/deleteDrugUseInfo",
             data: data,
             success: function(response) {
-                console.log("", response);
+                console.log("crf/deleteDrugUseInfo", response);
                 me.$(".times .active").remove();
                 
                 //重新编号

@@ -35,7 +35,8 @@ h1 .btn:hover{background:#3498db}
 .main{overflow:hidden}
 .sidebar{float:left; width:200px; padding-bottom:20px}
 .content{margin-left:200px; border-left:1px #ccc solid}
-.chart, .crf-form{padding:30px; min-height:400px}
+.crf-form{padding:30px; min-height:400px}
+.chart{height:400px; padding-right:30px}
 #UploadContainer{padding:0 22px}
 
 /*进度条*/

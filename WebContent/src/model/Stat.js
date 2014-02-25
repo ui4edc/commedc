@@ -16,9 +16,13 @@ es.Models.Stat = Backbone.Model.extend({
         var method, mockData, formater;
         switch (id) {
             case 1:
-                method = "";
-                formater = me.formatValue;
-                mockData = [];
+                method = "stat/getHospitalStat.do";
+                formater = me.formatHospital;
+                mockData = [
+                    {name: "北京大学医院", num1: 100, num2: 120, num3: 50, num4: 400},
+                    {name: "北京同仁医院", num1: 120, num2: 100, num3: 80, num4: 500},
+                    {name: "北京海淀医院", num1: 130, num2: 90, num3: 40, num4: 300}
+                ];
                 break;
             case 2:
                 method = "stat/getAgeStat.do";
@@ -47,16 +51,31 @@ es.Models.Stat = Backbone.Model.extend({
             mock: MOCK,
             mockData: {
                 success: true,
-                total: 100,
                 data: mockData
             }
         });
     },
     
-    formatValue: function(data) {
-        var charData = [];
+    formatHospital: function(data) {
+        var lineData = {
+            categories: [],
+            series: [
+                {name: "审核通过", data: []},
+                {name: "质疑", data: []},
+                {name: "已提交未审核", data: []},
+                {name: "草稿", data: []}
+            ]
+        };
         
-        return charData;
+        $.each(data, function(index, val) {
+            lineData.categories.push(val.name);
+            lineData.series[0].data.push(val.num4);
+            lineData.series[1].data.push(val.num3);
+            lineData.series[2].data.push(val.num2);
+            lineData.series[3].data.push(val.num1);
+        });
+        
+        return lineData;
     },
     
     formatAge: function(data) {

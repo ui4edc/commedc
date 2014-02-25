@@ -62,27 +62,35 @@ es.Views.Stat = Backbone.View.extend({
         this.destroyChart();
         
         switch (this.statType) {
-            case 1: this.renderValueChart(data); break;
-            case 2: this.renderAgeChart(data); break;
-            case 3: this.renderSexChart(data);
+            case 1:
+                this.$('.chart').css({height: Math.max(400, data.categories.length * 50)});
+                this.renderHospitalChart(data);
+                break;
+            case 2:
+                this.$('.chart').css({height: 400});
+                this.renderAgeChart(data);
+                break;
+            case 3:
+                this.$('.chart').css({height: 400});
+                this.renderSexChart(data);
         }
     },
     
-    renderValueChart: function(data) {
+    renderHospitalChart: function(data) {
         this.$(".chart").highcharts({
             chart: {
                 type: 'bar'
             },
             title: {
-                text: 'Stacked bar chart'
+                text: '医院统计'
             },
             xAxis: {
-                categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+                categories: data.categories
             },
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Total fruit consumption'
+                    text: '表单数'
                 }
             },
             legend: {
@@ -94,16 +102,7 @@ es.Views.Stat = Backbone.View.extend({
                     stacking: 'normal'
                 }
             },
-            series: [{
-                name: 'John',
-                data: [5, 3, 4, 7, 2]
-            }, {
-                name: 'Jane',
-                data: [2, 2, 3, 2, 1]
-            }, {
-                name: 'Joe',
-                data: [3, 4, 4, 2, 5]
-            }]
+            series: data.series
         });
     },
     
