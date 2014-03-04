@@ -16,6 +16,7 @@ public class ListReturnVo {
 	private int id;
 	private String doubtDate = "";
 	private String doubter = "";
+	private int doubtNumber;
 	
 	public boolean isCrf() {
 		return crf;
@@ -100,6 +101,12 @@ public class ListReturnVo {
 	}
 	public void setDoubter(String doubter) {
 		this.doubter = doubter;
+	}
+	public int getDoubtNumber() {
+		return doubtNumber;
+	}
+	public void setDoubtNumber(int doubtNumber) {
+		this.doubtNumber = doubtNumber;
 	}
 	
 	

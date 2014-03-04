@@ -39,9 +39,9 @@
   </select>
   
   <select id="getCRFFieldDict" parameterType="int" resultType="cn.com.ecrf.trq.model.FieldDict">
-  	select v.id as id,
+  	select v.fieldid as id,
   			v.name as name
-  	from dt_crfstage s, dt_crfstage_var v where s.menuid=v.menuid and v.menuid=#{menuId} order by v.id asc
+  	from dt_crfstage s, dt_crfstage_var v where s.menuid=v.menuid and v.menuid=#{menuId} order by v.fieldid asc
   </select>
   <update id="saveDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord">
   	update crf_doubt set commit_time=#{commitDate}, flag=#{flag} 

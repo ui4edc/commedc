@@ -248,6 +248,7 @@
 		select 
 			p.abbr as abbr,
 			p.no as no,
+			p.id as id,
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
 			us.progress as progress,
@@ -255,10 +256,10 @@
 			count(1) as doubtNumber
 		 from crf_patient_info p, crf_user_sign us, crf_doubt d where 
 		 p.no=us.no and d.no=p.no
-		 <if test="abbr != null" >
+		 <if test="abbr != null and abbr != ''" >
         	and p.abbr=#{abbr}
       	</if>
-      	<if test="no != null" >
+      	<if test="no != null and no != ''" >
         	and p.no=#{no}
       	</if>
       	<if test="crf == false">
@@ -317,6 +318,7 @@
 	<select id="getDoutSummaryListByCRM" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
 		select 
 			p.abbr as abbr,
+			p.id as id,
 			p.no as no,
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
@@ -325,17 +327,14 @@
 			count(1) as doubtNumber
 		 from crf_patient_info p, crf_user_sign us, crf_doubt d, ac_user cro, ac_user crm, ac_organization o where us.lockstatus=#{lockStatus} and p.no=us.no
 		  and d.no=p.no and us.cro_name=cro.user_name and cro.fk_organization_id=o.id and o.fk_crmuser_id=crm.id and crm.user_name=#{userName}
-		 <if test="abbr != null" >
+		 <if test="abbr != null and abbr != ''" >
         	and p.abbr=#{abbr}
       	</if>
-      	<if test="no != null" >
+      	<if test="no != null and no != ''" >
         	and p.no=#{no}
       	</if>
       	<if test="crf == false">
       		and p.no in (select no from crf_adr_info)
-      	</if>
-      	<if test="userName != null and roleName!='DM'">
-      		and us.cro_name=#{userName}
       	</if>
       	<if test="createDateFrom != null" >
         	and us.cro_createtime>=#{createDateFrom} and #{createDateTo}>=us.cro_createtime
@@ -351,9 +350,6 @@
 		    	and d.flag=1    
             </otherwise>    
 		</choose>
-      	<if test="undealed == true">
-      		and d.flag=0
-      	</if>
       	group by p.no
       	<choose>
 		    <when test="orderBy == 'no'">

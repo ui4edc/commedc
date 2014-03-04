@@ -212,6 +212,7 @@ public class CRFService {
 				resultVo.setNo(result.getNo());
 				if (result.getProgress() > 0)
 					resultVo.setProgress(result.getProgress() + "%");
+				resultVo.setDoubtNumber(result.getDoubtNumber());
 				listVo.add(resultVo);
 			}
 		}
