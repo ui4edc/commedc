@@ -34,7 +34,11 @@
 	</update>
 	<select id="getStaticDict" parameterType="cn.com.ecrf.trq.model.dict.StaticDict" resultType="cn.com.ecrf.trq.model.dict.StaticDict">
 		select id as id, name as name
-		from dt_staticdict where name like #{name}||'%' and typeabbr=#{typeabbr} 
+		from dt_staticdict where typeabbr=#{typeabbr} 
+		<if test="name != null and name != ''" >
+        	and name like #{name}||'%' 
+      	</if>
+			
 	</select>
   	<insert id="insertDictRow" parameterType="cn.com.ecrf.trq.model.dict.DictRow">
   		insert into dt_itemdict(name,abbr,type,type_abbr) values(#{name},#{abbr},#{type}, #{typeAbbr});

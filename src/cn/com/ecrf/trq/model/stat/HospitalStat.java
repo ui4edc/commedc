@@ -7,6 +7,7 @@ public class HospitalStat {
 	private int num2;
 	private int num3;
 	private int num4;
+	private int num5; //合同例数
 	private int number;
 	private int lockStatus;
 	
@@ -52,6 +53,12 @@ public class HospitalStat {
 	}
 	public void setLockStatus(int lockStatus) {
 		this.lockStatus = lockStatus;
+	}
+	public int getNum5() {
+		return num5;
+	}
+	public void setNum5(int num5) {
+		this.num5 = num5;
 	} 
 	
 	
