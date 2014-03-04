@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,14 @@ import cn.com.ecrf.trq.model.LabExamCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
+import cn.com.ecrf.trq.model.dict.DictRow;
 import cn.com.ecrf.trq.repository.CRFMapper;
+import cn.com.ecrf.trq.repository.DictMapper;
+import cn.com.ecrf.trq.utils.DictUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
+import cn.com.ecrf.trq.utils.PinyinUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
@@ -49,6 +55,8 @@ public class ConvertorService {
 
 	@Autowired
 	private CRFMapper cRFMapper;
+	@Autowired 
+	private DictMapper dictMapper;
 	
 	public PatientInfoCase convertPatientFromViewToModel(
 			PatientInfoVo patientInfoVo) {
@@ -95,6 +103,18 @@ public class ConvertorService {
 		FormEnumObject yyksObj = new FormEnumObject(patientInfoVo.getYyks(), null, FormEnumValue.YYKS);
 		patientInfoCase.setYyks(convertIDToContent(yyksObj));
 		patientInfoCase.setYykstxt(patientInfoVo.getYykstxt());
+		String yyks = patientInfoCase.getYyks();
+		if (StringUtils.isNotBlank(patientInfoCase.getYyks())){
+			yyks = patientInfoCase.getYyks();
+		}
+		try{
+			List<DictRow> dictRows = getItemDict(yyks, DictUtils.dept);
+			if (dictRows == null || dictRows.size() < 1){
+				insertItemDict(yyks, DictUtils.dept);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,6 +122,8 @@ public class ConvertorService {
 		return patientInfoCase;
 	}
 	
+	
+
 	public PatientInfoVo convertPatientFromModelToView(
 			PatientInfoCase patientInfoCase) {
 		// TODO Auto-generated method stub
@@ -349,20 +371,98 @@ public class ConvertorService {
 				drugUseCase = new DrugUseCase();
 				BeanUtils.copyProperties(drugUseCase, drugUseVo);
 				JSONUtils<BanDrug> util = new JSONUtils<BanDrug>(BanDrug.class);
-				if (drugUseVo.getBanDrug()!= null && drugUseVo.getBanDrug().size() > 0)
+				if (drugUseVo.getBanDrug()!= null && drugUseVo.getBanDrug().size() > 0){
 					drugUseCase.setBanDruglb(util.convertFromList(drugUseVo.getBanDrug()));
-				if (drugUseVo.getBottle() != null && drugUseVo.getBottle().size() > 0)
+					for (BanDrug banDrug : drugUseVo.getBanDrug()){
+						try{
+							List<DictRow> dictRows = getItemDict(banDrug.getName(), DictUtils.drug);
+							if (dictRows == null || dictRows.size() < 1){
+								insertItemDict(banDrug.getName(), DictUtils.drug);
+							}
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+					
+				}
+				if (drugUseVo.getBottle() != null && drugUseVo.getBottle().size() > 0){
 					drugUseCase.setBottlelb(util.convertFromList(drugUseVo.getBottle()));
-				if (drugUseVo.getInjection() != null && drugUseVo.getInjection().size() > 0)
+					for (BanDrug banDrug : drugUseVo.getBanDrug()){
+						try{
+							List<DictRow> dictRows = getItemDict(banDrug.getName(), DictUtils.drug);
+							if (dictRows == null || dictRows.size() < 1){
+								insertItemDict(banDrug.getName(), DictUtils.drug);
+							}
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+					
+				}
+				if (drugUseVo.getInjection() != null && drugUseVo.getInjection().size() > 0){
 					drugUseCase.setInjectionlb(util.convertFromList(drugUseVo.getInjection()));
-				if (drugUseVo.getGroup() != null && drugUseVo.getGroup().size() > 0)
+					for (BanDrug banDrug : drugUseVo.getBanDrug()){
+						try{
+							List<DictRow> dictRows = getItemDict(banDrug.getName(), DictUtils.drug);
+							if (dictRows == null || dictRows.size() < 1){
+								insertItemDict(banDrug.getName(), DictUtils.drug);
+							}
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+				}
+				if (drugUseVo.getGroup() != null && drugUseVo.getGroup().size() > 0){
 					drugUseCase.setGrouplb(util.convertFromList(drugUseVo.getGroup()));
+					for (BanDrug banDrug : drugUseVo.getBanDrug()){
+						try{
+							List<DictRow> dictRows = getItemDict(banDrug.getName(), DictUtils.drug);
+							if (dictRows == null || dictRows.size() < 1){
+								insertItemDict(banDrug.getName(), DictUtils.drug);
+							}
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+				}
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return drugUseCase;
+	}
+
+	private List<DictRow> getItemDict(String name, String type) {
+		// TODO Auto-generated method stub
+		List<DictRow> rows = null;
+		try {
+			DictRow dictRow = new DictRow();
+			dictRow.setName(name);
+			dictRow.setAbbr(PinyinUtils.getFirstHanyuPinyin(name));
+			dictRow.setType(type);
+			dictRow.setTypeAbbr(PinyinUtils.getFirstHanyuPinyin(type));
+			rows = dictMapper.getDictRow(dictRow);
+		} catch (BadHanyuPinyinOutputFormatCombination e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rows;
+	}
+	
+	private void insertItemDict(String name, String type) {
+		// TODO Auto-generated method stub
+		try {
+			DictRow dictRow = new DictRow();
+			dictRow.setName(name);
+			dictRow.setAbbr(PinyinUtils.getFirstHanyuPinyin(name));
+			dictRow.setType(type);
+			dictRow.setTypeAbbr(PinyinUtils.getFirstHanyuPinyin(type));
+			dictMapper.insertDictRow(dictRow);
+		} catch (BadHanyuPinyinOutputFormatCombination e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public DrugUseVo convertDrugUseInfoFromJSONToView(String json) {
@@ -375,6 +475,14 @@ public class ConvertorService {
 		// TODO Auto-generated method stub
 		DrugCombinationCase drugCombinationCase = new DrugCombinationCase();
 		drugCombinationCase.setName(drugInstanceObject.getName());
+		try{
+			List<DictRow> dictRows = getItemDict(drugInstanceObject.getName(), DictUtils.drug);
+			if (dictRows == null || dictRows.size() < 1){
+				insertItemDict(drugInstanceObject.getName(), DictUtils.drug);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		drugCombinationCase.setSeq(drugInstanceObject.getId());
 		drugCombinationCase.setNo(no);
 		drugCombinationCase.setDose(drugInstanceObject.getDose());

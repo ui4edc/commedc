@@ -14,5 +14,7 @@ public interface DictMapper {
 	List<DictRow> getBasicList(String name);
 	void addItemToBase(Map<String, Object> condition);
 	List<StaticDict> getStaticDict(StaticDict staticDict);
+	void insertDictRow(DictRow dictRow);
+	List<DictRow> getDictRow(DictRow dictRow);
 
 }

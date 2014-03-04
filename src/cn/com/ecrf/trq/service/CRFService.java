@@ -148,10 +148,10 @@ public class CRFService {
 				break;
 			case 5:
 				if ("CRM".equalsIgnoreCase(roleName)){
-					list = cRFMapper.getPatientListByCRM(sqlCondition);
+					list = cRFMapper.getDoutSummaryListByCRM(sqlCondition);
 					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
 				}else if ("DM".equalsIgnoreCase(roleName)){
-					list = cRFMapper.getPatientList(sqlCondition);
+					list = cRFMapper.getDoutSummaryList(sqlCondition);
 					total = cRFMapper.getTotalPatientNum(sqlCondition);
 				}
 				break;

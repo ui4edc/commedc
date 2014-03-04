@@ -24,7 +24,7 @@
   	from crf_doubt d, dt_crfstage_var v where v.menuid=d.menuid and d.menuid=#{menuId} and d.id=#{id} and d.fieldid=v.fieldid and flag!=1
   </select>
    <select id="getUndealDoubtRecord" parameterType="int" resultType="cn.com.ecrf.trq.model.DoubtRecord">
-  	select doubtId as doubtId,
+  	 select doubtId as doubtId,
   			d.id as id,
   		   no as no,
   		   doubt_time as doubtDate,
@@ -35,7 +35,7 @@
   		   v.name as fieldName,
   		   description as description,
   		   d.menuid as menuId
-  	from crf_doubt d where d.id=#{id} and flag!=1
+  	from crf_doubt d, dt_crfstage_var v where d.id=#{id} and flag!=1 and d.fieldId=v.fieldId
   </select>
   
   <select id="getCRFFieldDict" parameterType="int" resultType="cn.com.ecrf.trq.model.FieldDict">

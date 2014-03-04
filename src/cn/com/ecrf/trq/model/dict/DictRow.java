@@ -18,6 +18,9 @@ public class DictRow {
 	private int baseItemId;
 	private String baseItemAbbr;
 	private String baseItemName;
+	private String type;
+	private String typeAbbr;
+	
 	public int getId() {
 		return id;
 	}
@@ -53,6 +56,18 @@ public class DictRow {
 	}
 	public void setBaseItemName(String baseItemName) {
 		this.baseItemName = baseItemName;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getTypeAbbr() {
+		return typeAbbr;
+	}
+	public void setTypeAbbr(String typeAbbr) {
+		this.typeAbbr = typeAbbr;
 	}
 	
 	
