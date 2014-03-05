@@ -52,6 +52,9 @@ es.Views.Form20 = Backbone.View.extend({
                 esui.get("Disease1_" + val).setChecked(true);
             });
         }
+        if (data.disease1.indexOf("4") != -1) {
+            this.$(".fy").show();
+        }
         switch (data.fy) {
             case 1: esui.get("Fy1").setChecked(true); break;
             case 2: esui.get("Fy2").setChecked(true); break;
@@ -78,6 +81,10 @@ es.Views.Form20 = Backbone.View.extend({
         }
         
         //事件
+        esui.get("Disease1_4").onclick = function() {
+            me.$(".fy").toggle();
+        };
+        
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }

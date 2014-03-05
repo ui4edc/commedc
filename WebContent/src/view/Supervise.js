@@ -204,7 +204,7 @@ es.Views.Supervise = Backbone.View.extend({
         } else {
             this.$(".doubt-form").hide();
         }
-        //已提交
+        //审核通过
         if (this.args.type == 6) {
             this.$("#ctrlbuttonSubmitCRF").hide();
         } else {

@@ -357,6 +357,7 @@ es.Views.List = Backbone.View.extend({
      */
     openNewCRF: function() {
         esui.get("NewAbbr").setValue("");
+        $("#CrfError").empty();
         esui.get("NewCRFDialog").show();
     },
     
@@ -367,6 +368,16 @@ es.Views.List = Backbone.View.extend({
         var data = {
             abbr: $.trim(esui.get("NewAbbr").getValue())
         };
+        
+        //验证
+        if (data.abbr === "") {
+            $("#CrfError").html("请填写患者姓名缩写");
+            return;
+        }
+        if (!/^[a-z]+$/i.test(data.abbr)) {
+            $("#CrfError").html("患者姓名缩写必须为字母");
+            return;
+        }
         
         console.log("crf/addCRF.do-请求", data);
         

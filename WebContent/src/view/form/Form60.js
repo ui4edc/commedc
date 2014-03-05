@@ -140,6 +140,10 @@ es.Views.Form60 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "首次用药时间不能晚于末次用药时间"});
            return;
        }
+       if (data.ending == 5 && data.deathReason == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写直接死因"});
+           return;
+       }
        if (data.intervention == 1 && data.interventiontxt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写药师如何进行干预"});
            return;

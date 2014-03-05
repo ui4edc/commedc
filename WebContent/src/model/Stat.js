@@ -19,9 +19,9 @@ es.Models.Stat = Backbone.Model.extend({
                 method = "stat/getHospitalStat.do";
                 formater = me.formatHospital;
                 mockData = [
-                    {name: "北京大学医院", num1: 100, num2: 120, num3: 50, num4: 400},
-                    {name: "北京同仁医院", num1: 120, num2: 100, num3: 80, num4: 500},
-                    {name: "北京海淀医院", num1: 130, num2: 90, num3: 40, num4: 300}
+                    {name: "北京大学医院", num1: 100, num2: 120, num3: 50, num4: 400, num5: 100},
+                    {name: "北京同仁医院", num1: 120, num2: 100, num3: 80, num4: 500, num5: 100},
+                    {name: "北京海淀医院", num1: 130, num2: 90, num3: 40, num4: 300, num5: 100}
                 ];
                 break;
             case 2:
@@ -60,6 +60,7 @@ es.Models.Stat = Backbone.Model.extend({
         var lineData = {
             categories: [],
             series: [
+                {name: "合同", data: []},
                 {name: "审核通过", data: []},
                 {name: "质疑", data: []},
                 {name: "已提交未审核", data: []},
@@ -69,10 +70,11 @@ es.Models.Stat = Backbone.Model.extend({
         
         $.each(data, function(index, val) {
             lineData.categories.push(val.name);
-            lineData.series[0].data.push(val.num4);
-            lineData.series[1].data.push(val.num3);
-            lineData.series[2].data.push(val.num2);
-            lineData.series[3].data.push(val.num1);
+            lineData.series[0].data.push(val.num5);
+            lineData.series[1].data.push(val.num4);
+            lineData.series[2].data.push(val.num3);
+            lineData.series[3].data.push(val.num2);
+            lineData.series[4].data.push(val.num1);
         });
         
         return lineData;

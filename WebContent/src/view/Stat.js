@@ -90,7 +90,7 @@ es.Views.Stat = Backbone.View.extend({
             yAxis: {
                 min: 0,
                 title: {
-                    text: '表单数'
+                    text: '数目'
                 }
             },
             legend: {

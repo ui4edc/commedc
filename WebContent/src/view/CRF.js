@@ -46,25 +46,25 @@ es.Views.CRF = Backbone.View.extend({
             title = "填写CRF";
             this.editable = true;
             this.selectADR = false;
-            this.canSubmit = true;
+            this.submitTxt = "全部提交";
             this.canDoubt = false;
         } else if (/^#crf\/updateadr\/\d+$/.test(hash)) {
             title = "填写CRF";
             this.editable = true;
             this.selectADR = true;
-            this.canSubmit = true;
+            this.submitTxt = "全部提交";
             this.canDoubt = false;
         } else if (/^#crf\/doubt\/\d+$/.test(hash)) {
             title = "质疑CRF";
             this.editable = false;
             this.selectADR = false;
-            this.canSubmit = true;
+            this.submitTxt = "审核通过";
             this.canDoubt = true;
         } else if(/^#crf\/doubtadr\/\d+$/.test(hash)) {
             title = "质疑CRF";
             this.editable = false;
             this.selectADR = true;
-            this.canSubmit = true;
+            this.submitTxt = "审核通过";
             this.canDoubt = true;
         }
         
@@ -81,7 +81,7 @@ es.Views.CRF = Backbone.View.extend({
         this.$("h1").append($.Mustache.render("tpl-crf-title", {
             no: data.no,
             abbr: data.abbr,
-            submitBtn: this.canSubmit ? [1] : [],
+            submitTxt: this.submitTxt,
             doubtBtn: this.canDoubt ? [1] : []
         }));
         this.$(".progressbar .progress").text("完成度：" + data.progress);
@@ -146,8 +146,8 @@ es.Views.CRF = Backbone.View.extend({
         var me = this;
         if (this.progress != "100%") {
             esui.Dialog.confirm({
-                title: "全部提交",
-                content: "CRF未填写完整，是否确定提交？",
+                title: me.submitTxt,
+                content: "CRF未填写完整，是否确定" + me.submitTxt + "？",
                 onok: function () {
                     me.submitCRF();
                 }
