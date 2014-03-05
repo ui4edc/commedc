@@ -122,11 +122,12 @@ var NATION = [
 
 var DRUG_TYPE = {
     datasource: [
+        {name: "请选择", value: 0},
         {name: "抗生素类", value: 1},
         {name: "中药注射液", value: 2},
         {name: "其他", value: 3}
     ],
-    value: 1
+    value: 0
 };
 
 var GXB_LEVEL = {

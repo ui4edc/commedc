@@ -64,13 +64,13 @@ es.Views.Form11 = Backbone.View.extend({
         
         esui.get("Age").setValue(util.getAge(T.date.parse(data.birthday)) + "");
         
-        if (data.sex == 2) {
-            esui.get("Female").setChecked(true);
-            this.$(".female").show();
-            switch (data.hys) {
-                case 1: esui.get("Female1").setChecked(true); break;
-                case 2: esui.get("Female2").setChecked(true);
-            }
+        switch (data.sex) {
+            case 1: esui.get("Male").setChecked(true); break;
+            case 2: esui.get("Female").setChecked(true); this.$(".female").show();
+        }
+        switch (data.hys) {
+            case 1: esui.get("Female1").setChecked(true); break;
+            case 2: esui.get("Female2").setChecked(true);
         }
         
         if (data.weightud) {
@@ -81,6 +81,7 @@ es.Views.Form11 = Backbone.View.extend({
         }
         
         switch (data.yyks) {
+            case 1: esui.get("Dep1").setChecked(true); break;
             case 2: esui.get("Dep2").setChecked(true); break;
             case 3: esui.get("Dep3").setChecked(true); break;
             case 4: esui.get("Dep4").setChecked(true); break;
@@ -89,6 +90,7 @@ es.Views.Form11 = Backbone.View.extend({
         }
         
         switch (data.feemode) {
+            case 1: esui.get("Pay1").setChecked(true); break;
             case 2: esui.get("Pay2").setChecked(true); break;
             case 3: esui.get("Pay3").setChecked(true); break;
             case 4: esui.get("Pay4").setChecked(true); break;
@@ -149,32 +151,39 @@ es.Views.Form11 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请选择民族"});
            return;
        }
+       if (isNaN(data.sex)) {
+           esui.Dialog.alert({title: "提示", content: "请选择性别"});
+           return;
+       } else if (data.sex == 2 && isNaN(data.hys)) {
+           esui.Dialog.alert({title: "提示", content: "请选择女性所处时期"});
+           return;
+       }
        var weight = data.weight,
            height = data.height,
            floatPattern = /^\d+(\.\d+)?$/;
-       if (!data.weightud && weight == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写体重"});
-           return;
+       if (!data.weightud) {
+           if (weight == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写体重"});
+               return;
+           } else if (!floatPattern.test(weight)) {
+               esui.Dialog.alert({title: "提示", content: "体重应为数字"});
+               return;
+           } else if (parseFloat(weight) > 150) {
+               esui.Dialog.alert({title: "提示", content: "体重范围不正确"});
+               return;
+           }
        }
-       if (!data.weightud && weight != "" && !floatPattern.test(weight)) {
-           esui.Dialog.alert({title: "提示", content: "体重应为数字"});
-           return;
-       }
-       if (parseFloat(weight) > 150) {
-           esui.Dialog.alert({title: "提示", content: "体重范围不正确"});
-           return;
-       }
-       if (!data.heightud && height == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写身高"});
-           return;
-       }
-       if (!data.heightud && height != "" && !floatPattern.test(height)) {
-           esui.Dialog.alert({title: "提示", content: "身高应为数字"});
-           return;
-       }
-       if (parseFloat(height) > 200 || parseFloat(height) < 10) {
-           esui.Dialog.alert({title: "提示", content: "身高范围不正确"});
-           return;
+       if (!data.heightud) {
+           if (height == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写身高"});
+               return;
+           } else if (!floatPattern.test(height)) {
+               esui.Dialog.alert({title: "提示", content: "身高应为数字"});
+               return;
+           } else if (parseFloat(height) > 200 || parseFloat(height) < 10) {
+               esui.Dialog.alert({title: "提示", content: "身高范围不正确"});
+               return;
+           }
        }
        var indate = T.date.parse(data.indate).getTime(),
            outdate = T.date.parse(data.outdate).getTime();
@@ -182,11 +191,17 @@ es.Views.Form11 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "入院日期不能晚于出院日期"});
            return;
        }
-       if (data.yyks == 6 && data.yykstxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写用药科室"});
+       if (isNaN(data.yyks)) {
+           esui.Dialog.alert({title: "提示", content: "请选择用药科室"});
+           return;
+       } else if (data.yyks == 6 && data.yykstxt == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写其他用药科室"});
            return;
        }
-       if (data.feemode == 5 && data.feemodetxt == "") {
+       if (isNaN(data.feemode)) {
+           esui.Dialog.alert({title: "提示", content: "请选择医疗费用方式"});
+           return;
+       } else if (data.feemode == 5 && data.feemodetxt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写医疗费用方式"});
            return;
        }

@@ -8,16 +8,16 @@ es.Models.Form12 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-			smoke: 2,
-			drink: 2,
-			hasFood: 2,
-			hasDrug: 2,
-			hasOther: 2,
+			smoke: null,
+			drink: null,
+			hasFood: null,
+			hasDrug: null,
+			hasOther: null,
 			food: [
 				{name: null, value: "", txt: null}
 			],
 			drug: [
-				{name: null, value: "", txt: null, type: 1}
+				{name: null, value: "", txt: null, type: 0}
 			],
 			other: [
 				{name: null, value: "", txt: null}

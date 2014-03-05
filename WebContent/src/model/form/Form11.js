@@ -10,17 +10,17 @@ es.Models.Form11 = Backbone.Model.extend({
         def: {
             birthday: T.date.format(new Date(), "yyyy-MM-dd"),
             ethic: 0,
-            sex: 1,
-            hys: 3,
+            sex: null,
+            hys: null,
             weight: null,
             weightud: false,
             height: null,
             heightud: false,
-            yyks: 1,
+            yyks: null,
             yykstxt: null,
             indate: "2014-01-01",
             outdate: "2014-01-01",
-            feemode: 1,
+            feemode: null,
             feemodetxt: null
         }
     },

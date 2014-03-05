@@ -63,22 +63,27 @@ es.Views.Form12 = Backbone.View.extend({
         //赋值
         switch (data.smoke) {
             case 1: esui.get("Smoke1").setChecked(true); break;
+            case 2: esui.get("Smoke2").setChecked(true); break;
             case 3: esui.get("Smoke3").setChecked(true);
         }
         switch (data.drink) {
             case 1: esui.get("Drink1").setChecked(true); break;
+            case 2: esui.get("Drink2").setChecked(true); break;
             case 3: esui.get("Drink3").setChecked(true);
         }
         switch (data.hasFood) {
             case 1: esui.get("Food1").setChecked(true); this.$(".food").show(); break;
+            case 2: esui.get("Food2").setChecked(true); break;
             case 3: esui.get("Food3").setChecked(true);
         }
         switch (data.hasDrug) {
             case 1: esui.get("Drug1").setChecked(true); this.$(".drug").show(); break;
+            case 2: esui.get("Drug2").setChecked(true); break;
             case 3: esui.get("Drug3").setChecked(true);
         }
         switch (data.hasOther) {
             case 1: esui.get("Material1").setChecked(true); this.$(".material").show(); break;
+            case 1: esui.get("Material2").setChecked(true); break;
             case 3: esui.get("Material3").setChecked(true);
         }
         $.each(data.food, function(index, val) {
@@ -211,6 +216,18 @@ es.Views.Form12 = Backbone.View.extend({
        }
        
        //验证
+       if (isNaN(data.smoke)) {
+           esui.Dialog.alert({title: "提示", content: "请选择吸烟史"});
+           return;
+       }
+       if (isNaN(data.drink)) {
+           esui.Dialog.alert({title: "提示", content: "请选择饮酒史"});
+           return;
+       }
+       if (isNaN(data.hasFood)) {
+           esui.Dialog.alert({title: "提示", content: "请选择食物过敏史"});
+           return;
+       }
        for (var i = 0, n = data.food.length; i <n; i++) {
            var item = data.food[i], seq = i + 1;
            if (item.name == "") {
@@ -226,10 +243,18 @@ es.Views.Form12 = Backbone.View.extend({
                return false;
            }
        }
+       if (isNaN(data.hasDrug)) {
+           esui.Dialog.alert({title: "提示", content: "请选择药物过敏史"});
+           return;
+       }
        for (var i = 0, n = data.drug.length; i <n; i++) {
            var item = data.drug[i], seq = i + 1;
            if (item.name == "") {
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个过敏药物名称"});
+               return false;
+           }
+           if (item.type == 0) {
+               esui.Dialog.alert({title: "提示", content: "请选择第 " + seq + " 个过敏药物分类"});
                return false;
            }
            if (item.value == "") {
@@ -240,6 +265,10 @@ es.Views.Form12 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他药物过敏表现"});
                return false;
            }
+       }
+       if (isNaN(data.hasOther)) {
+           esui.Dialog.alert({title: "提示", content: "请选择其他物质过敏史"});
+           return;
        }
        for (var i = 0, n = data.other.length; i <n; i++) {
            var item = data.other[i], seq = i + 1;
