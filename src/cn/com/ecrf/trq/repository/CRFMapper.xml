@@ -43,7 +43,7 @@
 		select count(*) from crf_user_sign c where c.lockstatus=30 and cro_name=#{userName}
 	</select>
   	<select id="getToDoNum" parameterType="string" resultType="int">
-		select count(*) from crf_user_sign c where c.lockstatus=10 and cro_name=#{userName}
+		select count(*) from crf_user_sign c where c.lockstatus=10 and cro_name=#{userName} and 
 	</select>
 	<select id="getPatientList" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
 		select 
@@ -802,7 +802,7 @@
 	</select>
 	<delete id="deleteDrugUseInfoByDrugUseId" parameterType="map">
 		delete from crf_druguse_info where no in (select no from crf_patient_info where id=#{id})
-      	and drugUseId=#{drugUseId}
+      	and seq=#{drugUseId}
 	</delete>
 	<delete id="deleteDrugUseInfoByNo" parameterType="string">
 		delete from crf_druguse_info where no=#{no}

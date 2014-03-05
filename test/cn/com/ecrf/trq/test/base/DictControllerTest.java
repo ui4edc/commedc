@@ -34,6 +34,7 @@ public class DictControllerTest extends SpringControllerTest{
 		
 	}
 	
+	
 	@Test
 	public void testGetStaticDict() {
 		Map<String, Object> results = cRFService.getStaticDict("口", "way");

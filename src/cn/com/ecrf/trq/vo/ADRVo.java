@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.ecrf.trq.vo.lab.PlainExamVo;
@@ -43,8 +44,8 @@ public class ADRVo {
 	private String info = "";
 	private String info6txt;
 	private String info7txt;
-	private List<PlainExamVo> drug1;
-	private List<PlainExamVo> drug2;
+	private List<PlainExamVo> drug1 = new ArrayList<PlainExamVo>();
+	private List<PlainExamVo> drug2 = new ArrayList<PlainExamVo>();
 	private String adr = "";
 	private String adr1 = "";
 	private String adr2 = "";

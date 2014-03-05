@@ -45,6 +45,7 @@ import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
 import cn.com.ecrf.trq.utils.LockStatusUtils;
+import cn.com.ecrf.trq.utils.PinyinUtils;
 import cn.com.ecrf.trq.utils.ProcessUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
 import cn.com.ecrf.trq.vo.ADRVo;
@@ -1034,6 +1035,9 @@ public class CRFService {
 			StaticDict staticDict = new StaticDict();
 			staticDict.setTypeabbr(type);
 			staticDict.setName(keyword);
+			if (StringUtils.isNotBlank(keyword)){
+				staticDict.setAbbr(PinyinUtils.getHanyuPinyin(keyword));
+			}
 			List<StaticDictVo> dictVos = new ArrayList<StaticDictVo>();
 			if ("way".equalsIgnoreCase(type)){
 				List<StaticDict> dicts = dictMapper.getStaticDict(staticDict);

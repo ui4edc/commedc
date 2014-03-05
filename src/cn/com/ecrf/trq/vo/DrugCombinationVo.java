@@ -8,6 +8,8 @@ public class DrugCombinationVo {
 	//观察表编号
 	private String no;
 	
+	private String hasDrug;
+	
 	private List<DrugInstanceObject> drug;
 
 	public int getId() {
@@ -33,6 +35,15 @@ public class DrugCombinationVo {
 	public void setDrug(List<DrugInstanceObject> drug) {
 		this.drug = drug;
 	}
+
+	public String getHasDrug() {
+		return hasDrug;
+	}
+
+	public void setHasDrug(String hasDrug) {
+		this.hasDrug = hasDrug;
+	}
+	
 	
 	
 	
