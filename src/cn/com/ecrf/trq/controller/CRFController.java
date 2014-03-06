@@ -142,7 +142,7 @@ public class CRFController {
 	@RequestMapping(value="/crf/getDeseaseInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getDeseaseInfo(ParameterType parameterType, HttpServletRequest request) {
-		String id = request.getParameter("id");
+an		String id = request.getParameter("id");
 		Map<String, Object> result = cRFService.getDeseaseInfo(""+parameterType.getId());
 		return result;
 	}

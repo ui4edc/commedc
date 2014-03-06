@@ -241,18 +241,19 @@ public class CRFService {
 			sqlCondition.setProgress(Integer.parseInt(progress.replace("%", "")));
 		sqlCondition.setProgressType(condition.getProgressType());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdfT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			if (StringUtils.isNotBlank(condition.getCreateDateFrom()) && StringUtils.isNotBlank(condition.getCreateDateTo())){		
-				sqlCondition.setCreateDateFrom(sdf.parse(condition.getCreateDateFrom()));
-				sqlCondition.setCreateDateTo(sdf.parse(condition.getCreateDateTo()));
+				sqlCondition.setCreateDateFrom(sdfT.parse(condition.getCreateDateFrom()+" 00:00:00"));
+				sqlCondition.setCreateDateTo(sdfT.parse(condition.getCreateDateTo()+" 23:59:59"));
 			}
 			if (StringUtils.isNotBlank(condition.getLastModifiedFrom()) && StringUtils.isNotBlank(condition.getLastModifiedTo())){
-				sqlCondition.setLastModifiedFrom(sdf.parse(condition.getLastModifiedFrom()));
-				sqlCondition.setLastModifiedTo(sdf.parse(condition.getLastModifiedTo()));
+				sqlCondition.setLastModifiedFrom(sdfT.parse(condition.getLastModifiedFrom()+" 00:00:00"));
+				sqlCondition.setLastModifiedTo(sdfT.parse(condition.getLastModifiedTo()+" 23:59:59"));
 			}
 			if (StringUtils.isNotBlank(condition.getDoubtDateFrom()) && StringUtils.isNotBlank(condition.getDoubtDateTo())){
-				sqlCondition.setDoubtDateFrom(sdf.parse(condition.getDoubtDateFrom()));
-				sqlCondition.setDoubtDateTo(sdf.parse(condition.getDoubtDateTo()));
+				sqlCondition.setDoubtDateFrom(sdfT.parse(condition.getDoubtDateFrom()+" 00:00:00"));
+				sqlCondition.setDoubtDateTo(sdfT.parse(condition.getDoubtDateTo()+" 23:59:59"));
 			}
 			sqlCondition.setCrf(condition.isCrf());
 			sqlCondition.setDesc(condition.isDesc());
