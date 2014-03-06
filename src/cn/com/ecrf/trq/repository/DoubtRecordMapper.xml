@@ -52,5 +52,7 @@
   		   count(1) as unDeal
   	from crf_doubt where flag=0 and id=#{id} group by menuid
   </select>
-  
+  <delete id="deleteDoubtRecord" parameterType="string">
+  	delete from crf_doubt where no=#{no}
+  </delete>
 </mapper>

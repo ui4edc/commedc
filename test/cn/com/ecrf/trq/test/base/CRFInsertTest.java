@@ -193,4 +193,9 @@ public class CRFInsertTest extends SpringControllerTest{
 		statService.getHospitalStat();
 		cRFService.getDrugUseInfo(5, 1);
 	}
+	
+	@Test
+	public void testDeleteCRF(){
+		cRFService.batchDelete("5");
+	}
 }

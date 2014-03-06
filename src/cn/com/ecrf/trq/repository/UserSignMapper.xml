@@ -31,4 +31,7 @@
   <update id="updateUserSignDate" parameterType="cn.com.ecrf.trq.model.CRFUserSign">
   	update crf_user_sign set cro_updatetime=current_timestamp() where no=#{no}
   </update>
+  <delete id="deleteUserSign" parameterType="string">
+  	delete from crf_user_sign where no=#{no}
+  </delete>
 </mapper>

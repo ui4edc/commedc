@@ -41,6 +41,7 @@ import cn.com.ecrf.trq.repository.DoubtRecordMapper;
 import cn.com.ecrf.trq.repository.RoleMapper;
 import cn.com.ecrf.trq.repository.UserSignMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
+import cn.com.ecrf.trq.utils.DictUtils;
 import cn.com.ecrf.trq.utils.FormEnumObject;
 import cn.com.ecrf.trq.utils.FormEnumValue;
 import cn.com.ecrf.trq.utils.JSONUtils;
@@ -518,6 +519,7 @@ public class CRFService {
 					cRFMapper.deletePastHistory(no);
 					cRFMapper.deletePersonHistory(no);
 					cRFMapper.deleteDrugSummary(no);
+					doubtRecordMapper.deleteDoubtRecord(no);
 				}
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
@@ -1036,7 +1038,7 @@ public class CRFService {
 			staticDict.setTypeabbr(type);
 			staticDict.setName(keyword);
 			if (StringUtils.isNotBlank(keyword)){
-				staticDict.setAbbr(PinyinUtils.getHanyuPinyin(keyword));
+				staticDict.setAbbr(PinyinUtils.getFirstHanyuPinyin(keyword)+"%");
 			}
 			List<StaticDictVo> dictVos = new ArrayList<StaticDictVo>();
 			if ("way".equalsIgnoreCase(type)){
@@ -1050,8 +1052,19 @@ public class CRFService {
 					}
 				}
 			}else if ("drug".equalsIgnoreCase(type)){
-				List<DictRow> dictRows = dictMapper.getBasicList(keyword);
-				
+				DictRow dictRow = new DictRow();
+				dictRow.setName(keyword+"%");
+				dictRow.setType(DictUtils.drug);
+				dictRow.setTypeAbbr(PinyinUtils.getFirstHanyuPinyin(DictUtils.drug));
+				List<DictRow> dicts = dictMapper.getDictRow(dictRow);
+				if (dicts != null){
+					for (DictRow dict : dicts){
+						StaticDictVo staticDictVo = new StaticDictVo();
+						staticDictVo.setId(dict.getId());
+						staticDictVo.setName(dict.getName());
+						dictVos.add(staticDictVo);
+					}
+				}
 			}
 			
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, dictVos);

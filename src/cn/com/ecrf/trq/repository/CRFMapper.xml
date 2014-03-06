@@ -43,7 +43,7 @@
 		select count(*) from crf_user_sign c where c.lockstatus=30 and cro_name=#{userName}
 	</select>
   	<select id="getToDoNum" parameterType="string" resultType="int">
-		select count(*) from crf_user_sign c where c.lockstatus=10 and cro_name=#{userName} and 
+		select count(*) from crf_user_sign c where c.lockstatus=10 and cro_name=#{userName}
 	</select>
 	<select id="getPatientList" parameterType="cn.com.ecrf.trq.model.list.ListCondition" resultType="cn.com.ecrf.trq.model.list.ListReturn">
 		select 
@@ -806,5 +806,29 @@
 	</delete>
 	<delete id="deleteDrugUseInfoByNo" parameterType="string">
 		delete from crf_druguse_info where no=#{no}
+	</delete>
+	<delete id="deleteADR" parameterType="string">
+		delete from crf_adr_info where no=#{no}
+	</delete>
+	<delete id="deleteDiseaseInfo" parameterType="string">
+		delete from crf_disease_info where no=#{no}
+	</delete>
+	<delete id="deleteDrugCombinationList" parameterType="string">
+		delete from crf_drugcombination_info where no=#{no}
+	</delete>
+	<delete id="deleteDrugCombinationBase" parameterType="string">
+		delete from crf_drugcombination_base where no=#{no}
+	</delete>
+	<delete id="deleteLabExamCase" parameterType="string">
+		delete from crf_labexam_info where no=#{no}
+	</delete>
+	<delete id="deletePastHistory" parameterType="string">
+		delete from crf_past_history where no=#{no}
+	</delete>
+	<delete id="deletePersonHistory" parameterType="string">
+		delete from crf_person_history where no=#{no}
+	</delete>
+	<delete id="deleteDrugSummary" parameterType="string">
+		delete from crf_drugsummary_info where no=#{no}
 	</delete>
 </mapper>

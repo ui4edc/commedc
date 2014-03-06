@@ -36,7 +36,7 @@
 		select id as id, name as name
 		from dt_staticdict where typeabbr=#{typeabbr} 
 		<if test="abbr != null and abbr != ''" >
-        	and abbr like #{abbr}||'%' 
+        	and abbr like #{abbr}
       	</if>
 	</select>
 	<update id="updateStaticDict" parameterType="cn.com.ecrf.trq.model.dict.StaticDict">
@@ -50,6 +50,6 @@
   				abbr as abbr,
   				type as type,
   				type_abbr as typeAbbr
-  		from dt_itemdict where name=#{name} and type=#{type}
+  		from dt_itemdict where name like #{name} and type=#{type}
   	</select>
 </mapper>

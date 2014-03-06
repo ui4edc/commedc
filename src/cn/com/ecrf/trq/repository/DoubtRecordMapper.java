@@ -19,4 +19,6 @@ public interface DoubtRecordMapper {
 
 	List<DoubtRecord> getUndealDoubtRecord(int id);
 
+	void deleteDoubtRecord(String no);
+
 }

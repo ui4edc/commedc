@@ -26,14 +26,14 @@ import cn.com.ecrf.trq.utils.PinyinUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:/spring.xml","classpath:/spring-mybatis.xml", "classpath:/spring-shiro.xml" })
-//@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)    
-//@Transactional
+@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)    
+@Transactional
 public class SpringControllerTest {
 
 	@Autowired
 	private DictMapper dictMapper;
 	
-	@Test
+	/*@Test
 	public void testInsertStaticDict(){
 		StaticDict staticDict = new StaticDict();
 		staticDict.setName("口服");
@@ -50,7 +50,7 @@ public class SpringControllerTest {
 			}
 			
 		}
-	}
+	}*/
 	
 	
 	
