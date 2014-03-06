@@ -49,7 +49,12 @@ Copyright &copy; {{year}}
         <div class="query-form">
             <span>患者姓名缩写：</span>
             <input ui="type:TextInput;id:NewAbbr;width:80" type="text" class="en" />
-            <span class="error-tip" id="CrfError"></span>
+            <span class="error-tip"></span>
+        </div>
+        <div class="query-form">
+            <span>观察表编号：</span>
+            <input ui="type:TextInput;id:NewNo;width:80" type="text" class="en" maxlength="8" />
+            <span class="error-tip"></span>
         </div>
     </div>
     <div>
@@ -62,7 +67,7 @@ Copyright &copy; {{year}}
 <!--新建ADR对话框-->
 <script id="tpl-new-adr-dialog" type="text/html">
 <div ui="type:Dialog;id:NewADRDialog;top:120;width:450;mask:0">
-    <div>新建ADR</div>
+    <div>新建ADE</div>
     <div>
         <div class="query-form">
             <span>请输入对应观察表编号：</span>

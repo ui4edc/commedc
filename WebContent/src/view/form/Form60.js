@@ -96,7 +96,7 @@ es.Views.Form60 = Backbone.View.extend({
         esui.get("Intervention2").onclick = function() {me.$(".intervention").hide();};
         
         esui.get("ADR1").onclick = function() {
-            esui.Dialog.alert({title: "提示", content: "别忘记继续填写ADR噢！"});
+            esui.Dialog.alert({title: "提示", content: "别忘记继续填写ADE噢！"});
         };
         
         if (es.main.canDoubt) {

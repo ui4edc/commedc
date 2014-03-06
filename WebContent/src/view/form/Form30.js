@@ -484,7 +484,7 @@ es.Views.Form30 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请填写批号"});
            return;
        }
-       if (!intPattern.test(data.dose) || parseFloat(data.dose) > 100) {
+       if (!intPattern.test(data.dose) || parseInt(data.dose) > 100) {
            esui.Dialog.alert({title: "提示", content: "单次用药量应为不大于100的数字"});
            return;
        }

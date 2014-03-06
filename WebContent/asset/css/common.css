@@ -14,7 +14,7 @@ a{color:#06c}
 
 /*页面框架*/
 #Head{height:70px; overflow:hidden; color:#666}
-#Head .logo{float:left; width:440px; height:70px; background-image:url(images/logo.jpg)}
+#Head .logo{float:left; width:600px; height:70px; background-image:url(images/logo.jpg)}
 #Head .info{float:right; line-height:70px; margin-right:40px}
 #Nav{height:30px; overflow:hidden; background-color:#2980b9}
 #Nav a{float:left; height:30px; line-height:30px; padding:0 10px; margin-left:20px; font-size:14px; color:#fff; text-decoration:none}

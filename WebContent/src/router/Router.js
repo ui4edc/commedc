@@ -37,7 +37,7 @@ es.Router = Backbone.Router.extend({
         es.main && es.main.destroy && es.main.destroy();
         
         //设置标题
-        document.title = "痰热清上市后临床再评价系统 - " + title;
+        document.title = "痰热清上市后再评价的真实世界研究信息系统 - " + title;
         
         //创建新View
         es.main = new es.Views[name]({
