@@ -77,7 +77,8 @@ es.Views.Form20 = Backbone.View.extend({
             case 3: esui.get("ZY3").setChecked(true); break;
             case 4: esui.get("ZY4").setChecked(true); break;
             case 5: esui.get("ZY5").setChecked(true); break;
-            case 6: esui.get("ZY6").setChecked(true);
+            case 6: esui.get("ZY6").setChecked(true); break;
+            case 7: esui.get("ZY7").setChecked(true);
         }
         
         //事件
@@ -118,8 +119,16 @@ es.Views.Form20 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请选择疾病诊断"});
            return;
        }
+       if (data.disease1.indexOf("4") != -1 && isNaN(data.fy)) {
+           esui.Dialog.alert({title: "提示", content: "请选择肺炎类型"});
+           return;
+       }
        if (data.diagnosis == "") {
            esui.Dialog.alert({title: "提示", content: "请填写第一诊断"});
+           return;
+       }
+       if (isNaN(data.zy)) {
+           esui.Dialog.alert({title: "提示", content: "请选择中医诊断"});
            return;
        }
        if (data.zy == 6 && data.zytxt == "") {

@@ -10,7 +10,10 @@ es.Views.Form12 = Backbone.View.extend({
     events: {
         "click .add-food": "addFood",
         "click .add-drug": "addDrug",
-        "click .add-material": "addMaterial"
+        "click .add-material": "addMaterial",
+        "click .del-food": "delFood",
+        "click .del-drug": "delDrug",
+        "click .del-material": "delMaterial"
     },
     
     initialize: function() {
@@ -44,14 +47,17 @@ es.Views.Form12 = Backbone.View.extend({
                 food: data.data.food,
                 disabled: disabled
             }));
+            me.foodCount = data.data.food.length;
             me.$(".drug").prepend($.Mustache.render("tpl-form12-drug", {
                 drug: data.data.drug,
                 disabled: disabled
             }));
+            me.drugCount = data.data.drug.length;
             me.$(".material").prepend($.Mustache.render("tpl-form12-material", {
                 other: data.data.other,
                 disabled: disabled
             }));
+            me.otherCount = data.data.other.length;
             
             me.initCtrl(data.data);
         });
@@ -136,14 +142,29 @@ es.Views.Form12 = Backbone.View.extend({
     
     addFood: function(e) {
         $(e.target).parent().before($.Mustache.render("tpl-form12-food", {
-            food: [{no: this.$(".food-block").length + 1}],
+            food: [{no: ++this.foodCount}],
             disabled: ""
         }));
         esui.init();
     },
     
+    delFood: function(e) {
+        $(e.target).parent().remove();
+    },
+    
+    delDrug: function(e) {
+        var el = $(e.target),
+            count = el.parent().attr("no");
+        esui.dispose("DrugType" + count);
+        el.parent().remove();
+    },
+    
+    delMaterial: function(e) {
+        $(e.target).parent().remove();
+    },
+    
     addDrug: function(e) {
-        var no =  this.$(".drug-block").length + 1;
+        var no =  ++this.drugCount;
         $(e.target).parent().before($.Mustache.render("tpl-form12-drug", {
             drug: [{no: no}],
             disabled: ""
@@ -155,7 +176,7 @@ es.Views.Form12 = Backbone.View.extend({
     
     addMaterial: function(e) {
         $(e.target).parent().before($.Mustache.render("tpl-form12-material", {
-            other: [{no: this.$(".material-block").length + 1}],
+            other: [{no: ++this.otherCount}],
             disabled: ""
         }));
         esui.init();
@@ -180,8 +201,7 @@ es.Views.Form12 = Backbone.View.extend({
        if (data.hasFood == 1) {
            var food = me.$(".food-block");
            $.each(food, function(index, val) {
-               var item = {},
-                   no = index + 1;
+               var no = $(val).attr("no");
                data.food.push({
                    name: $.trim(esui.get("FoodName" + no).getValue()),
                    value: esui.get("FoodAllergy" + no + "_1").getGroup().getValue(),

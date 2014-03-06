@@ -51,10 +51,12 @@ es.Views.Form13 = Backbone.View.extend({
         });
         switch (data.hasDisease) {
             case 1: esui.get("Disease1").setChecked(true); this.$(".disease").show(); break;
+            case 2: esui.get("Disease2").setChecked(true); break;
             case 3: esui.get("Disease3").setChecked(true);
         }
         switch (data.hasAllergy) {
             case 1: esui.get("ADisease1").setChecked(true); this.$(".a-disease").show(); break;
+            case 2: esui.get("ADisease2").setChecked(true); break;
             case 3: esui.get("ADisease3").setChecked(true);
         }
         if (data.disease != "") {
@@ -150,21 +152,43 @@ es.Views.Form13 = Backbone.View.extend({
        };
        
        //验证
-       if (data.hasDisease == 1 && data.disease == "") {
+       if (isNaN(data.hasDisease)) {
            esui.Dialog.alert({title: "提示", content: "请选择常见疾病"});
            return;
+       } else if (data.hasDisease == 1) {
+           if (data.disease == "") {
+               esui.Dialog.alert({title: "提示", content: "请选择常见疾病"});
+               return;
+           }
+           if (data.disease1.indexOf("1") != -1 && data.gxb == 0) {
+               esui.Dialog.alert({title: "提示", content: "请选择冠心病心功能分级"});
+               return;
+           }
+           if (data.disease1.indexOf("2") != -1 && data.gxy == 0) {
+               esui.Dialog.alert({title: "提示", content: "请选择高血压分级"});
+               return;
+           }
+           if (data.disease.indexOf("8") != -1 && data.diseasetxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写其他常见疾病"});
+               return;
+           }
+           if (data.disease.indexOf("7") != -1 && data.tnb == 0) {
+               esui.Dialog.alert({title: "提示", content: "请选择糖尿病类型"});
+               return;
+           }
        }
-       if (data.hasDisease == 1 && data.disease.indexOf("8") != -1 && data.diseasetxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写其他常见疾病"});
-           return;
-       }
-       if (data.hasAllergy == 1 && data.allergy == "") {
+       if (isNaN(data.hasAllergy)) {
            esui.Dialog.alert({title: "提示", content: "请选择过敏性疾病史"});
            return;
-       }
-       if (data.hasAllergy == 1 && data.allergy.indexOf("6") != -1 && data.allergytxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写其他过敏性疾病史"});
-           return;
+       } else if (data.hasAllergy == 1) {
+           if (data.allergy == "") {
+               esui.Dialog.alert({title: "提示", content: "请选择过敏性疾病史"});
+               return;
+           }
+           if (data.allergy.indexOf("6") != -1 && data.allergytxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写其他过敏性疾病史"});
+               return;
+           }
        }
        
        console.log("crf/savePastHistory.do-请求", data);

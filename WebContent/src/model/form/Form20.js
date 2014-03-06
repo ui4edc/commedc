@@ -8,13 +8,13 @@ es.Models.Form20 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-			disease1: "4",
-			fy: 1,
+			disease1: "",
+			fy: null,
 			disease2: "",
 			disease3: "",
 			diseasetxt: null,
 			diagnosis: null,
-			zy: 7,
+			zy: null,
 			zytxt: null
 		}
     },

@@ -8,8 +8,8 @@ es.Models.Form30 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-			history: 2,
-			adr: 2,
+			history: null,
+			adr: null,
 			adrtxt: null,
 			batchNumber: null,
 			dose: null,
@@ -20,13 +20,13 @@ es.Models.Form30 = Backbone.Model.extend({
 			endH: null,
 			endM: null,
 			solventDose: null,
-			solvent: 1,
+			solvent: null,
 			solventName: null,
 			solventPercent: null,
 			prepareTime: null,
 			prepareTimeUd: false,
-			location: 1,
-			way: 1,
+			location: null,
+			way: null,
 			way1Speed: null,
 			way1Time: null,
 			way2Speed: null,
@@ -34,36 +34,38 @@ es.Models.Form30 = Backbone.Model.extend({
 			way3Speed: null,
 			way3Unit: null,
 			
-			sameBottle: 2,
+			sameBottle: null,
 			bottle: [
 				{name: null, dose: null, unit: null}
 			],
 			
-			sameGroup: 1,
-			gpSolvent: 1,
+			sameGroup: null,
+			useSolvent: null,
+			gpSolvent: null,
 			gpSolvent1Dose: null,
-			gSolvent2Dose: null,
+			gpSolvent2Dose: null,
 			gpSolvent3Name: null,
 			gpSolvent3Percent: null,
 			gpSolvent3Dose: null,
-			group: [
-                {name: null, dose: null, unit: null}
-            ],
+			prevGroup: null,
+			prevGroupName: null,
+			nextGroup: null,
+			nextGroupName: null,
 			
-			hasInjection: 2,
+			hasInjection: null,
 			injection: [
 				{name: null, dose: null, unit: null}
 			],
 			
-			hasBan: 2,
-			ban: 1,
+			hasBan: null,
+			ban: null,
 			banColor: null,
 			bantxt: null,
 			banDrug: [
 				{name: null, dose: null, unit: null}
 			],
 			
-			hasFood: 2,
+			hasFood: null,
 			food: "",
 			foodtxt: null
 		}
@@ -84,9 +86,6 @@ es.Models.Form30 = Backbone.Model.extend({
                     response.data = me.get("def");
                 }
                 $.each(response.data.bottle, function(index, val) {
-                    val.no = index + 1;
-                });
-                $.each(response.data.group, function(index, val) {
                     val.no = index + 1;
                 });
                 $.each(response.data.injection, function(index, val) {

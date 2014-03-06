@@ -55,7 +55,7 @@
 
 <script id="tpl-form12-food" type="text/html">
 {{#food}}
-<div class="food-block block">
+<div class="food-block block" no="{{no}}">
     <div>
         <strong>过敏食物名称</strong>
         <input type="text" value="{{name}}" ui="type:TextInput;id:FoodName{{no}};width:200;{{disabled}}" />
@@ -70,13 +70,14 @@
         <input type="checkbox" hidefocus="true" title="其他" name="food-allergy{{no}}" value="8" ui="type:CheckBox;id:FoodAllergy{{no}}_8;{{disabled}}" />
         <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomFoodAllergyName{{no}};width:80;{{disabled}}" />
     </div>
+    <a href="javascript:void(0)" hidefocus="true" class="del-food del-btn">删除此行</a>
 </div>
 {{/food}}
 </script>
 
 <script id="tpl-form12-drug" type="text/html">
 {{#drug}}
-<div class="drug-block block">
+<div class="drug-block block" no="{{no}}">
     <div style="overflow:hidden">
         <strong class="f">过敏药物名称</strong>
         <input type="text" class="f mt7" value="{{name}}" ui="type:TextInput;id:DrugName{{no}};width:200;{{disabled}}" />
@@ -94,13 +95,14 @@
         <input type="checkbox" hidefocus="true" title="其他" name="drug-allergy{{no}}" value="8" ui="type:CheckBox;id:DrugAllergy{{no}}_8;{{disabled}}" />
         <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomDrugAllergyName{{no}};width:80;{{disabled}}" />
     </div>
+    <a href="javascript:void(0)" hidefocus="true" class="del-drug del-btn">删除此行</a>
 </div>
 {{/drug}}
 </script>
 
 <script id="tpl-form12-material" type="text/html">
 {{#other}}
-<div class="material-block block">
+<div class="material-block block" no="{{no}}">
     <div>
         <strong>过敏物质名称</strong>
         <input type="text" value="{{name}}" ui="type:TextInput;id:MaterialName{{no}};width:200;{{disabled}}" />
@@ -115,6 +117,7 @@
         <input type="checkbox" hidefocus="true" title="其他" name="material-allergy{{no}}" value="8" ui="type:CheckBox;id:MaterialAllergy{{no}}_8;{{disabled}}" />
         <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomMaterialAllergyName{{no}};width:80;{{disabled}}" />
     </div>
+    <a href="javascript:void(0)" hidefocus="true" class="del-material del-btn">删除此行</a>
 </div>
 {{/other}}
 </script>

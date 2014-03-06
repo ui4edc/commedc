@@ -99,6 +99,7 @@ h1 .btn:hover{background:#3498db}
 
 /*按钮*/
 .add-btn{background:url(images/icon-add.png) left center no-repeat; padding-left:15px}
+.del-btn{background:url(images/icon-del.png) left center no-repeat; padding-left:15px}
 
 /*esui*/
 .ui-dialog{border:2px solid #2980b9}
