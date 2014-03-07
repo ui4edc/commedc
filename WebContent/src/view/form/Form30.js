@@ -442,33 +442,39 @@ es.Views.Form30 = Backbone.View.extend({
            foodtxt: $.trim(esui.get("FoodName").getValue())
        };
        
-       var bottle = me.$(".bottle");
-       $.each(bottle, function(index, val) {
-           var no = index + 1;
-           data.bottle.push({
-               name: $.trim(esui.get("BottleName" + no).getValue()),
-               dose: $.trim(esui.get("BottleDose" + no).getValue()),
-               unit: $.trim(esui.get("BottleUnit" + no).getValue())
+       if (data.sameBottle == 1) {
+           var bottle = me.$(".bottle");
+           $.each(bottle, function(index, val) {
+               var no = index + 1;
+               data.bottle.push({
+                   name: $.trim(esui.get("BottleName" + no).getValue()),
+                   dose: $.trim(esui.get("BottleDose" + no).getValue()),
+                   unit: $.trim(esui.get("BottleUnit" + no).getValue())
+               });
            });
-       });
-       var injection = me.$(".injection");
-       $.each(injection, function(index, val) {
-           var no = index + 1;
-           data.injection.push({
-               name: $.trim(esui.get("InjectionName" + no).getValue()),
-               dose: $.trim(esui.get("InjectionDose" + no).getValue()),
-               unit: $.trim(esui.get("InjectionUnit" + no).getValue())
+       }
+       if (data.hasInjection == 1) {
+           var injection = me.$(".injection");
+           $.each(injection, function(index, val) {
+               var no = index + 1;
+               data.injection.push({
+                   name: $.trim(esui.get("InjectionName" + no).getValue()),
+                   dose: $.trim(esui.get("InjectionDose" + no).getValue()),
+                   unit: $.trim(esui.get("InjectionUnit" + no).getValue())
+               });
            });
-       });
-       var banDrug = me.$(".ban-drug");
-       $.each(banDrug, function(index, val) {
-           var no = index + 1;
-           data.banDrug.push({
-               name: $.trim(esui.get("DrugName" + no).getValue()),
-               dose: $.trim(esui.get("DrugDose" + no).getValue()),
-               unit: $.trim(esui.get("DrugUnit" + no).getValue())
+       }
+       if (data.hasBan == 1) {
+           var banDrug = me.$(".ban-drug");
+           $.each(banDrug, function(index, val) {
+               var no = index + 1;
+               data.banDrug.push({
+                   name: $.trim(esui.get("DrugName" + no).getValue()),
+                   dose: $.trim(esui.get("DrugDose" + no).getValue()),
+                   unit: $.trim(esui.get("DrugUnit" + no).getValue())
+               });
            });
-       });
+       }
        
        //验证
        var floatPattern = /^\d+(\.\d+)?$/,
@@ -477,13 +483,21 @@ es.Views.Form30 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请选择痰热清用药史"});
            return;
        }
-       if (data.history == 1 && isNaN(data.adr)) {
-           esui.Dialog.alert({title: "提示", content: "请选择是否有不良反应"});
-           return;
-       }
-       if (data.history == 1 && data.adr == 1 && data.adrtxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写不良反应表现"});
-           return;
+       if (data.history == 1) {
+           if (isNaN(data.adr)) {
+               esui.Dialog.alert({title: "提示", content: "请选择是否有不良反应"});
+               return;
+           }
+           if (data.adr == 1 && data.adrtxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写不良反应表现"});
+               return;
+           }
+           if (data.adr != 1) {
+               data.adrtxt = "";
+           }
+       } else {
+           data.adr = 0;
+           data.adrtxt = "";
        }
        if (data.batchNumber == "") {
            esui.Dialog.alert({title: "提示", content: "请填写批号"});
@@ -523,10 +537,17 @@ es.Views.Form30 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "溶媒浓度应为数字"});
                return;
            }
+       } else {
+           data.solventName = "";
+           data.solventPercent = "";
        }
-       if (!data.prepareTimeUd && !intPattern.test(data.prepareTime)) {
-           esui.Dialog.alert({title: "提示", content: "请填写配液至给药时间"});
-           return;
+       if (!data.prepareTimeUd) {
+           if (!intPattern.test(data.prepareTime)) {
+               esui.Dialog.alert({title: "提示", content: "请填写配液至给药时间"});
+               return;
+           }
+       } else {
+           data.prepareTime = "";
        }
        if (isNaN(data.location)) {
            esui.Dialog.alert({title: "提示", content: "请选择配液场所"});
@@ -549,14 +570,30 @@ es.Views.Form30 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "静脉滴注时间应为数字"});
                return;
            }
+           data.way2Speed = "";
+           data.way3Name = "";
+           data.way3Speed = "";
+           data.way3Unit = "";
        }
-       if (data.way == 2 && !intPattern.test(data.way2Speed)) {
-           esui.Dialog.alert({title: "提示", content: "请填写静脉泵入速度"});
-           return;
+       if (data.way == 2) {
+           if (!intPattern.test(data.way2Speed)) {
+               esui.Dialog.alert({title: "提示", content: "请填写静脉泵入速度"});
+               return;
+           }
+           data.way1Speed = "";
+           data.way1Time = "";
+           data.way3Name = "";
+           data.way3Speed = "";
+           data.way3Unit = "";
        }
-       if (data.way == 3 && (data.way3Name == "" || data.way3Speed == "" || data.way3Unit == "")) {
-           esui.Dialog.alert({title: "提示", content: "请填写其他途径"});
-           return;
+       if (data.way == 3) {
+           if ((data.way3Name == "" || data.way3Speed == "" || data.way3Unit == "")) {
+               esui.Dialog.alert({title: "提示", content: "请填写其他途径"});
+               return;
+           }
+           data.way1Speed = "";
+           data.way1Time = "";
+           data.way2Speed = "";
        }
        if (isNaN(data.sameBottle)) {
            esui.Dialog.alert({title: "提示", content: "请选择是否同瓶用药"});
@@ -605,6 +642,10 @@ es.Views.Form30 = Backbone.View.extend({
                    esui.Dialog.alert({title: "提示", content: "请填写间隔液"});
                    return;
                }
+               data.prevGroup = 0;
+               data.prevGroupName = "";
+               data.nextGroup = 0;
+               data.nextGroupName = "";
            } else {
                if (isNaN(data.prevGroup)) {
                    esui.Dialog.alert({title: "提示", content: "请选择上组用药"});
@@ -614,6 +655,9 @@ es.Views.Form30 = Backbone.View.extend({
                    esui.Dialog.alert({title: "提示", content: "请填写上组用药"});
                    return;
                }
+               if (data.prevGroup == 2) {
+                   data.prevGroupName = "";
+               }
                if (isNaN(data.nextGroup)) {
                    esui.Dialog.alert({title: "提示", content: "请选择下组用药"});
                    return;
@@ -622,7 +666,28 @@ es.Views.Form30 = Backbone.View.extend({
                    esui.Dialog.alert({title: "提示", content: "请填写下组用药"});
                    return;
                }
+               if (data.nextGroup == 2) {
+                   data.nextGroupName = "";
+               }
+               data.gpSolvent = 0;
+               data.gpSolvent1Dose = "";
+               data.gpSolvent2Dose = "";
+               data.gpSolvent3Name = "";
+               data.gpSolvent3Percent = "";
+               data.gpSolvent3Dose = "";
            }
+       } else {
+           data.useSolvent = 0;
+           data.gpSolvent = 0;
+           data.gpSolvent1Dose = "";
+           data.gpSolvent2Dose = "";
+           data.gpSolvent3Name = "";
+           data.gpSolvent3Percent = "";
+           data.gpSolvent3Dose = "";
+           data.prevGroup = 0;
+           data.prevGroupName = "";
+           data.nextGroup = 0;
+           data.nextGroupName = "";
        }
        if (isNaN(data.hasInjection)) {
            esui.Dialog.alert({title: "提示", content: "请选择静滴期间是否同时使用其他注射剂"});
@@ -677,6 +742,10 @@ es.Views.Form30 = Backbone.View.extend({
                    return false;
                }
            }
+       } else {
+           data.ban = 0;
+           data.banColor = "";
+           data.bantxt = "";
        }
        if (isNaN(data.hasFood)) {
            esui.Dialog.alert({title: "提示", content: "请选择静滴前后24小时内是否进食易致敏物质"});
@@ -691,6 +760,12 @@ es.Views.Form30 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "请填写其他易致敏物质"});
                return;
            }
+           if (data.food.indexOf("5") == -1) {
+               data.foodtxt = "";
+           }
+       } else {
+           data.food = "";
+           data.foodtxt = "";
        }
        
        console.log("crf/saveDrugUseInfo.do-请求", data);

@@ -45,9 +45,18 @@ es.Views.Form13 = Backbone.View.extend({
         //赋值
         var me = this;
         esui.init(document.body, {
-            GXBLevel: GXB_LEVEL,
-            GXYLevel: GXY_LEVEL,
-            TNBType: TNB_Type
+            GXBLevel: {
+                datasource: GXB_LEVEL.datasource,
+                value: data.gxb
+            },
+            GXYLevel: {
+                datasource: GXY_LEVEL.datasource,
+                value: data.gxy
+            },
+            TNBType: {
+                datasource: TNB_Type.datasource,
+                value: data.tnb
+            }
         });
         switch (data.hasDisease) {
             case 1: esui.get("Disease1").setChecked(true); this.$(".disease").show(); break;
@@ -64,7 +73,6 @@ es.Views.Form13 = Backbone.View.extend({
                 esui.get("DiseaseType" + val).setChecked(true);
                 if (val == "7") {
                     me.$("#ctrlselectTNBType").show();
-                    esui.get("TNBType").setValue(data.tnb);
                 }
             });
         }
@@ -74,11 +82,9 @@ es.Views.Form13 = Backbone.View.extend({
                 if (val == "1") {
                     me.$(".heart").show();
                     me.$("#ctrlselectGXBLevel").show();
-                    esui.get("GXBLevel").setValue(data.gxb);
                 }
                 if (val == "2") {
                     me.$("#ctrlselectGXYLevel").show();
-                    esui.get("GXYLevel").setValue(data.gxy);
                 }
             });
         }
@@ -138,6 +144,7 @@ es.Views.Form13 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
+           
            hasDisease: parseInt(esui.get("Disease1").getGroup().getValue(), 10),
            hasAllergy: parseInt(esui.get("ADisease1").getGroup().getValue(), 10),
            disease: esui.get("DiseaseType1").getGroup().getValue(),
@@ -164,17 +171,29 @@ es.Views.Form13 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "请选择冠心病心功能分级"});
                return;
            }
+           if (data.disease1.indexOf("1") == -1) {
+               data.gxb = 0;
+           }
            if (data.disease1.indexOf("2") != -1 && data.gxy == 0) {
                esui.Dialog.alert({title: "提示", content: "请选择高血压分级"});
                return;
+           }
+           if (data.disease1.indexOf("2") == -1) {
+               data.gxy = 0;
+           }
+           if (data.disease.indexOf("7") != -1 && data.tnb == 0) {
+               esui.Dialog.alert({title: "提示", content: "请选择糖尿病类型"});
+               return;
+           }
+           if (data.disease.indexOf("7") == -1) {
+               data.tnb = 0;
            }
            if (data.disease.indexOf("8") != -1 && data.diseasetxt == "") {
                esui.Dialog.alert({title: "提示", content: "请填写其他常见疾病"});
                return;
            }
-           if (data.disease.indexOf("7") != -1 && data.tnb == 0) {
-               esui.Dialog.alert({title: "提示", content: "请选择糖尿病类型"});
-               return;
+           if (data.disease.indexOf("8") == -1) {
+               data.diseasetxt = "";
            }
        }
        if (isNaN(data.hasAllergy)) {
@@ -188,6 +207,9 @@ es.Views.Form13 = Backbone.View.extend({
            if (data.allergy.indexOf("6") != -1 && data.allergytxt == "") {
                esui.Dialog.alert({title: "提示", content: "请填写其他过敏性疾病史"});
                return;
+           }
+           if (data.allergy.indexOf("6") == -1) {
+               data.allergytxt = "";
            }
        }
        

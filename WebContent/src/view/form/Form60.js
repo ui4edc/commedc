@@ -59,6 +59,7 @@ es.Views.Form60 = Backbone.View.extend({
         
         //赋值
         switch (data.ending) {
+            case 1: esui.get("Ending1").setChecked(true); break;
             case 2: esui.get("Ending2").setChecked(true); break;
             case 3: esui.get("Ending3").setChecked(true); break;
             case 4: esui.get("Ending4").setChecked(true); break;
@@ -66,15 +67,17 @@ es.Views.Form60 = Backbone.View.extend({
             case 6: esui.get("Ending6").setChecked(true); break;
             case 7: esui.get("Ending7").setChecked(true);
         }
-        if (data.adr == 1) {
-            esui.get("ADR1").setChecked(true);
+        switch (data.adr) {
+            case 1: esui.get("ADR1").setChecked(true); break;
+            case 2: esui.get("ADR2").setChecked(true);
         }
-        if (data.unreasonable == 1) {
-            esui.get("Unreasonable1").setChecked(true);
+        switch (data.unreasonable) {
+            case 1: esui.get("Unreasonable1").setChecked(true); break;
+            case 2: esui.get("Unreasonable2").setChecked(true);
         }
-        if (data.intervention == 1) {
-            esui.get("Intervention1").setChecked(true);
-            this.$(".intervention").show();
+        switch (data.intervention) {
+            case 1: esui.get("Intervention1").setChecked(true); this.$(".intervention").show(); break;
+            case 2: esui.get("Intervention2").setChecked(true);
         }
         
         //事件
@@ -118,6 +121,7 @@ es.Views.Form60 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
+           
            startDate: esui.get("StartDate").getValue(),
            endDate: esui.get("EndDate").getValue(),
            ending: parseInt(esui.get("Ending1").getGroup().getValue(), 10),
@@ -140,13 +144,34 @@ es.Views.Form60 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "首次用药时间不能晚于末次用药时间"});
            return;
        }
-       if (data.ending == 5 && data.deathReason == "") {
+       if (isNaN(data.ending)) {
+           esui.Dialog.alert({title: "提示", content: "请选择痰热清注射液用药结局"});
+           return;
+       }
+       if (data.ending != 5) {
+           data.deathDate = null;
+           data.deathReason = "";
+       } else if (data.deathReason == "") {
            esui.Dialog.alert({title: "提示", content: "请填写直接死因"});
+           return;
+       }
+       if (isNaN(data.adr)) {
+           esui.Dialog.alert({title: "提示", content: "请选择是否出现ADE"});
+           return;
+       }
+       if (isNaN(data.unreasonable)) {
+           esui.Dialog.alert({title: "提示", content: "请选择有无痰热清注射液用药不合理的现象"});
+           return;
+       }
+       if (isNaN(data.intervention)) {
+           esui.Dialog.alert({title: "提示", content: "请选择药师是否进行相关干预"});
            return;
        }
        if (data.intervention == 1 && data.interventiontxt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写药师如何进行干预"});
            return;
+       } else {
+           data.interventiontxt = "";
        }
        var floatPattern = /^\d+(\.\d+)?$/;
        if (data.treatmentCost != "" && !floatPattern.test(data.treatmentCost)) {

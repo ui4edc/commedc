@@ -100,6 +100,7 @@ es.Views.Form20 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
+           
            disease1: esui.get("Disease1_1").getGroup().getValue(),
            fy: parseInt(esui.get("Fy1").getGroup().getValue(), 10),
            disease2: esui.get("Disease2_1").getGroup().getValue(),
@@ -123,6 +124,9 @@ es.Views.Form20 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请选择肺炎类型"});
            return;
        }
+       if (data.disease1.indexOf("4") == -1) {
+           data.fy = 0;
+       }
        if (data.diagnosis == "") {
            esui.Dialog.alert({title: "提示", content: "请填写第一诊断"});
            return;
@@ -134,6 +138,9 @@ es.Views.Form20 = Backbone.View.extend({
        if (data.zy == 6 && data.zytxt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写中医诊断"});
            return;
+       }
+       if (data.zy != 6) {
+           data.zytxt = "";
        }
        
        console.log("crf/saveDeseaseInfo.do-请求", data);

@@ -59,6 +59,10 @@ es.Views.Form12 = Backbone.View.extend({
             }));
             me.otherCount = data.data.other.length;
             
+            me.$(".del-food:first").remove();
+            me.$(".del-drug:first").remove();
+            me.$(".del-material:first").remove();
+            
             me.initCtrl(data.data);
         });
     },
@@ -188,6 +192,7 @@ es.Views.Form12 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
+           
            smoke: parseInt(esui.get("Smoke1").getGroup().getValue(), 10),
            drink: parseInt(esui.get("Drink1").getGroup().getValue(), 10),
            hasFood: parseInt(esui.get("Food1").getGroup().getValue(), 10),
@@ -262,6 +267,9 @@ es.Views.Form12 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他食物过敏表现"});
                return false;
            }
+           if (item.value.indexOf("8") == -1) {
+               item.txt = "";
+           }
        }
        if (isNaN(data.hasDrug)) {
            esui.Dialog.alert({title: "提示", content: "请选择药物过敏史"});
@@ -285,6 +293,9 @@ es.Views.Form12 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他药物过敏表现"});
                return false;
            }
+           if (item.value.indexOf("8") == -1) {
+               item.txt = "";
+           }
        }
        if (isNaN(data.hasOther)) {
            esui.Dialog.alert({title: "提示", content: "请选择其他物质过敏史"});
@@ -303,6 +314,9 @@ es.Views.Form12 = Backbone.View.extend({
            if (item.value.indexOf("8") != -1 && item.txt == "") {
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个其他物质过敏表现"});
                return false;
+           }
+           if (item.value.indexOf("8") == -1) {
+               item.txt = "";
            }
        }
        

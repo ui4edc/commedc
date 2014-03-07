@@ -357,7 +357,9 @@ es.Views.List = Backbone.View.extend({
      */
     openNewCRF: function() {
         esui.get("NewAbbr").setValue("");
-        $("#CrfError").empty();
+        $("#ctrltextNewAbbr").next().empty();
+        esui.get("NewNo").setValue("");
+        $("#ctrltextNewNo").next().empty();
         esui.get("NewCRFDialog").show();
     },
     
@@ -366,16 +368,27 @@ es.Views.List = Backbone.View.extend({
      */
     newCRF: function() {
         var data = {
-            abbr: $.trim(esui.get("NewAbbr").getValue())
+            abbr: $.trim(esui.get("NewAbbr").getValue()),
+            no: $.trim(esui.get("NewNo").getValue())
         };
         
         //验证
+        var error1 = $("#ctrltextNewAbbr").next().empty(),
+            error2 = $("#ctrltextNewNo").next().empty();
         if (data.abbr === "") {
-            $("#CrfError").html("请填写患者姓名缩写");
+            error1.html("请填写患者姓名缩写");
             return;
         }
         if (!/^[a-z]+$/i.test(data.abbr)) {
-            $("#CrfError").html("患者姓名缩写必须为字母");
+            error1.html("必须为字母");
+            return;
+        }
+        if (data.no === "") {
+            error2.html("请填写观察表编号");
+            return;
+        }
+        if (!/^\d{3}-\d{4}$/.test(data.no)) {
+            error2.html("格式应为：xxx-xxxx");
             return;
         }
         

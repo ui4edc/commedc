@@ -153,25 +153,31 @@ es.Views.Form70 = Backbone.View.extend({
         table2.render();
         
         switch (data.type) {
+            case 1: esui.get("Type1").setChecked(true); break;
             case 2: esui.get("Type2").setChecked(true); break;
             case 3: esui.get("Type3").setChecked(true); break;
             case 4: esui.get("Type4").setChecked(true);
         }
-        if (data.blood == 2) {
-            esui.get("Blood2").setChecked(true);
+        switch (data.blood) {
+            case 1: esui.get("Blood1").setChecked(true); break;
+            case 2: esui.get("Blood2").setChecked(true);
         }
-        if (data.sex == 2) {
-            esui.get("Female").setChecked(true);
+        switch (data.sex) {
+            case 1: esui.get("Male").setChecked(true); break;
+            case 2: esui.get("Female").setChecked(true);
         }
         switch (data.historyadr) {
             case 1: esui.get("HisADR1").setChecked(true); break;
+            case 2: esui.get("HisADR2").setChecked(true); break;
             case 3: esui.get("HisADR3").setChecked(true);
         }
         switch (data.familyadr) {
             case 1: esui.get("FamilyADR1").setChecked(true); this.$(".relationship").show(); break;
+            case 2: esui.get("FamilyADR2").setChecked(true); break;
             case 3: esui.get("FamilyADR3").setChecked(true);
         }
         switch (data.relationship) {
+            case 1: esui.get("Relationship1").setChecked(true); break;
             case 2: esui.get("Relationship2").setChecked(true); break;
             case 3: esui.get("Relationship3").setChecked(true); break;
             case 4: esui.get("Relationship4").setChecked(true);
@@ -237,17 +243,20 @@ es.Views.Form70 = Backbone.View.extend({
             });
         }
         switch (data.adrDeal) {
+            case 1: esui.get("Deal1").setChecked(true); break;
             case 2: esui.get("Deal2").setChecked(true); break;
             case 3: esui.get("Deal3").setChecked(true); break;
             case 4: esui.get("Deal4").setChecked(true);
         }
         switch (data.adrDeal3) {
+            case 1: esui.get("Deal3_1").setChecked(true); break;
             case 2: esui.get("Deal3_2").setChecked(true); break;
             case 3: esui.get("Deal3_3").setChecked(true); break;
             case 4: esui.get("Deal3_4").setChecked(true); break;
             case 5: esui.get("Deal3_5").setChecked(true);
         }
         switch (data.ending) {
+            case 1: esui.get("Ending1").setChecked(true); break;
             case 2: esui.get("Ending2").setChecked(true); break;
             case 3: esui.get("Ending3").setChecked(true); break;
             case 4: esui.get("Ending4").setChecked(true); break;
@@ -255,16 +264,19 @@ es.Views.Form70 = Backbone.View.extend({
             case 6: esui.get("Ending6").setChecked(true); this.$(".death").show();
         }
         switch (data.adrStop) {
+            case 1: esui.get("Stop1").setChecked(true); break;
             case 2: esui.get("Stop2").setChecked(true); break;
             case 3: esui.get("Stop3").setChecked(true); break;
             case 4: esui.get("Stop4").setChecked(true);
         }
         switch (data.adrRestart) {
+            case 1: esui.get("Restart1").setChecked(true); break;
             case 2: esui.get("Restart2").setChecked(true); break;
             case 3: esui.get("Restart3").setChecked(true); break;
             case 4: esui.get("Restart4").setChecked(true);
         }
         switch (data.evaluate) {
+            case 1: esui.get("Evaluate1").setChecked(true); break;
             case 2: esui.get("Evaluate2").setChecked(true); break;
             case 3: esui.get("Evaluate3").setChecked(true); break;
             case 4: esui.get("Evaluate4").setChecked(true); break;
@@ -272,6 +284,7 @@ es.Views.Form70 = Backbone.View.extend({
             case 6: esui.get("Evaluate6").setChecked(true);
         }
         switch (data.career) {
+            case 1: esui.get("Career1").setChecked(true); break;
             case 2: esui.get("Career2").setChecked(true); break;
             case 3: esui.get("Career3").setChecked(true); break;
             case 4: esui.get("Career4").setChecked(true);
@@ -361,6 +374,7 @@ es.Views.Form70 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
+           
            type: parseInt(esui.get("Type1").getGroup().getValue(), 10),
            blood: parseInt(esui.get("Blood1").getGroup().getValue(), 10),
            name: $.trim(esui.get("Name").getValue()),
@@ -420,8 +434,20 @@ es.Views.Form70 = Backbone.View.extend({
        //验证
        var floatPattern = /^\d+(\.\d+)?$/,
            intPattern = /^\d+$/;
+       if (isNaN(data.type)) {
+           esui.Dialog.alert({title: "提示", content: "请选择报告类型"});
+           return;
+       }
+       if (isNaN(data.blood)) {
+           esui.Dialog.alert({title: "提示", content: "请选择该患者是否采血"});
+           return;
+       }
        if (data.name == "") {
            esui.Dialog.alert({title: "提示", content: "请填写患者姓名"});
+           return;
+       }
+       if (isNaN(data.sex)) {
+           esui.Dialog.alert({title: "提示", content: "请选择性别"});
            return;
        }
        if (data.ethic == 0) {
@@ -448,13 +474,34 @@ es.Views.Form70 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请填写病历号/门诊号"});
            return;
        }
-       if (data.historyadr == 1 && data.historyadrtxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写既往药品不良反应/事件"});
+       if (isNaN(data.historyadr)) {
+           esui.Dialog.alert({title: "提示", content: "请选择既往药品不良反应/事件"});
            return;
        }
-       if (data.familyadr == 1 && data.familyadrtxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写家族药品不良反应/事件"});
+       if (data.historyadr == 1) {
+           if (data.historyadrtxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写既往药品不良反应/事件"});
+               return;
+           }
+       } else {
+           data.historyadrtxt = "";
+       }
+       if (isNaN(data.familyadr)) {
+           esui.Dialog.alert({title: "提示", content: "请选择家族药品不良反应/事件"});
            return;
+       }
+       if (data.familyadr == 1) {
+           if (data.familyadrtxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写家族药品不良反应/事件"});
+               return;
+           }
+           if (isNaN(data.relationship)) {
+               esui.Dialog.alert({title: "提示", content: "请选择关系"});
+               return;
+           }
+       } else {
+           data.familyadrtxt = "";
+           data.relationship = 0;
        }
        if (data.info == "") {
            esui.Dialog.alert({title: "提示", content: "请选择相关重要信息"});
@@ -464,9 +511,15 @@ es.Views.Form70 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请填写过敏史"});
            return;
        }
+       if (data.info.indexOf("6") == -1) {
+           data.info6txt = "";
+       }
        if (data.info.indexOf("7") != -1 && data.info7txt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写其他相关重要信息"});
            return;
+       }
+       if (data.info.indexOf("7") == -1) {
+           data.info7txt = "";
        }
        if (data.adr == "") {
            esui.Dialog.alert({title: "提示", content: "请选择不良反应/事件名称"});
@@ -475,6 +528,9 @@ es.Views.Form70 = Backbone.View.extend({
        if (data.adr.indexOf("11") != -1 && data.adrtxt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写其他不良反应/事件名称"});
            return;
+       }
+       if (data.adr.indexOf("11") == -1) {
+           data.adrtxt = "";
        }
        if (!intPattern.test(data.adrH) || parseInt(data.adrH) > 24
         || !intPattern.test(data.adrM) || parseInt(data.adrM) > 60) {
@@ -485,29 +541,92 @@ es.Views.Form70 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请填写不良反应/事件过程描述"});
            return;
        }
-       if (data.adrDeal == 2 && !intPattern.test(data.adrDealDose)) {
-           esui.Dialog.alert({title: "提示", content: "请填写减少剂量"});
+       if (isNaN(data.adrDeal)) {
+           esui.Dialog.alert({title: "提示", content: "请选择不良反应/事件处理情况"});
            return;
        }
-       if (data.adrDeal == 3 && data.adrDeal3 == 5 && data.adrDeal3txt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写其他对症支持治疗"});
+       if (data.adrDeal == 1) {
+           data.adrDeal3 = 0;
+           data.adrDealDose = "";
+           data.adrDeal3txt = "";
+           data.adrDeal4txt = "";
+       }
+       if (data.adrDeal == 2) {
+           if (!intPattern.test(data.adrDealDose)) {
+               esui.Dialog.alert({title: "提示", content: "请填写减少剂量"});
+               return;
+           }
+           data.adrDeal3 = 0;
+           data.adrDeal3txt = "";
+           data.adrDeal4txt = "";
+       }
+       if (data.adrDeal == 3) {
+           if (isNaN(data.adrDeal3)) {
+               esui.Dialog.alert({title: "提示", content: "请选择对症支持治疗"});
+               return;
+           }
+           if (data.adrDeal3 == 5 && data.adrDeal3txt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写其他对症支持治疗"});
+               return;
+           }
+           data.adrDealDose = "";
+           data.adrDeal4txt = "";
+       }
+       if (data.adrDeal == 4) {
+           if (data.adrDeal4txt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写其他不良反应/事件处理情况"});
+               return;
+           }
+           data.adrDeal3 = 0;
+           data.adrDealDose = "";
+           data.adrDeal3txt = "";
+       }
+       if (isNaN(data.ending)) {
+           esui.Dialog.alert({title: "提示", content: "请选择不良反应/事件的结果"});
            return;
        }
-       if (data.adrDeal == 4 && data.adrDeal4txt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写其他不良反应/事件处理情况"});
+       if (data.ending != 5 && data.ending != 6) {
+           data.endingtxt = "";
+           data.deathReason = "";
+           data.deathDate = null;
+       }
+       if (data.ending == 5) {
+           if (data.endingtxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写后遗症表现"});
+               return;
+           }
+           data.deathReason = "";
+           data.deathDate = null;
+       }
+       if (data.ending == 6) {
+           if (data.deathReason == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写直接死因"});
+               return;
+           }
+           data.endingtxt = "";
+       }
+       if (isNaN(data.adrStop)) {
+           esui.Dialog.alert({title: "提示", content: "请选择停药或减量后，反应/事件是否消失或减轻"});
            return;
        }
-       if (data.ending == 5 && data.endingtxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写后遗症表现"});
+       if (isNaN(data.adrRestart)) {
+           esui.Dialog.alert({title: "提示", content: "请选择再次使用可疑药品后是否再次出现同样反应/事件"});
            return;
        }
-       if (data.ending == 6 && data.deathReason == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写直接死因"});
+       if (isNaN(data.evaluate)) {
+           esui.Dialog.alert({title: "提示", content: "请选择报告人评价"});
+           return;
+       }
+       if (isNaN(data.career)) {
+           esui.Dialog.alert({title: "提示", content: "请选择职业"});
            return;
        }
        if (data.career == 4 && data.careertxt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写其他职业"});
            return;
+       }
+       if (data.career != 4) {
+           data.careertxt = "";
        }
        if (data.email == "") {
            esui.Dialog.alert({title: "提示", content: "请填写电子邮箱"});

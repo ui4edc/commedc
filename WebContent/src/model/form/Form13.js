@@ -14,9 +14,9 @@ es.Models.Form13 = Backbone.Model.extend({
 			disease1: "",
 			disease2: "",
 			diseasetxt: null,
-			gxb: 1,
-			gxy: 1,
-			tnb: 1,
+			gxb: 0,
+			gxy: 0,
+			tnb: 0,
 			allergy: "",
 			allergytxt: null
 		}

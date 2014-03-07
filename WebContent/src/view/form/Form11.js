@@ -129,6 +129,7 @@ es.Views.Form11 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
+           
            birthday: esui.get("Birthday").getValue(),
            age: parseInt(esui.get("Age").getValue(), 10),
            ethic: esui.get("Nation").value,
@@ -158,6 +159,9 @@ es.Views.Form11 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请选择女性所处时期"});
            return;
        }
+       if (data.sex == 1) {
+           data.hys = 0;
+       }
        var weight = data.weight,
            height = data.height,
            floatPattern = /^\d+(\.\d+)?$/;
@@ -172,6 +176,8 @@ es.Views.Form11 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "体重范围不正确"});
                return;
            }
+       } else {
+           data.weight = "";
        }
        if (!data.heightud) {
            if (height == "") {
@@ -184,6 +190,8 @@ es.Views.Form11 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "身高范围不正确"});
                return;
            }
+       } else {
+           data.height = "";
        }
        var indate = T.date.parse(data.indate).getTime(),
            outdate = T.date.parse(data.outdate).getTime();
@@ -198,12 +206,18 @@ es.Views.Form11 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请填写其他用药科室"});
            return;
        }
+       if (data.yyks != 6) {
+           data.yykstxt = "";
+       }
        if (isNaN(data.feemode)) {
            esui.Dialog.alert({title: "提示", content: "请选择医疗费用方式"});
            return;
        } else if (data.feemode == 5 && data.feemodetxt == "") {
            esui.Dialog.alert({title: "提示", content: "请填写医疗费用方式"});
            return;
+       }
+       if (data.feemode != 5) {
+           data.feemodetxt = "";
        }
        
        console.log("crf/saveBasicInfo.do-请求", data);
