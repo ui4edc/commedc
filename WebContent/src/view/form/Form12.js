@@ -45,23 +45,28 @@ es.Views.Form12 = Backbone.View.extend({
             });
             me.$(".food").prepend($.Mustache.render("tpl-form12-food", {
                 food: data.data.food,
-                disabled: disabled
+                disabled: disabled,
+                save: es.main.editable ? [1] : []
             }));
             me.foodCount = data.data.food.length;
             me.$(".drug").prepend($.Mustache.render("tpl-form12-drug", {
                 drug: data.data.drug,
-                disabled: disabled
+                disabled: disabled,
+                save: es.main.editable ? [1] : []
             }));
             me.drugCount = data.data.drug.length;
             me.$(".material").prepend($.Mustache.render("tpl-form12-material", {
                 other: data.data.other,
-                disabled: disabled
+                disabled: disabled,
+                save: es.main.editable ? [1] : []
             }));
             me.otherCount = data.data.other.length;
             
-            me.$(".del-food:first").remove();
-            me.$(".del-drug:first").remove();
-            me.$(".del-material:first").remove();
+            if (es.main.editable) {
+                me.$(".del-food:first").remove();
+                me.$(".del-drug:first").remove();
+                me.$(".del-material:first").remove();
+            }
             
             me.initCtrl(data.data);
         });
@@ -147,7 +152,29 @@ es.Views.Form12 = Backbone.View.extend({
     addFood: function(e) {
         $(e.target).parent().before($.Mustache.render("tpl-form12-food", {
             food: [{no: ++this.foodCount}],
-            disabled: ""
+            disabled: "",
+            save: [1]
+        }));
+        esui.init();
+    },
+    
+    addDrug: function(e) {
+        var no = ++this.drugCount;
+        $(e.target).parent().before($.Mustache.render("tpl-form12-drug", {
+            drug: [{no: no}],
+            disabled: "",
+            save: [1]
+        }));
+        var option = {};
+        option["DrugType" + no] = DRUG_TYPE;
+        esui.init(this.el, option);
+    },
+    
+    addMaterial: function(e) {
+        $(e.target).parent().before($.Mustache.render("tpl-form12-material", {
+            other: [{no: ++this.otherCount}],
+            disabled: "",
+            save: [1]
         }));
         esui.init();
     },
@@ -165,25 +192,6 @@ es.Views.Form12 = Backbone.View.extend({
     
     delMaterial: function(e) {
         $(e.target).parent().remove();
-    },
-    
-    addDrug: function(e) {
-        var no =  ++this.drugCount;
-        $(e.target).parent().before($.Mustache.render("tpl-form12-drug", {
-            drug: [{no: no}],
-            disabled: ""
-        }));
-        var option = {};
-        option["DrugType" + no] = DRUG_TYPE;
-        esui.init(this.el, option);
-    },
-    
-    addMaterial: function(e) {
-        $(e.target).parent().before($.Mustache.render("tpl-form12-material", {
-            other: [{no: ++this.otherCount}],
-            disabled: ""
-        }));
-        esui.init();
     },
     
     save: function() {
@@ -217,8 +225,7 @@ es.Views.Form12 = Backbone.View.extend({
        if (data.hasDrug == 1) {
            var drug = me.$(".drug-block");
            $.each(drug, function(index, val) {
-               var item = {},
-                   no = index + 1;
+               var no = $(val).attr("no");
                data.drug.push({
                    name: $.trim(esui.get("DrugName" + no).getValue()),
                    value: esui.get("DrugAllergy" + no + "_1").getGroup().getValue(),
@@ -230,8 +237,7 @@ es.Views.Form12 = Backbone.View.extend({
        if (data.hasOther == 1) {
            var material = me.$(".material-block");
            $.each(material, function(index, val) {
-               var item = {},
-                   no = index + 1;
+               var no = $(val).attr("no");
                data.other.push({
                    name: $.trim(esui.get("MaterialName" + no).getValue()),
                    value: esui.get("MaterialAllergy" + no + "_1").getGroup().getValue(),

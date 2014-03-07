@@ -70,7 +70,7 @@
         <input type="checkbox" hidefocus="true" title="其他" name="food-allergy{{no}}" value="8" ui="type:CheckBox;id:FoodAllergy{{no}}_8;{{disabled}}" />
         <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomFoodAllergyName{{no}};width:80;{{disabled}}" />
     </div>
-    <a href="javascript:void(0)" hidefocus="true" class="del-food del-btn">删除此行</a>
+    {{#save}}<a href="javascript:void(0)" hidefocus="true" class="del-food del-btn">删除此行</a>{{/save}}
 </div>
 {{/food}}
 </script>
@@ -95,7 +95,7 @@
         <input type="checkbox" hidefocus="true" title="其他" name="drug-allergy{{no}}" value="8" ui="type:CheckBox;id:DrugAllergy{{no}}_8;{{disabled}}" />
         <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomDrugAllergyName{{no}};width:80;{{disabled}}" />
     </div>
-    <a href="javascript:void(0)" hidefocus="true" class="del-drug del-btn">删除此行</a>
+    {{#save}}<a href="javascript:void(0)" hidefocus="true" class="del-drug del-btn">删除此行</a>{{/save}}
 </div>
 {{/drug}}
 </script>
@@ -117,7 +117,7 @@
         <input type="checkbox" hidefocus="true" title="其他" name="material-allergy{{no}}" value="8" ui="type:CheckBox;id:MaterialAllergy{{no}}_8;{{disabled}}" />
         <input type="text" value="{{txt}}" ui="type:TextInput;id:CustomMaterialAllergyName{{no}};width:80;{{disabled}}" />
     </div>
-    <a href="javascript:void(0)" hidefocus="true" class="del-material del-btn">删除此行</a>
+    {{#save}}<a href="javascript:void(0)" hidefocus="true" class="del-material del-btn">删除此行</a>{{/save}}
 </div>
 {{/other}}
 </script>

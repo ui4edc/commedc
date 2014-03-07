@@ -8,11 +8,12 @@ es.Models.Form40 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
+            hasDrug: 1,
 			drug: [{
-			    id: null,
+			    id: "",
 				name: "",
-				start: "",
-				end: "",
+				start: "2014-01-01",
+				end: "2014-01-01",
 				dose: "",
 				unit: "",
 				way: "",
@@ -35,6 +36,9 @@ es.Models.Form40 = Backbone.Model.extend({
                 if (response.data == null) {
                     response.data = me.get("def");
                 }
+                $.each(response.data.drug, function(index, val) {
+                    val.no = index + 1;
+                });
                 me.set({data: response});
             },
             mock: MOCK,
