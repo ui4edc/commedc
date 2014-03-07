@@ -140,6 +140,7 @@ es.Views.Form40 = Backbone.View.extend({
            $.each(drug, function(index, val) {
                var no = $(val).attr("no");
                data.drug.push({
+                   id: $(val).attr("id"),
                    name: $.trim(esui.get("Name" + no).getValue()),
                    start: esui.get("Start" + no).getValue(),
                    end: esui.get("End" + no).getValue(),

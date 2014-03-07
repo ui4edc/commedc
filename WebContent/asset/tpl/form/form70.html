@@ -79,17 +79,17 @@
     <input type="text" value="{{data.infotxt2}}" ui="type:TextInput;id:Info7Name;width:100;{{disabled}}" />
 </div>
 <div class="row"><span class="label">怀疑药品</span></div>
-<div ui="type:Table;id:Drug1;editable:1"></div>
+<div class="doubt"></div>
 {{#save}}
 <div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add1 add-btn">添加一行</a>
+    <a href="javascript:void(0)" hidefocus="true" class="add-doubt add-btn">添加一行</a>
 </div>
 {{/save}}
 <div class="row"><span class="label">并用药品</span></div>
-<div ui="type:Table;id:Drug2;editable:1"></div>
+<div class="merge"></div>
 {{#save}}
 <div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add2 add-btn">添加一行</a>
+    <a href="javascript:void(0)" hidefocus="true" class="add-merge add-btn">添加一行</a>
 </div>
 {{/save}}
 <div class="row">
@@ -278,4 +278,96 @@
     <div ui="type:Button;id:Save;skin:largeem">保 存</div>
 </div>
 {{/save}}
+</script>
+
+<script id="tpl-form70-doubt" type="text/html">
+{{#drug1}}
+<div class="doubt-block block" no="{{no}}">
+<div class="row sub">
+    <span class="label">批准文号</span>
+    <input type="text" value="{{f1}}" ui="type:TextInput;id:DoubtF1{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">商品名称</span>
+    <input type="text" value="{{f2}}" ui="type:TextInput;id:DoubtF2{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">通用名称</span>
+    <input type="text" value="{{f3}}" ui="type:TextInput;id:DoubtF3{{no}};width:182;{{disabled}}" />
+    <span>（含剂型）</span>
+</div>
+<div class="row sub">
+    <span class="label">生产厂家</span>
+    <input type="text" value="{{f4}}" ui="type:TextInput;id:DoubtF4{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">生产批号</span>
+    <input type="text" value="{{f5}}" ui="type:TextInput;id:DoubtF5{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">用法用量</span>
+    <input type="text" value="{{f6}}" ui="type:TextInput;id:DoubtF6{{no}};width:182;{{disabled}}" />
+    <span>（次剂量、途径、日次数）</span>
+</div>
+<div class="row sub">
+    <span class="label">用药起止时间</span>
+    <input type="text" value="{{f7}}" ui="type:TextInput;id:DoubtF7{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">用药原因</span>
+    <input type="text" value="{{f8}}" ui="type:TextInput;id:DoubtF8{{no}};width:182;{{disabled}}" />
+</div>
+{{#save}}
+<div class="row sub">
+    <a href="javascript:void(0)" hidefocus="true" class="del-doubt del-btn">删除此行</a>
+</div>
+{{/save}}
+</div>
+{{/drug1}}
+</script>
+
+<script id="tpl-form70-merge" type="text/html">
+{{#drug2}}
+<div class="merge-block block" no="{{no}}">
+<div class="row sub">
+    <span class="label">批准文号</span>
+    <input type="text" value="{{f1}}" ui="type:TextInput;id:MergeF1{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">商品名称</span>
+    <input type="text" value="{{f2}}" ui="type:TextInput;id:MergeF2{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">通用名称</span>
+    <input type="text" value="{{f3}}" ui="type:TextInput;id:MergeF3{{no}};width:182;{{disabled}}" />
+    <span>（含剂型）</span>
+</div>
+<div class="row sub">
+    <span class="label">生产厂家</span>
+    <input type="text" value="{{f4}}" ui="type:TextInput;id:MergeF4{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">生产批号</span>
+    <input type="text" value="{{f5}}" ui="type:TextInput;id:MergeF5{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">用法用量</span>
+    <input type="text" value="{{f6}}" ui="type:TextInput;id:MergeF6{{no}};width:182;{{disabled}}" />
+    <span>（次剂量、途径、日次数）</span>
+</div>
+<div class="row sub">
+    <span class="label">用药起止时间</span>
+    <input type="text" value="{{f7}}" ui="type:TextInput;id:MergeF7{{no}};width:182;{{disabled}}" />
+</div>
+<div class="row sub">
+    <span class="label">用药原因</span>
+    <input type="text" value="{{f8}}" ui="type:TextInput;id:MergeF8{{no}};width:182;{{disabled}}" />
+</div>
+{{#save}}
+<div class="row sub">
+    <a href="javascript:void(0)" hidefocus="true" class="del-merge del-btn">删除此行</a>
+</div>
+{{/save}}
+</div>
+{{/drug2}}
 </script>

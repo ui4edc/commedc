@@ -8,8 +8,8 @@ es.Views.Form70 = Backbone.View.extend({
     el: ".crf-form",
     
     events: {
-        "click .add1": "addRow1",
-        "click .add2": "addRow2"
+        "click .add-doubt": "addDoubt",
+        "click .add-merge": "addMerge"
     },
     
     initialize: function() {
@@ -18,8 +18,7 @@ es.Views.Form70 = Backbone.View.extend({
     },
     
     destroy: function() {
-        $("body").undelegate(".ui-table-editor input", "focus");
-        $(".ui-table-editor input").autocomplete("destroy");
+        this.$(".sug").autocomplete("destroy");
         esui.dispose();
         this.model.unbind();
         this.$el.unbind();
@@ -35,11 +34,33 @@ es.Views.Form70 = Backbone.View.extend({
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form70.html").done(function() {
+            var disabled = es.main.editable ? "" : "disabled:true";
+            
             me.$el.mustache("tpl-form70", {
                 data: data.data,
-                disabled: es.main.editable ? "" : "disabled:true",
+                disabled: disabled,
                 save: es.main.editable ? [1] : []
             });
+            
+            me.$(".doubt").append($.Mustache.render("tpl-form70-doubt", {
+                drug1: data.data.drug1,
+                disabled: disabled,
+                save: es.main.editable ? [1] : []
+            }));
+            me.doubtCount = data.data.drug1.length;
+            
+            me.$(".merge").append($.Mustache.render("tpl-form70-merge", {
+                drug2: data.data.drug2,
+                disabled: disabled,
+                save: es.main.editable ? [1] : []
+            }));
+            me.mergeCount = data.data.drug2.length;
+            
+            if (es.main.editable) {
+                me.$(".del-doubt:first").parent().remove();
+                me.$(".del-merge:first").parent().remove();
+            }
+            
             me.initCtrl(data.data);
         });
     },
@@ -68,89 +89,6 @@ es.Views.Form70 = Backbone.View.extend({
                 value: data.reportDate
             }
         });
-        
-        var editable = es.main.editable;
-        
-        var table1 = esui.get("Drug1"),
-            table2 = esui.get("Drug2");;
-        table1.datasource = data.drug1;
-        table2.datasource = data.drug2;
-        table1.fields = table2.fields = [
-            {
-                field: "f1",
-                title: "批准文号",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "商品名称",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "通用名称<br>（含剂型）",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f3;}
-            },
-            {
-                field: "f4",
-                title: "生产厂家",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f4;}
-            },
-            {
-                field: "f5",
-                title: "生产批号",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f5;}
-            },
-            {
-                field: "f6",
-                title: "用法用量<br>（次剂量、途径、日次数）",
-                editable: editable,
-                edittype: "string",
-                width: 170,
-                stable: true,
-                content: function(item) {return item.f6;}
-            },
-            {
-                field: "f7",
-                title: "用药<br>起止时间",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f7;}
-            },
-            {
-                field: "f8",
-                title: "用药原因",
-                editable: editable,
-                edittype: "string",
-                width: 75,
-                stable: true,
-                content: function(item) {return item.f8;}
-            }
-        ];
-        table1.render();
-        table2.render();
         
         switch (data.type) {
             case 1: esui.get("Type1").setChecked(true); break;
@@ -292,40 +230,6 @@ es.Views.Form70 = Backbone.View.extend({
         
         //事件
         var me = this;
-        
-        //自动提示
-        $("body").delegate(".ui-table-editor input", "focus", function(e) {
-            var index = esui.get(esui.Table.Editor.edittingTable).activeColumn;
-            if (index == 2) {
-                $(e.target).autocomplete({source: util.getSuggestion("drug")});
-            } else {
-                $(e.target).autocomplete({source: []});
-            }
-        });
-        
-        esui.get("Drug1").onedit = function (value, options, editor) {
-            var txt = $.trim(value);
-            if (txt == "") {
-                esui.Dialog.alert({title: "提示", content: "请填写内容"});
-                return false;
-            }
-            
-            this.datasource[options.rowIndex][options.field.field] = txt;
-            this.setCellText(txt, options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Drug2").onedit = function (value, options, editor) {
-            var txt = $.trim(value);
-            if (txt == "") {
-                esui.Dialog.alert({title: "提示", content: "请填写内容"});
-                return false;
-            }
-            
-            this.datasource[options.rowIndex][options.field.field] = txt;
-            this.setCellText(txt, options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        
         esui.get("Birthday").onchange = function(value) {esui.get("Birthday").setValueAsDate(value);};
         esui.get("ADRDate").onchange = function(value) {esui.get("ADRDate").setValueAsDate(value);};
         esui.get("DeathDate").onchange = function(value) {esui.get("DeathDate").setValueAsDate(value);};
@@ -356,13 +260,13 @@ es.Views.Form70 = Backbone.View.extend({
         }
     },
     
-    addRow1: function() {
+    addDoubt: function() {
         var table = esui.get("Drug1");
         table.datasource.push({f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:"",f8:""});
         table.render();
     },
     
-    addRow2: function() {
+    addMerge: function() {
         var table = esui.get("Drug2");
         table.datasource.push({f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:"",f8:""});
         table.render();
@@ -393,8 +297,8 @@ es.Views.Form70 = Backbone.View.extend({
            info: esui.get("Info1").getGroup().getValue(),
            info6txt: $.trim(esui.get("Info6Name").getValue()),
            info7txt: $.trim(esui.get("Info7Name").getValue()),
-           drug1: esui.get("Drug1").datasource,
-           drug2: esui.get("Drug2").datasource,
+           drug1: [],
+           drug2: [],
            adr: esui.get("ADR1").getGroup().getValue(),
            adr1: esui.get("ADR1_1").getGroup().getValue(),
            adr2: esui.get("ADR2_1").getGroup().getValue(),

@@ -26,12 +26,8 @@ es.Models.Form70 = Backbone.Model.extend({
             info: "",
             info6txt: null,
             info7txt: null,
-            drug1: [
-                {f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:"",f8:""}
-            ],
-            drug2: [
-                {f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:"",f8:""}
-            ],
+            drug1: [],
+            drug2: [],
             adr: "",
             adr1: "",adr2: "",adr3: "",adr4: "",adr5: "",
             adr6: "",adr7: "",adr8: "",adr9: "",adr10: "",
@@ -75,6 +71,12 @@ es.Models.Form70 = Backbone.Model.extend({
                 if (response.data == null) {
                     response.data = me.get("def");
                 }
+                $.each(response.data.drug1, function(index, val) {
+                    val.no = index + 1;
+                });
+                $.each(response.data.drug2, function(index, val) {
+                    val.no = index + 1;
+                });
                 me.set({data: response});
             },
             mock: MOCK,

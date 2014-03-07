@@ -24,36 +24,36 @@
 <script id="tpl-form40-drug" type="text/html">
 {{#drug}}
 <div class="drug-block block" no="{{no}}" id="{{id}}">
-<div class="row">
+<div class="row sub">
     <span class="label">通用名称</span>
     <input type="text" class="sug" value="{{name}}" ui="type:TextInput;id:Name{{no}};width:182;{{disabled}}" />
 </div>
-<div class="row">
+<div class="row sub">
     <span class="label">开始日期</span>
     <div ui="type:Calendar;id:Start{{no}};{{disabled}}"></div>
 </div>
-<div class="row">
+<div class="row sub">
     <span class="label">停止日期</span>
     <div ui="type:Calendar;id:End{{no}};{{disabled}}"></div>
 </div>
-<div class="row">
+<div class="row sub">
     <span class="label">单次用药剂量</span>
     <input type="text" class="en" value="{{dose}}" ui="type:TextInput;id:Dose{{no}};width:182;{{disabled}}" />
 </div>
-<div class="row">
+<div class="row sub">
     <span class="label">剂量单位</span>
     <input type="text" value="{{unit}}" ui="type:TextInput;id:Unit{{no}};width:182;{{disabled}}" />
 </div>
-<div class="row">
+<div class="row sub">
     <span class="label">给药途径</span>
     <input type="text" class="sug" value="{{way}}" ui="type:TextInput;id:Way{{no}};width:182;{{disabled}}" />
 </div>
-<div class="row">
+<div class="row sub">
     <span class="label">给药频次</span>
     <input type="text" value="{{frequency}}" ui="type:TextInput;id:Frequency{{no}};width:182;{{disabled}}" />
 </div>
 {{#save}}
-<div class="row">
+<div class="row sub">
     <a href="javascript:void(0)" hidefocus="true" class="del-drug del-btn">删除此行</a>
 </div>
 {{/save}}

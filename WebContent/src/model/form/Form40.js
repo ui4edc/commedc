@@ -8,7 +8,7 @@ es.Models.Form40 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-            hasDrug: 1,
+            hasDrug: null,
 			drug: [{
 			    id: "",
 				name: "",
