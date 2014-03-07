@@ -531,7 +531,7 @@ public class CRFService {
 		return result;
 	}
 
-	public Map<String, Object> saveDeseaseInfo(DiseaseInfoVo diseaseInfoVo) {
+	public Map<String, Object> saveDiseaseInfo(DiseaseInfoVo diseaseInfoVo) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result;
 		try{
@@ -550,7 +550,6 @@ public class CRFService {
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
-		
 		return result;
 	}
 
@@ -879,7 +878,8 @@ public class CRFService {
 		Map<String, Object> result;
 		try{
 			LabExamCase labExamCase =  convertorService.convertLabExamFromViewToModel(inHospitalExamVo, phase);
-			validDateRange(labExamCase.getExamDate(), inHospitalExamVo.getId(), "送检日期");
+			if(phase == 1)
+				validDateRange(labExamCase.getExamDate(), inHospitalExamVo.getId(), "送检日期");
 			Map<String, Object> condition = new HashMap<String, Object>();
 			condition.put("id", inHospitalExamVo.getId());
 			condition.put("phase", phase);

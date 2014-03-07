@@ -45,11 +45,18 @@
   	<insert id="insertDictRow" parameterType="cn.com.ecrf.trq.model.dict.DictRow">
   		insert into dt_itemdict(name,abbr,type,type_abbr) values(#{name},#{abbr},#{type}, #{typeAbbr});
   	</insert>
-  	<select id="getDictRow" parameterType="cn.com.ecrf.trq.model.dict.DictRow">
+  	<select id="getDictRow" parameterType="cn.com.ecrf.trq.model.dict.DictRow" resultType="cn.com.ecrf.trq.model.dict.DictRow">
   		select name as name,
   				abbr as abbr,
   				type as type,
   				type_abbr as typeAbbr
   		from dt_itemdict where name like #{name} and type=#{type}
+  	</select>
+  	<select id="getExactDictRow" parameterType="cn.com.ecrf.trq.model.dict.DictRow" resultType="cn.com.ecrf.trq.model.dict.DictRow">
+  		select name as name,
+  				abbr as abbr,
+  				type as type,
+  				type_abbr as typeAbbr
+  		from dt_itemdict where name=#{name} and type=#{type}
   	</select>
 </mapper>

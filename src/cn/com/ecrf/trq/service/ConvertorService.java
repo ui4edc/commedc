@@ -442,7 +442,7 @@ public class ConvertorService {
 			dictRow.setAbbr(PinyinUtils.getFirstHanyuPinyin(name));
 			dictRow.setType(type);
 			dictRow.setTypeAbbr(PinyinUtils.getFirstHanyuPinyin(type));
-			rows = dictMapper.getDictRow(dictRow);
+			rows = dictMapper.getExactDictRow(dictRow);
 		} catch (BadHanyuPinyinOutputFormatCombination e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -694,6 +694,10 @@ public class ConvertorService {
 		}
 		drugSummaryVo.setDeathReason(drugSummaryCase.getDeathReason());
 		drugSummaryVo.setDrugCost(drugSummaryCase.getDrugCost());
+		if (drugSummaryCase.getStartDate() != null){
+			String startDate = sdf.format(drugSummaryCase.getStartDate());
+			drugSummaryVo.setStartDate(startDate);
+		}
 		if (drugSummaryCase.getEndDate() != null){
 			String endDate = sdf.format(drugSummaryCase.getEndDate());
 			drugSummaryVo.setEndDate(endDate);
@@ -708,7 +712,7 @@ public class ConvertorService {
 		drugSummaryVo.setRemark(drugSummaryCase.getRemark());
 		drugSummaryVo.setTreatmentCost(drugSummaryCase.getTreatmentCost());
 		drugSummaryVo.setTrqCost(drugSummaryCase.getTrqCost());
-		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryCase.getUnreasonable(), FormEnumValue.YES_NO);
+		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryCase.getUnreasonable(), FormEnumValue.HAS_OR_NOT);
 		drugSummaryVo.setUnreasonable(convertContentToID(unreasonableObj));
 		return drugSummaryVo;
 	}
@@ -745,7 +749,7 @@ public class ConvertorService {
 		FormEnumObject endingObj = new FormEnumObject(drugSummaryVo.getEnding(), null, FormEnumValue.DM_ENDING);
 		drugSummaryCase.setEnding(convertIDToContent(endingObj));
 		drugSummaryCase.setId(drugSummaryVo.getId());
-		FormEnumObject interventionObj = new FormEnumObject(drugSummaryVo.getIntervention(), null, FormEnumValue.HAS_OR_NOT);
+		FormEnumObject interventionObj = new FormEnumObject(drugSummaryVo.getIntervention(), null, FormEnumValue.YES_NO);
 		drugSummaryCase.setIntervention(convertIDToContent(interventionObj));
 		drugSummaryCase.setInterventiontxt(drugSummaryVo.getInterventiontxt());
 		drugSummaryCase.setNo(drugSummaryVo.getNo());
@@ -762,7 +766,7 @@ public class ConvertorService {
 		}
 		drugSummaryCase.setTreatmentCost(drugSummaryVo.getTreatmentCost());
 		drugSummaryCase.setTrqCost(drugSummaryVo.getTrqCost());
-		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryVo.getUnreasonable(), null, FormEnumValue.YES_NO);
+		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryVo.getUnreasonable(), null, FormEnumValue.HAS_OR_NOT);
 		drugSummaryCase.setUnreasonable(convertIDToContent(unreasonableObj));
 		//drugSummaryCase.setEnding(ending);
 		return drugSummaryCase;
@@ -812,7 +816,7 @@ public class ConvertorService {
 				aDRCase.setDrug1Str(util.convertFromList(adrVo.getDrug1()));
 			if (adrVo.getDrug2() != null && adrVo.getDrug2().size() > 0)
 				aDRCase.setDrug2Str(util.convertFromList(adrVo.getDrug2()));
-			FormEnumObject endingObj = new FormEnumObject(adrVo.getEnding(), adrVo.getEndingtxt(), FormEnumValue.ADR_ENDING);
+			FormEnumObject endingObj = new FormEnumObject(adrVo.getEnding(), adrVo.getEndingtxt(), FormEnumValue.ADR_RESULT);
 			aDRCase.setEndingStr(convertIDToContent(endingObj));
 			FormEnumObject ethicObj = new FormEnumObject(adrVo.getEthic(), null, FormEnumValue.ETHIC);
 			aDRCase.setEthicStr(convertIDToContent(ethicObj));
@@ -907,6 +911,9 @@ public class ConvertorService {
 			aDRVo.setFamilyadr(convertContentToID(familyadrObj));
 			FormEnumObject historyadrObj = new FormEnumObject(adrCase.getHistoryadrStr(), FormEnumValue.YES_NO_UNKNOWN);
 			aDRVo.setHistoryadr(convertContentToID(historyadrObj));
+			aDRVo.setInfo(aDRVo.getInfo());
+			aDRVo.setInfo6txt(aDRVo.getInfo6txt());
+			aDRVo.setInfo7txt(aDRVo.getInfo7txt());
 			FormEnumObject relationshipObj = new FormEnumObject(adrCase.getRelationshipStr(), FormEnumValue.ADR_RELATIONSHIP);
 			aDRVo.setRelationship(convertContentToID(relationshipObj));
 			if (adrCase.getDeathDateDate() != null){

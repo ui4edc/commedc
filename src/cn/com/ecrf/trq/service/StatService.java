@@ -9,10 +9,12 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.stat.AgeStat;
 import cn.com.ecrf.trq.model.stat.HospitalStat;
 import cn.com.ecrf.trq.repository.CRFMapper;
+import cn.com.ecrf.trq.repository.OrganizationMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 
 @Service
@@ -20,6 +22,8 @@ public class StatService {
 
 	@Autowired
 	private CRFMapper cRFMapper;
+	@Autowired
+	private OrganizationMapper organizationMapper;
 
 	public Map<String, Object> getAgeStat() {
 		// TODO Auto-generated method stub
@@ -62,6 +66,7 @@ public class StatService {
 		Map<String, Object> result = null;
 		try{
 			List<HospitalStat> hospitalStats = cRFMapper.getHospitalStat();
+			List<Organization> organizaitons = organizationMapper.findAllOrganizations();
 			HospitalStat hospitalStatVo = null;
 			List<HospitalStat> hospitalStatVos = null;
 			Map<String, HospitalStat> map = new HashMap<String, HospitalStat>();
@@ -91,9 +96,20 @@ public class StatService {
 					}
 					
 				}
-				TreeMap<String, HospitalStat> sortMap = new TreeMap<String, HospitalStat>(map);
-				hospitalStatVos = new ArrayList<HospitalStat>(sortMap.values());
 			}
+			if (organizaitons != null){
+				for (Organization organizaiton : organizaitons){
+					HospitalStat stat = map.get(organizaiton.getName());
+					if (stat == null){
+						stat = new HospitalStat();
+						stat.setName(organizaiton.getName());
+						map.put(organizaiton.getName(), stat);
+					}
+					stat.setNum5(organizaiton.getInstanceNumber());
+				}
+			}
+			TreeMap<String, HospitalStat> sortMap = new TreeMap<String, HospitalStat>(map);
+			hospitalStatVos = new ArrayList<HospitalStat>(sortMap.values());
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, hospitalStatVos);
 		}catch(Exception e){
 			e.printStackTrace();

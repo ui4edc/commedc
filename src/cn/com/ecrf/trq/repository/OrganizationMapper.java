@@ -27,4 +27,6 @@ public interface OrganizationMapper {
 	void insertCRFNO(int id);
 
 	Organization findUserOrganization(int userId);
+
+	List<Organization> findAllOrganizations();
 }

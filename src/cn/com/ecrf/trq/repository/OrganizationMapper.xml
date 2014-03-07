@@ -70,7 +70,7 @@
     	u.user_name as crmUserName
     from ac_organization o left join ac_user u on o.fk_crmuser_id=u.id left join ac_user u2 on o.fk_adminuser_id=u2.id
     <if test="limitStart != null and limitSize != null" >
-    LIMIT #{limitStart},#{limitSize}
+    	LIMIT #{limitStart},#{limitSize}
     </if>
   </select>
    <select id="getNum" resultType="int">
@@ -85,5 +85,13 @@
   		   o.code as code, 
   		   o.organization_desc as organizationDesc
   	from ac_organization o, ac_user u where u.id=#{userId} and o.id=u.fk_organization_id
+  </select>
+  <select id="findAllOrganizations" resultType="cn.com.ecrf.trq.model.Organization">
+  	select o.id as id,
+  		   o.organization_name as name, 
+  		   o.code as code, 
+  		   o.organization_desc as organizationDesc,
+  		   o.instance_number as instanceNumber
+  	from ac_organization o
   </select>
 </mapper>

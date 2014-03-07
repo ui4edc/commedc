@@ -79,5 +79,11 @@ public class DiseaseInfoCase {
 		public void setZytxt(String zytxt) {
 			this.zytxt = zytxt;
 		}
+		public int getFy() {
+			return fy;
+		}
+		public void setFy(int fy) {
+			this.fy = fy;
+		}
 	
 }

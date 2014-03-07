@@ -17,5 +17,6 @@ public interface DictMapper {
 	void insertDictRow(DictRow dictRow);
 	List<DictRow> getDictRow(DictRow dictRow);
 	void updateStaticDict(StaticDict staticDict);
+	List<DictRow> getExactDictRow(DictRow dictRow);
 
 }

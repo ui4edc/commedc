@@ -142,7 +142,7 @@ public class CRFController {
 	@RequestMapping(value="/crf/getDeseaseInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getDeseaseInfo(ParameterType parameterType, HttpServletRequest request) {
-an		String id = request.getParameter("id");
+		String id = request.getParameter("id");
 		Map<String, Object> result = cRFService.getDeseaseInfo(""+parameterType.getId());
 		return result;
 	}
@@ -160,7 +160,7 @@ an		String id = request.getParameter("id");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Map<String, Object> result = cRFService.saveDeseaseInfo(diseaseInfoVo);
+		Map<String, Object> result = cRFService.saveDiseaseInfo(diseaseInfoVo);
 		return result;
 	}
 	
