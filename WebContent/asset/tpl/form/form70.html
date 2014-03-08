@@ -293,7 +293,7 @@
 </div>
 <div class="row sub">
     <span class="label">通用名称</span>
-    <input type="text" value="{{f3}}" ui="type:TextInput;id:DoubtF3{{no}};width:182;{{disabled}}" />
+    <input type="text" class="sug" value="{{f3}}" ui="type:TextInput;id:DoubtF3{{no}};width:182;{{disabled}}" />
     <span>（含剂型）</span>
 </div>
 <div class="row sub">
@@ -310,12 +310,16 @@
     <span>（次剂量、途径、日次数）</span>
 </div>
 <div class="row sub">
-    <span class="label">用药起止时间</span>
-    <input type="text" value="{{f7}}" ui="type:TextInput;id:DoubtF7{{no}};width:182;{{disabled}}" />
+    <span class="label">用药开始时间</span>
+    <div ui="type:Calendar;id:DoubtF7{{no}};{{disabled}}"></div>
+</div>
+<div class="row sub">
+    <span class="label">用药停止时间</span>
+    <div ui="type:Calendar;id:DoubtF8{{no}};{{disabled}}"></div>
 </div>
 <div class="row sub">
     <span class="label">用药原因</span>
-    <input type="text" value="{{f8}}" ui="type:TextInput;id:DoubtF8{{no}};width:182;{{disabled}}" />
+    <input type="text" value="{{f9}}" ui="type:TextInput;id:DoubtF9{{no}};width:182;{{disabled}}" />
 </div>
 {{#save}}
 <div class="row sub">
@@ -339,7 +343,7 @@
 </div>
 <div class="row sub">
     <span class="label">通用名称</span>
-    <input type="text" value="{{f3}}" ui="type:TextInput;id:MergeF3{{no}};width:182;{{disabled}}" />
+    <input type="text" class="sug" value="{{f3}}" ui="type:TextInput;id:MergeF3{{no}};width:182;{{disabled}}" />
     <span>（含剂型）</span>
 </div>
 <div class="row sub">
@@ -356,12 +360,16 @@
     <span>（次剂量、途径、日次数）</span>
 </div>
 <div class="row sub">
-    <span class="label">用药起止时间</span>
-    <input type="text" value="{{f7}}" ui="type:TextInput;id:MergeF7{{no}};width:182;{{disabled}}" />
+    <span class="label">用药开始时间</span>
+    <div ui="type:Calendar;id:MergeF7{{no}};{{disabled}}"></div>
+</div>
+<div class="row sub">
+    <span class="label">用药停止时间</span>
+    <div ui="type:Calendar;id:MergeF8{{no}};{{disabled}}"></div>
 </div>
 <div class="row sub">
     <span class="label">用药原因</span>
-    <input type="text" value="{{f8}}" ui="type:TextInput;id:MergeF8{{no}};width:182;{{disabled}}" />
+    <input type="text" value="{{f9}}" ui="type:TextInput;id:MergeF9{{no}};width:182;{{disabled}}" />
 </div>
 {{#save}}
 <div class="row sub">

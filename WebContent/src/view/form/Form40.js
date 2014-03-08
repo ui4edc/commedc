@@ -58,12 +58,20 @@ es.Views.Form40 = Backbone.View.extend({
     
     initCtrl: function(data) {
         //赋值
+        var option = {};
         $.each(data.drug, function(index, val) {
-            var option = {};
             option["Start" + val.no] = {range: CRF_RANGE, value: val.start};
             option["End" + val.no] = {range: CRF_RANGE, value: val.end};
-            esui.init(this.el, option);
-            
+        });
+        
+        esui.init(document.body, option);
+        
+        switch (data.hasDrug) {
+            case 1: esui.get("Merge1").setChecked(true); this.$(".drugs").show(); break;
+            case 2: esui.get("Merge2").setChecked(true);
+        }
+        
+        $.each(data.drug, function(index, val) {
             var start = esui.get("Start" + val.no);
             start.onchange = function(value) {start.setValueAsDate(value);};
             if (!es.main.editable) {
@@ -74,14 +82,9 @@ es.Views.Form40 = Backbone.View.extend({
             if (!es.main.editable) {
                 end.disable();
             }
-            //自动提示
             $("#ctrltextName" + val.no).autocomplete({source: util.getSuggestion("drug")});
             $("#ctrltextWay" + val.no).autocomplete({source: util.getSuggestion("way")});
         });
-        switch (data.hasDrug) {
-            case 1: esui.get("Merge1").setChecked(true); this.$(".drugs").show(); break;
-            case 2: esui.get("Merge2").setChecked(true);
-        }
         
         //事件
         var me = this;
@@ -158,7 +161,7 @@ es.Views.Form40 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请选择有无合并用药"});
            return;
        }
-       for (var i = 0, n = data.drug.length; i <n; i++) {
+       for (var i = 0, n = data.drug.length; i < n; i++) {
            var item = data.drug[i], seq = i + 1;
            if (item.name == "") {
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个通用名称"});
@@ -167,7 +170,7 @@ es.Views.Form40 = Backbone.View.extend({
            var start = T.date.parse(item.start).getTime(),
                end = T.date.parse(item.end).getTime();
            if (start > end) {
-               esui.Dialog.alert({title: "提示", content: "第" + seq + "个开始日期不能晚于结束日期"});
+               esui.Dialog.alert({title: "提示", content: "第" + seq + "个开始日期不能晚于停止日期"});
                return;
            }
            if (!intPattern.test(item.dose)) {
