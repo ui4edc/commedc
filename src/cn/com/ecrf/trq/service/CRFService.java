@@ -596,7 +596,7 @@ public class CRFService {
 				cRFMapper.updateDrugUseInfo(drugUseCase);
 				cRFMapper.updateAllDrugUseInfo(drugUseCase);
 			}else {
-				cRFMapper.insertDrugUseInfo(drugUseCase);
+				cRFMapper.insertDrugUseInfoWithDrugUseId(drugUseCase);
 				cRFMapper.updateAllDrugUseInfo(drugUseCase);
 			}
 			updateProcessAndModifyDate(drugUseVo.getNo(), ProcessUtils.DRUG_USING);
@@ -939,7 +939,7 @@ public class CRFService {
 		try{
 			DoubtRecord doubtRecord = new DoubtRecord();
 			doubtRecord.setDescription(doubtRecordSubmitVo.getDescription());
-			doubtRecord.setDoubtDate(new Date());
+			//doubtRecord.setDoubtDate(new Date());
 			Subject subject = SecurityUtils.getSubject();
 			String userName = (String) subject.getPrincipal();
 			doubtRecord.setDoubter(userName);
@@ -1011,7 +1011,7 @@ public class CRFService {
 			doubtRecord.setDoubtId(doubtRecordSubmitVo.getDoubtId());
 			doubtRecord.setId(doubtRecordSubmitVo.getId());
 			doubtRecord.setMenuId(doubtRecordSubmitVo.getMenu());
-			doubtRecord.setCommitDate(new Date());
+			//doubtRecord.setCommitDate(new Date());
 			doubtRecord.setFlag(1);
 			doubtRecordMapper.saveDoubtRecord(doubtRecord);
 			List<DoubtRecord> records = doubtRecordMapper.getUndealDoubtRecord(doubtRecordSubmitVo.getId());
@@ -1124,6 +1124,11 @@ public class CRFService {
 			drugUseCase.setNo(patientInfoCase.getNo());
 			drugUseCase.setId(id);
 			cRFMapper.insertDrugUseInfo(drugUseCase);
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("id", id);
+			condition.put("drugUseId", drugUseCase.getDrugUseId());
+			cRFMapper.deleteDrugUseInfoByDrugUseId(condition);
+			//int drugUseId = cRFMapper.getNextDrugUseId();
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("drugUseId", drugUseCase.getDrugUseId());

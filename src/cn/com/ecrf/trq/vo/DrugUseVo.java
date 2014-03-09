@@ -15,7 +15,7 @@ public class DrugUseVo {
 		private int id;
 
 		
-		private int drugUseId;
+		private String drugUseId;
 		
 		
 		
@@ -59,14 +59,18 @@ public class DrugUseVo {
 		private int history;
 		private List<BanDrug> injection = new ArrayList<BanDrug>();
 		private int location;
+		private int nextGroup;
+		private String nextGroupName;
 		//观察表编号
 		private String no;
 		private String prepareTime;
 		private boolean prepareTimeUd;
+		private int prevGroup;
+		private String prevGroupName;
 		
 		private int sameBottle;
 		private int sameGroup;
-		private List<BanDrug> group = new ArrayList<BanDrug>();
+		//private List<BanDrug> group = new ArrayList<BanDrug>();
 		private int solvent;
 		private String solventDose;
 		private String solventName;
@@ -74,6 +78,7 @@ public class DrugUseVo {
 		private String startDate;
 		private String startH;
 		private String startM;
+		private int useSolvent;
 		private int way;
 		private String way1Speed;
 		private String way1Time;
@@ -97,12 +102,12 @@ public class DrugUseVo {
 			this.no = no;
 		}
 		
-		public int getDrugUseId() {
+		/*public int getDrugUseId() {
 			return drugUseId;
 		}
 		public void setDrugUseId(int drugUseId) {
 			this.drugUseId = drugUseId;
-		}
+		}*/
 		public int getHistory() {
 			return history;
 		}
@@ -369,18 +374,55 @@ public class DrugUseVo {
 		public void setLocation(int location) {
 			this.location = location;
 		}
-		public List<BanDrug> getGroup() {
+		/*public List<BanDrug> getGroup() {
 			return group;
 		}
 		public void setGroup(List<BanDrug> group) {
 			this.group = group;
-		}
+		}*/
 		public int getTotal() {
 			return total;
 		}
 		public void setTotal(int total) {
 			this.total = total;
 		}
+		public int getNextGroup() {
+			return nextGroup;
+		}
+		public void setNextGroup(int nextGroup) {
+			this.nextGroup = nextGroup;
+		}
+		public String getNextGroupName() {
+			return nextGroupName;
+		}
+		public void setNextGroupName(String nextGroupName) {
+			this.nextGroupName = nextGroupName;
+		}
+		public int getUseSolvent() {
+			return useSolvent;
+		}
+		public void setUseSolvent(int useSolvent) {
+			this.useSolvent = useSolvent;
+		}
+		public String getDrugUseId() {
+			return drugUseId;
+		}
+		public void setDrugUseId(String drugUseId) {
+			this.drugUseId = drugUseId;
+		}
+		public int getPrevGroup() {
+			return prevGroup;
+		}
+		public void setPrevGroup(int prevGroup) {
+			this.prevGroup = prevGroup;
+		}
+		public String getPrevGroupName() {
+			return prevGroupName;
+		}
+		public void setPrevGroupName(String prevGroupName) {
+			this.prevGroupName = prevGroupName;
+		}
+		
 		
 		
 		

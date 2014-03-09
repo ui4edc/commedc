@@ -6,8 +6,8 @@
   	<selectKey resultType="Integer" order="AFTER" keyProperty="doubtId">
 	SELECT LAST_INSERT_ID()
 	</selectKey>
-  	insert into crf_doubt(doubtId, id, no, doubt_time, commit_time, flag, doubter, fieldid, description, menuid)
-  	values(#{doubtId}, #{id}, #{no}, #{doubtDate}, #{commitDate}, #{flag}, #{doubter}, #{fieldId}, #{description}, #{menuId});
+  	insert into crf_doubt(doubtId, id, no, doubt_time, flag, doubter, fieldid, description, menuid)
+  	values(#{doubtId}, #{id}, #{no}, now(), #{flag}, #{doubter}, #{fieldId}, #{description}, #{menuId});
   </insert>
   <select id="getDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord" resultType="cn.com.ecrf.trq.model.DoubtRecord">
   	select doubtId as doubtId,
@@ -44,7 +44,7 @@
   	from dt_crfstage s, dt_crfstage_var v where s.menuid=v.menuid and v.menuid=#{menuId} order by v.fieldid asc
   </select>
   <update id="saveDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord">
-  	update crf_doubt set commit_time=#{commitDate}, flag=#{flag} 
+  	update crf_doubt set commit_time=now(), flag=#{flag} 
   	where id=#{id} and doubtId=#{doubtId}
   </update>
   <select id="getDoubtSumm" parameterType="int" resultType="cn.com.ecrf.trq.model.DoubtRecord">

@@ -35,7 +35,7 @@ public class DrugUseCase {
 	
 	private String bottlelb;
 	
-	private String grouplb;
+	//private String grouplb;
 	
 	private String dose;
 	
@@ -58,10 +58,14 @@ public class DrugUseCase {
 	private int	hasFood;
 	private int	hasInjection;
 	private String injectionlb;
+	private int nextGroup;
+	private String nextGroupName;
+	private int location;
 	private String prepareTime;
 	private boolean prepareTimeUd;
 	private int sameBottle;
 	private int sameGroup;
+	private int useSolvent;
 	private int solvent;
 	private String solventDose;
 	private String solventName;
@@ -347,11 +351,35 @@ public class DrugUseCase {
 	public void setAdrtxt(String adrtxt) {
 		this.adrtxt = adrtxt;
 	}
-	public String getGrouplb() {
+	/*public String getGrouplb() {
 		return grouplb;
 	}
 	public void setGrouplb(String grouplb) {
 		this.grouplb = grouplb;
+	}*/
+	public int getNextGroup() {
+		return nextGroup;
+	}
+	public void setNextGroup(int nextGroup) {
+		this.nextGroup = nextGroup;
+	}
+	public String getNextGroupName() {
+		return nextGroupName;
+	}
+	public void setNextGroupName(String nextGroupName) {
+		this.nextGroupName = nextGroupName;
+	}
+	public int getLocation() {
+		return location;
+	}
+	public void setLocation(int location) {
+		this.location = location;
+	}
+	public int getUseSolvent() {
+		return useSolvent;
+	}
+	public void setUseSolvent(int useSolvent) {
+		this.useSolvent = useSolvent;
 	}
 	
 	

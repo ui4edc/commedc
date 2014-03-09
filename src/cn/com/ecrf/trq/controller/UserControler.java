@@ -167,7 +167,7 @@ public class UserControler {
      * change password
      * @return
      */
-    @RequestMapping(value = "/changePassword")  
+    @RequestMapping(value = "/password")  
     @ResponseBody  
     public Map<String, Object> changePassword(HttpServletRequest request) {  
 		Map<String, Object> result = new HashMap<String, Object>();

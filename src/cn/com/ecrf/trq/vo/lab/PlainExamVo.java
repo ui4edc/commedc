@@ -9,6 +9,7 @@ public class PlainExamVo {
 	private String f6;
 	private String f7;
 	private String f8;
+	private String f9;
 	public String getF1() {
 		return f1;
 	}
@@ -56,6 +57,12 @@ public class PlainExamVo {
 	}
 	public void setF8(String f8) {
 		this.f8 = f8;
+	}
+	public String getF9() {
+		return f9;
+	}
+	public void setF9(String f9) {
+		this.f9 = f9;
 	}
 	
 	

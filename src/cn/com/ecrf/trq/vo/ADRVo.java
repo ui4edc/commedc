@@ -23,29 +23,6 @@ public class ADRVo {
 	 * "ending":1,"endingtxt":"","deathDate":"2014-01-01","deathReason":"","adrStop":1,"adrRestart":1,
 	 * "evaluate":1,"career":1,"careertxt":"","email":"","reportDate":"2014-01-01","remark":""}
 	 */
-	private int id;
-	//编号
-	private String no;
-	private int type;
-	private int blood;
-	private String name;
-	private int sex;
-	private String birthday;
-	private int ethic;
-	private String weight;
-	private String contact;
-	private String disease;
-	private String patientNo;
-	private int historyadr;
-	private String historyadrtxt;
-	private int familyadr;
-	private String familyadrtxt;
-	private int relationship;
-	private String info = "";
-	private String info6txt;
-	private String info7txt;
-	private List<PlainExamVo> drug1 = new ArrayList<PlainExamVo>();
-	private List<PlainExamVo> drug2 = new ArrayList<PlainExamVo>();
 	private String adr = "";
 	private String adr1 = "";
 	private String adr2 = "";
@@ -57,29 +34,76 @@ public class ADRVo {
 	private String adr8 = "";
 	private String adr9 = "";
 	private String adr10 = "";
-	private String adrtxt;
 	private String adrDate;
-	private String adrH;
-	private String adrM;
-	private String adrDescription;
 	private int adrDeal;
 	private int adrDeal3;
-	private String adrDealDose;
 	private String adrDeal3txt;
 	private String adrDeal4txt;
+	private String adrDealDose;
+	
 	private String adrDealRemark;
-	private int ending;
-	private String endingtxt;
-	private String deathDate;
-	private String deathReason;
-	private int adrStop;
+	private String adrDescription;
+	private String adrH;
+	private String adrM;
 	private int adrRestart;
-	private int evaluate;
+	private int adrStop;
+	private String adrtxt;
+	private String birthday;
+	private int blood;
 	private int career;
 	private String careertxt;
+	private String contact;
+	private String deathDate;
+	private String deathReason;
+	private String disease;
+	private List<PlainExamVo> drug1 = new ArrayList<PlainExamVo>();
+	private List<PlainExamVo> drug2 = new ArrayList<PlainExamVo>();
 	private String email;
-	private String reportDate;
+	private int ending;
+	private String endingtxt;
+	private int ethic;
+	private int evaluate;
+	private int familyadr;
+	private String familyadrtxt;
+	private int historyadr;
+	private String historyadrtxt;
+	private int id;
+	private String info = "";
+	private String info6txt;
+	private String info7txt;
+	private String name;
+	
+	//编号
+	private String no;
+	private String patientNo;
+	private int relationship;
 	private String remark;
+	private String reportDate;
+	private int sex;
+	private int type;
+	private String weight;
+	
+	
+	
+
+
+	
+
+
+	
+	
+	
+	
+
+
+
+
+
+	
+
+	
+	
+	
 
 	public int getId() {
 		return id;

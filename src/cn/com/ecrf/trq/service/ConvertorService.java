@@ -350,8 +350,8 @@ public class ConvertorService {
 					drugUseVo.setBottle(util.convertFromString(drugUseInfoCase.getBottlelb()));
 				if (StringUtils.isNotBlank(drugUseInfoCase.getInjectionlb()))
 					drugUseVo.setInjection(util.convertFromString(drugUseInfoCase.getInjectionlb()));
-				if (StringUtils.isNotBlank(drugUseInfoCase.getGrouplb()))
-					drugUseVo.setGroup(util.convertFromString(drugUseInfoCase.getGrouplb()));
+				//if (StringUtils.isNotBlank(drugUseInfoCase.getGrouplb()))
+					//drugUseVo.setGroup(util.convertFromString(drugUseInfoCase.getGrouplb()));
 				if (drugUseInfoCase.getFood() == null)
 					drugUseVo.setFood("");
 			}
@@ -412,7 +412,7 @@ public class ConvertorService {
 						}
 					}
 				}
-				if (drugUseVo.getGroup() != null && drugUseVo.getGroup().size() > 0){
+				/*if (drugUseVo.getGroup() != null && drugUseVo.getGroup().size() > 0){
 					drugUseCase.setGrouplb(util.convertFromList(drugUseVo.getGroup()));
 					for (BanDrug banDrug : drugUseVo.getBanDrug()){
 						try{
@@ -424,7 +424,7 @@ public class ConvertorService {
 							e.printStackTrace();
 						}
 					}
-				}
+				}*/
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block

@@ -149,6 +149,10 @@ public interface CRFMapper {
 	public void deleteDrugUseInfoByNo(String no);
 
 	public void updateAllDrugUseInfo(DrugUseCase drugUseCase);
+
+	public int getNextDrugUseId();
+
+	public void insertDrugUseInfoWithDrugUseId(DrugUseCase drugUseCase);
 	
 
 
