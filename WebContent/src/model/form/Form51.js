@@ -8,9 +8,9 @@ es.Models.Form51 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-			done: 2,
+			done: null,
 			examDate: "2014-01-01",
-			sample: 1,
+			sample: null,
 			sampletxt: null,
 			result: "",
 			resulttxt1: null,

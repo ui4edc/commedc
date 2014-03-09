@@ -73,8 +73,10 @@ es.Views.Index = Backbone.View.extend({
         };
         
         //验证
-        var error1 = $("#ctrltextNewAbbr").next().empty(),
-            error2 = $("#ctrltextNewNo").next().empty();
+        var error1 = $("#ctrltextNewAbbr").next(),
+            error2 = $("#ctrltextNewNo").next();
+        error1.empty();
+        error1.empty();
         if (data.abbr === "") {
             error1.html("请填写患者姓名缩写");
             return;

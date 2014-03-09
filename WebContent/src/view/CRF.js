@@ -161,7 +161,8 @@ es.Views.CRF = Backbone.View.extend({
      * 全部提交
      */
     submitCRF: function() {
-        var data = {id: this.crfId};
+        var data = {id: this.crfId},
+            me = this;
         
         console.log("crf/saveTotalCRF.do-请求", data);
         
@@ -173,8 +174,8 @@ es.Views.CRF = Backbone.View.extend({
                 
                 setTimeout(function() {
                     esui.Dialog.alert({
-                        title: "全部提交",
-                        content: "提交成功！"
+                        title: me.submitTxt,
+                        content: me.submitTxt + "成功！"
                     });
                 }, 500);
             },
