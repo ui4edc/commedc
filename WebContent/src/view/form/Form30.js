@@ -25,20 +25,45 @@ es.Views.Form30 = Backbone.View.extend({
             data: {id: es.main.crfId},
             success: function(response) {
                 console.log("crf/getDrugUseInfoNum.do", response);
-                me.drugUseIdList = response.data.drugUseIdList;
-                //获取第1次
-                me.rendered = false;
-                me.model.getData({
-                    id: es.main.crfId,
-                    drugUseId: me.drugUseIdList[0]
-                });
+                
+                if (response.data == null) {
+                    //创建第一次
+                    util.ajax.run({
+                        url: "crf/addNewDrugUseInfo.do",
+                        data: {id: es.main.crfId},
+                        success: function(response) {
+                            console.log("crf/addNewDrugUseInfo.do", response);
+                            
+                            me.drugUseIdList = [response.data.drugUseId];
+                            me.rendered = false;
+                            me.model.getData({
+                                id: es.main.crfId,
+                                drugUseId: me.drugUseIdList[0] //获取第一次
+                            });
+                        },
+                        mock: MOCK,
+                        mockData: {
+                            success: true,
+                            data: {
+                                drugUseId: 1
+                            }
+                        }
+                    });
+                } else {
+                    me.drugUseIdList = response.data.drugUseIdList;
+                    me.rendered = false;
+                    me.model.getData({
+                        id: es.main.crfId,
+                        drugUseId: me.drugUseIdList[0] //获取第一次
+                    });
+                }
             },
             mock: MOCK,
             mockData: {
                 success: true,
-                data: {
+                data: /*{
                     drugUseIdList: [1, 2, 3]
-                }
+                }*/null
             }
         });
     },
@@ -83,7 +108,7 @@ es.Views.Form30 = Backbone.View.extend({
             mockData: {
                 success: true,
                 data: {
-                    drugUseId: 4
+                    drugUseId: 2
                 }
             }
         });
