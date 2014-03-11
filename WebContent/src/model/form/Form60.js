@@ -8,10 +8,10 @@ es.Models.Form60 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-            startDate: "2014-01-01",
-            endDate: "2014-01-01",
+            startDate: T.date.format(new Date(), "yyyy-MM-dd"),
+            endDate: T.date.format(new Date(), "yyyy-MM-dd"),
             ending: null,
-            deathDate: "2014-01-01",
+            deathDate: T.date.format(new Date(), "yyyy-MM-dd"),
             deathReason: null,
             adr: null,
             unreasonable: null,
@@ -37,6 +37,9 @@ es.Models.Form60 = Backbone.Model.extend({
                 console.log("crf/getDrugSummary.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
                 me.set({data: response});
             },

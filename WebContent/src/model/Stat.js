@@ -63,8 +63,8 @@ es.Models.Stat = Backbone.Model.extend({
                 {name: "合同", data: []},
                 {name: "审核通过", data: []},
                 {name: "质疑", data: []},
-                {name: "已提交未审核", data: []},
-                {name: "草稿", data: []}
+                {name: "已提交未审核", data: []}//,
+                //{name: "草稿", data: []}
             ]
         };
         
@@ -74,7 +74,7 @@ es.Models.Stat = Backbone.Model.extend({
             lineData.series[1].data.push(val.num4);
             lineData.series[2].data.push(val.num3);
             lineData.series[3].data.push(val.num2);
-            lineData.series[4].data.push(val.num1);
+            //lineData.series[4].data.push(val.num1);
         });
         
         return lineData;

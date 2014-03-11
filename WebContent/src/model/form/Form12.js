@@ -38,7 +38,11 @@ es.Models.Form12 = Backbone.Model.extend({
                 console.log("crf/getPersonHistory.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
+                
                 $.each(response.data.food, function(index, val) {
                     val.no = index + 1;
                 });

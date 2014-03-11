@@ -12,8 +12,8 @@ es.Models.Form40 = Backbone.Model.extend({
 			drug: [{
 			    id: "",
 				name: "",
-				start: "2014-01-01",
-				end: "2014-01-01",
+				start: T.date.format(new Date(), "yyyy-MM-dd"),
+				end: T.date.format(new Date(), "yyyy-MM-dd"),
 				dose: "",
 				unit: "",
 				way: "",
@@ -35,10 +35,15 @@ es.Models.Form40 = Backbone.Model.extend({
                 console.log("crf/getDrugCombinationInfo.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
+                
                 $.each(response.data.drug, function(index, val) {
                     val.no = index + 1;
                 });
+                
                 me.set({data: response});
             },
             mock: MOCK,

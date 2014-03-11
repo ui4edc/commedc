@@ -302,8 +302,8 @@ es.Views.Form70 = Backbone.View.extend({
             save: [1]
         }));
         var option = {};
-        option["DoubtF7" + no] = {range: CRF_RANGE, value: "2014-01-01"};
-        option["DoubtF8" + no] = {range: CRF_RANGE, value: "2014-01-01"};
+        option["DoubtF7" + no] = {range: CRF_RANGE, value: T.date.format(new Date(), "yyyy-MM-dd")};
+        option["DoubtF8" + no] = {range: CRF_RANGE, value: T.date.format(new Date(), "yyyy-MM-dd")};
         esui.init(this.el, option);
         esui.get("DoubtF7" + no).onchange = function(value) {esui.get("DoubtF7" + no).setValueAsDate(value);};
         esui.get("DoubtF8" + no).onchange = function(value) {esui.get("DoubtF8" + no).setValueAsDate(value);};
@@ -328,8 +328,8 @@ es.Views.Form70 = Backbone.View.extend({
             save: [1]
         }));
         var option = {};
-        option["MergeF7" + no] = {range: CRF_RANGE, value: "2014-01-01"};
-        option["MergeF8" + no] = {range: CRF_RANGE, value: "2014-01-01"};
+        option["MergeF7" + no] = {range: CRF_RANGE, value: T.date.format(new Date(), "yyyy-MM-dd")};
+        option["MergeF8" + no] = {range: CRF_RANGE, value: T.date.format(new Date(), "yyyy-MM-dd")};
         esui.init(this.el, option);
         esui.get("MergeF7" + no).onchange = function(value) {esui.get("MergeF7" + no).setValueAsDate(value);};
         esui.get("MergeF8" + no).onchange = function(value) {esui.get("MergeF8" + no).setValueAsDate(value);};

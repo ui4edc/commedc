@@ -31,26 +31,20 @@
 <div class="row sub">
     <span class="label">开始日期</span>
     <div ui="type:Calendar;id:Start{{no}};{{disabled}}"></div>
-</div>
-<div class="row sub">
-    <span class="label">停止日期</span>
+    <span class="label c">停止日期</span>
     <div ui="type:Calendar;id:End{{no}};{{disabled}}"></div>
 </div>
 <div class="row sub">
     <span class="label">单次用药剂量</span>
-    <input type="text" class="en" value="{{dose}}" ui="type:TextInput;id:Dose{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">剂量单位</span>
-    <input type="text" value="{{unit}}" ui="type:TextInput;id:Unit{{no}};width:182;{{disabled}}" />
+    <input type="text" class="en f mt7 mr0" value="{{dose}}" ui="type:TextInput;id:Dose{{no}};width:182;{{disabled}}" />
+    <span class="label c">剂量单位</span>
+    <input type="text" class="f mt7" value="{{unit}}" ui="type:TextInput;id:Unit{{no}};width:182;{{disabled}}" />
 </div>
 <div class="row sub">
     <span class="label">给药途径</span>
-    <input type="text" class="sug" value="{{way}}" ui="type:TextInput;id:Way{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">给药频次</span>
-    <input type="text" value="{{frequency}}" ui="type:TextInput;id:Frequency{{no}};width:182;{{disabled}}" />
+    <input type="text" class="sug f mt7 mr0" value="{{way}}" ui="type:TextInput;id:Way{{no}};width:182;{{disabled}}" />
+    <span class="label c">给药频次</span>
+    <input type="text" class="f mt7" value="{{frequency}}" ui="type:TextInput;id:Frequency{{no}};width:182;{{disabled}}" />
 </div>
 {{#save}}
 <div class="row sub">

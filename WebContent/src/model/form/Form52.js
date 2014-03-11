@@ -31,6 +31,9 @@ es.Models.Form52 = Backbone.Model.extend({
                 console.log("crf/getDrugUseExam.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
                 me.set({data: response});
             },

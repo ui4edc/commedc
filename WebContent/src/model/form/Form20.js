@@ -32,6 +32,9 @@ es.Models.Form20 = Backbone.Model.extend({
                 console.log("crf/getDeseaseInfo.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
                 me.set({data: response});
             },

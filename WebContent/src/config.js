@@ -33,7 +33,7 @@ var BIRTHDAY_RANGE = {
 };
 
 var CRF_RANGE = {
-    begin: new Date(2014, 0, 1),
+    begin: new Date(2012, 4, 1),
     end: new Date()
 };
 

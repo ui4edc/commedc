@@ -35,6 +35,9 @@ es.Models.Form13 = Backbone.Model.extend({
                 console.log("crf/getPastHistory.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
                 me.set({data: response});
             },

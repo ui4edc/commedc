@@ -9,7 +9,7 @@ es.Models.Form51 = Backbone.Model.extend({
         data: null,
         def: {
 			done: null,
-			examDate: "2014-01-01",
+			examDate: T.date.format(new Date(), "yyyy-MM-dd"),
 			sample: null,
 			sampletxt: null,
 			result: "",
@@ -38,6 +38,9 @@ es.Models.Form51 = Backbone.Model.extend({
                 console.log("crf/getInHospitalExam.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
                 me.set({data: response});
             },

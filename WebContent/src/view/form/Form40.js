@@ -107,8 +107,8 @@ es.Views.Form40 = Backbone.View.extend({
             save: [1]
         }));
         var option = {};
-        option["Start" + no] = {range: CRF_RANGE, value: "2014-01-01"};
-        option["End" + no] = {range: CRF_RANGE, value: "2014-01-01"};
+        option["Start" + no] = {range: CRF_RANGE, value: T.date.format(new Date(), "yyyy-MM-dd")};
+        option["End" + no] = {range: CRF_RANGE, value: T.date.format(new Date(), "yyyy-MM-dd")};
         esui.init(this.el, option);
         
         esui.get("Start" + no).onchange = function(value) {esui.get("Start" + no).setValueAsDate(value);};
@@ -200,8 +200,12 @@ es.Views.Form40 = Backbone.View.extend({
             success: function(response) {
                 console.log("crf/saveDrugCombinationInfo.do-响应:", response);
                 
-                esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 me.updateProgress(response.progress);
+                if (me.form.model.first) {
+                    $("#TreeNode51").click();
+                } else {
+                    esui.Dialog.alert({title: "保存", content: "保存成功！"});
+                }
             },
             mock: MOCK,
             mockData: {

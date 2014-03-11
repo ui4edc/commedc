@@ -228,8 +228,12 @@ es.Views.Form11 = Backbone.View.extend({
             success: function(response) {
                 console.log("crf/saveBasicInfo.do-响应:", response);
                 
-                esui.Dialog.alert({title: "保存", content: "保存成功！"});
                 me.updateProgress(response.progress);
+                if (me.form.model.first) {
+                    $("#TreeNode12").click();
+                } else {
+                    esui.Dialog.alert({title: "保存", content: "保存成功！"});
+                }
             },
             mock: MOCK,
             mockData: {

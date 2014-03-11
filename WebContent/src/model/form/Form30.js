@@ -13,10 +13,10 @@ es.Models.Form30 = Backbone.Model.extend({
 			adrtxt: null,
 			batchNumber: null,
 			dose: null,
-			startDate: "2014-01-01",
+			startDate: T.date.format(new Date(), "yyyy-MM-dd"),
 			startH: null,
 			startM: null,
-			endDate: "2014-01-01",
+			endDate: T.date.format(new Date(), "yyyy-MM-dd"),
 			endH: null,
 			endM: null,
 			solventDose: null,
@@ -84,7 +84,11 @@ es.Models.Form30 = Backbone.Model.extend({
                 console.log("crf/getDrugUseInfo.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
+                
                 $.each(response.data.bottle, function(index, val) {
                     val.no = index + 1;
                 });

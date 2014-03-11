@@ -12,7 +12,7 @@ es.Models.Form70 = Backbone.Model.extend({
             blood: null,
             name: null,
             sex: null,
-            birthday: "2014-01-01",
+            birthday: T.date.format(new Date(), "yyyy-MM-dd"),
             ethic: 0,
             weight: null,
             contact: null,
@@ -32,7 +32,7 @@ es.Models.Form70 = Backbone.Model.extend({
             adr1: "",adr2: "",adr3: "",adr4: "",adr5: "",
             adr6: "",adr7: "",adr8: "",adr9: "",adr10: "",
             adrtxt: null,
-            adrDate: "2014-01-01",
+            adrDate: T.date.format(new Date(), "yyyy-MM-dd"),
             adrH: null,
             adrM: null,
             adrDescription: null,
@@ -44,7 +44,7 @@ es.Models.Form70 = Backbone.Model.extend({
             adrDealRemark: null,
             ending: null,
             endingtxt: null,
-            deathDate: "2014-01-01",
+            deathDate: T.date.format(new Date(), "yyyy-MM-dd"),
             deathReason: null,
             adrStop: null,
             adrRestart: null,
@@ -52,7 +52,7 @@ es.Models.Form70 = Backbone.Model.extend({
             career: null,
             careertxt: null,
             email: null,
-            reportDate: "2014-01-01",
+            reportDate: T.date.format(new Date(), "yyyy-MM-dd"),
             remark: null
         }
     },
@@ -70,13 +70,18 @@ es.Models.Form70 = Backbone.Model.extend({
                 console.log("crf/getADR.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
+                
                 $.each(response.data.drug1, function(index, val) {
                     val.no = index + 1;
                 });
                 $.each(response.data.drug2, function(index, val) {
                     val.no = index + 1;
                 });
+                
                 me.set({data: response});
             },
             mock: MOCK,

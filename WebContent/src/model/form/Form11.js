@@ -18,8 +18,8 @@ es.Models.Form11 = Backbone.Model.extend({
             heightud: false,
             yyks: null,
             yykstxt: null,
-            indate: "2014-01-01",
-            outdate: "2014-01-01",
+            indate: T.date.format(new Date(), "yyyy-MM-dd"),
+            outdate: T.date.format(new Date(), "yyyy-MM-dd"),
             feemode: null,
             feemodetxt: null
         }
@@ -38,6 +38,9 @@ es.Models.Form11 = Backbone.Model.extend({
                 console.log("crf/getBasicInfo.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
+                    me.first = true;
+                } else {
+                    me.first = false;
                 }
                 me.set({data: response});
             },
