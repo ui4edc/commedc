@@ -9,6 +9,8 @@ public class ParameterType {
 	private int menu;
 	private String keyword;
 	private String type;
+	private int selectedItemId;
+	private int baseItemId;
 	
 	public int getId() {
 		return id;
@@ -57,6 +59,18 @@ public class ParameterType {
 	}
 	public void setDrugUseId(int drugUseId) {
 		this.drugUseId = drugUseId;
+	}
+	public int getSelectedItemId() {
+		return selectedItemId;
+	}
+	public void setSelectedItemId(int selectedItemId) {
+		this.selectedItemId = selectedItemId;
+	}
+	public int getBaseItemId() {
+		return baseItemId;
+	}
+	public void setBaseItemId(int baseItemId) {
+		this.baseItemId = baseItemId;
 	}
 	
 	

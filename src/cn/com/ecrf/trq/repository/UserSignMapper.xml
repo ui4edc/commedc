@@ -34,4 +34,17 @@
   <delete id="deleteUserSign" parameterType="string">
   	delete from crf_user_sign where no=#{no}
   </delete>
+  <select id="getUserSignByNo" parameterType="cn.com.ecrf.trq.model.CRFUserSign">
+  	select 
+  		no as no,
+  		lockstatus as lockStatus,
+  		cro_name as croName,
+  		cro_createtime as croCreateTime,
+  		cro_updatetime as croUpdateTime,
+  		cro_signtime as croSignTime,
+  		dm_name as dmName,
+  		dm_signtime as dmSignTime,
+  		progress as progress
+  	from crf_user_sign where no=#{no}
+  </select>
 </mapper>

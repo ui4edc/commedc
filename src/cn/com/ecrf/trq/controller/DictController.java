@@ -19,6 +19,7 @@ import cn.com.ecrf.trq.service.CRFService;
 import cn.com.ecrf.trq.service.DictService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.StringUtils;
+import cn.com.ecrf.trq.vo.crf.ParameterType;
 import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 
 @Controller
@@ -43,40 +44,39 @@ public class DictController {
 	
 	@RequestMapping(value="/dict/getItemList", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> listItemDict(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		List<DictRow> items = dictService.getItemDict(Integer.parseInt(id));
+	public Map<String, Object> listItemDict(ParameterType parameterType, HttpServletRequest request) {
+		List<DictRow> items = dictService.getItemDict(parameterType.getId());
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, items, items.size());
 		return result;
 	}
 	
 	@RequestMapping(value="/dict/getBaseList", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> listBaseDict(HttpServletRequest request) {
-		String dictName = request.getParameter("keyword");
-		List<DictRow> bases = dictService.getBaseDict(dictName);
+	public Map<String, Object> listBaseDict(ParameterType parameterType, HttpServletRequest request) {
+		List<DictRow> bases = dictService.getBaseDict(parameterType.getKeyword());
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, bases, bases.size());
 		return result;
 	}
 	
 	@RequestMapping(value="/dict/addItemToBase", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> addItemToBase(HttpServletRequest request) {
+	public Map<String, Object> addItemToBase(ParameterType parameterType, HttpServletRequest request) {
 		Map<String, Object> result;
 		try{
-			String selectedItemId = request.getParameter("selectedItemId");
-			String baseItemId = request.getParameter("baseItemId");
-			if (!StringUtils.isNotBlank(baseItemId))
+			//String selectedItemId = request.getParameter("selectedItemId");
+			//String baseItemId = request.getParameter("baseItemId");
+			int selectedItemId = parameterType.getSelectedItemId();
+			int baseItemId = parameterType.getBaseItemId();
+			if (selectedItemId == 0)
 				return AjaxReturnUtils.generateAjaxReturn(false, "请选择底层字典");
-			if (!StringUtils.isNotBlank(baseItemId))
+			if (baseItemId == 0)
 				return AjaxReturnUtils.generateAjaxReturn(false, "请选择条目");
-			dictService.addItemToBase(Integer.parseInt(selectedItemId), Integer.parseInt(baseItemId));
+			dictService.addItemToBase(selectedItemId, baseItemId);
 			 result = AjaxReturnUtils.generateAjaxReturn(true, null);
 		}catch(Exception e){
 			logger.error(e.getMessage());
 			result = AjaxReturnUtils.generateAjaxReturn(false, "关联条目到底层数据字典失败");
 		}
-		
 		return result;
 	}
 }

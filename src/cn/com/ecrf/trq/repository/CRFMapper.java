@@ -7,6 +7,7 @@ import cn.com.ecrf.trq.model.ADRCase;
 import cn.com.ecrf.trq.model.CRFFormEnum;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DoubtRecord;
+import cn.com.ecrf.trq.model.DrugCombinationBase;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
@@ -153,6 +154,14 @@ public interface CRFMapper {
 	public int getNextDrugUseId();
 
 	public void insertDrugUseInfoWithDrugUseId(DrugUseCase drugUseCase);
+
+	public DrugCombinationBase getDrugCombinationBase(String no);
+
+	public void updateDrugCombinationBase(
+			DrugCombinationBase drugCombinationBase);
+
+	public void insertDrugCombinationBase(
+			DrugCombinationBase drugCombinationBase);
 	
 
 

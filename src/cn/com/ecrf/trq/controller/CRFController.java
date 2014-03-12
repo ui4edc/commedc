@@ -69,7 +69,7 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> addCRF(ParameterType parameterType, HttpServletRequest request) {
 		String abbr = request.getParameter("abbr");
-		Map<String, Object> result = cRFService.genCRFNo(parameterType.getAbbr());
+		Map<String, Object> result = cRFService.genCRFNo(parameterType.getAbbr(), parameterType.getNo());
 		
 		return result;
 	}

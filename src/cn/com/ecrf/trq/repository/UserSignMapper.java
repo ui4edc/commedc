@@ -8,4 +8,5 @@ public interface UserSignMapper {
 	public void updateUserSign(CRFUserSign userSign);
 	public void updateUserSignDate(CRFUserSign userSign);
 	public void deleteUserSign(String no);
+	public CRFUserSign getUserSignByNo(String no);
 }

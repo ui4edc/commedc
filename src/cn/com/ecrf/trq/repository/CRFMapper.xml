@@ -253,7 +253,8 @@
 			us.cro_updatetime as lastModified,
 			us.progress as progress,
 		 	d.doubter as doubter,
-			count(1) as doubtNumber
+			count(1) as doubtNumber,
+			d.doubt_time as doubtDate
 		 from crf_patient_info p, crf_user_sign us, crf_doubt d where 
 		 p.no=us.no and d.no=p.no
 		 <if test="abbr != null and abbr != ''" >
@@ -845,4 +846,16 @@
 	<delete id="deleteDrugSummary" parameterType="string">
 		delete from crf_drugsummary_info where no=#{no}
 	</delete>
+	<select id="getDrugCombinationBase" parameterType="string" resultType="cn.com.ecrf.trq.model.DrugCombinationBase">
+		select no as no,
+			   hasDrug as hasDrug,
+			   drug as drug
+		from crf_drugcombination_base where no=#{no}
+	</select>
+	<update id="updateDrugCombinationBase" parameterType="cn.com.ecrf.trq.model.DrugCombinationBase">
+		update crf_drugcombination_base set hasDrug=#{hasDrug}, drug=#{drug} where no=#{no}
+	</update>
+	<insert id="insertDrugCombinationBase" parameterType="cn.com.ecrf.trq.model.DrugCombinationBase">
+		insert into crf_drugcombination_base(no, hasDrug, drug) values(#{no}, #{hasDrug}, #{drug});
+	</insert>
 </mapper>

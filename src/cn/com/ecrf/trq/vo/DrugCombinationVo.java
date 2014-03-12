@@ -8,7 +8,7 @@ public class DrugCombinationVo {
 	//观察表编号
 	private String no;
 	
-	private String hasDrug;
+	private int hasDrug;
 	
 	private List<DrugInstanceObject> drug;
 
@@ -36,13 +36,15 @@ public class DrugCombinationVo {
 		this.drug = drug;
 	}
 
-	public String getHasDrug() {
+	public int getHasDrug() {
 		return hasDrug;
 	}
 
-	public void setHasDrug(String hasDrug) {
+	public void setHasDrug(int hasDrug) {
 		this.hasDrug = hasDrug;
 	}
+
+	
 	
 	
 	

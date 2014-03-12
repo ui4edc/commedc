@@ -13,12 +13,16 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import cn.com.ecrf.trq.model.ADRCase;
 import cn.com.ecrf.trq.model.CRFUserSign;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DoubtRecord;
+import cn.com.ecrf.trq.model.DrugCombinationBase;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
@@ -295,24 +299,19 @@ public class CRFService {
 		return null;
 	}
 
-	public Map<String, Object> genCRFNo(String abbr) {
+	public Map<String, Object> genCRFNo(String abbr, String no) {
 		// TODO Auto-generated method stub
-		String no = "";
 		Map<String, Object> result = new HashMap<String, Object>();
 		Subject currentUser = SecurityUtils.getSubject();
 		try {
 			currentUser = SecurityUtils.getSubject();  
 			String userName = (String)currentUser.getPrincipal();
 			User user = userService.findUserByLoginName(userName);
-			Organization organization = userService.getOrganization(user.getOrganizationId());
+			/*Organization organization = userService.getOrganization(user.getOrganizationId());
 			int  seq = cRFMapper.getNextSeq(organization.getId());
 			DecimalFormat df = new DecimalFormat("0000");
 			String subNo = df.format(seq);
-			no = organization.getCode() + "-" + subNo;
-/*			Map<String, Object> condition = new HashMap<String, Object>();
-			condition.put("no", no);
-			condition.put("abbr", abbr);
-			condition.put("id", 0);*/
+			no = organization.getCode() + "-" + subNo;*/
 			PatientInfoCase patientInfoCase = new PatientInfoCase();
 			patientInfoCase.setNo(no);
 			patientInfoCase.setAbbr(abbr);
@@ -325,14 +324,20 @@ public class CRFService {
 			userSign.setProgress(0);
 			userSignMapper.insertUserSign(userSign);
 			int id = patientInfoCase.getId();
-			cRFMapper.updateNextSeq(organization.getId());
+			//cRFMapper.updateNextSeq(organization.getId());
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 			result.put("no", no);
 			result.put("id", id);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
-			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+			result = AjaxReturnUtils.generateAjaxReturn(false, "观察表编号已存在");
+			/*if (e instanceof DuplicateKeyException){
+				result = AjaxReturnUtils.generateAjaxReturn(false, "观察表编号已存在");
+			}else{
+				result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+			}*/
+			
+			
 		}
 		return result;
 	}
@@ -638,6 +643,16 @@ public class CRFService {
 		Map<String, Object> result;
 		try{
 			List<DrugInstanceObject> drugs = drugCombinationVo.getDrug();
+			DrugCombinationBase drugCombinationBase = new DrugCombinationBase();
+			drugCombinationBase.setHasDrug(drugCombinationVo.getHasDrug());	
+			drugCombinationBase.setId(drugCombinationVo.getId());
+			drugCombinationBase.setNo(drugCombinationVo.getNo());
+			DrugCombinationBase dbBase = cRFMapper.getDrugCombinationBase(drugCombinationVo.getNo());
+			if (dbBase != null){
+				cRFMapper.updateDrugCombinationBase(drugCombinationBase);
+			}else{
+				cRFMapper.insertDrugCombinationBase(drugCombinationBase);
+			}
 			for (int i=0;drugs != null && i<drugs.size();i++){
 				DrugCombinationCase drugCombinationCase =  convertorService.convertDrugCombinationCaseFromViewToModel(drugs.get(i), drugCombinationVo.getNo());
 				//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
@@ -738,7 +753,10 @@ public class CRFService {
 				userSign.setDmSignTime(new Date());
 				userSign.setDmName(userName);
 			}else{
-				userSign.setLockStatus(LockStatusUtils.submit);
+				CRFUserSign dbUserSign = userSignMapper.getUserSignByNo(patientInfoCase.getNo());
+				if (dbUserSign.getLockStatus() == 0)
+					dbUserSign.setLockStatus(LockStatusUtils.submit);
+				userSign.setLockStatus(dbUserSign.getLockStatus());
 				userSign.setCroSignTime(new Date());
 				userSign.setCroName(userName);
 			}
@@ -757,8 +775,14 @@ public class CRFService {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
 		try{
-			List<DrugCombinationCase> drugCombinationCases = cRFMapper.getDrugCombinationList(Integer.parseInt(id));
 			DrugCombinationVo drugCombinationVo = new DrugCombinationVo();
+			PatientInfoCase patientInfo = cRFMapper.getBasicInfo(Integer.parseInt(id));
+			DrugCombinationBase drugCombinationBase = cRFMapper.getDrugCombinationBase(patientInfo.getNo());
+			if (drugCombinationBase != null){
+				drugCombinationVo.setHasDrug(drugCombinationBase.getHasDrug());
+			}
+			List<DrugCombinationCase> drugCombinationCases = cRFMapper.getDrugCombinationList(Integer.parseInt(id));
+			
 			drugCombinationVo.setId(Integer.parseInt(id));
 			drugCombinationVo.setNo(no);
 			List<DrugInstanceObject> drugInstanceObjects = new ArrayList<DrugInstanceObject>();
