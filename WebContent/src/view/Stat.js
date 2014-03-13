@@ -39,6 +39,8 @@ es.Views.Stat = Backbone.View.extend({
         $.Mustache.load("asset/tpl/stat.html").done(function() {
             me.$el.mustache("tpl-stat");
             
+            esui.init();
+            
             //创建菜单
             me.menu = new Tree({
                 container: ".sidebar",
@@ -63,16 +65,24 @@ es.Views.Stat = Backbone.View.extend({
         
         switch (this.statType) {
             case 1:
-                this.$('.chart').css({height: Math.max(400, data.categories.length * 50)});
+                this.$('.chart').css({height: Math.max(400, data.categories.length * 50)}).show();
+                this.$('.stat-grid').hide();
                 this.renderHospitalChart(data);
                 break;
             case 2:
-                this.$('.chart').css({height: 400});
+                this.$('.chart').css({height: 400}).show();
+                this.$('.stat-grid').hide();
                 this.renderAgeChart(data);
                 break;
             case 3:
-                this.$('.chart').css({height: 400});
+                this.$('.chart').css({height: 400}).show();
+                this.$('.stat-grid').hide();
                 this.renderSexChart(data);
+                break;
+            case 4:
+                this.$('.chart').hide();
+                this.$('.stat-grid').show();
+                this.renderADE(data);
         }
     },
     
@@ -143,5 +153,62 @@ es.Views.Stat = Backbone.View.extend({
                 data: data
             }]
         });
+    },
+    
+    renderADE: function(data) {
+        var ade = esui.get("Grid");
+        
+        if (data == null || data.length == 0) {
+            this.$(".no-result").show();
+            $(ade.main).hide();
+        } else {
+            this.$(".no-result").hide();
+            $(ade.main).show();
+            
+            ade.datasource = data;
+            ade.fields = [
+                {
+                    field: "no",
+                    title: "观察表编号",
+                    content: function(item) {
+                        return $.Mustache.render("tpl-stat-ade-detail", {
+                            id: item.id,
+                            no: item.no
+                        });
+                    }
+                },
+                {
+                    field: "age",
+                    title: "年龄",
+                    sortable: true,
+                    content: function(item) {return item.age;}
+                },
+                {
+                    field: "sex",
+                    title: "性别",
+                    sortable: true,
+                    content: function(item) {return item.sex;}
+                },
+                {
+                    field: "ethic",
+                    title: "民族",
+                    sortable: true,
+                    content: function(item) {return item.ethic;}
+                },
+                {
+                    field: "diagnosis",
+                    title: "性别",
+                    sortable: true,
+                    content: function(item) {return item.diagnosis;}
+                },
+                {
+                    field: "ade",
+                    title: "不良反应/事件名称",
+                    sortable: true,
+                    content: function(item) {return item.ade;}
+                }
+            ];
+            ade.render();
+        }
     }
 });

@@ -142,7 +142,8 @@ var STAT_MENU = [
         children: [
             {name: "医院统计", id: 1},
             {name: "年龄统计", id: 2},
-            {name: "性别统计", id: 3}
+            {name: "性别统计", id: 3},
+            {name: "ADE", id: 4}
         ]
     }
 ];

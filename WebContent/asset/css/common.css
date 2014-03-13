@@ -37,6 +37,7 @@ h1 .btn:hover{background:#3498db}
 .content{margin-left:200px; border-left:1px #ccc solid}
 .crf-form{padding:30px; min-height:400px}
 .chart{height:400px; padding-right:30px}
+.stat-grid{min-height:200px; padding: 10px}
 #UploadContainer{padding:0 22px}
 
 /*进度条*/

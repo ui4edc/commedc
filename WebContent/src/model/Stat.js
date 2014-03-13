@@ -39,6 +39,14 @@ es.Models.Stat = Backbone.Model.extend({
                     {name: "男", number: 400},
                     {name: "女", number: 600}
                 ];
+                break;
+            case 4:
+                method = "";
+                formater = me.formatADE;
+                mockData = [
+                    {id: 1, no: "333-1234", age: 50, sex: "男", ethic: "汉族", diagnosis: "", ade: ""},
+                    {id: 2, no: "333-1235", age: 60, sex: "女", ethic: "汉族", diagnosis: "", ade: ""}
+                ];
         }
         
         util.ajax.run({
@@ -94,5 +102,9 @@ es.Models.Stat = Backbone.Model.extend({
             pieData.push([val.name, val.number]);
         });
         return pieData;
+    },
+    
+    formatADE: function(data) {
+        return data;
     }
 });
