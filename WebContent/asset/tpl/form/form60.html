@@ -30,9 +30,59 @@
     </div>
 </div>
 <div class="row">
-    <span class="label">是否出现ADE</span>
-    <input type="radio" hidefocus="true" title="是" name="adr" value="1" ui="type:Radio;id:ADR1;{{disabled}}" />
-    <input type="radio" hidefocus="true" title="否" name="adr" value="2" ui="type:Radio;id:ADR2;{{disabled}}" />
+    <span class="label wlabel">是否出现过敏反映症状</span>
+    <input type="radio" hidefocus="true" title="是" name="adr" value="1" ui="type:Radio;id:HasADR1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="否" name="adr" value="2" ui="type:Radio;id:HasADR2;{{disabled}}" />
+</div>
+<div class="row sub auto adr" style="display:none">
+    <div>
+        <input type="checkbox" hidefocus="true" title="消化系统" name="adr" value="1" ui="type:CheckBox;id:ADR1;{{disabled}}" />：
+        <input type="checkbox" hidefocus="true" title="腹泻" name="adr1" value="1" ui="type:CheckBox;id:ADR1_1;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="腹痛" name="adr1" value="2" ui="type:CheckBox;id:ADR1_2;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="恶心" name="adr1" value="3" ui="type:CheckBox;id:ADR1_3;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="呕吐" name="adr1" value="4" ui="type:CheckBox;id:ADR1_4;{{disabled}}" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="神经系统" name="adr" value="2" ui="type:CheckBox;id:ADR2;{{disabled}}" />：
+        <input type="checkbox" hidefocus="true" title="头晕" name="adr2" value="1" ui="type:CheckBox;id:ADR2_1;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="头痛" name="adr2" value="2" ui="type:CheckBox;id:ADR2_2;{{disabled}}" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="皮肤系统" name="adr" value="3" ui="type:CheckBox;id:ADR3;{{disabled}}" />：
+        <input type="checkbox" hidefocus="true" title="皮疹" name="adr3" value="1" ui="type:CheckBox;id:ADR3_1;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="瘙痒" name="adr3" value="2" ui="type:CheckBox;id:ADR3_2;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="潮红" name="adr3" value="3" ui="type:CheckBox;id:ADR3_3;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="荨麻疹" name="adr3" value="4" ui="type:CheckBox;id:ADR3_4;{{disabled}}" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="呼吸系统损害" name="adr" value="4" ui="type:CheckBox;id:ADR4;{{disabled}}" />：
+        <input type="checkbox" hidefocus="true" title="咳嗽" name="adr4" value="1" ui="type:CheckBox;id:ADR4_1;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="呼吸困难" name="adr4" value="2" ui="type:CheckBox;id:ADR4_2;{{disabled}}" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="心血管系统损害" name="adr" value="5" ui="type:CheckBox;id:ADR5;{{disabled}}" />：
+        <input type="checkbox" hidefocus="true" title="心悸" name="adr5" value="1" ui="type:CheckBox;id:ADR5_1;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="胸闷" name="adr5" value="2" ui="type:CheckBox;id:ADR5_2;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="紫绀" name="adr5" value="3" ui="type:CheckBox;id:ADR5_3;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="血管性水肿" name="adr5" value="4" ui="type:CheckBox;id:ADR5_4;{{disabled}}" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="全身性损害" name="adr" value="6" ui="type:CheckBox;id:ADR6;{{disabled}}" />：
+        <input type="checkbox" hidefocus="true" title="寒颤" name="adr6" value="1" ui="type:CheckBox;id:ADR6_1;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="高热" name="adr6" value="2" ui="type:CheckBox;id:ADR6_2;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="抽搐" name="adr6" value="3" ui="type:CheckBox;id:ADR6_3;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="喉头水肿" name="adr6" value="4" ui="type:CheckBox;id:ADR6_4;{{disabled}}" />
+        <input type="checkbox" hidefocus="true" title="休克" name="adr6" value="4" ui="type:CheckBox;id:ADR6_5;{{disabled}}" />
+    </div>
+    <div>
+        <input type="checkbox" hidefocus="true" title="其他" name="adr" value="7" ui="type:CheckBox;id:ADR7;{{disabled}}" />：
+        <input type="text" value="{{data.adrtxt}}" ui="type:TextInput;id:CustomADRName;width:200;{{disabled}}" />
+    </div>
+</div>
+<div class="row">
+    <span class="label wlabel">是否出现其他不良反映事件</span>
+    <input type="radio" hidefocus="true" title="是" name="other-adr" value="1" ui="type:Radio;id:HasOtherADR1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="否" name="other-adr" value="2" ui="type:Radio;id:HasOtherADR2;{{disabled}}" />
 </div>
 <div class="row">
     <span class="label">药师干预</span>

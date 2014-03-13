@@ -128,7 +128,7 @@ es.Views.CRF = Backbone.View.extend({
      * 切换表单
      */
     onMenuClick: function(id, target) {
-        target.find("span").fadeOut(3000);
+        //target.find("span").fadeOut(3000);
         
         var me = es.main;
         me.destroyForm();

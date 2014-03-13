@@ -67,9 +67,48 @@ es.Views.Form60 = Backbone.View.extend({
             case 6: esui.get("Ending6").setChecked(true); break;
             case 7: esui.get("Ending7").setChecked(true);
         }
-        switch (data.adr) {
-            case 1: esui.get("ADR1").setChecked(true); break;
-            case 2: esui.get("ADR2").setChecked(true);
+        switch (data.hasAdr) {
+            case 1: esui.get("HasADR1").setChecked(true); break;
+            case 2: esui.get("HasADR2").setChecked(true);
+        }
+        if (data.adr != "") {
+            $.each(data.adr.split(","), function(index, val) {
+                esui.get("ADR" + val).setChecked(true);
+            });
+        }
+        if (data.adr1 != "") {
+            $.each(data.adr1.split(","), function(index, val) {
+                esui.get("ADR1_" + val).setChecked(true);
+            });
+        }
+        if (data.adr2 != "") {
+            $.each(data.adr2.split(","), function(index, val) {
+                esui.get("ADR2_" + val).setChecked(true);
+            });
+        }
+        if (data.adr3 != "") {
+            $.each(data.adr3.split(","), function(index, val) {
+                esui.get("ADR3_" + val).setChecked(true);
+            });
+        }
+        if (data.adr4 != "") {
+            $.each(data.adr4.split(","), function(index, val) {
+                esui.get("ADR4_" + val).setChecked(true);
+            });
+        }
+        if (data.adr5 != "") {
+            $.each(data.adr5.split(","), function(index, val) {
+                esui.get("ADR5_" + val).setChecked(true);
+            });
+        }
+        if (data.adr6 != "") {
+            $.each(data.adr6.split(","), function(index, val) {
+                esui.get("ADR6_" + val).setChecked(true);
+            });
+        }
+        switch (data.hasOtherAdr) {
+            case 1: esui.get("HasOtherADR1").setChecked(true); this.$(".adr").show(); break;
+            case 2: esui.get("HasOtherADR2").setChecked(true);
         }
         switch (data.unreasonable) {
             case 1: esui.get("Unreasonable1").setChecked(true); break;
@@ -95,11 +134,13 @@ es.Views.Form60 = Backbone.View.extend({
         esui.get("Ending6").onclick = function() {me.$(".death").hide();};
         esui.get("Ending7").onclick = function() {me.$(".death").hide();};
         
+        esui.get("HasADR1").onclick = function() {me.$(".adr").show();};
+        esui.get("HasADR2").onclick = function() {me.$(".adr").hide();};
         esui.get("Intervention1").onclick = function() {me.$(".intervention").show();};
         esui.get("Intervention2").onclick = function() {me.$(".intervention").hide();};
         
-        esui.get("ADR1").onclick = function() {
-            esui.Dialog.alert({title: "提示", content: "别忘记继续填写ADE噢！"});
+        esui.get("HasOtherADR1").onclick = function() {
+            esui.Dialog.alert({title: "提示", content: "别忘记继续填写ADE！"});
         };
         
         if (es.main.canDoubt) {
@@ -127,7 +168,16 @@ es.Views.Form60 = Backbone.View.extend({
            ending: parseInt(esui.get("Ending1").getGroup().getValue(), 10),
            deathDate: esui.get("DeathDate").getValue(),
            deathReason: $.trim(esui.get("DeathReason").getValue()),
-           adr: parseInt(esui.get("ADR1").getGroup().getValue(), 10),
+           hasAdr: parseInt(esui.get("HasADR1").getGroup().getValue(), 10),
+           adr: esui.get("ADR1").getGroup().getValue(),
+           adr1: esui.get("ADR1_1").getGroup().getValue(),
+           adr2: esui.get("ADR2_1").getGroup().getValue(),
+           adr3: esui.get("ADR3_1").getGroup().getValue(),
+           adr4: esui.get("ADR4_1").getGroup().getValue(),
+           adr5: esui.get("ADR5_1").getGroup().getValue(),
+           adr6: esui.get("ADR6_1").getGroup().getValue(),
+           adrtxt: $.trim(esui.get("CustomADRName").getValue()),
+           hasOtherAdr: parseInt(esui.get("HasOtherADR1").getGroup().getValue(), 10),
            unreasonable: parseInt(esui.get("Unreasonable1").getGroup().getValue(), 10),
            intervention: parseInt(esui.get("Intervention1").getGroup().getValue(), 10),
            interventiontxt: $.trim(esui.get("DeathReason").getValue()),
@@ -155,8 +205,34 @@ es.Views.Form60 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请填写直接死因"});
            return;
        }
-       if (isNaN(data.adr)) {
-           esui.Dialog.alert({title: "提示", content: "请选择是否出现ADE"});
+       if (isNaN(data.hasAdr)) {
+           esui.Dialog.alert({title: "提示", content: "请选择是否出现过敏反映症状"});
+           return;
+       }
+       if (data.hasAdr == 1) {
+           if (data.adr == "") {
+               esui.Dialog.alert({title: "提示", content: "请选择过敏反映症状"});
+               return;
+           }
+           if (data.adr.indexOf("7") != -1 && data.adrtxt == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写其他过敏反映症状"});
+               return;
+           }
+           if (data.adr.indexOf("7") == -1) {
+               data.adrtxt = "";
+           }
+       } else {
+           data.adr = "";
+           data.adr1 = "";
+           data.adr2 = "";
+           data.adr3 = "";
+           data.adr4 = "";
+           data.adr5 = "";
+           data.adr6 = "";
+           data.adrtxt = "";
+       }
+       if (isNaN(data.hasOtherAdr)) {
+           esui.Dialog.alert({title: "提示", content: "请选择是否出现其他不良反映事件"});
            return;
        }
        if (isNaN(data.unreasonable)) {
