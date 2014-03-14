@@ -33,6 +33,7 @@ es.Views.Form53 = Backbone.View.extend({
         var me = this;
         $.Mustache.load("asset/tpl/form/form53.html").done(function() {
             me.$el.mustache("tpl-form53", {
+                data: data.data,
                 disabled: es.main.editable ? "" : "disabled:true",
                 save: es.main.editable ? [1] : []
             });
@@ -41,318 +42,37 @@ es.Views.Form53 = Backbone.View.extend({
     },
     
     initCtrl: function(data) {
-        esui.init();
+        esui.init(document.body, {
+            ExamDate: {
+                range: CRF_RANGE,
+                value: data.examDate
+            }
+        });
         
         //赋值
-        var me = this,
-            editable = es.main.editable;
-        
-        var table1 = esui.get("Exam1");
-        table1.datasource = data.data1;
-        table1.fields = [
-            {
-                field: "f1",
-                title: "检查日期<br>（YYYY-MM-DD）",
-                editable: editable,
-                edittype: "string",
-                width: 120,
-                stable: true,
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "体温（℃）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "呼吸（次/分）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f3;}
-            },
-            {
-                field: "f4",
-                title: "收缩压（mmHg）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f4;}
-            },
-            {
-                field: "f5",
-                title: "舒张压（mmHg）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f5;}
-            },
-            {
-                field: "f6",
-                title: "心率（次/分）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f6;}
-            }
-        ];
-        table1.render();
-        
-        var table2 = esui.get("Exam2");
-        table2.datasource = data.data2;
-        table2.fields = [
-            {
-                field: "f1",
-                title: "检查日期（YYYY-MM-DD）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "空腹血糖FPG（mmol/L）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "餐后血糖PPG（mmol/L）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f3;}
-            }
-        ];
-        table2.render();
-        
-        var table3 = esui.get("Exam3");
-        table3.datasource = data.data3;
-        table3.fields = [
-            {
-                field: "f1",
-                title: "检查日期<br>（YYYY-MM-DD）",
-                editable: editable,
-                edittype: "string",
-                width: 120,
-                stable: true,
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "血红蛋白HB<br>（g/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "红细胞RBC<br>（×10(12)/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f3;}
-            },
-            {
-                field: "f4",
-                title: "白细胞WBC<br>（×10(9)/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f4;}
-            },
-            {
-                field: "f5",
-                title: "中性粒细胞NEUT<br>（%）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f5;}
-            },
-            {
-                field: "f6",
-                title: "中性粒细胞NEUT<br>（×10(9)/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f6;}
-            },
-            {
-                field: "f7",
-                title: "血小板PLT<br>（×10(9)/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f7;}
-            }
-        ];
-        table3.render();
-        
-        var table4 = esui.get("Exam4");
-        table4.datasource = data.data4;
-        table4.fields = [
-            {
-                field: "f1",
-                title: "检查日期<br>（YYYY-MM-DD）",
-                editable: editable,
-                edittype: "string",
-                width: 120,
-                stable: true,
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "谷丙转氨酶ALT<br>（U/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "谷草转氨酶AST<br>（U/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f3;}
-            },
-            {
-                field: "f4",
-                title: "碱性磷酸酶ALP<br>(U/L)",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f4;}
-            },
-            {
-                field: "f5",
-                title: "γ-谷氨酰转肽酶γ-GT<br>（U/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f5;}
-            },
-            {
-                field: "f6",
-                title: "总胆红素TBIL<br>（umol/L）",
-                editable: editable,
-                edittype: "string",
-                width: 100,
-                stable: true,
-                content: function(item) {return item.f6;}
-            }
-        ];
-        table4.render();
-        
-        var table5 = esui.get("Exam5");
-        table5.datasource = data.data5;
-        table5.fields = [
-            {
-                field: "f1",
-                title: "检查日期（YYYY-MM-DD）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "尿素氮BUN（mmol/L）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "血肌酐CR（umol/L）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f3;}
-            }
-        ];
-        table5.render();
-        
-        var table6 = esui.get("Exam6");
-        table6.datasource = data.data6;
-        table6.fields = [
-            {
-                field: "f1",
-                title: "检查日期（YYYY-MM-DD）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f1;}
-            },
-            {
-                field: "f2",
-                title: "是否正常（是/否）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f2;}
-            },
-            {
-                field: "f3",
-                title: "异常心电图描述（心率 _ 次/分）",
-                editable: editable,
-                edittype: "string",
-                content: function(item) {return item.f3;}
-            }
-        ];
-        table6.render();
-        
-        if (data.done == 1) {
-            esui.get("Done1").setChecked(true);
-        } else {
-            this.$(".exam").hide();
+        var me = this;
+        switch (data.done) {
+            case 1: esui.get("Done1").setChecked(true); this.$(".exam").show(); break;
+            case 2: esui.get("Done2").setChecked(true);
+        }
+        switch (data.normal) {
+            case 1: esui.get("Normal1").setChecked(true); break;
+            case 2: esui.get("Normal2").setChecked(true);
         }
         
         //事件
         esui.get("Done1").onclick = function() {me.$(".exam").show();};
         esui.get("Done2").onclick = function() {me.$(".exam").hide();};
-        
-        esui.get("Exam1").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam2").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam3").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam4").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam5").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
-        esui.get("Exam6").onedit = function (value, options, editor) {
-            this.datasource[options.rowIndex][options.field.field] = $.trim(value);
-            this.setCellText($.trim(value), options.rowIndex, options.columnIndex);
-            editor.stop();
-        };
+        esui.get("ExamDate").onchange = function(value) {esui.get("ExamDate").setValueAsDate(value);};
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
         if (es.main.editable) {
             esui.get("Save").onclick = this.save;
+        }
+        if (!es.main.editable) {
+            esui.get("ExamDate").disable();
         }
     },
     
@@ -362,22 +82,42 @@ es.Views.Form53 = Backbone.View.extend({
        var data = {
            id: me.crfId,
            no: me.model.get("data").no,
-           data1: esui.get("Exam1").datasource,
-           data2: esui.get("Exam2").datasource,
-           data3: esui.get("Exam3").datasource,
-           data4: esui.get("Exam4").datasource,
-           data5: esui.get("Exam5").datasource,
-           data6: esui.get("Exam6").datasource
+           
+           done: parseInt(esui.get("Done1").getGroup().getValue(), 10),
+           examDate: esui.get("ExamDate").getValue(),
+           normal: parseInt(esui.get("Normal1").getGroup().getValue(), 10),
+           description: $.trim(esui.get("Description").getValue())
        };
        
-       console.log("crf/saveOutHospitalExam.do-请求", data);
+       //验证
+       if (isNaN(data.done)) {
+           esui.Dialog.alert({title: "提示", content: "请选择是否做了心电图"});
+           return;
+       } else if (data.done == 2) {
+           data.examDate = null;
+           data.normal = 0;
+           data.description = "";
+       } else {
+           if (isNaN(data.normal)) {
+               esui.Dialog.alert({title: "提示", content: "请选择是否正常"});
+               return;
+           }
+           if (data.normal == 1) {
+               data.description = "";
+           } else if (data.description == "") {
+               esui.Dialog.alert({title: "提示", content: "请填写异常心电图描述"});
+               return;
+           }
+       }
+       
+       console.log("crf/save心电图-请求", data);
        
        util.ajax.run({
-            url: "crf/saveOutHospitalExam.do",
+            url: "",
             data: JSON.stringify(data),
             json: true,
             success: function(response) {
-                console.log("crf/saveOutHospitalExam.do-响应:", response);
+                console.log("crf/save心电图.do-响应:", response);
                 
                 me.updateProgress(response.progress);
                 if (me.form.model.first) {

@@ -251,11 +251,11 @@ es.Views.Form60 = Backbone.View.extend({
        }
        var floatPattern = /^\d+(\.\d+)?$/;
        if (data.treatmentCost != "" && !floatPattern.test(data.treatmentCost)) {
-           esui.Dialog.alert({title: "提示", content: "治疗总费用应为数字"});
+           esui.Dialog.alert({title: "提示", content: "请填写治疗总费用"});
            return;
        }
-       if (data.drugCost != "" && !floatPattern.test(data.drugCost)) {
-           esui.Dialog.alert({title: "提示", content: "药品总费用应为数字"});
+       if (!floatPattern.test(data.drugCost)) {
+           esui.Dialog.alert({title: "提示", content: "请填写药品总费用"});
            return;
        }
        if (!floatPattern.test(data.trqCost)) {

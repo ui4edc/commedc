@@ -125,11 +125,11 @@ var CRF_MENU = [
     {name: "用药情况", id: 30},
     {name: "合并用药", id: 40},
     {
-        name: "实验检查",
+        name: "辅助检查",
         children: [
-            {name: "入院检查", id: 51},
-            {name: "用药中检查", id: 52},
-            {name: "出院检查", id: 53}
+            {name: "体格检查", id: 51},
+            {name: "实验室检查", id: 52},
+            {name: "心电图", id: 53}
         ]
     },
     {name: "用药小结", id: 60},

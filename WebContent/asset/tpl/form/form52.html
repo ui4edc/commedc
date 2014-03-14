@@ -5,49 +5,120 @@
     <input type="radio" hidefocus="true" title="做" name="done" value="1" ui="type:Radio;id:Done1;{{disabled}}" />
     <input type="radio" hidefocus="true" title="未做" name="done" value="2" ui="type:Radio;id:Done2;{{disabled}}" checked />
 </div>
-<div class="exam">
-<h3>体格检查</h3>
-<div ui="type:Table;id:Exam1;editable:1"></div>
-{{#save}}
+<div class="exam" style="display:none">
+<h3>病原学检查</h3>
 <div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add1 add-btn">添加一行</a>
+    <span class="label">送检日期</span>
+    <div ui="type:Calendar;id:ExamDay;{{disabled}}"></div>
 </div>
-{{/save}}
+<div class="row">
+    <span class="label">送检样本</span>
+    <input type="radio" hidefocus="true" title="血液" name="sample" value="1" ui="type:Radio;id:Sample1;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="痰液" name="sample" value="2" ui="type:Radio;id:Sample2;{{disabled}}" />
+    <input type="radio" hidefocus="true" title="其他" name="sample" value="3" ui="type:Radio;id:Sample3;{{disabled}}" />
+    <input type="text" value="{{data.sampletxt}}" ui="type:TextInput;id:SampleName;width:100;{{disabled}}" />
+</div>
+<div class="row">
+    <span class="label">病原学结果</span>
+    <input type="checkbox" hidefocus="true" title="细菌培养" name="result" value="1" ui="type:CheckBox;id:Result1;{{disabled}}" />&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" value="{{data.resulttxt1}}" ui="type:TextInput;id:Result1Content;width:200;{{disabled}}" />
+</div>
+<div class="row sub">
+    <input type="checkbox" hidefocus="true" title="支原体抗体" name="result" value="2" ui="type:CheckBox;id:Result2;{{disabled}}" />
+    <input type="text" value="{{data.resulttxt2}}" ui="type:TextInput;id:Result2Content;width:200;{{disabled}}" />
+</div>
+<div class="row sub">
+    <input type="checkbox" hidefocus="true" title="病毒咽拭子" name="result" value="3" ui="type:CheckBox;id:Result3;{{disabled}}" />
+    <input type="text" value="{{data.resulttxt3}}" ui="type:TextInput;id:Result3Content;width:200;{{disabled}}" />
+</div>
 <h3>血糖测定</h3>
-<div ui="type:Table;id:Exam2;editable:1"></div>
-{{#save}}
-<div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add2 add-btn">添加一行</a>
+{{#data.data2}}
+<div class="row sub">
+    <span class="label">检查日期</span>
+    <div ui="type:Calendar;id:E2F1;{{disabled}}"></div>
 </div>
-{{/save}}
+<div class="row sub">
+    <span class="label">空腹血糖FPG</span>
+    <input type="text" class="en" value="{{f2}}" ui="type:TextInput;id:E2F2;width:100;{{disabled}}" /> <span>mmol/L</span>
+</div>
+<div class="row sub">
+    <span class="label">餐后血糖PPG</span>
+    <input type="text" class="en" value="{{f3}}" ui="type:TextInput;id:E2F3;width:100;{{disabled}}" /> <span>mmol/L</span>
+</div>
+{{/data.data2}}
 <h3>血常规检查 </h3>
-<div ui="type:Table;id:Exam3;editable:1"></div>
-{{#save}}
-<div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add3 add-btn">添加一行</a>
+{{#data.data3}}
+<div class="row sub">
+    <span class="label">检查日期</span>
+    <div ui="type:Calendar;id:E3F1;{{disabled}}"></div>
 </div>
-{{/save}}
+<div class="row sub">
+    <span class="label">血红蛋白HB</span>
+    <input type="text" class="en" value="{{f2}}" ui="type:TextInput;id:E3F2;width:100;{{disabled}}" /> <span>g/L</span>
+</div>
+<div class="row sub">
+    <span class="label">红细胞RBC</span>
+    <input type="text" class="en" value="{{f3}}" ui="type:TextInput;id:E3F3;width:100;{{disabled}}" /> <span>×10(12)/L</span>
+</div>
+<div class="row sub">
+    <span class="label">白细胞WBC</span>
+    <input type="text" class="en" value="{{f4}}" ui="type:TextInput;id:E3F4;width:100;{{disabled}}" /> <span>×10(9)/L</span>
+</div>
+<div class="row sub">
+    <span class="label">中性粒细胞NEUT</span>
+    <input type="text" class="en" value="{{f5}}" ui="type:TextInput;id:E3F5;width:100;{{disabled}}" /> <span>%</span>
+</div>
+<div class="row sub">
+    <span class="label">中性粒细胞NEUT</span>
+    <input type="text" class="en" value="{{f6}}" ui="type:TextInput;id:E3F6;width:100;{{disabled}}" /> <span>×10(9)/L</span>
+</div>
+<div class="row sub">
+    <span class="label">血小板PLT</span>
+    <input type="text" class="en" value="{{f7}}" ui="type:TextInput;id:E3F7;width:100;{{disabled}}" /> <span>×10(9)/L</span>
+</div>
+{{/data.data3}}
 <h3>实验室检查（肝功五项） </h3>
-<div ui="type:Table;id:Exam4;editable:1"></div>
-{{#save}}
-<div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add4 add-btn">添加一行</a>
+{{#data.data4}}
+<div class="row sub">
+    <span class="label">检查日期</span>
+    <div ui="type:Calendar;id:E4F1;{{disabled}}"></div>
 </div>
-{{/save}}
+<div class="row sub">
+    <span class="label">谷丙转氨酶ALT</span>
+    <input type="text" class="en" value="{{f2}}" ui="type:TextInput;id:E4F2;width:100;{{disabled}}" /> <span>U/L</span>
+</div>
+<div class="row sub">
+    <span class="label">谷草转氨酶AST</span>
+    <input type="text" class="en" value="{{f3}}" ui="type:TextInput;id:E4F3;width:100;{{disabled}}" /> <span>U/L</span>
+</div>
+<div class="row sub">
+    <span class="label">碱性磷酸酶ALP</span>
+    <input type="text" class="en" value="{{f4}}" ui="type:TextInput;id:E4F4;width:100;{{disabled}}" /> <span>U/L</span>
+</div>
+<div class="row sub">
+    <span class="label wlabel">γ-谷氨酰转肽酶γ-GT</span>
+    <input type="text" class="en" value="{{f5}}" ui="type:TextInput;id:E5F5;width:100;{{disabled}}" /> <span>U/L</span>
+</div>
+<div class="row sub">
+    <span class="label">总胆红素TBIL</span>
+    <input type="text" class="en" value="{{f6}}" ui="type:TextInput;id:E4F6;width:100;{{disabled}}" /> <span>umol/L</span>
+</div>
+{{/data.data4}}
 <h3>实验室检查（肾功两项） </h3>
-<div ui="type:Table;id:Exam5;editable:1"></div>
-{{#save}}
-<div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add5 add-btn">添加一行</a>
+{{#data.data5}}
+<div class="row sub">
+    <span class="label">检查日期</span>
+    <div ui="type:Calendar;id:E5F1;{{disabled}}"></div>
 </div>
-{{/save}}
-<h3>心电图检查 </h3>
-<div ui="type:Table;id:Exam6;editable:1"></div>
-{{#save}}
-<div class="row">
-    <a href="javascript:void(0)" hidefocus="true" class="add6 add-btn">添加一行</a>
+<div class="row sub">
+    <span class="label">尿素氮BUN</span>
+    <input type="text" class="en" value="{{f2}}" ui="type:TextInput;id:E5F2;width:100;{{disabled}}" /> <span>umol/L</span>
 </div>
-{{/save}}
+<div class="row sub">
+    <span class="label">血肌酐CR</span>
+    <input type="text" class="en" value="{{f3}}" ui="type:TextInput;id:E5F3;width:100;{{disabled}}" /> <span>umol/L</span>
+</div>
+{{/data.data5}}
 </div>
 
 {{#save}}

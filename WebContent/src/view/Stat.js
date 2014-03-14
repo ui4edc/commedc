@@ -16,6 +16,7 @@ es.Views.Stat = Backbone.View.extend({
     },
     
     destroy: function() {
+        esui.dispose();
         this.destroyChart();
         this.menu && this.menu.destroy();
         this.model.unbind();

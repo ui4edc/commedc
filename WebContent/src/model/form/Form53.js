@@ -8,13 +8,10 @@ es.Models.Form53 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-			done: 2,
-			data1: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
-			data2: [{f1:"",f2:"",f3:""}],
-			data3: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:""}],
-			data4: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
-			data5: [{f1:"",f2:"",f3:""}],
-			data6: [{f1:"",f2:"",f3:""}]
+			done: null,
+			examDate: T.date.format(new Date(), "yyyy-MM-dd"),
+			normal: null,
+			description: null
 		}
     },
     
@@ -22,13 +19,13 @@ es.Models.Form53 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("crf/getOutHospitalExam.do-请求", args);
+        console.log("get心电图-请求", args);
         
         util.ajax.run({
-            url: "crf/getOutHospitalExam.do",
+            url: "",
             data: args,
             success: function(response) {
-                console.log("crf/getOutHospitalExam.do-响应", response);
+                console.log("get心电图-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
                     me.first = true;
