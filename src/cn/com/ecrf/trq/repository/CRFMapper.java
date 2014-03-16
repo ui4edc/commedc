@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.ecrf.trq.model.ADRCase;
+import cn.com.ecrf.trq.model.BodyExamCase;
 import cn.com.ecrf.trq.model.CRFFormEnum;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DoubtRecord;
@@ -11,12 +12,14 @@ import cn.com.ecrf.trq.model.DrugCombinationBase;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
+import cn.com.ecrf.trq.model.ECGExamCase;
 import cn.com.ecrf.trq.model.LabExamCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
 import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
 import cn.com.ecrf.trq.model.list.ListCondition;
 import cn.com.ecrf.trq.model.list.ListReturn;
+import cn.com.ecrf.trq.model.stat.ADEStat;
 import cn.com.ecrf.trq.model.stat.AgeStat;
 import cn.com.ecrf.trq.model.stat.HospitalStat;
 
@@ -162,6 +165,26 @@ public interface CRFMapper {
 
 	public void insertDrugCombinationBase(
 			DrugCombinationBase drugCombinationBase);
+
+	public BodyExamCase getBodyExam(int id);
+
+	public void updateBodyExam(BodyExamCase bodyExamCase);
+
+	public void insertBodyExam(BodyExamCase bodyExamCase);
+
+	public ECGExamCase getECGExam(int id);
+
+	public void updateECGExam(ECGExamCase eCGExamCase);
+
+	public void insertECGExam(ECGExamCase eCGExamCase);
+
+	public LabExamCase getDrugUseExam(int id);
+
+	public void updateDrugUseExam(LabExamCase labExamCase);
+
+	public void insertDrugUseExam(LabExamCase labExamCase);
+
+	public List<ADEStat> getADEStatByHospital(Map<String, Object> condition);
 	
 
 

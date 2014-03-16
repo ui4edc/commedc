@@ -19,13 +19,13 @@ es.Models.Form53 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("get心电图-请求", args);
+        console.log("crf/getECGExam.do-请求", args);
         
         util.ajax.run({
-            url: "",
+            url: "crf/getECGExam.do",
             data: args,
             success: function(response) {
-                console.log("get心电图-响应", response);
+                console.log("crf/getECGExam.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
                     me.first = true;

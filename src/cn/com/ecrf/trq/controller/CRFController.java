@@ -37,7 +37,9 @@ import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
 import cn.com.ecrf.trq.vo.crf.ParameterType;
+import cn.com.ecrf.trq.vo.lab.BodyExamVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
+import cn.com.ecrf.trq.vo.lab.ECGExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 
 @Controller
@@ -254,25 +256,9 @@ public class CRFController {
 		return result;
 	}	
 	
-	@RequestMapping(value="/crf/getInHospitalExam", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getInHospitalExam(ParameterType parameterType, HttpServletRequest request) {
-		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getInHospitalExam(parameterType.getId());
-		return result;
-	}
-	
-	@RequestMapping(value="/crf/saveInHospitalExam", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> saveInHospitalExam(@RequestBody InHospitalExamVo inHospitalExamVo, HttpServletRequest request) {
-		Map<String, Object> result = cRFService.saveInHospitalExam(inHospitalExamVo);
-		return result;
-	}	
-	
 	@RequestMapping(value="/crf/getDrugUseExam", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getDrugUseExam(ParameterType parameterType, HttpServletRequest request) {
-		String id = request.getParameter("id");
 		Map<String, Object> result = cRFService.getDrugUseExam(parameterType.getId());
 		return result;
 	}
@@ -281,21 +267,6 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> saveDrugUseExam(@RequestBody DrugUseExamVo drugUseExamVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.saveDrugUseExam(drugUseExamVo);
-		return result;
-	}
-	
-	@RequestMapping(value="/crf/getOutHospitalExam", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getOutHospitalExam(ParameterType parameterType, HttpServletRequest request) {
-		String id = request.getParameter("id");
-		Map<String, Object> result = cRFService.getOutHospitalExam(parameterType.getId());
-		return result;
-	}
-	
-	@RequestMapping(value="/crf/saveOutHospitalExam", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> saveOutHospitalExam(@RequestBody DrugUseExamVo drugUseExamVo, HttpServletRequest request) {
-		Map<String, Object> result = cRFService.saveOutHospitalExam(drugUseExamVo);
 		return result;
 	}
 	
@@ -347,6 +318,34 @@ public class CRFController {
 	@ResponseBody
 	public Map<String, Object> addADR(ParameterType parameterType, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.addADR(parameterType.getNo());
+		return result;
+	}
+	
+	@RequestMapping(value="crf/getBodyExam", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getBodyExam(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.getBodyExam(parameterType.getId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/saveBodyExam", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveBodyExam(@RequestBody BodyExamVo bodyExamVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.saveBodyExam(bodyExamVo);
+		return result;
+	}
+	
+	@RequestMapping(value="crf/getECGExam", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getECGExam(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.getECGExam(parameterType.getId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/saveECGExam", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveECGExam(@RequestBody ECGExamVo eCGExamVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.saveECGExam(eCGExamVo);
 		return result;
 	}
 	

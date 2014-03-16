@@ -44,4 +44,11 @@ public class StatController {
 		Map<String, Object> result = statService.getHospitalStat();
 		return result;
 	}
+	
+	@RequestMapping(value="/stat/getADEStat", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getADEStat(HttpServletRequest request) {
+		Map<String, Object> result = statService.getADEStat();
+		return result;
+	}
 }

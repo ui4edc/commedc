@@ -1,14 +1,13 @@
-package cn.com.ecrf.trq.vo.lab;
-/**
- * 心电图检查
- * @author user
- *
- */
-public class ECGExamVo {
+package cn.com.ecrf.trq.model;
+
+import java.util.Date;
+
+public class ECGExamCase {
+
 	private int id;
 	private String no;
 	private String normal;
-	private String examDate;
+	private Date examDateDate;
 	private int done;
 	private String description;
 	
@@ -30,12 +29,6 @@ public class ECGExamVo {
 	public void setNormal(String normal) {
 		this.normal = normal;
 	}
-	public String getExamDate() {
-		return examDate;
-	}
-	public void setExamDate(String examDate) {
-		this.examDate = examDate;
-	}
 	public int getDone() {
 		return done;
 	}
@@ -48,8 +41,12 @@ public class ECGExamVo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+	public Date getExamDateDate() {
+		return examDateDate;
+	}
+	public void setExamDateDate(Date examDateDate) {
+		this.examDateDate = examDateDate;
+	}
 	
 	
 }

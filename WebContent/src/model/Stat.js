@@ -41,7 +41,7 @@ es.Models.Stat = Backbone.Model.extend({
                 ];
                 break;
             case 4:
-                method = "";
+                method = "stat/getADEStat.do";
                 formater = me.formatADE;
                 mockData = [
                     {id: 1, no: "333-1234", age: 50, sex: "男", ethic: "汉族", diagnosis: "", ade: ""},

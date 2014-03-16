@@ -3,6 +3,7 @@ package cn.com.ecrf.trq.repository;
 import java.util.List;
 import java.util.Map;
 
+import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
 

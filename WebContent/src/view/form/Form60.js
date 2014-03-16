@@ -180,7 +180,7 @@ es.Views.Form60 = Backbone.View.extend({
            hasOtherAdr: parseInt(esui.get("HasOtherADR1").getGroup().getValue(), 10),
            unreasonable: parseInt(esui.get("Unreasonable1").getGroup().getValue(), 10),
            intervention: parseInt(esui.get("Intervention1").getGroup().getValue(), 10),
-           interventiontxt: $.trim(esui.get("DeathReason").getValue()),
+           interventiontxt: $.trim(esui.get("Intervention").getValue()),
            treatmentCost: $.trim(esui.get("Index1").getValue()),
            drugCost: $.trim(esui.get("Index2").getValue()),
            trqCost: $.trim(esui.get("Index3").getValue()),

@@ -6,15 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.PatientInfoCase;
+import cn.com.ecrf.trq.model.User;
+import cn.com.ecrf.trq.model.stat.ADEStat;
 import cn.com.ecrf.trq.model.stat.AgeStat;
 import cn.com.ecrf.trq.model.stat.HospitalStat;
 import cn.com.ecrf.trq.repository.CRFMapper;
 import cn.com.ecrf.trq.repository.OrganizationMapper;
+import cn.com.ecrf.trq.repository.UserMapper;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 
 @Service
@@ -24,6 +29,8 @@ public class StatService {
 	private CRFMapper cRFMapper;
 	@Autowired
 	private OrganizationMapper organizationMapper;
+	@Autowired
+	private UserMapper userMapper;
 
 	public Map<String, Object> getAgeStat() {
 		// TODO Auto-generated method stub
@@ -111,6 +118,26 @@ public class StatService {
 			TreeMap<String, HospitalStat> sortMap = new TreeMap<String, HospitalStat>(map);
 			hospitalStatVos = new ArrayList<HospitalStat>(sortMap.values());
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, hospitalStatVos);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	public Map<String, Object> getADEStat() {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			Subject subject = SecurityUtils.getSubject();
+			String userName = (String) subject.getPrincipal();
+			User user = userMapper.findUserByLoginName(userName);
+			Map<String, Object> condition = new HashMap<String, Object>();
+			if (user.getOrganizationId() > 0){
+				condition.put("id", user.getOrganizationId());
+			}
+			List<ADEStat> adeStats = cRFMapper.getADEStatByHospital(condition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null, adeStats);
 		}catch(Exception e){
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());

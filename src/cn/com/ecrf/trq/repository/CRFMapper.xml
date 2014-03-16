@@ -683,12 +683,21 @@
 	</update>
 	<select id="getDrugSummary" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugSummaryCase">
 		select 	d.no as no,
-				d.startDate as startDate,
-				d.endDate as endDate,
+				d.startDate as startDateDate,
+				d.endDate as endDateDate,
 				d.ending as ending,
 				d.deathReason as deathReason,
-				d.deathDate as deathDate,
+				d.deathDate as deathDateDate,
+				d.hasAdr as hasAdr,
 				d.adr as adr,
+				d.adr1 as adr1,
+				d.adr2 as adr2,
+				d.adr3 as adr3,
+				d.adr4 as adr4,
+				d.adr5 as adr5,
+				d.adr6 as adr6,
+				d.adrtxt as adrtxt,
+				d.hasOtherAdr as hasOtherAdr,
 				d.unreasonable as unreasonable,
 				d.intervention as intervention,
 				d.interventiontxt as interventiontxt,
@@ -700,14 +709,14 @@
 	</select>
 	<insert id="insertDrugSummary" parameterType="cn.com.ecrf.trq.model.DrugSummaryCase">
 		insert into crf_drugsummary_info (no, startDate, endDate, ending, deathReason, deathDate,
-		adr, unreasonable, intervention, interventiontxt, treatmentCost, drugCost, trqCost, remark)
-		values (#{no}, #{startDate}, #{endDate}, #{ending}, #{deathReason}, #{deathDate}, 
-		#{adr}, #{unreasonable}, #{intervention}, #{interventiontxt}, #{treatmentCost}, #{drugCost},
+		hasAdr, adr, adr1, adr2, adr3, adr4, adr5, adr6, adrtxt, hasOtherAdr, unreasonable, intervention, interventiontxt, treatmentCost, drugCost, trqCost, remark)
+		values (#{no}, #{startDateDate}, #{endDateDate}, #{ending}, #{deathReason}, #{deathDateDate}, 
+		#{hasAdr}, #{adr}, #{adr1},#{adr2},#{adr3},#{adr4},#{adr5},#{adr6}, #{adrtxt}, #{hasOtherAdr}, #{unreasonable}, #{intervention}, #{interventiontxt}, #{treatmentCost}, #{drugCost},
 		#{trqCost}, #{remark});
 	</insert>
 	<update id="updateDrugSummary" parameterType="cn.com.ecrf.trq.model.DrugSummaryCase">
-		update crf_drugsummary_info set no=#{no}, startDate=#{startDate}, endDate=#{endDate},
-		ending=#{ending},deathReason=#{deathReason}, deathDate=#{deathDate}, adr=#{adr}, unreasonable=#{unreasonable},
+		update crf_drugsummary_info set no=#{no}, startDate=#{startDateDate}, endDate=#{endDateDate},
+		ending=#{ending},deathReason=#{deathReason}, deathDate=#{deathDateDate}, hasAdr=#{hasAdr}, adr=#{adr}, adr1=#{adr1}, adr2=#{adr2},adr3=#{adr3},adr4=#{adr4},adr5=#{adr5},adr6=#{adr6},adrtxt=#{adrtxt}, hasOtherAdr=#{hasOtherAdr}, unreasonable=#{unreasonable},
 		intervention=#{intervention}, interventiontxt=#{interventiontxt}, treatmentCost=#{treatmentCost},
 		drugCost=#{drugCost}, trqCost=#{trqCost}, remark=#{remark} where no=#{no}
 	</update>

@@ -16,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.ADRCase;
+import cn.com.ecrf.trq.model.BodyExamCase;
 import cn.com.ecrf.trq.model.CRFFormEnum;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
 import cn.com.ecrf.trq.model.DoubtRecord;
 import cn.com.ecrf.trq.model.DrugCombinationCase;
 import cn.com.ecrf.trq.model.DrugSummaryCase;
 import cn.com.ecrf.trq.model.DrugUseCase;
+import cn.com.ecrf.trq.model.ECGExamCase;
 import cn.com.ecrf.trq.model.LabExamCase;
 import cn.com.ecrf.trq.model.PastHistoryCase;
 import cn.com.ecrf.trq.model.PatientInfoCase;
@@ -46,7 +48,9 @@ import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
 import cn.com.ecrf.trq.vo.crf.BanDrug;
+import cn.com.ecrf.trq.vo.lab.BodyExamVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
+import cn.com.ecrf.trq.vo.lab.ECGExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 import cn.com.ecrf.trq.vo.lab.PlainExamVo;
 
@@ -649,71 +653,55 @@ public class ConvertorService {
 		return labExamCase;
 	}
 
-	public InHospitalExamVo convertOtherLabExamToInHospitalExam(
-			DrugUseExamVo drugUseExamVo) {
+	public DrugUseExamVo convertDrugUseExamFromModelToView(
+			LabExamCase labExamCase) {
 		// TODO Auto-generated method stub
-		InHospitalExamVo inHospitalExamVo = new InHospitalExamVo();
-		inHospitalExamVo.setData1(drugUseExamVo.getData1());
-		inHospitalExamVo.setData2(drugUseExamVo.getData2());
-		inHospitalExamVo.setData3(drugUseExamVo.getData3());
-		inHospitalExamVo.setData4(drugUseExamVo.getData4());
-		inHospitalExamVo.setData5(drugUseExamVo.getData5());
-		inHospitalExamVo.setData6(drugUseExamVo.getData6());
-		inHospitalExamVo.setDone(drugUseExamVo.getDone());
-		inHospitalExamVo.setNo(drugUseExamVo.getNo());
-		inHospitalExamVo.setId(drugUseExamVo.getId());
-		return inHospitalExamVo;
+		DrugUseExamVo drugUseExamVo = null;
+		try {
+			if (labExamCase != null){
+				drugUseExamVo = new DrugUseExamVo();
+				BeanUtils.copyProperties(drugUseExamVo, labExamCase);
+			}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return drugUseExamVo;
 	}
 	
-	public DrugUseExamVo convertInHospitalExamToOtherLabExam(
-			InHospitalExamVo inHospitalExamVo) {
+	public LabExamCase convertDrugUseExamFromViewToModel(
+			DrugUseExamVo drugUseExamVo) {
 		// TODO Auto-generated method stub
-		DrugUseExamVo drugUseExamVo = new DrugUseExamVo();
-		drugUseExamVo.setData1(inHospitalExamVo.getData1());
-		drugUseExamVo.setData2(inHospitalExamVo.getData2());
-		drugUseExamVo.setData3(inHospitalExamVo.getData3());
-		drugUseExamVo.setData4(inHospitalExamVo.getData4());
-		drugUseExamVo.setData5(inHospitalExamVo.getData5());
-		drugUseExamVo.setData6(inHospitalExamVo.getData6());
-		drugUseExamVo.setDone(inHospitalExamVo.getDone());
-		drugUseExamVo.setId(inHospitalExamVo.getId());
-		drugUseExamVo.setNo(inHospitalExamVo.getNo());
-		return drugUseExamVo;
+		LabExamCase labExamCase = new LabExamCase();
+		try {
+			BeanUtils.copyProperties(labExamCase, drugUseExamVo);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return labExamCase;
 	}
 
 	public DrugSummaryVo convertDrugSummaryFromModelToView(
 			DrugSummaryCase drugSummaryCase) {
 		// TODO Auto-generated method stub
 		DrugSummaryVo drugSummaryVo = new DrugSummaryVo();
-		FormEnumObject adrObj = new FormEnumObject(drugSummaryCase.getAdr(), FormEnumValue.YES_NO);
-		drugSummaryVo.setAdr(convertContentToID(adrObj));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		if (drugSummaryCase.getDeathDate() != null){
-			String deathDate = sdf.format(drugSummaryCase.getDeathDate());
-			drugSummaryVo.setDeathDate(deathDate);
-		}
-		drugSummaryVo.setDeathReason(drugSummaryCase.getDeathReason());
-		drugSummaryVo.setDrugCost(drugSummaryCase.getDrugCost());
-		if (drugSummaryCase.getStartDate() != null){
-			String startDate = sdf.format(drugSummaryCase.getStartDate());
-			drugSummaryVo.setStartDate(startDate);
-		}
-		if (drugSummaryCase.getEndDate() != null){
-			String endDate = sdf.format(drugSummaryCase.getEndDate());
-			drugSummaryVo.setEndDate(endDate);
-		}
-		FormEnumObject endObj = new FormEnumObject(drugSummaryCase.getEnding(), FormEnumValue.DM_ENDING);
-		drugSummaryVo.setEnding(convertContentToID(endObj));
-		drugSummaryVo.setId(drugSummaryCase.getId());
-		FormEnumObject interventionObj = new FormEnumObject(drugSummaryCase.getIntervention(), FormEnumValue.YES_NO);
-		drugSummaryVo.setIntervention(convertContentToID(interventionObj));
-		drugSummaryVo.setInterventiontxt(drugSummaryCase.getInterventiontxt());
-		drugSummaryVo.setNo(drugSummaryCase.getNo());
-		drugSummaryVo.setRemark(drugSummaryCase.getRemark());
-		drugSummaryVo.setTreatmentCost(drugSummaryCase.getTreatmentCost());
-		drugSummaryVo.setTrqCost(drugSummaryCase.getTrqCost());
-		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryCase.getUnreasonable(), FormEnumValue.HAS_OR_NOT);
-		drugSummaryVo.setUnreasonable(convertContentToID(unreasonableObj));
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			BeanUtils.copyProperties(drugSummaryCase, drugSummaryVo);
+			if (drugSummaryCase.getDeathDateDate() != null){
+				drugSummaryVo.setDeathDate(sdf.format(drugSummaryCase.getDeathDateDate()));
+			}
+			if (drugSummaryCase.getStartDateDate() != null){
+				drugSummaryVo.setStartDate(sdf.format(drugSummaryCase.getStartDateDate()));
+			}
+			if (drugSummaryCase.getEndDateDate() != null){
+				drugSummaryVo.setEndDate(sdf.format(drugSummaryCase.getEndDateDate()));
+			}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return drugSummaryVo;
 	}
 
@@ -721,54 +709,25 @@ public class ConvertorService {
 			DrugSummaryVo drugSummaryVo) {
 		// TODO Auto-generated method stub
 		DrugSummaryCase drugSummaryCase = new DrugSummaryCase();
-		FormEnumObject adrObj = new FormEnumObject(drugSummaryVo.getAdr(), null, FormEnumValue.YES_NO);
-		drugSummaryCase.setAdr(convertIDToContent(adrObj));
-		if (StringUtils.isNotBlank(drugSummaryVo.getDeathDate())){
+		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			try {
-				Date deathDate = sdf.parse(drugSummaryVo.getDeathDate());
-				drugSummaryCase.setDeathDate(deathDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			BeanUtils.copyProperties(drugSummaryCase, drugSummaryVo);
+			if (StringUtils.isNotBlank(drugSummaryVo.getDeathDate())){
+				drugSummaryCase.setDeathDateDate(sdf.parse(drugSummaryVo.getDeathDate()));
 			}
-			
-		}
-		drugSummaryCase.setDeathReason(drugSummaryVo.getDeathReason());
-		drugSummaryCase.setDrugCost(drugSummaryVo.getDrugCost());
-		if (StringUtils.isNotBlank(drugSummaryVo.getEndDate())){
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			try {
-				Date endDate = sdf.parse(drugSummaryVo.getEndDate());
-				drugSummaryCase.setEndDate(endDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (StringUtils.isNotBlank(drugSummaryVo.getEndDate())){
+				drugSummaryCase.setEndDateDate(sdf.parse(drugSummaryVo.getEndDate()));
 			}
-		}
-		FormEnumObject endingObj = new FormEnumObject(drugSummaryVo.getEnding(), null, FormEnumValue.DM_ENDING);
-		drugSummaryCase.setEnding(convertIDToContent(endingObj));
-		drugSummaryCase.setId(drugSummaryVo.getId());
-		FormEnumObject interventionObj = new FormEnumObject(drugSummaryVo.getIntervention(), null, FormEnumValue.YES_NO);
-		drugSummaryCase.setIntervention(convertIDToContent(interventionObj));
-		drugSummaryCase.setInterventiontxt(drugSummaryVo.getInterventiontxt());
-		drugSummaryCase.setNo(drugSummaryVo.getNo());
-		drugSummaryCase.setRemark(drugSummaryVo.getRemark());
-		if (StringUtils.isNotBlank(drugSummaryVo.getStartDate())){
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			try {
-				Date startDate = sdf.parse(drugSummaryVo.getStartDate());
-				drugSummaryCase.setStartDate(startDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (StringUtils.isNotBlank(drugSummaryVo.getStartDate())){
+				drugSummaryCase.setStartDateDate(sdf.parse(drugSummaryVo.getStartDate()));
 			}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		drugSummaryCase.setTreatmentCost(drugSummaryVo.getTreatmentCost());
-		drugSummaryCase.setTrqCost(drugSummaryVo.getTrqCost());
-		FormEnumObject unreasonableObj = new FormEnumObject(drugSummaryVo.getUnreasonable(), null, FormEnumValue.HAS_OR_NOT);
-		drugSummaryCase.setUnreasonable(convertIDToContent(unreasonableObj));
-		//drugSummaryCase.setEnding(ending);
 		return drugSummaryCase;
 	}
 
@@ -958,6 +917,108 @@ public class ConvertorService {
 		doubtRecordVo.setDoubtId(record.getDoubtId());
 		return doubtRecordVo;
 	}
+
+	public BodyExamVo convertBodyExamFromModelToView(BodyExamCase bodyExamCase) {
+		// TODO Auto-generated method stub
+		BodyExamVo bodyExamVo = null;
+		try {
+				if (bodyExamCase != null){
+					bodyExamVo = new BodyExamVo();
+					BeanUtils.copyProperties(bodyExamCase, bodyExamVo);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					if (bodyExamCase.getExamDateDate() != null){
+						bodyExamVo.setExamDate(sdf.format(bodyExamVo.getExamDate()));
+					}
+				}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return bodyExamVo;
+	}
+
+	public BodyExamCase convertBodyExamFromViewToModel(BodyExamVo bodyExamVo) {
+		// TODO Auto-generated method stub
+		BodyExamCase bodyExamCase = null;
+		try {
+				bodyExamCase = new BodyExamCase();
+				BeanUtils.copyProperties(bodyExamCase, bodyExamVo);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				if (StringUtils.isNotBlank(bodyExamVo.getExamDate())){
+					bodyExamCase.setExamDateDate(sdf.parse(bodyExamVo.getExamDate()));
+				}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bodyExamCase;
+	}
+
+
+
+	public ECGExamVo convertECGExamFromModelToView(ECGExamCase eCGExamCase) {
+		// TODO Auto-generated method stub
+		ECGExamVo eCGExamVo = null;
+		
+		try {
+				if (eCGExamCase != null){
+					eCGExamVo = new ECGExamVo();
+					BeanUtils.copyProperties(eCGExamVo, eCGExamCase);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					if (eCGExamCase.getExamDateDate() != null){
+						eCGExamVo.setExamDate(sdf.format(eCGExamCase.getExamDateDate()));
+					}
+				}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return eCGExamVo;
+	}
+
+
+
+	public ECGExamCase convertECGExamFromViewToModel(ECGExamVo eCGExamVo) {
+		// TODO Auto-generated method stub
+		ECGExamCase eCGExamCase = null;
+		try {
+				if (eCGExamVo != null){
+					eCGExamCase = new ECGExamCase();
+					BeanUtils.copyProperties(eCGExamCase, eCGExamVo);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					if (StringUtils.isNotBlank(eCGExamVo.getExamDate())){
+						eCGExamCase.setExamDateDate(sdf.parse(eCGExamVo.getExamDate()));
+					}
+				}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return eCGExamCase;
+	}
+
+
+
+
+
+
+
+
+
+
+	/*public void convertFromDrugSummaryToAdr(DrugSummaryCase drugSummaryCase,
+			ADRVo adrVo) {
+		// TODO Auto-generated method stub
+		adrVo.setAdr(drugSummaryCase.getAdr());
+		adrVo.setAdr1(drugSummaryCase.getAdr1());
+	
+	}*/
 
 
 

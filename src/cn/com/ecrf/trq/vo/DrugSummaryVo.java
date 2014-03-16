@@ -19,8 +19,17 @@ public class DrugSummaryVo {
 	private String deathReason;
 	//死亡时间
 	private String deathDate;
+	private int hasAdr;
 	//是否出现ADR
-	private int adr;
+	private String adr = "";
+	private String adr1 = "";
+	private String adr2 = "";
+	private String adr3 = "";
+	private String adr4 = "";
+	private String adr5 = "";
+	private String adr6 = "";
+	private String adrtxt;
+	private int hasOtherAdr;
 	//有无痰热清注射液用药不合理的现象
 	private int unreasonable;
 	//药师是否进行相关干预
@@ -77,12 +86,7 @@ public class DrugSummaryVo {
 	public void setDeathDate(String deathDate) {
 		this.deathDate = deathDate;
 	}
-	public int getAdr() {
-		return adr;
-	}
-	public void setAdr(int adr) {
-		this.adr = adr;
-	}
+	
 	public int getUnreasonable() {
 		return unreasonable;
 	}
@@ -124,6 +128,66 @@ public class DrugSummaryVo {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public int getHasAdr() {
+		return hasAdr;
+	}
+	public void setHasAdr(int hasAdr) {
+		this.hasAdr = hasAdr;
+	}
+	public String getAdr() {
+		return adr;
+	}
+	public void setAdr(String adr) {
+		this.adr = adr;
+	}
+	public String getAdr1() {
+		return adr1;
+	}
+	public void setAdr1(String adr1) {
+		this.adr1 = adr1;
+	}
+	public String getAdr2() {
+		return adr2;
+	}
+	public void setAdr2(String adr2) {
+		this.adr2 = adr2;
+	}
+	public String getAdr3() {
+		return adr3;
+	}
+	public void setAdr3(String adr3) {
+		this.adr3 = adr3;
+	}
+	public String getAdr4() {
+		return adr4;
+	}
+	public void setAdr4(String adr4) {
+		this.adr4 = adr4;
+	}
+	public String getAdr5() {
+		return adr5;
+	}
+	public void setAdr5(String adr5) {
+		this.adr5 = adr5;
+	}
+	public String getAdr6() {
+		return adr6;
+	}
+	public void setAdr6(String adr6) {
+		this.adr6 = adr6;
+	}
+	public String getAdrtxt() {
+		return adrtxt;
+	}
+	public void setAdrtxt(String adrtxt) {
+		this.adrtxt = adrtxt;
+	}
+	public int getHasOtherAdr() {
+		return hasOtherAdr;
+	}
+	public void setHasOtherAdr(int hasOtherAdr) {
+		this.hasOtherAdr = hasOtherAdr;
 	}
 	
 	

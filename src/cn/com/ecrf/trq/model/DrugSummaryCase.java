@@ -8,21 +8,30 @@ public class DrugSummaryCase {
 	//观察表编号
 	private String no;
 	//病程首次用药时间
-	private Date startDate;
+	private Date startDateDate;
 	//病程末次用药时间
-	private Date endDate;
+	private Date endDateDate;
 	//痰热清注射液用药结局
-	private String ending;
+	private int ending;
 	//直接死因
 	private String deathReason;
 	//死亡时间
-	private Date deathDate;
+	private Date deathDateDate;
+	private int hasAdr;
 	//是否出现ADR
 	private String adr;
+	private String adr1;
+	private String adr2;
+	private String adr3;
+	private String adr4;
+	private String adr5;
+	private String adr6;
+	private String adrtxt;
+	private int hasOtherAdr;
 	//有无痰热清注射液用药不合理的现象
-	private String unreasonable;
+	private int unreasonable;
 	//药师是否进行相关干预
-	private String intervention;
+	private int intervention;
 	//药师如何进行干预
 	private String interventiontxt;
 	//治疗总费用
@@ -46,22 +55,22 @@ public class DrugSummaryCase {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public Date getStartDate() {
-		return startDate;
+	public Date getStartDateDate() {
+		return startDateDate;
 	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setStartDateDate(Date startDateDate) {
+		this.startDateDate = startDateDate;
 	}
-	public Date getEndDate() {
-		return endDate;
+	public Date getEndDateDate() {
+		return endDateDate;
 	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setEndDateDate(Date endDateDate) {
+		this.endDateDate = endDateDate;
 	}
-	public String getEnding() {
+	public int getEnding() {
 		return ending;
 	}
-	public void setEnding(String ending) {
+	public void setEnding(int ending) {
 		this.ending = ending;
 	}
 	public String getDeathReason() {
@@ -70,11 +79,17 @@ public class DrugSummaryCase {
 	public void setDeathReason(String deathReason) {
 		this.deathReason = deathReason;
 	}
-	public Date getDeathDate() {
-		return deathDate;
+	public Date getDeathDateDate() {
+		return deathDateDate;
 	}
-	public void setDeathDate(Date deathDate) {
-		this.deathDate = deathDate;
+	public void setDeathDateDate(Date deathDateDate) {
+		this.deathDateDate = deathDateDate;
+	}
+	public int getHasAdr() {
+		return hasAdr;
+	}
+	public void setHasAdr(int hasAdr) {
+		this.hasAdr = hasAdr;
 	}
 	public String getAdr() {
 		return adr;
@@ -82,16 +97,64 @@ public class DrugSummaryCase {
 	public void setAdr(String adr) {
 		this.adr = adr;
 	}
-	public String getUnreasonable() {
+	public String getAdr1() {
+		return adr1;
+	}
+	public void setAdr1(String adr1) {
+		this.adr1 = adr1;
+	}
+	public String getAdr2() {
+		return adr2;
+	}
+	public void setAdr2(String adr2) {
+		this.adr2 = adr2;
+	}
+	public String getAdr3() {
+		return adr3;
+	}
+	public void setAdr3(String adr3) {
+		this.adr3 = adr3;
+	}
+	public String getAdr4() {
+		return adr4;
+	}
+	public void setAdr4(String adr4) {
+		this.adr4 = adr4;
+	}
+	public String getAdr5() {
+		return adr5;
+	}
+	public void setAdr5(String adr5) {
+		this.adr5 = adr5;
+	}
+	public String getAdr6() {
+		return adr6;
+	}
+	public void setAdr6(String adr6) {
+		this.adr6 = adr6;
+	}
+	public String getAdrtxt() {
+		return adrtxt;
+	}
+	public void setAdrtxt(String adrtxt) {
+		this.adrtxt = adrtxt;
+	}
+	public int getHasOtherAdr() {
+		return hasOtherAdr;
+	}
+	public void setHasOtherAdr(int hasOtherAdr) {
+		this.hasOtherAdr = hasOtherAdr;
+	}
+	public int getUnreasonable() {
 		return unreasonable;
 	}
-	public void setUnreasonable(String unreasonable) {
+	public void setUnreasonable(int unreasonable) {
 		this.unreasonable = unreasonable;
 	}
-	public String getIntervention() {
+	public int getIntervention() {
 		return intervention;
 	}
-	public void setIntervention(String intervention) {
+	public void setIntervention(int intervention) {
 		this.intervention = intervention;
 	}
 	public String getInterventiontxt() {
@@ -124,6 +187,8 @@ public class DrugSummaryCase {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	
+	
 	
 	
 }

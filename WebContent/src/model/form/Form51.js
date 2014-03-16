@@ -22,13 +22,13 @@ es.Models.Form51 = Backbone.Model.extend({
         var me = this;
         me.set({data : null}, {silent : true});
         
-        console.log("crf/get体格检查.do-请求", args);
+        console.log("crf/getBodyExam.do-请求", args);
         
         util.ajax.run({
-            url: "",
+            url: "crf/getBodyExam.do",
             data: args,
             success: function(response) {
-                console.log("crf/get体格检查.do-响应", response);
+                console.log("crf/getBodyExam.do-响应", response);
                 if (response.data == null) {
                     response.data = me.get("def");
                     me.first = true;

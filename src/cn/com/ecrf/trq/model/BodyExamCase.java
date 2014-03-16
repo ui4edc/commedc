@@ -1,19 +1,16 @@
-package cn.com.ecrf.trq.vo.lab;
+package cn.com.ecrf.trq.model;
 
-/**
- * 体格检查
- * @author user
- *
- */
-public class BodyExamVo {
-	//
+import java.util.Date;
+
+public class BodyExamCase {
+
 	private int id;
 	
 	private String no;
 	
 	private int done;
 	
-	private String examDate;
+	private Date examDateDate;
 	
 	private String breathe;
 	
@@ -49,12 +46,12 @@ public class BodyExamVo {
 		this.done = done;
 	}
 
-	public String getExamDate() {
-		return examDate;
+	public Date getExamDateDate() {
+		return examDateDate;
 	}
 
-	public void setExamDate(String examDate) {
-		this.examDate = examDate;
+	public void setExamDateDate(Date examDateDate) {
+		this.examDateDate = examDateDate;
 	}
 
 	public String getBreathe() {
@@ -96,9 +93,6 @@ public class BodyExamVo {
 	public void setTemperature(String temperature) {
 		this.temperature = temperature;
 	}
-	
-	
-	
 	
 	
 }
