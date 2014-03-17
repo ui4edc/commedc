@@ -8,13 +8,18 @@ es.Models.Form52 = Backbone.Model.extend({
     defaults: {
         data: null,
         def: {
-			done: 2,
-			data1: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
-			data2: [{f1:"",f2:"",f3:""}],
-			data3: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:"",f7:""}],
-			data4: [{f1:"",f2:"",f3:"",f4:"",f5:"",f6:""}],
-			data5: [{f1:"",f2:"",f3:""}],
-			data6: [{f1:"",f2:"",f3:""}]
+			done: null,
+			examDate: T.date.format(new Date(), "yyyy-MM-dd"),
+			sample: null,
+			sampletxt: null,
+			result: "",
+			resulttxt1: "",
+			resulttxt2: "",
+			resulttxt3: "",
+			data1: [],
+			data2: [],
+			data3: [],
+			data4: []
 		}
     },
     
@@ -35,6 +40,18 @@ es.Models.Form52 = Backbone.Model.extend({
                 } else {
                     me.first = false;
                 }
+                $.each(response.data.data1, function(index, val) {
+                    val.no = index + 1;
+                });
+                $.each(response.data.data2, function(index, val) {
+                    val.no = index + 1;
+                });
+                $.each(response.data.data3, function(index, val) {
+                    val.no = index + 1;
+                });
+                $.each(response.data.data4, function(index, val) {
+                    val.no = index + 1;
+                });
                 me.set({data: response});
             },
             mock: MOCK,

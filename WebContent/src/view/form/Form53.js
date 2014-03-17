@@ -114,8 +114,7 @@ es.Views.Form53 = Backbone.View.extend({
        
        util.ajax.run({
             url: "",
-            data: JSON.stringify(data),
-            json: true,
+            data: data,
             success: function(response) {
                 console.log("crf/save心电图.do-响应:", response);
                 

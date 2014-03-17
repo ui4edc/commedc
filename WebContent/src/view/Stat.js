@@ -198,7 +198,7 @@ es.Views.Stat = Backbone.View.extend({
                 },
                 {
                     field: "diagnosis",
-                    title: "性别",
+                    title: "第一诊断",
                     sortable: true,
                     content: function(item) {return item.diagnosis;}
                 },

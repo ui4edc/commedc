@@ -128,8 +128,7 @@ es.Views.Form51 = Backbone.View.extend({
        
        util.ajax.run({
             url: "",
-            data: JSON.stringify(data),
-            json: true,
+            data: data,
             success: function(response) {
                 console.log("crf/save体格检查.do-响应:", response);
                 
