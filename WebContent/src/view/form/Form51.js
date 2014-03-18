@@ -124,13 +124,13 @@ es.Views.Form51 = Backbone.View.extend({
            }
        }
        
-       console.log("crf/save体格检查.do-请求", data);
+       console.log("crf/saveBodyExam.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/saveBodyExam.do",
             data: data,
             success: function(response) {
-                console.log("crf/save体格检查.do-响应:", response);
+                console.log("crf/saveBodyExam.do-响应:", response);
                 
                 me.updateProgress(response.progress);
                 if (me.form.model.first) {

@@ -76,6 +76,7 @@ import cn.com.ecrf.trq.vo.lab.BodyExamVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.ECGExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
+import cn.com.ecrf.trq.vo.lab.LabExamInstanceVo;
 import cn.com.ecrf.trq.vo.list.ListConditionVo;
 import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 import cn.com.ecrf.trq.vo.list.ListReturnVo;
@@ -461,18 +462,18 @@ public class CRFService {
 		String userName = (String) subject.getPrincipal();
 		User user = userMapper.findUserByLoginName(userName);
 		boolean isRequired = false;
-		if (configuration != null && StringUtils.isNotBlank(configuration.getValue())){
-			String[] hospitalIds = configuration.getValue().split(",");
+		if (configuration != null && StringUtils.isNotBlank(configuration.getValue1())){
+			String[] hospitalIds = configuration.getValue1().split(",");
 			for (String idStr : hospitalIds){
 				if (idStr.trim() != null && idStr.trim().length() > 0){
-					if (Integer.parseInt(idStr) == id){
+					if (Integer.parseInt(idStr) == user.getOrganizationId()){
 						isRequired = true;
 						break;
 					}
 				}
 			}
 			if (isRequired && !StringUtils.isNotBlank(drugCost))
-				throw new Exception(drugCost+"不能为空");
+				throw new Exception(fieldName+" 不能为空");
 		}
 	}
 	
@@ -836,24 +837,6 @@ public class CRFService {
 		}
 		return result;
 	}
-
-	public Map<String, Object> getInHospitalExam(int id) {
-		// TODO Auto-generated method stub
-		Map<String, Object> result = null;
-		try{
-			Map<String, Object> condition = new HashMap<String, Object>();
-			condition.put("id", id);
-			condition.put("phase", 1);
-			LabExamCase labExamCase = cRFMapper.getLabExamCase(condition);
-			InHospitalExamVo inHospitalExamVo = convertorService.convertLabExamFromModelToView(labExamCase);
-			result = AjaxReturnUtils.generateAjaxReturn(true, null, inHospitalExamVo);
-		}catch(Exception e){
-			e.printStackTrace();
-			result = AjaxReturnUtils.generateAjaxReturn(false, null);
-		}
-		
-		return result;
-	}
 	
 	
 	
@@ -875,40 +858,7 @@ public class CRFService {
 		
 		return result;
 	}
-	
-	
-	private Map<String, Object> saveLabExam(InHospitalExamVo inHospitalExamVo, int phase, int progressLevel){
-		Map<String, Object> result;
-		try{
-			LabExamCase labExamCase =  convertorService.convertLabExamFromViewToModel(inHospitalExamVo, phase);
-			if(phase == 1)
-				validDateRange(labExamCase.getExamDate(), inHospitalExamVo.getId(), "送检日期");
-			Map<String, Object> condition = new HashMap<String, Object>();
-			condition.put("id", inHospitalExamVo.getId());
-			condition.put("phase", phase);
-			LabExamCase dbCase = cRFMapper.getLabExamCase(condition);
-			if (dbCase != null && dbCase.getNo() != null)
-				cRFMapper.updateLabExamCase(labExamCase);
-			else {
-				cRFMapper.insertLabExamCase(labExamCase);
-			}
-			int progress = cRFMapper.getProgress(inHospitalExamVo.getNo());
-			if (progress < progressLevel){
-				condition = new HashMap<String, Object>();
-				condition.put("progress", progressLevel);
-				condition.put("no", inHospitalExamVo.getNo());
-				cRFMapper.updateProgress(condition);
-			}
-			result = AjaxReturnUtils.generateAjaxReturn(true, null);
-			progress = cRFMapper.getProgress(inHospitalExamVo.getNo());
-			result.put("progress", progress + "%");
-		}catch(Exception e){
-			e.printStackTrace();
-			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
-		}
-		
-		return result;	
-	}
+
 
 	public Map<String, Object> getADR(int id) {
 		// TODO Auto-generated method stub
@@ -1198,6 +1148,7 @@ public class CRFService {
 			result.put("progress", progress + "%");
 		}catch(Exception e){
 			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
 		}
 		return result;
 	}
@@ -1247,11 +1198,13 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{	
 			LabExamCase labExamCase = convertorService.convertDrugUseExamFromViewToModel(drugUseExamVo);
-			LabExamCase dbCase = cRFMapper.getDrugUseExam(labExamCase.getId());
+			validateDateRangeFromLabExam(drugUseExamVo);
+			validDateRange(labExamCase.getExamDateDate(), labExamCase.getId(), "送检日期");
+			LabExamCase dbCase = cRFMapper.getLabExamCase(labExamCase.getId());
 			if (dbCase != null && dbCase.getNo() != null){
-				cRFMapper.updateDrugUseExam(labExamCase);
+				cRFMapper.updateLabExamCase(labExamCase);
 			}else{
-				cRFMapper.insertDrugUseExam(labExamCase);
+				cRFMapper.insertLabExamCase(labExamCase);
 			}
 			updateProcessAndModifyDate(labExamCase.getNo(), ProcessUtils.LAB_EXAM);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
@@ -1264,11 +1217,36 @@ public class CRFService {
 		return result;
 	}
 
+	private void validateDateRangeFromLabExam(DrugUseExamVo drugUseExamVo) throws Exception {
+		// TODO Auto-generated method stub
+		List<LabExamInstanceVo> data1 = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<List<LabExamInstanceVo>> list = new ArrayList<List<LabExamInstanceVo>>();
+		list.add(drugUseExamVo.getData1());
+		list.add(drugUseExamVo.getData2());
+		list.add(drugUseExamVo.getData3());
+		list.add(drugUseExamVo.getData4());
+		for (int i=0;i<list.size();i++){
+			data1 = list.get(i);
+			if (data1 != null && data1.size() > 0){
+				for (LabExamInstanceVo one : data1){
+					try {
+						Date examDate = sdf.parse(one.getExamDate());
+						validDateRange(examDate, drugUseExamVo.getId(), "检查日期");
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
 	public Map<String, Object> getDrugUseExam(int id) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
 		try{
-			LabExamCase labExamCase = cRFMapper.getDrugUseExam(id);
+			LabExamCase labExamCase = cRFMapper.getLabExamCase(id);
 			DrugUseExamVo drugUseExamVo = null;
 			if (labExamCase != null){
 				drugUseExamVo = convertorService.convertDrugUseExamFromModelToView(labExamCase);

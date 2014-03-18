@@ -655,31 +655,28 @@
 		delete from crf_drugcombination_info where no=#{no}
 	</delete>
 	<select id="getLabExamCase" parameterType="map" resultType="cn.com.ecrf.trq.model.LabExamCase">
-		select
+		select p.id as id,
 			   l.no as no,
 			   l.done as done,
-			   l.examdate as examDate,
+			   l.examdate as examDateDate,
 			   sample as sample,
 			   result as result,
 			   resulttxt1 as resulttxt1,
 			   resulttxt2 as resulttxt2,
 			   resulttxt3 as resulttxt3,
-			   data1 as data1,
-			   data2 as data2,
-			   data3 as data3,
-			   data4 as data4,
-			   data5 as data5,
-			   data6 as data6,
-			   l.phase as phase
-		from crf_labexam_info l, crf_patient_info p where p.id=#{id} and p.no=l.no and phase=#{phase}
+			   data1 as data1lb,
+			   data2 as data2lb,
+			   data3 as data3lb,
+			   data4 as data4lb
+		from crf_labexam_info l, crf_patient_info p where p.id=#{id} and p.no=l.no
 	</select>
 	<insert id="insertLabExamCase" parameterType="cn.com.ecrf.trq.model.LabExamCase">
-		insert into crf_labexam_info(no, done, examdate, sample, result, resulttxt1, resulttxt2, resulttxt3, data1, data2, data3, data4, data5, data6, phase) values(#{no}, #{done}, #{examDate}, #{sample},#{result}, #{resulttxt1}, #{resulttxt2}, #{resulttxt3}, #{data1}, #{data2}, #{data3}, #{data4},#{data5}, #{data6}, #{phase});
+		insert into crf_labexam_info(no, done, examdate, sample, result, resulttxt1, resulttxt2, resulttxt3, data1, data2, data3, data4) values(#{no}, #{done}, #{examDateDate}, #{sample},#{result}, #{resulttxt1}, #{resulttxt2}, #{resulttxt3}, #{data1lb}, #{data2lb}, #{data3lb}, #{data4lb});
 	</insert>
 	<update id="updateLabExamCase" parameterType="cn.com.ecrf.trq.model.LabExamCase">
-		update crf_labexam_info set done=#{done},examdate=#{examDate}, sample=#{sample}, result=#{result}, resulttxt1=#{resulttxt1},
-		resulttxt2=#{resulttxt2}, resulttxt3=#{resulttxt3}, data1=#{data1}, data2=#{data2}, data3=#{data3},
-		data4=#{data4}, data5=#{data5}, data6=#{data6} where no=#{no} and phase=#{phase}
+		update crf_labexam_info set done=#{done},examdate=#{examDateDate}, sample=#{sample}, result=#{result}, resulttxt1=#{resulttxt1},
+		resulttxt2=#{resulttxt2}, resulttxt3=#{resulttxt3}, data1=#{data1lb}, data2=#{data2lb}, data3=#{data3lb},
+		data4=#{data4lb}  where no=#{no}
 	</update>
 	<select id="getDrugSummary" parameterType="int" resultType="cn.com.ecrf.trq.model.DrugSummaryCase">
 		select 	d.no as no,
@@ -867,4 +864,58 @@
 	<insert id="insertDrugCombinationBase" parameterType="cn.com.ecrf.trq.model.DrugCombinationBase">
 		insert into crf_drugcombination_base(no, hasDrug, drug) values(#{no}, #{hasDrug}, #{drug});
 	</insert>
+	<select id="getBodyExam" parameterType="int" resultType="cn.com.ecrf.trq.model.BodyExamCase">
+		select 	p.id as id,
+				b.no as no,
+				b.done as done,
+				b.examDate as examDateDate,
+				b.breathe as breathe,
+				b.rate as rate,
+				b.ssy as ssy,
+				b.szy as szy,
+				b.temperature as temperature
+		from crf_bodyexam_info b, crf_patient_info p where p.no=b.no and p.id=#{id}
+	</select>
+	<update id="updateBodyExam" parameterType="cn.com.ecrf.trq.model.BodyExamCase">
+		update crf_bodyexam_info set 
+			no=#{no},done=#{done},examDate=#{examDateDate},breathe=#{breathe},rate=#{rate},
+			ssy=#{ssy},szy=#{szy},temperature=#{temperature} where no=#{no}
+	</update>
+	<insert id="insertBodyExam" parameterType="cn.com.ecrf.trq.model.BodyExamCase">
+		insert into crf_bodyexam_info(no,done,examDate,breathe,rate,ssy,szy,temperature)
+		values(#{no},#{done},#{examDateDate},#{breathe},#{rate},#{ssy},#{szy},#{temperature});
+	</insert>
+	<select id="getECGExam" parameterType="int" resultType="cn.com.ecrf.trq.model.ECGExamCase">
+		select 	p.id as id,
+				e.no as no,
+				e.normal as normal,
+				e.examDate as examDateDate,
+				e.done as done,
+				e.description as description
+		from crf_ecgexam_info e, crf_patient_info p where e.no=p.no and p.id=#{id}
+	</select>
+	<update id="updateECGExam" parameterType="cn.com.ecrf.trq.model.ECGExamCase">
+		update crf_ecgexam_info set 
+		no=#{no},normal=#{normal},examDate=#{examDateDate},done=#{done},description=#{description}
+		where no=#{no}
+	</update>
+	<insert id="insertECGExam" parameterType="cn.com.ecrf.trq.model.ECGExamCase">
+		insert into crf_ecgexam_info(no, normal, examDate, done, description)
+		values(#{no}, #{normal}, #{examDateDate}, #{done}, #{description});
+	</insert>
+	<select id="getADEStatByHospital" parameterType="map" resultType="cn.com.ecrf.trq.model.stat.ADEStat">
+		select  p.id as id,
+				a.no as no,
+				p.age as age,
+				a.adr as ade,
+				d.diagnosis as diagnosis,
+				a.ethic as ethic,
+				a.sex as sex
+		from crf_patient_info p, crf_adr_info a, crf_disease_info d 
+		where p.no=a.no and d.no=a.no 
+		<if test="id != null">
+			and p.no in (select no from crf_user_sign us, ac_user u where us.cro_name=u.user_name and u.fk_organization_id=#{id})
+		</if>
+		order by p.create_time asc
+	</select>
 </mapper>

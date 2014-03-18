@@ -91,7 +91,7 @@ public interface CRFMapper {
 
 	public List<DrugCombinationCase> getDrugCombinationList(int parseInt);
 
-	public LabExamCase getLabExamCase(Map<String, Object> condition);
+	public LabExamCase getLabExamCase(int id);
 
 	public void updateLabExamCase(LabExamCase labExamCase);
 
@@ -177,12 +177,6 @@ public interface CRFMapper {
 	public void updateECGExam(ECGExamCase eCGExamCase);
 
 	public void insertECGExam(ECGExamCase eCGExamCase);
-
-	public LabExamCase getDrugUseExam(int id);
-
-	public void updateDrugUseExam(LabExamCase labExamCase);
-
-	public void insertDrugUseExam(LabExamCase labExamCase);
 
 	public List<ADEStat> getADEStatByHospital(Map<String, Object> condition);
 	

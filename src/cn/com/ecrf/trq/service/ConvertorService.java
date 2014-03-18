@@ -52,6 +52,7 @@ import cn.com.ecrf.trq.vo.lab.BodyExamVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.ECGExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
+import cn.com.ecrf.trq.vo.lab.LabExamInstanceVo;
 import cn.com.ecrf.trq.vo.lab.PlainExamVo;
 
 @Service
@@ -536,123 +537,6 @@ public class ConvertorService {
 		return drugInstanceObject;
 	}
 
-	public InHospitalExamVo convertLabExamFromModelToView(
-			LabExamCase labExamCase) {
-		// TODO Auto-generated method stub
-		if (labExamCase == null)
-			return null;
-		InHospitalExamVo inHospitalExamVo = new InHospitalExamVo();
-		if (StringUtils.isNotBlank(labExamCase.getData1())){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			List<PlainExamVo> data1 = util.convertFromString(labExamCase.getData1());
-			inHospitalExamVo.setData1(data1);
-		}
-		if (StringUtils.isNotBlank(labExamCase.getData2())){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			List<PlainExamVo> data2 = util.convertFromString(labExamCase.getData2());
-			inHospitalExamVo.setData2(data2);
-		}
-		if (StringUtils.isNotBlank(labExamCase.getData3())){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			List<PlainExamVo> data3 = util.convertFromString(labExamCase.getData3());
-			inHospitalExamVo.setData3(data3);
-		}
-		if (StringUtils.isNotBlank(labExamCase.getData4())){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			List<PlainExamVo> data4 = util.convertFromString(labExamCase.getData4());
-			inHospitalExamVo.setData1(data4);
-		}
-		if (StringUtils.isNotBlank(labExamCase.getData5())){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			List<PlainExamVo> data5 = util.convertFromString(labExamCase.getData5());
-			inHospitalExamVo.setData5(data5);
-		}
-		if (StringUtils.isNotBlank(labExamCase.getData6())){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			List<PlainExamVo> data6 = util.convertFromString(labExamCase.getData6());
-			inHospitalExamVo.setData6(data6);
-		}
-		inHospitalExamVo.setId(labExamCase.getId());
-		if (StringUtils.isNotBlank(labExamCase.getDone())){
-			FormEnumObject doneObj = new FormEnumObject(labExamCase.getDone(), FormEnumValue.DONE);
-			inHospitalExamVo.setDone(convertContentToID(doneObj));
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		if (labExamCase.getExamDate() != null){
-			String examDate = sdf.format(labExamCase.getExamDate());
-			inHospitalExamVo.setExamDate(examDate);
-		}
-		inHospitalExamVo.setId(labExamCase.getId());
-		inHospitalExamVo.setNo(labExamCase.getNo());
-		inHospitalExamVo.setResult(labExamCase.getResult());
-		inHospitalExamVo.setResulttxt1(labExamCase.getResulttxt1());
-		inHospitalExamVo.setResulttxt2(labExamCase.getResulttxt2());
-		inHospitalExamVo.setResulttxt3(labExamCase.getResulttxt3());
-		if (StringUtils.isNotBlank(labExamCase.getSample())){
-			FormEnumObject sampleObj = new FormEnumObject(labExamCase.getSample(), FormEnumValue.SJYB);
-			inHospitalExamVo.setSample(convertContentToID(sampleObj));
-			inHospitalExamVo.setSampletxt(sampleObj.getOther());
-		}
-		return inHospitalExamVo;
-	}
-
-	public LabExamCase convertLabExamFromViewToModel(
-			InHospitalExamVo inHospitalExamVo, int phase) {
-		// TODO Auto-generated method stub
-		LabExamCase labExamCase = new LabExamCase();
-		if (inHospitalExamVo.getData1() != null && inHospitalExamVo.getData1().size() > 0){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			labExamCase.setData1(util.convertFromList(inHospitalExamVo.getData1()));
-		}
-		if (inHospitalExamVo.getData2() != null && inHospitalExamVo.getData2().size() > 0){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			labExamCase.setData2(util.convertFromList(inHospitalExamVo.getData2()));
-		}
-		if (inHospitalExamVo.getData3() != null && inHospitalExamVo.getData3().size() > 0){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			labExamCase.setData3(util.convertFromList(inHospitalExamVo.getData3()));
-		}
-		if (inHospitalExamVo.getData4() != null && inHospitalExamVo.getData4().size() > 0){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			labExamCase.setData4(util.convertFromList(inHospitalExamVo.getData4()));
-		}
-		if (inHospitalExamVo.getData5() != null && inHospitalExamVo.getData5().size() > 0){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			labExamCase.setData5(util.convertFromList(inHospitalExamVo.getData5()));
-		}
-		if (inHospitalExamVo.getData6() != null && inHospitalExamVo.getData6().size() > 0){
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			labExamCase.setData6(util.convertFromList(inHospitalExamVo.getData6()));
-		}
-		if (inHospitalExamVo.getDone() > 0){
-			FormEnumObject doneObj = new FormEnumObject(inHospitalExamVo.getDone(), null, FormEnumValue.DONE);
-			labExamCase.setDone(convertIDToContent(doneObj));
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		if (StringUtils.isNotBlank(inHospitalExamVo.getExamDate())){
-			Date examDate;
-			try {
-				examDate = sdf.parse(inHospitalExamVo.getExamDate());
-				labExamCase.setExamDate(examDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		labExamCase.setId(inHospitalExamVo.getId());
-		labExamCase.setNo(inHospitalExamVo.getNo());
-		labExamCase.setPhase(phase);
-		labExamCase.setResult(inHospitalExamVo.getResult());
-		labExamCase.setResulttxt1(inHospitalExamVo.getResulttxt1());
-		labExamCase.setResulttxt2(inHospitalExamVo.getResulttxt2());
-		labExamCase.setResulttxt3(inHospitalExamVo.getResulttxt3());
-		if (inHospitalExamVo.getSample() > 0){
-			FormEnumObject sampleObj = new FormEnumObject(inHospitalExamVo.getSample(), inHospitalExamVo.getSampletxt(), FormEnumValue.SJYB);
-			labExamCase.setSample(convertIDToContent(sampleObj));
-		}
-		return labExamCase;
-	}
-
 	public DrugUseExamVo convertDrugUseExamFromModelToView(
 			LabExamCase labExamCase) {
 		// TODO Auto-generated method stub
@@ -661,6 +545,18 @@ public class ConvertorService {
 			if (labExamCase != null){
 				drugUseExamVo = new DrugUseExamVo();
 				BeanUtils.copyProperties(drugUseExamVo, labExamCase);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				if (labExamCase.getExamDateDate() != null)
+					drugUseExamVo.setExamDate(sdf.format(labExamCase.getExamDateDate()));
+				JSONUtils<LabExamInstanceVo> util = new JSONUtils<LabExamInstanceVo>(LabExamInstanceVo.class);
+				if (StringUtils.isNotBlank(labExamCase.getData1lb()))
+					drugUseExamVo.setData1(util.convertFromString(labExamCase.getData1lb()));
+				if (StringUtils.isNotBlank(labExamCase.getData2lb()))
+					drugUseExamVo.setData2(util.convertFromString(labExamCase.getData2lb()));
+				if (StringUtils.isNotBlank(labExamCase.getData3lb()))
+					drugUseExamVo.setData3(util.convertFromString(labExamCase.getData3lb()));
+				if (StringUtils.isNotBlank(labExamCase.getData4lb()))
+					drugUseExamVo.setData4(util.convertFromString(labExamCase.getData4lb()));
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
@@ -675,7 +571,22 @@ public class ConvertorService {
 		LabExamCase labExamCase = new LabExamCase();
 		try {
 			BeanUtils.copyProperties(labExamCase, drugUseExamVo);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if (StringUtils.isNotBlank(drugUseExamVo.getExamDate()))
+				labExamCase.setExamDateDate(sdf.parse(drugUseExamVo.getExamDate()));
+			JSONUtils<LabExamInstanceVo> util = new JSONUtils<LabExamInstanceVo>(LabExamInstanceVo.class);
+			if (drugUseExamVo.getData1() != null && drugUseExamVo.getData1().size() > 0)
+				labExamCase.setData1lb(util.convertFromList(drugUseExamVo.getData1()));
+			if (drugUseExamVo.getData2() != null && drugUseExamVo.getData2().size() > 0)
+				labExamCase.setData2lb(util.convertFromList(drugUseExamVo.getData2()));
+			if (drugUseExamVo.getData3() != null && drugUseExamVo.getData3().size() > 0)
+				labExamCase.setData3lb(util.convertFromList(drugUseExamVo.getData3()));
+			if (drugUseExamVo.getData4() != null && drugUseExamVo.getData4().size() > 0)
+				labExamCase.setData4lb(util.convertFromList(drugUseExamVo.getData4()));
 		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -924,10 +835,10 @@ public class ConvertorService {
 		try {
 				if (bodyExamCase != null){
 					bodyExamVo = new BodyExamVo();
-					BeanUtils.copyProperties(bodyExamCase, bodyExamVo);
+					BeanUtils.copyProperties(bodyExamVo,bodyExamCase);
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					if (bodyExamCase.getExamDateDate() != null){
-						bodyExamVo.setExamDate(sdf.format(bodyExamVo.getExamDate()));
+						bodyExamVo.setExamDate(sdf.format(bodyExamCase.getExamDateDate()));
 					}
 				}
 		} catch (IllegalAccessException | InvocationTargetException e) {
@@ -943,7 +854,7 @@ public class ConvertorService {
 		try {
 				bodyExamCase = new BodyExamCase();
 				BeanUtils.copyProperties(bodyExamCase, bodyExamVo);
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				if (StringUtils.isNotBlank(bodyExamVo.getExamDate())){
 					bodyExamCase.setExamDateDate(sdf.parse(bodyExamVo.getExamDate()));
 				}
@@ -988,7 +899,7 @@ public class ConvertorService {
 				if (eCGExamVo != null){
 					eCGExamCase = new ECGExamCase();
 					BeanUtils.copyProperties(eCGExamCase, eCGExamVo);
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					if (StringUtils.isNotBlank(eCGExamVo.getExamDate())){
 						eCGExamCase.setExamDateDate(sdf.parse(eCGExamVo.getExamDate()));
 					}

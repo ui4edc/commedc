@@ -2,8 +2,8 @@ package cn.com.ecrf.trq.model;
 
 public class SystemConfiguration {
 	private int id;
-	private String key;
-	private String value;
+	private String key1;
+	private String value1;
 	private String comment;
 	
 	public int getId() {
@@ -12,17 +12,18 @@ public class SystemConfiguration {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getKey() {
-		return key;
+	
+	public String getKey1() {
+		return key1;
 	}
-	public void setKey(String key) {
-		this.key = key;
+	public void setKey1(String key1) {
+		this.key1 = key1;
 	}
-	public String getValue() {
-		return value;
+	public String getValue1() {
+		return value1;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setValue1(String value1) {
+		this.value1 = value1;
 	}
 	public String getComment() {
 		return comment;

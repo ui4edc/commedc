@@ -6,19 +6,17 @@ public class LabExamCase {
 	private int id;
 	private String no;
 	private String done;
-	private Date examDate;
+	private Date examDateDate;
 	private String sample;
 	private String result;
 	private String resulttxt1;
 	private String resulttxt2;
 	private String resulttxt3;
 	private int phase;
-	private String data1;
-	private String data2;
-	private String data3;
-	private String data4;
-	private String data5;
-	private String data6;
+	private String data1lb;
+	private String data2lb;
+	private String data3lb;
+	private String data4lb;
 	public String getNo() {
 		return no;
 	}
@@ -31,11 +29,11 @@ public class LabExamCase {
 	public void setDone(String done) {
 		this.done = done;
 	}
-	public Date getExamDate() {
-		return examDate;
+	public Date getExamDateDate() {
+		return examDateDate;
 	}
-	public void setExamDate(Date examDate) {
-		this.examDate = examDate;
+	public void setExamDateDate(Date examDateDate) {
+		this.examDateDate = examDateDate;
 	}
 	public String getSample() {
 		return sample;
@@ -73,41 +71,29 @@ public class LabExamCase {
 	public void setPhase(int phase) {
 		this.phase = phase;
 	}
-	public String getData1() {
-		return data1;
+	public String getData1lb() {
+		return data1lb;
 	}
-	public void setData1(String data1) {
-		this.data1 = data1;
+	public void setData1lb(String data1lb) {
+		this.data1lb = data1lb;
 	}
-	public String getData2() {
-		return data2;
+	public String getData2lb() {
+		return data2lb;
 	}
-	public void setData2(String data2) {
-		this.data2 = data2;
+	public void setData2lb(String data2lb) {
+		this.data2lb = data2lb;
 	}
-	public String getData3() {
-		return data3;
+	public String getData3lb() {
+		return data3lb;
 	}
-	public void setData3(String data3) {
-		this.data3 = data3;
+	public void setData3lb(String data3lb) {
+		this.data3lb = data3lb;
 	}
-	public String getData4() {
-		return data4;
+	public String getData4lb() {
+		return data4lb;
 	}
-	public void setData4(String data4) {
-		this.data4 = data4;
-	}
-	public String getData5() {
-		return data5;
-	}
-	public void setData5(String data5) {
-		this.data5 = data5;
-	}
-	public String getData6() {
-		return data6;
-	}
-	public void setData6(String data6) {
-		this.data6 = data6;
+	public void setData4lb(String data4lb) {
+		this.data4lb = data4lb;
 	}
 	public int getId() {
 		return id;

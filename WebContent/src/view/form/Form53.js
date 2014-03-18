@@ -110,13 +110,13 @@ es.Views.Form53 = Backbone.View.extend({
            }
        }
        
-       console.log("crf/save心电图-请求", data);
+       console.log("crf/saveECGExam.do-请求", data);
        
        util.ajax.run({
-            url: "",
+            url: "crf/saveECGExam.do",
             data: data,
             success: function(response) {
-                console.log("crf/save心电图.do-响应:", response);
+                console.log("crf/saveECGExam.do-响应:", response);
                 
                 me.updateProgress(response.progress);
                 if (me.form.model.first) {
