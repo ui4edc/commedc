@@ -9,16 +9,7 @@ es.Models.Form40 = Backbone.Model.extend({
         data: null,
         def: {
             hasDrug: null,
-			drug: [{
-			    id: "",
-				name: "",
-				start: T.date.format(new Date(), "yyyy-MM-dd"),
-				end: T.date.format(new Date(), "yyyy-MM-dd"),
-				dose: "",
-				unit: "",
-				way: "",
-				frequency: ""
-			}]
+			drug: []
 		}
     },
     

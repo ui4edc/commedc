@@ -41,18 +41,15 @@ es.Views.Form40 = Backbone.View.extend({
                 save: es.main.editable ? [1] : []
             });
             
-            me.$(".drugs").prepend($.Mustache.render("tpl-form40-drug", {
+            me.$("#DrugList").prepend($.Mustache.render("tpl-form40-drug", {
                 drug: data.data.drug,
                 disabled: disabled,
                 save: es.main.editable ? [1] : []
             }));
             me.drugCount = data.data.drug.length;
             
-            if (es.main.editable) {
-                me.$(".del-drug:first").parent().remove();
-            }
-            
-            me.initCtrl(data.data);
+            var clone = $.extend(true, {}, data.data);
+            me.initCtrl(clone);
         });
     },
     
@@ -66,10 +63,33 @@ es.Views.Form40 = Backbone.View.extend({
         
         esui.init(document.body, option);
         
+        var table = esui.get("Drug");
+        table.datasource = data.drug;
+        table.fields = [
+            {title: '通用名称', content: function (item) {return item.name;}},
+            {title: '开始日期', content: function (item) {return item.start;}},
+            {title: '停止日期', content: function (item) {return item.end;}},
+            {title: '单次用药量', content: function (item) {return item.dose;}},
+            {title: '计量单位', content: function (item) {return item.unit;}},
+            {title: '给药途径', content: function (item) {return item.way;}},
+            {title: '给药频次', content: function (item) {return item.frequency;}},
+            {title: '操作', content: function (item) {
+                return '<a href="javascript:void(0)" class="del-btn del-drug" id="del' + item.id + '">删除</a>';
+            }}
+        ];
+        this.$(".drugs").show();
+        table.render();
+        this.$(".drugs").hide();
+        
         switch (data.hasDrug) {
             case 1: esui.get("Merge1").setChecked(true); this.$(".drugs").show(); break;
             case 2: esui.get("Merge2").setChecked(true);
         }
+        
+        //事件
+        var me = this;
+        esui.get("Merge1").onclick = function() {me.$(".drugs").show();};
+        esui.get("Merge2").onclick = function() {me.$(".drugs").hide();};
         
         $.each(data.drug, function(index, val) {
             var start = esui.get("Start" + val.no);
@@ -82,14 +102,13 @@ es.Views.Form40 = Backbone.View.extend({
             if (!es.main.editable) {
                 end.disable();
             }
+            esui.get("Save" + val.no).onclick = function() {
+                var block = $(this.main).parent().parent();
+                me.saveDrug(block);
+            };
             $("#ctrltextName" + val.no).autocomplete({source: util.getSuggestion("drug")});
             $("#ctrltextWay" + val.no).autocomplete({source: util.getSuggestion("way")});
         });
-        
-        //事件
-        var me = this;
-        esui.get("Merge1").onclick = function() {me.$(".drugs").show();};
-        esui.get("Merge2").onclick = function() {me.$(".drugs").hide();};
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
@@ -113,19 +132,145 @@ es.Views.Form40 = Backbone.View.extend({
         
         esui.get("Start" + no).onchange = function(value) {esui.get("Start" + no).setValueAsDate(value);};
         esui.get("End" + no).onchange = function(value) {esui.get("End" + no).setValueAsDate(value);};
+        var me = this;
+        esui.get("Save" + no).onclick = function() {
+            var block = $(this.main).parent().parent();
+            me.saveDrug(block);
+        };
         $("#ctrltextName" + no).autocomplete({source: util.getSuggestion("drug")});
         $("#ctrltextWay" + no).autocomplete({source: util.getSuggestion("way")});
     },
     
+    saveDrug: function(block) {
+        var no = block.attr("no"),
+            id = block.attr("id"),
+            name = $.trim(esui.get("Name" + no).getValue()),
+            start = esui.get("Start" + no).getValue(),
+            end = esui.get("End" + no).getValue(),
+            dose = $.trim(esui.get("Dose" + no).getValue()),
+            unit = $.trim(esui.get("Unit" + no).getValue()),
+            way = $.trim(esui.get("Way" + no).getValue()),
+            frequency = $.trim(esui.get("Frequency" + no).getValue());
+        var data = {
+            id: es.main.crfId,
+            drugId: id == "" ? null : parseInt(id, 10),
+            name: name,
+            start: start,
+            end: end,
+            dose: dose,
+            unit: unit,
+            way: way,
+            frequency: frequency
+        };
+        
+        //验证
+        var intPattern = /^\d+$/;
+        if (data.name == "") {
+           esui.Dialog.alert({title: "提示", content: "请填写通用名称"});
+           return false;
+        }
+        if (T.date.parse(data.start).getTime() > T.date.parse(data.end).getTime()) {
+            esui.Dialog.alert({title: "提示", content: "开始日期不能晚于停止日期"});
+            return;
+        }
+        if (!intPattern.test(data.dose)) {
+            esui.Dialog.alert({title: "提示", content: "请填写单次用药剂量"});
+            return false;
+        }
+        if (data.unit == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写剂量单位"});
+            return false;
+        }
+        if (data.way == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写给药途径"});
+            return false;
+        }
+        if (data.frequency == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写给药频次"});
+            return false;
+        }
+        
+        console.log("crf/save单次合并用药.do-请求", data);
+        
+        util.ajax.run({
+            url: "crf/save单次合并用药.do",
+            data: data,
+            success: function(response) {
+                console.log("crf/save单次合并用药.do-响应:", response);
+                
+                block.attr({id: response.id});
+                var table = esui.get("Drug"),
+                    rowData = {
+                        id: response.id,
+                        name: name,
+                        start: start,
+                        end: end,
+                        dose: dose,
+                        unit: unit,
+                        way: way,
+                        frequency: frequency
+                    },
+                    row = null;
+                
+                $.each(table.datasource, function(index, val) {
+                    if (val.id == rowData.id) {
+                        row = index;
+                    }
+                });
+                if (row == null) {
+                    table.datasource.push(rowData);
+                } else {
+                    table.datasource[row] = rowData;
+                }
+                table.render();
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                id: 789
+            }
+        });
+    },
+    
     delDrug: function(e) {
-        var el = $(e.target),
-            parent = el.parent().parent(),
-            no = parent.attr("no");
-        esui.dispose("Start" + no);
-        esui.dispose("End" + no);
-        $("#ctrltextName" + no).autocomplete("destroy");
-        $("#ctrltextWay" + no).autocomplete("destroy");
-        parent.remove();
+        var id = parseInt($(e.target).attr("id").replace('del', ''), 10),
+            block = this.$("#" + id),
+            no = block.attr("no");
+        
+        var data = {
+           id: es.main.crfId,
+           drugId: id
+        };
+        
+        console.log("crf/del单次合并用药.do-请求:", data);
+        
+        util.ajax.run({
+            url: "crf/del单次合并用药.do",
+            data: data,
+            success: function(response) {
+                console.log("crf/del单次合并用药.do-响应:", response);
+                
+                esui.dispose("Start" + no);
+                esui.dispose("End" + no);
+                esui.dispose("Save" + no);
+                $("#ctrltextName" + no).autocomplete("destroy");
+                $("#ctrltextWay" + no).autocomplete("destroy");
+                block.remove();
+                
+                var table = esui.get("Drug"), row = null;
+                $.each(table.datasource, function(index, val) {
+                    if (val.id == id) {
+                        row = index;
+                    }
+                });
+                table.datasource.splice(row, 1);
+                table.render();
+            },
+            mock: MOCK,
+            mockData: {
+                success: true
+            }
+        });
     },
     
     save: function() {
@@ -135,60 +280,17 @@ es.Views.Form40 = Backbone.View.extend({
            id: me.crfId,
            no: me.model.get("data").no,
            hasDrug: parseInt(esui.get("Merge1").getGroup().getValue(), 10),
-           drug: []
+           drug: esui.get("Drug").datasource
        };
        
-       if (data.hasDrug == 1) {
-           var drug = me.$(".drug-block");
-           $.each(drug, function(index, val) {
-               var no = $(val).attr("no");
-               data.drug.push({
-                   id: $(val).attr("id"),
-                   name: $.trim(esui.get("Name" + no).getValue()),
-                   start: esui.get("Start" + no).getValue(),
-                   end: esui.get("End" + no).getValue(),
-                   dose: $.trim(esui.get("Dose" + no).getValue()),
-                   unit: $.trim(esui.get("Unit" + no).getValue()),
-                   way: $.trim(esui.get("Way" + no).getValue()),
-                   frequency: $.trim(esui.get("Frequency" + no).getValue())
-               });
-           });
-       }
-       
-       //验证
-       var intPattern = /^\d+$/;
        if (isNaN(data.hasDrug)) {
            esui.Dialog.alert({title: "提示", content: "请选择有无合并用药"});
            return;
-       }
-       for (var i = 0, n = data.drug.length; i < n; i++) {
-           var item = data.drug[i], seq = i + 1;
-           if (item.name == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个通用名称"});
-               return false;
-           }
-           var start = T.date.parse(item.start).getTime(),
-               end = T.date.parse(item.end).getTime();
-           if (start > end) {
-               esui.Dialog.alert({title: "提示", content: "第" + seq + "个开始日期不能晚于停止日期"});
-               return;
-           }
-           if (!intPattern.test(item.dose)) {
-               esui.Dialog.alert({title: "提示", content: "请选择第 " + seq + " 个单次用药剂量"});
-               return false;
-           }
-           if (item.unit == "") {
-               esui.Dialog.alert({title: "提示", content: "请选择第 " + seq + " 个剂量单位"});
-               return false;
-           }
-           if (item.way == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个给药途径"});
-               return false;
-           }
-           if (item.frequency == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个给药频次"});
-               return false;
-           }
+       } else if (data.hasDrug == 2) {
+           data.drug = [];
+       } else if (data.drug.length == 0) {
+           esui.Dialog.alert({title: "提示", content: "请添加合并用药"});
+           return;
        }
        
        console.log("crf/saveDrugCombinationInfo.do-请求", data);
