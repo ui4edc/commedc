@@ -78,20 +78,25 @@
     <input type="checkbox" hidefocus="true" title="其他" name="info" value="7" ui="type:CheckBox;id:Info7;{{disabled}}" />
     <input type="text" value="{{data.infotxt2}}" ui="type:TextInput;id:Info7Name;width:100;{{disabled}}" />
 </div>
+
 <div class="row"><span class="label">怀疑药品</span></div>
-<div class="doubt"></div>
+<div ui="type:Table;id:Doubt"></div>
+<div id="DoubtList"></div>
 {{#save}}
 <div class="row">
     <a href="javascript:void(0)" hidefocus="true" class="add-doubt add-btn">添加一行</a>
 </div>
 {{/save}}
+
 <div class="row"><span class="label">并用药品</span></div>
-<div class="merge"></div>
+<div ui="type:Table;id:Merge"></div>
+<div id="MergeList"></div>
 {{#save}}
 <div class="row">
     <a href="javascript:void(0)" hidefocus="true" class="add-merge add-btn">添加一行</a>
 </div>
 {{/save}}
+
 <div class="row">
     <span class="label wlabel">不良反应/事件名称</span>
 </div>
@@ -282,100 +287,88 @@
 
 <script id="tpl-form70-doubt" type="text/html">
 {{#drug1}}
-<div class="doubt-block block" no="{{no}}">
-<div class="row sub">
-    <span class="label">批准文号</span>
-    <input type="text" value="{{f1}}" ui="type:TextInput;id:DoubtF1{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">商品名称</span>
-    <input type="text" value="{{f2}}" ui="type:TextInput;id:DoubtF2{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">通用名称</span>
-    <input type="text" class="sug" value="{{f3}}" ui="type:TextInput;id:DoubtF3{{no}};width:182;{{disabled}}" />
-    <span>（含剂型）</span>
-</div>
-<div class="row sub">
-    <span class="label">生产厂家</span>
-    <input type="text" value="{{f4}}" ui="type:TextInput;id:DoubtF4{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">生产批号</span>
-    <input type="text" value="{{f5}}" ui="type:TextInput;id:DoubtF5{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">用法用量</span>
-    <input type="text" value="{{f6}}" ui="type:TextInput;id:DoubtF6{{no}};width:182;{{disabled}}" />
-    <span>（次剂量、途径、日次数）</span>
-</div>
-<div class="row sub">
-    <span class="label">用药开始时间</span>
-    <div ui="type:Calendar;id:DoubtF7{{no}};{{disabled}}"></div>
-</div>
-<div class="row sub">
-    <span class="label">用药停止时间</span>
-    <div ui="type:Calendar;id:DoubtF8{{no}};{{disabled}}"></div>
-</div>
-<div class="row sub">
-    <span class="label">用药原因</span>
-    <input type="text" value="{{f9}}" ui="type:TextInput;id:DoubtF9{{no}};width:182;{{disabled}}" />
-</div>
-{{#save}}
-<div class="row sub">
-    <a href="javascript:void(0)" hidefocus="true" class="del-doubt del-btn">删除此行</a>
-</div>
-{{/save}}
+<div class="doubt-block block" no="{{no}}" id="{{id}}">
+    <div class="row">
+        <span class="label">批准文号</span>
+        <input type="text" value="{{f1}}" ui="type:TextInput;id:DoubtF1{{no}};width:182;{{disabled}}" />
+    </div>
+    <div class="row">
+        <span class="label">商品名称</span>
+        <input type="text" class="f mt7 mr0" value="{{f2}}" ui="type:TextInput;id:DoubtF2{{no}};width:182;{{disabled}}" />
+        <span class="label c">通用名称</span>
+        <input type="text" class="f mt7" class="sug" value="{{f3}}" ui="type:TextInput;id:DoubtF3{{no}};width:182;{{disabled}}" />
+        <span>（含剂型）</span>
+    </div>
+    <div class="row">
+        <span class="label">生产厂家</span>
+        <input type="text" class="f mt7 mr0" value="{{f4}}" ui="type:TextInput;id:DoubtF4{{no}};width:182;{{disabled}}" />
+        <span class="label c">生产批号</span>
+        <input type="text" class="f mt7" value="{{f5}}" ui="type:TextInput;id:DoubtF5{{no}};width:182;{{disabled}}" />
+    </div>
+    <div class="row">
+        <span class="label">用法用量</span>
+        <input type="text" value="{{f6}}" ui="type:TextInput;id:DoubtF6{{no}};width:182;{{disabled}}" />
+        <span>（次剂量、途径、日次数）</span>
+    </div>
+    <div class="row">
+        <span class="label">用药开始时间</span>
+        <div ui="type:Calendar;id:DoubtF7{{no}};{{disabled}}"></div>
+        <span class="label c">用药停止时间</span>
+        <div ui="type:Calendar;id:DoubtF8{{no}};{{disabled}}"></div>
+    </div>
+    <div class="row">
+        <span class="label">用药原因</span>
+        <input type="text" value="{{f9}}" ui="type:TextInput;id:DoubtF9{{no}};width:182;{{disabled}}" />
+    </div>
+    {{#save}}
+    <div class="row">
+        <div ui="type:Button;id:SaveDoubt{{no}}">保存本行</div>
+    </div>
+    {{/save}}
 </div>
 {{/drug1}}
 </script>
 
 <script id="tpl-form70-merge" type="text/html">
 {{#drug2}}
-<div class="merge-block block" no="{{no}}">
-<div class="row sub">
-    <span class="label">批准文号</span>
-    <input type="text" value="{{f1}}" ui="type:TextInput;id:MergeF1{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">商品名称</span>
-    <input type="text" value="{{f2}}" ui="type:TextInput;id:MergeF2{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">通用名称</span>
-    <input type="text" class="sug" value="{{f3}}" ui="type:TextInput;id:MergeF3{{no}};width:182;{{disabled}}" />
-    <span>（含剂型）</span>
-</div>
-<div class="row sub">
-    <span class="label">生产厂家</span>
-    <input type="text" value="{{f4}}" ui="type:TextInput;id:MergeF4{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">生产批号</span>
-    <input type="text" value="{{f5}}" ui="type:TextInput;id:MergeF5{{no}};width:182;{{disabled}}" />
-</div>
-<div class="row sub">
-    <span class="label">用法用量</span>
-    <input type="text" value="{{f6}}" ui="type:TextInput;id:MergeF6{{no}};width:182;{{disabled}}" />
-    <span>（次剂量、途径、日次数）</span>
-</div>
-<div class="row sub">
-    <span class="label">用药开始时间</span>
-    <div ui="type:Calendar;id:MergeF7{{no}};{{disabled}}"></div>
-</div>
-<div class="row sub">
-    <span class="label">用药停止时间</span>
-    <div ui="type:Calendar;id:MergeF8{{no}};{{disabled}}"></div>
-</div>
-<div class="row sub">
-    <span class="label">用药原因</span>
-    <input type="text" value="{{f9}}" ui="type:TextInput;id:MergeF9{{no}};width:182;{{disabled}}" />
-</div>
-{{#save}}
-<div class="row sub">
-    <a href="javascript:void(0)" hidefocus="true" class="del-merge del-btn">删除此行</a>
-</div>
-{{/save}}
+<div class="merge-block block" no="{{no}}" id="{{id}}">
+    <div class="row">
+        <span class="label">批准文号</span>
+        <input type="text" value="{{f1}}" ui="type:TextInput;id:MergeF1{{no}};width:182;{{disabled}}" />
+    </div>
+    <div class="row">
+        <span class="label">商品名称</span>
+        <input type="text" class="f mt7 mr0" value="{{f2}}" ui="type:TextInput;id:MergeF2{{no}};width:182;{{disabled}}" />
+        <span class="label c">通用名称</span>
+        <input type="text" class="f mt7" class="sug" value="{{f3}}" ui="type:TextInput;id:MergeF3{{no}};width:182;{{disabled}}" />
+        <span>（含剂型）</span>
+    </div>
+    <div class="row">
+        <span class="label">生产厂家</span>
+        <input type="text" class="f mt7 mr0" value="{{f4}}" ui="type:TextInput;id:MergeF4{{no}};width:182;{{disabled}}" />
+        <span class="label c">生产批号</span>
+        <input type="text" class="f mt7" value="{{f5}}" ui="type:TextInput;id:MergeF5{{no}};width:182;{{disabled}}" />
+    </div>
+    <div class="row">
+        <span class="label">用法用量</span>
+        <input type="text" value="{{f6}}" ui="type:TextInput;id:MergeF6{{no}};width:182;{{disabled}}" />
+        <span>（次剂量、途径、日次数）</span>
+    </div>
+    <div class="row">
+        <span class="label">用药开始时间</span>
+        <div ui="type:Calendar;id:MergeF7{{no}};{{disabled}}"></div>
+        <span class="label c">用药停止时间</span>
+        <div ui="type:Calendar;id:MergeF8{{no}};{{disabled}}"></div>
+    </div>
+    <div class="row">
+        <span class="label">用药原因</span>
+        <input type="text" value="{{f9}}" ui="type:TextInput;id:MergeF9{{no}};width:182;{{disabled}}" />
+    </div>
+    {{#save}}
+    <div class="row">
+        <div ui="type:Button;id:SaveMerge{{no}}">保存本行</div>
+    </div>
+    {{/save}}
 </div>
 {{/drug2}}
 </script>

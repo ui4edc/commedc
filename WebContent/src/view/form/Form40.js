@@ -72,11 +72,16 @@ es.Views.Form40 = Backbone.View.extend({
             {title: '单次用药量', content: function (item) {return item.dose;}},
             {title: '计量单位', content: function (item) {return item.unit;}},
             {title: '给药途径', content: function (item) {return item.way;}},
-            {title: '给药频次', content: function (item) {return item.frequency;}},
-            {title: '操作', content: function (item) {
-                return '<a href="javascript:void(0)" class="del-btn del-drug" id="del' + item.id + '">删除</a>';
-            }}
+            {title: '给药频次', content: function (item) {return item.frequency;}}
         ];
+        if (es.main.editable) {
+            table.fields.push({
+                title: '操作',
+                content: function (item) {
+                    return '<a href="javascript:void(0)" class="del-btn del-drug" id="del' + item.id + '">删除</a>';
+                }
+            });
+        }
         this.$(".drugs").show();
         table.render();
         this.$(".drugs").hide();
@@ -120,7 +125,7 @@ es.Views.Form40 = Backbone.View.extend({
     
     addDrug: function(e) {
         var no = ++this.drugCount;
-        $(e.target).parent().before($.Mustache.render("tpl-form40-drug", {
+        this.$("#DrugList").append($.Mustache.render("tpl-form40-drug", {
             drug: [{no: no}],
             disabled: "",
             save: [1]

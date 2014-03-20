@@ -44,21 +44,22 @@ es.Views.Form70 = Backbone.View.extend({
                 save: es.main.editable ? [1] : []
             });
             
-            me.$(".doubt").append($.Mustache.render("tpl-form70-doubt", {
+            me.$("#DoubtList").append($.Mustache.render("tpl-form70-doubt", {
                 drug1: data.data.drug1,
                 disabled: disabled,
                 save: es.main.editable ? [1] : []
             }));
             me.doubtCount = data.data.drug1.length;
             
-            me.$(".merge").append($.Mustache.render("tpl-form70-merge", {
+            me.$("#MergeList").append($.Mustache.render("tpl-form70-merge", {
                 drug2: data.data.drug2,
                 disabled: disabled,
                 save: es.main.editable ? [1] : []
             }));
             me.mergeCount = data.data.drug2.length;
             
-            me.initCtrl(data.data);
+            var clone = $.extend(true, {}, data.data);
+            me.initCtrl(clone);
         });
     },
     
@@ -97,32 +98,50 @@ es.Views.Form70 = Backbone.View.extend({
         
         esui.init(document.body, option);
         
-        $.each(data.drug1, function(index, val) {
-            var start = esui.get("DoubtF7" + val.no);
-            start.onchange = function(value) {start.setValueAsDate(value);};
-            if (!es.main.editable) {
-                start.disable();
-            }
-            var end = esui.get("DoubtF8" + val.no);
-            end.onchange = function(value) {end.setValueAsDate(value);};
-            if (!es.main.editable) {
-                end.disable();
-            }
-            $("#ctrltextDoubtF3" + val.no).autocomplete({source: util.getSuggestion("drug")});
-        });
-        $.each(data.drug2, function(index, val) {
-            var start = esui.get("MergeF7" + val.no);
-            start.onchange = function(value) {start.setValueAsDate(value);};
-            if (!es.main.editable) {
-                start.disable();
-            }
-            var end = esui.get("MergeF8" + val.no);
-            end.onchange = function(value) {end.setValueAsDate(value);};
-            if (!es.main.editable) {
-                end.disable();
-            }
-            $("#ctrltextMergeF3" + val.no).autocomplete({source: util.getSuggestion("drug")});
-        });
+        var table1 = esui.get("Doubt"),
+            table2 = esui.get("Merge");
+        table1.datasource = data.drug1;
+        table2.datasource = data.drug2;
+        table1.fields = [
+            {title: '批准文号', content: function (item) {return item.f1;}},
+            {title: '商品名称', content: function (item) {return item.f2;}},
+            {title: '通用名称', content: function (item) {return item.f3;}},
+            {title: '生产厂家', content: function (item) {return item.f4;}},
+            {title: '生产批号', content: function (item) {return item.f5;}},
+            {title: '用法用量', content: function (item) {return item.f6;}},
+            {title: '用药开始时间', content: function (item) {return item.f7;}},
+            {title: '用药停止时间', content: function (item) {return item.f8;}},
+            {title: '用药原因', content: function (item) {return item.f9;}}
+        ];
+        table2.fields = [
+            {title: '批准文号', content: function (item) {return item.f1;}},
+            {title: '商品名称', content: function (item) {return item.f2;}},
+            {title: '通用名称', content: function (item) {return item.f3;}},
+            {title: '生产厂家', content: function (item) {return item.f4;}},
+            {title: '生产批号', content: function (item) {return item.f5;}},
+            {title: '用法用量', content: function (item) {return item.f6;}},
+            {title: '用药开始时间', content: function (item) {return item.f7;}},
+            {title: '用药停止时间', content: function (item) {return item.f8;}},
+            {title: '用药原因', content: function (item) {return item.f9;}}
+        ];
+        
+        if (es.main.editable) {
+            table1.fields.push({
+                title: '操作',
+                content: function (item) {
+                    return '<a href="javascript:void(0)" class="del-btn del-doubt" id="del' + item.id + '">删除</a>';
+                }
+            });
+            table2.fields.push({
+                title: '操作',
+                content: function (item) {
+                    return '<a href="javascript:void(0)" class="del-btn del-merge" id="del' + item.id + '">删除</a>';
+                }
+            });
+        }
+        
+        table1.render();
+        table2.render();
         
         switch (data.type) {
             case 1: esui.get("Type1").setChecked(true); break;
@@ -280,6 +299,45 @@ es.Views.Form70 = Backbone.View.extend({
         esui.get("Ending5").onclick = function() {me.$(".death").hide();};
         esui.get("Ending6").onclick = function() {me.$(".death").show();};
         
+        $.each(data.drug1, function(index, val) {
+            var start = esui.get("DoubtF7" + val.no);
+            start.onchange = function(value) {start.setValueAsDate(value);};
+            if (!es.main.editable) {
+                start.disable();
+            }
+            var end = esui.get("DoubtF8" + val.no);
+            end.onchange = function(value) {end.setValueAsDate(value);};
+            if (!es.main.editable) {
+                end.disable();
+            }
+            if (es.main.editable) {
+                esui.get("SaveDoubt" + val.no).onclick = function() {
+                    var block = $(this.main).parent().parent();
+                    me.saveDoubt(block);
+                };
+            }
+            $("#ctrltextDoubtF3" + val.no).autocomplete({source: util.getSuggestion("drug")});
+        });
+        $.each(data.drug2, function(index, val) {
+            var start = esui.get("MergeF7" + val.no);
+            start.onchange = function(value) {start.setValueAsDate(value);};
+            if (!es.main.editable) {
+                start.disable();
+            }
+            var end = esui.get("MergeF8" + val.no);
+            end.onchange = function(value) {end.setValueAsDate(value);};
+            if (!es.main.editable) {
+                end.disable();
+            }
+            if (es.main.editable) {
+                esui.get("SaveMerge" + val.no).onclick = function() {
+                    var block = $(this.main).parent().parent();
+                    me.saveMerge(block);
+                };
+            }
+            $("#ctrltextMergeF3" + val.no).autocomplete({source: util.getSuggestion("drug")});
+        });
+        
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
         }
@@ -294,9 +352,9 @@ es.Views.Form70 = Backbone.View.extend({
         }
     },
     
-    addDoubt: function() {
+    addDoubt: function(e) {
         var no = ++this.doubtCount;
-        this.$(".doubt").append($.Mustache.render("tpl-form70-doubt", {
+        this.$("#DoubtList").append($.Mustache.render("tpl-form70-doubt", {
             drug1: [{no: no}],
             disabled: "",
             save: [1]
@@ -307,22 +365,17 @@ es.Views.Form70 = Backbone.View.extend({
         esui.init(this.el, option);
         esui.get("DoubtF7" + no).onchange = function(value) {esui.get("DoubtF7" + no).setValueAsDate(value);};
         esui.get("DoubtF8" + no).onchange = function(value) {esui.get("DoubtF8" + no).setValueAsDate(value);};
+        var me = this;
+        esui.get("SaveDoubt" + no).onclick = function() {
+            var block = $(this.main).parent().parent();
+            me.saveDoubt(block);
+        };
         $("#ctrltextDoubtF3" + no).autocomplete({source: util.getSuggestion("drug")});
-    },
-    
-    delDoubt: function(e) {
-        var el = $(e.target),
-            parent = el.parent().parent(),
-            no = parent.attr("no");
-        esui.dispose("DoubtF7" + no);
-        esui.dispose("DoubtF8" + no);
-        $("#ctrltextDoubtF3" + no).autocomplete("destroy");
-        parent.remove();
     },
     
     addMerge: function() {
         var no = ++this.mergeCount;
-        this.$(".merge").append($.Mustache.render("tpl-form70-merge", {
+        this.$("#MergeList").append($.Mustache.render("tpl-form70-merge", {
             drug2: [{no: no}],
             disabled: "",
             save: [1]
@@ -333,17 +386,274 @@ es.Views.Form70 = Backbone.View.extend({
         esui.init(this.el, option);
         esui.get("MergeF7" + no).onchange = function(value) {esui.get("MergeF7" + no).setValueAsDate(value);};
         esui.get("MergeF8" + no).onchange = function(value) {esui.get("MergeF8" + no).setValueAsDate(value);};
+        var me = this;
+        esui.get("SaveMerge" + no).onclick = function() {
+            var block = $(this.main).parent().parent();
+            me.saveMerge(block);
+        };
         $("#ctrltextMergeF3" + no).autocomplete({source: util.getSuggestion("drug")});
     },
     
+    saveDoubt: function(block) {
+        var no = block.attr("no"),
+            id = block.attr("id"),
+            f1 = $.trim(esui.get("DoubtF1" + no).getValue()),
+            f2 = $.trim(esui.get("DoubtF2" + no).getValue()),
+            f3 = $.trim(esui.get("DoubtF3" + no).getValue()),
+            f4 = $.trim(esui.get("DoubtF4" + no).getValue()),
+            f5 = $.trim(esui.get("DoubtF5" + no).getValue()),
+            f6 = $.trim(esui.get("DoubtF6" + no).getValue()),
+            f7 = esui.get("DoubtF7" + no).getValue(),
+            f8 = esui.get("DoubtF8" + no).getValue(),
+            f9 = $.trim(esui.get("DoubtF9" + no).getValue());
+        var data = {
+            id: es.main.crfId,
+            drugId: id == "" ? null : parseInt(id, 10),
+            f1: f1, f2: f2, f3: f3, f4: f4, f5: f5, 
+            f6: f6, f7: f7, f8: f8, f9: f9
+        };
+        
+        //验证
+        if (data.f1 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写怀疑药品批准文号"});
+            return false;
+        }
+        if (data.f2 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写怀疑药品商品名称"});
+            return false;
+        }
+        if (data.f3 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写怀疑药品通用名称"});
+            return false;
+        }
+        if (data.f4 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写怀疑药品生产厂家"});
+            return false;
+        }
+        if (data.f5 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写怀疑药品生产批号"});
+            return false;
+        }
+        if (data.f6 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写怀疑药品用法用量"});
+            return false;
+        }
+        var start = T.date.parse(data.f7).getTime(),
+            end = T.date.parse(data.f8).getTime();
+        if (start > end) {
+            esui.Dialog.alert({title: "提示", content: "怀疑药品用药开始时间不能晚于用药停止时间"});
+            return;
+        }
+        if (data.f9 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写怀疑药品用药原因"});
+            return false;
+        }
+        
+        console.log("crf/save单次怀疑药品.do-请求", data);
+        
+        util.ajax.run({
+            url: "crf/save单次怀疑药品.do",
+            data: data,
+            success: function(response) {
+                console.log("crf/save单次怀疑药品.do-响应:", response);
+                
+                block.attr({id: response.id});
+                var table = esui.get("Doubt"),
+                    rowData = {
+                        id: response.id,
+                        f1: f1, f2: f2, f3: f3, f4: f4, f5: f5, 
+                        f6: f6, f7: f7, f8: f8, f9: f9
+                    },
+                    row = null;
+                
+                $.each(table.datasource, function(index, val) {
+                    if (val.id == rowData.id) {
+                        row = index;
+                    }
+                });
+                if (row == null) {
+                    table.datasource.push(rowData);
+                } else {
+                    table.datasource[row] = rowData;
+                }
+                table.render();
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                id: 789
+            }
+        });
+    },
+    
+    saveMerge: function(block) {
+        var no = block.attr("no"),
+            id = block.attr("id"),
+            f1 = $.trim(esui.get("MergeF1" + no).getValue()),
+            f2 = $.trim(esui.get("MergeF2" + no).getValue()),
+            f3 = $.trim(esui.get("MergeF3" + no).getValue()),
+            f4 = $.trim(esui.get("MergeF4" + no).getValue()),
+            f5 = $.trim(esui.get("MergeF5" + no).getValue()),
+            f6 = $.trim(esui.get("MergeF6" + no).getValue()),
+            f7 = esui.get("MergeF7" + no).getValue(),
+            f8 = esui.get("MergeF8" + no).getValue(),
+            f9 = $.trim(esui.get("MergeF9" + no).getValue());
+        var data = {
+            id: es.main.crfId,
+            drugId: id == "" ? null : parseInt(id, 10),
+            f1: f1, f2: f2, f3: f3, f4: f4, f5: f5, 
+            f6: f6, f7: f7, f8: f8, f9: f9
+        };
+        
+        //验证
+        if (data.f1 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写并用药品批准文号"});
+            return false;
+        }
+        if (data.f2 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写并用药品商品名称"});
+            return false;
+        }
+        if (data.f3 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写并用药品通用名称"});
+            return false;
+        }
+        if (data.f4 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写并用药品生产厂家"});
+            return false;
+        }
+        if (data.f5 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写并用药品生产批号"});
+            return false;
+        }
+        if (data.f6 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写并用药品用法用量"});
+            return false;
+        }
+        var start = T.date.parse(data.f7).getTime(),
+            end = T.date.parse(data.f8).getTime();
+        if (start > end) {
+            esui.Dialog.alert({title: "提示", content: "并用药品用药开始时间不能晚于用药停止时间"});
+            return;
+        }
+        if (data.f9 == "") {
+            esui.Dialog.alert({title: "提示", content: "请填写并用药品用药原因"});
+            return false;
+        }
+        
+        console.log("crf/save单次并用药品.do-请求", data);
+        
+        util.ajax.run({
+            url: "crf/save单次并用药品.do",
+            data: data,
+            success: function(response) {
+                console.log("crf/save单次并用药品.do-响应:", response);
+                
+                block.attr({id: response.id});
+                var table = esui.get("Merge"),
+                    rowData = {
+                        id: response.id,
+                        f1: f1, f2: f2, f3: f3, f4: f4, f5: f5, 
+                        f6: f6, f7: f7, f8: f8, f9: f9
+                    },
+                    row = null;
+                
+                $.each(table.datasource, function(index, val) {
+                    if (val.id == rowData.id) {
+                        row = index;
+                    }
+                });
+                if (row == null) {
+                    table.datasource.push(rowData);
+                } else {
+                    table.datasource[row] = rowData;
+                }
+                table.render();
+            },
+            mock: MOCK,
+            mockData: {
+                success: true,
+                id: 789
+            }
+        });
+    },
+    
+    delDoubt: function(e) {
+        var id = parseInt($(e.target).attr("id").replace('del', ''), 10),
+            block = this.$("#" + id),
+            no = block.attr("no");
+        
+        var data = {
+           id: es.main.crfId,
+           drugId: id
+        };
+        
+        console.log("crf/del单次怀疑药品.do-请求:", data);
+        
+        util.ajax.run({
+            url: "crf/del单次怀疑药品.do",
+            data: data,
+            success: function(response) {
+                console.log("crf/del单次怀疑药品.do-响应:", response);
+                
+                esui.dispose("DoubtF7" + no);
+                esui.dispose("DoubtF8" + no);
+                $("#ctrltextDoubtF3" + no).autocomplete("destroy");
+                block.remove();
+                
+                var table = esui.get("Doubt"), row = null;
+                $.each(table.datasource, function(index, val) {
+                    if (val.id == id) {
+                        row = index;
+                    }
+                });
+                table.datasource.splice(row, 1);
+                table.render();
+            },
+            mock: MOCK,
+            mockData: {
+                success: true
+            }
+        });
+    },
+    
     delMerge: function(e) {
-        var el = $(e.target),
-            parent = el.parent().parent(),
-            no = parent.attr("no");
-        esui.dispose("MergeF7" + no);
-        esui.dispose("MergeF8" + no);
-        $("#ctrltextMergeF3" + no).autocomplete("destroy");
-        parent.remove();
+        var id = parseInt($(e.target).attr("id").replace('del', ''), 10),
+            block = this.$("#" + id),
+            no = block.attr("no");
+        
+        var data = {
+           id: es.main.crfId,
+           drugId: id
+        };
+        
+        console.log("crf/del单次并用药品.do-请求:", data);
+        
+        util.ajax.run({
+            url: "crf/del单次并用药品.do",
+            data: data,
+            success: function(response) {
+                console.log("crf/del单次并用药品.do-响应:", response);
+                
+                esui.dispose("MergeF7" + no);
+                esui.dispose("MergeF8" + no);
+                $("#ctrltextMergeF3" + no).autocomplete("destroy");
+                block.remove();
+                
+                var table = esui.get("Merge"), row = null;
+                $.each(table.datasource, function(index, val) {
+                    if (val.id == id) {
+                        row = index;
+                    }
+                });
+                table.datasource.splice(row, 1);
+                table.render();
+            },
+            mock: MOCK,
+            mockData: {
+                success: true
+            }
+        });
     },
     
     save: function() {
@@ -371,8 +681,8 @@ es.Views.Form70 = Backbone.View.extend({
            info: esui.get("Info1").getGroup().getValue(),
            info6txt: $.trim(esui.get("Info6Name").getValue()),
            info7txt: $.trim(esui.get("Info7Name").getValue()),
-           drug1: [],
-           drug2: [],
+           drug1: esui.get("Doubt").datasource,
+           drug2: esui.get("Merge").datasource,
            adr: esui.get("ADR1").getGroup().getValue(),
            adr1: esui.get("ADR1_1").getGroup().getValue(),
            adr2: esui.get("ADR2_1").getGroup().getValue(),
@@ -408,36 +718,6 @@ es.Views.Form70 = Backbone.View.extend({
            reportDate: esui.get("ReportDate").getValue(),
            remark: $.trim(esui.get("Remark").getValue())
        };
-       
-       me.$(".doubt-block").each(function(index, val) {
-           var no = $(val).attr("no");
-           data.drug1.push({
-               f1: $.trim(esui.get("DoubtF1" + no).getValue()),
-               f2: $.trim(esui.get("DoubtF2" + no).getValue()),
-               f3: $.trim(esui.get("DoubtF3" + no).getValue()),
-               f4: $.trim(esui.get("DoubtF4" + no).getValue()),
-               f5: $.trim(esui.get("DoubtF5" + no).getValue()),
-               f6: $.trim(esui.get("DoubtF6" + no).getValue()),
-               f7: esui.get("DoubtF7" + no).getValue(),
-               f8: esui.get("DoubtF8" + no).getValue(),
-               f9: $.trim(esui.get("DoubtF9" + no).getValue())
-           });
-       });
-       
-       me.$(".merge-block").each(function(index, val) {
-           var no = $(val).attr("no");
-           data.drug2.push({
-               f1: $.trim(esui.get("MergeF1" + no).getValue()),
-               f2: $.trim(esui.get("MergeF2" + no).getValue()),
-               f3: $.trim(esui.get("MergeF3" + no).getValue()),
-               f4: $.trim(esui.get("MergeF4" + no).getValue()),
-               f5: $.trim(esui.get("MergeF5" + no).getValue()),
-               f6: $.trim(esui.get("MergeF6" + no).getValue()),
-               f7: esui.get("MergeF7" + no).getValue(),
-               f8: esui.get("MergeF8" + no).getValue(),
-               f9: $.trim(esui.get("MergeF9" + no).getValue())
-           });
-       });
        
        //验证
        var floatPattern = /^\d+(\.\d+)?$/,
@@ -530,7 +810,7 @@ es.Views.Form70 = Backbone.View.extend({
            data.info7txt = "";
        }
        
-       for (var i = 0, n = data.drug1.length; i < n; i++) {
+       /*for (var i = 0, n = data.drug1.length; i < n; i++) {
            var item = data.drug1[i], seq = i + 1;
            if (item.f1 == "") {
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品批准文号"});
@@ -566,44 +846,7 @@ es.Views.Form70 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品用药原因"});
                return false;
            }
-       }
-       for (var i = 0, n = data.drug2.length; i < n; i++) {
-           var item = data.drug2[i], seq = i + 1;
-           if (item.f1 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个并用药品批准文号"});
-               return false;
-           }
-           if (item.f2 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个并用药品商品名称"});
-               return false;
-           }
-           if (item.f3 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个并用药品通用名称"});
-               return false;
-           }
-           if (item.f4 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个并用药品生产厂家"});
-               return false;
-           }
-           if (item.f5 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个并用药品生产批号"});
-               return false;
-           }
-           if (item.f6 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个并用药品用法用量"});
-               return false;
-           }
-           var start = T.date.parse(item.f7).getTime(),
-               end = T.date.parse(item.f8).getTime();
-           if (start > end) {
-               esui.Dialog.alert({title: "提示", content: "第" + seq + "个并用药品用药开始时间不能晚于用药停止时间"});
-               return;
-           }
-           if (item.f9 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个并用药品用药原因"});
-               return false;
-           }
-       }
+       }*/
        
        if (data.adr == "") {
            esui.Dialog.alert({title: "提示", content: "请选择不良反应/事件名称"});

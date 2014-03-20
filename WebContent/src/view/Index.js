@@ -17,6 +17,7 @@ es.Views.Index = Backbone.View.extend({
     },
     
     destroy: function() {
+        esui.dispose();
         this.model.unbind();
         this.$el.unbind();
         this.$el.empty();
