@@ -124,28 +124,28 @@ es.Views.Form52 = Backbone.View.extend({
         
         $.each(data.data1, function(index, val) {
             var examDate = esui.get("E1ExamDate" + val.no);
-            examDate.onchange = function(value) {start.setValueAsDate(value);};
+            examDate.onchange = function(value) {examDate.setValueAsDate(value);};
             if (!es.main.editable) {
                 examDate.disable();
             }
         });
         $.each(data.data2, function(index, val) {
             var examDate = esui.get("E2ExamDate" + val.no);
-            examDate.onchange = function(value) {start.setValueAsDate(value);};
+            examDate.onchange = function(value) {examDate.setValueAsDate(value);};
             if (!es.main.editable) {
                 examDate.disable();
             }
         });
         $.each(data.data3, function(index, val) {
             var examDate = esui.get("E3ExamDate" + val.no);
-            examDate.onchange = function(value) {start.setValueAsDate(value);};
+            examDate.onchange = function(value) {examDate.setValueAsDate(value);};
             if (!es.main.editable) {
                 examDate.disable();
             }
         });
         $.each(data.data4, function(index, val) {
             var examDate = esui.get("E4ExamDate" + val.no);
-            examDate.onchange = function(value) {start.setValueAsDate(value);};
+            examDate.onchange = function(value) {examDate.setValueAsDate(value);};
             if (!es.main.editable) {
                 examDate.disable();
             }

@@ -67,7 +67,7 @@ util.stopBubble = function(e) {
 util.ajax = {
     showError: function(msg) {
         $("#Mask").hide();
-        $("#Message").text(msg).show().fadeOut(5000);
+        $("#Message").text(msg).show().fadeOut(10000);
     },
     
     showMask: function() {
