@@ -449,13 +449,13 @@ es.Views.Form70 = Backbone.View.extend({
             return false;
         }
         
-        console.log("crf/save单次怀疑药品.do-请求", data);
+        console.log("crf/saveOneDoubtDrugInADE.do-请求", data);
         
         util.ajax.run({
-            url: "crf/save单次怀疑药品.do",
+            url: "crf/saveOneDoubtDrugInADE.do",
             data: data,
             success: function(response) {
-                console.log("crf/save单次怀疑药品.do-响应:", response);
+                console.log("crf/saveOneDoubtDrugInADE.do-响应:", response);
                 
                 block.attr({id: response.id});
                 var table = esui.get("Doubt"),
@@ -541,13 +541,13 @@ es.Views.Form70 = Backbone.View.extend({
             return false;
         }
         
-        console.log("crf/save单次并用药品.do-请求", data);
+        console.log("crf/saveOneCombineDrugInADE.do-请求", data);
         
         util.ajax.run({
-            url: "crf/save单次并用药品.do",
+            url: "crf/saveOneCombineDrugInADE.do",
             data: data,
             success: function(response) {
-                console.log("crf/save单次并用药品.do-响应:", response);
+                console.log("crf/saveOneCombineDrugInADE.do-响应:", response);
                 
                 block.attr({id: response.id});
                 var table = esui.get("Merge"),
@@ -588,13 +588,13 @@ es.Views.Form70 = Backbone.View.extend({
            drugId: id
         };
         
-        console.log("crf/del单次怀疑药品.do-请求:", data);
+        console.log("crf/deleteOneDoubtDrugInADE.do-请求:", data);
         
         util.ajax.run({
-            url: "crf/del单次怀疑药品.do",
+            url: "crf/deleteOneDoubtDrugInADE.do",
             data: data,
             success: function(response) {
-                console.log("crf/del单次怀疑药品.do-响应:", response);
+                console.log("crf/deleteOneDoubtDrugInADE.do-响应:", response);
                 
                 esui.dispose("DoubtF7" + no);
                 esui.dispose("DoubtF8" + no);

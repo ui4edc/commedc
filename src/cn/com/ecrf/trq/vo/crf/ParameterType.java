@@ -3,6 +3,8 @@ package cn.com.ecrf.trq.vo.crf;
 public class ParameterType {
 	private int id;
 	private int drugUseId;
+	private String uuid;
+	private int drugId;
 	private String no;
 	private String abbr;
 	private int times;
@@ -71,6 +73,18 @@ public class ParameterType {
 	}
 	public void setBaseItemId(int baseItemId) {
 		this.baseItemId = baseItemId;
+	}
+	public int getDrugId() {
+		return drugId;
+	}
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	
 	

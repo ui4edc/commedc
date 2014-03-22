@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import cn.com.ecrf.trq.model.ADRCase;
+import cn.com.ecrf.trq.model.ADRDrug;
 import cn.com.ecrf.trq.model.BodyExamCase;
 import cn.com.ecrf.trq.model.CRFUserSign;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
@@ -77,6 +78,7 @@ import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.ECGExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
 import cn.com.ecrf.trq.vo.lab.LabExamInstanceVo;
+import cn.com.ecrf.trq.vo.lab.PlainExamVo;
 import cn.com.ecrf.trq.vo.list.ListConditionVo;
 import cn.com.ecrf.trq.vo.list.ListNotifyVo;
 import cn.com.ecrf.trq.vo.list.ListReturnVo;
@@ -691,10 +693,10 @@ public class CRFService {
 				DrugCombinationCase drugCombinationCase =  convertorService.convertDrugCombinationCaseFromViewToModel(drugs.get(i), drugCombinationVo.getNo());
 				//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
 				//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间");
-				if (drugCombinationCase.getSeq() > 0){
+				drugCombinationCase.setDrugId(drugCombinationCase.getId());
+				if (drugCombinationCase.getDrugId() > 0){
 					cRFMapper.updateDrugCombination(drugCombinationCase);
 				}else{
-					//cRFMapper.deleteDrugCombination(drugCombinationVo.getNo());
 					cRFMapper.insertDrugCombination(drugCombinationCase);
 				}
 			}
@@ -709,6 +711,31 @@ public class CRFService {
 		
 		return result;
 	}
+	
+	public Map<String, Object> saveOneDrugCombination(
+			DrugInstanceObject drugInstanceObject) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result;
+		try{
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(drugInstanceObject.getId());
+			DrugCombinationCase drugCombinationCase =  convertorService.convertDrugCombinationCaseFromViewToModel(drugInstanceObject, patientInfoCase.getNo());
+			//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
+			//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间"); 
+			
+			if (drugCombinationCase.getDrugId() > 0){
+				cRFMapper.updateDrugCombination(drugCombinationCase);
+			}else{
+				cRFMapper.insertDrugCombination(drugCombinationCase);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			result.put("id", drugCombinationCase.getDrugId());
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+	
 
 	
 
@@ -1259,6 +1286,137 @@ public class CRFService {
 		
 		return result;
 	}
+
+	public Map<String, Object> deleteOneDrugCombination(int drugId) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			cRFMapper.deleteDrugCombination(drugId);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	public Map<String, Object> saveOneDoubtDrugInADE(PlainExamVo plainExamVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result;
+		try{
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(plainExamVo.getId());
+			ADRDrug adrDrug =  convertorService.convertADEDrugFromViewToModel(plainExamVo, patientInfoCase.getNo());
+			//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
+			//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间"); 
+			adrDrug.setDrugType(1);
+			if (adrDrug.getDrugId() > 0){
+				cRFMapper.updateADRDrug(adrDrug);
+			}else{
+				cRFMapper.insertADRDrug(adrDrug);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			result.put("id", adrDrug.getDrugId());
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	/*public Map<String, Object> deleteOneDrugCombination(int id, String uuid) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			ADRCase adrCase = cRFMapper.getADR(id);
+			String drug1 = adrCase.getDrug1Str();
+			if (!StringUtils.isNotBlank(uuid)){
+				result = AjaxReturnUtils.generateAjaxReturn(false, "uuid为空");
+			}else{
+				if (StringUtils.isNotBlank(drug1)){
+					JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+					List<PlainExamVo> drugList = util.convertFromString(drug1);
+					if (drugList != null){
+						for (PlainExamVo drug : drugList){
+							if (uuid.equalsIgnoreCase(drug.getUuid())){
+								
+							}
+						}
+					}
+				}
+			}
+			
+			///cRFMapper.deleteOneDoubtDrugInADE(drugId);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}*/
+
+	public Map<String, Object> deleteOneDoubtDrugInADE(int id, int drugId) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			Map<String, Object> condition = new HashMap<String, Object>();
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(id);
+			condition.put("no", patientInfoCase.getNo());
+			condition.put("drugId", drugId);
+			condition.put("drugType", 1); //1-doubt drug, 2-combine drug
+			cRFMapper.deleteADRDrug(condition);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	public Map<String, Object> saveOneCombineDrugInADE(PlainExamVo plainExamVo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result;
+		try{
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(plainExamVo.getId());
+			ADRDrug adrDrug =  convertorService.convertADEDrugFromViewToModel(plainExamVo, patientInfoCase.getNo());
+			//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
+			//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间"); 
+			adrDrug.setDrugType(2);
+			if (adrDrug.getDrugId() > 0){
+				cRFMapper.updateADRDrug(adrDrug);
+			}else{
+				cRFMapper.insertADRDrug(adrDrug);
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+			result.put("id", adrDrug.getDrugId());
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+	public Map<String, Object> deleteOneCombineDrugInADE(int id, int drugId) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			Map<String, Object> condition = new HashMap<String, Object>();
+			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(id);
+			condition.put("no", patientInfoCase.getNo());
+			condition.put("drugId", drugId);
+			condition.put("drugType", 2); //1-doubt drug, 2-combine drug
+			cRFMapper.deleteADRDrug(condition);
+			///cRFMapper.deleteOneDoubtDrugInADE(drugId);
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
+
+
+
+	
 
 
 

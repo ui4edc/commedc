@@ -31,6 +31,7 @@ import cn.com.ecrf.trq.utils.StreamConvertorUtils;
 import cn.com.ecrf.trq.vo.ADRVo;
 import cn.com.ecrf.trq.vo.DiseaseInfoVo;
 import cn.com.ecrf.trq.vo.DrugCombinationVo;
+import cn.com.ecrf.trq.vo.DrugInstanceObject;
 import cn.com.ecrf.trq.vo.DrugSummaryVo;
 import cn.com.ecrf.trq.vo.DrugUseVo;
 import cn.com.ecrf.trq.vo.PastHistoryVo;
@@ -41,6 +42,7 @@ import cn.com.ecrf.trq.vo.lab.BodyExamVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.ECGExamVo;
 import cn.com.ecrf.trq.vo.lab.InHospitalExamVo;
+import cn.com.ecrf.trq.vo.lab.PlainExamVo;
 
 @Controller
 public class CRFController {
@@ -349,6 +351,47 @@ public class CRFController {
 		return result;
 	}
 	
+	@RequestMapping(value="/crf/saveOneDrugCombination", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveOneDrugCombination(DrugInstanceObject drugInstanceObject, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.saveOneDrugCombination(drugInstanceObject);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/deleteOneDrugCombination", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteOneDrugCombination(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.deleteOneDrugCombination(parameterType.getDrugId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/saveOneDoubtDrugInADE", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveOneDoubtDrugInADE(PlainExamVo plainExamVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.saveOneDoubtDrugInADE(plainExamVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/deleteOneDoubtDrugInADE", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteOneDoubtDrugInADE(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.deleteOneDoubtDrugInADE(parameterType.getId(), parameterType.getDrugId());
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/saveOneCombineDrugInADE", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveOneCombineDrugInADE(PlainExamVo plainExamVo, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.saveOneCombineDrugInADE(plainExamVo);
+		return result;
+	}
+	
+	@RequestMapping(value="/crf/deleteOneCombineDrugInADE", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteOneCombineDrugInADE(ParameterType parameterType, HttpServletRequest request) {
+		Map<String, Object> result = cRFService.deleteOneCombineDrugInADE(parameterType.getId(), parameterType.getDrugId());
+		return result;
+	}
 	
 	
 	

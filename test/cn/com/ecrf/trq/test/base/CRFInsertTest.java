@@ -143,14 +143,6 @@ public class CRFInsertTest extends SpringControllerTest{
 		 System.out.println(obj);
 	}
 	
-	@Ignore
-	@Test
-	public void testSaveInHospitalExam(){
-		InHospitalExamVo inHospitalExamVo = new InHospitalExamVo();
-		inHospitalExamVo.setId(5);
-		inHospitalExamVo.setNo("001-0001");
-		cRFService.saveInHospitalExam(inHospitalExamVo);
-	}
 	
 	@Test
 	public void testSaveDrugSummary(){

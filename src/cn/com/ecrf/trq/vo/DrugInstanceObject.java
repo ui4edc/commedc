@@ -2,6 +2,8 @@ package cn.com.ecrf.trq.vo;
 
 public class DrugInstanceObject {
 	private int id;
+	
+	private String drugId;
 	//通用名
 	private String name;
 	private String start;
@@ -15,7 +17,8 @@ public class DrugInstanceObject {
 	//给药途径
 	private String way;
 	
-	private int seq;
+	private int no;
+	
 	public String getName() {
 		return name;
 	}
@@ -58,17 +61,23 @@ public class DrugInstanceObject {
 	public void setWay(String way) {
 		this.way = way;
 	}
-	public int getSeq() {
-		return seq;
-	}
-	public void setSeq(int seq) {
-		this.seq = seq;
-	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getDrugId() {
+		return drugId;
+	}
+	public void setDrugId(String drugId) {
+		this.drugId = drugId;
+	}
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
 	}
 	
 	

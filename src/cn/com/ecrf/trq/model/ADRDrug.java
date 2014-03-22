@@ -1,8 +1,9 @@
-package cn.com.ecrf.trq.vo.lab;
+package cn.com.ecrf.trq.model;
 
-public class PlainExamVo {
+public class ADRDrug {
 	private int id;
-	private String drugId;
+	private String no;
+	private int drugId;
 	private String f1;
 	private String f2;
 	private String f3;
@@ -12,8 +13,20 @@ public class PlainExamVo {
 	private String f7;
 	private String f8;
 	private String f9;
-	private int no;
+	private int drugType;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getDrugId() {
+		return drugId;
+	}
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
+	}
 	public String getF1() {
 		return f1;
 	}
@@ -68,26 +81,18 @@ public class PlainExamVo {
 	public void setF9(String f9) {
 		this.f9 = f9;
 	}
-	public String getDrugId() {
-		return drugId;
+	public int getDrugType() {
+		return drugType;
 	}
-	public void setDrugId(String drugId) {
-		this.drugId = drugId;
+	public void setDrugType(int drugType) {
+		this.drugType = drugType;
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getNo() {
+	public String getNo() {
 		return no;
 	}
-	public void setNo(int no) {
+	public void setNo(String no) {
 		this.no = no;
 	}
-	
-	
 	
 	
 }

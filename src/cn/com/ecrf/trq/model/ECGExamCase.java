@@ -6,7 +6,7 @@ public class ECGExamCase {
 
 	private int id;
 	private String no;
-	private String normal;
+	private int normal;
 	private Date examDateDate;
 	private int done;
 	private String description;
@@ -23,10 +23,10 @@ public class ECGExamCase {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public String getNormal() {
+	public int getNormal() {
 		return normal;
 	}
-	public void setNormal(String normal) {
+	public void setNormal(int normal) {
 		this.normal = normal;
 	}
 	public int getDone() {

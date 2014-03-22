@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.vo.lab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DrugUseExamVo {
@@ -14,10 +15,10 @@ public class DrugUseExamVo {
 	private String resulttxt1;
 	private String resulttxt2;
 	private String resulttxt3;
-	private List<LabExamInstanceVo> data1;
-	private List<LabExamInstanceVo> data2;
-	private List<LabExamInstanceVo> data3;
-	private List<LabExamInstanceVo> data4;
+	private List<LabExamInstanceVo> data1 = new ArrayList<LabExamInstanceVo>();
+	private List<LabExamInstanceVo> data2 = new ArrayList<LabExamInstanceVo>();
+	private List<LabExamInstanceVo> data3 = new ArrayList<LabExamInstanceVo>();
+	private List<LabExamInstanceVo> data4 = new ArrayList<LabExamInstanceVo>();
 	public int getId() {
 		return id;
 	}

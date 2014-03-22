@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.ecrf.trq.model.ADRCase;
+import cn.com.ecrf.trq.model.ADRDrug;
 import cn.com.ecrf.trq.model.BodyExamCase;
 import cn.com.ecrf.trq.model.CRFFormEnum;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
@@ -470,11 +471,6 @@ public class ConvertorService {
 		}
 	}
 
-	public DrugUseVo convertDrugUseInfoFromJSONToView(String json) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public DrugCombinationCase convertDrugCombinationCaseFromViewToModel(
 			DrugInstanceObject drugInstanceObject, String no) {
 		// TODO Auto-generated method stub
@@ -488,12 +484,13 @@ public class ConvertorService {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		drugCombinationCase.setSeq(drugInstanceObject.getId());
-		drugCombinationCase.setNo(no);
-		drugCombinationCase.setDose(drugInstanceObject.getDose());
-		drugCombinationCase.setFrequency(drugInstanceObject.getFrequency());
-		drugCombinationCase.setUnit(drugInstanceObject.getUnit());
-		drugCombinationCase.setWay(drugInstanceObject.getWay());
+		try {
+			BeanUtils.copyProperties(drugCombinationCase, drugInstanceObject);
+			drugCombinationCase.setNo(no);
+		} catch (IllegalAccessException | InvocationTargetException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			if (StringUtils.isNotBlank(drugInstanceObject.getStart())){
@@ -517,6 +514,7 @@ public class ConvertorService {
 		DrugInstanceObject drugInstanceObject = new DrugInstanceObject();
 		try {
 			BeanUtils.copyProperties(drugInstanceObject, drugCombinationCase);
+			drugInstanceObject.setId(drugCombinationCase.getDrugId());
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if (drugCombinationCase.getStartDate() != null){
 				String start = sdf.format(drugCombinationCase.getStartDate());
@@ -526,7 +524,6 @@ public class ConvertorService {
 				String end = sdf.format(drugCombinationCase.getEndDate());
 				drugInstanceObject.setEnd(end);
 			}
-			drugInstanceObject.setId(drugCombinationCase.getSeq());
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -599,7 +596,7 @@ public class ConvertorService {
 		DrugSummaryVo drugSummaryVo = new DrugSummaryVo();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			BeanUtils.copyProperties(drugSummaryCase, drugSummaryVo);
+			BeanUtils.copyProperties(drugSummaryVo, drugSummaryCase);
 			if (drugSummaryCase.getDeathDateDate() != null){
 				drugSummaryVo.setDeathDate(sdf.format(drugSummaryCase.getDeathDateDate()));
 			}
@@ -681,11 +678,11 @@ public class ConvertorService {
 			aDRCase.setCareerStr(convertIDToContent(careerObj));
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+/*			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
 			if (adrVo.getDrug1() != null && adrVo.getDrug1().size() > 0)
 				aDRCase.setDrug1Str(util.convertFromList(adrVo.getDrug1()));
 			if (adrVo.getDrug2() != null && adrVo.getDrug2().size() > 0)
-				aDRCase.setDrug2Str(util.convertFromList(adrVo.getDrug2()));
+				aDRCase.setDrug2Str(util.convertFromList(adrVo.getDrug2()));*/
 			FormEnumObject endingObj = new FormEnumObject(adrVo.getEnding(), adrVo.getEndingtxt(), FormEnumValue.ADR_RESULT);
 			aDRCase.setEndingStr(convertIDToContent(endingObj));
 			FormEnumObject ethicObj = new FormEnumObject(adrVo.getEthic(), null, FormEnumValue.ETHIC);
@@ -766,11 +763,31 @@ public class ConvertorService {
 			aDRVo.setCareer(convertContentToID(careerObj));
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			
-			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			/*JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
 			if (StringUtils.isNotBlank(adrCase.getDrug1Str()))
 				aDRVo.setDrug1(util.convertFromString(adrCase.getDrug1Str()));
 			if (StringUtils.isNotBlank(adrCase.getDrug2Str()))
-				aDRVo.setDrug2(util.convertFromString(adrCase.getDrug2Str()));
+				aDRVo.setDrug2(util.convertFromString(adrCase.getDrug2Str()));*/
+			Map<String, Object> condition = new HashMap<String, Object>();
+			condition.put("id", adrCase.getId());
+			condition.put("drugType", 1);
+			List<ADRDrug> doubtDrugs = cRFMapper.getADRDrugList(condition);
+			if (doubtDrugs != null){
+				for (ADRDrug adrDrug : doubtDrugs){
+					PlainExamVo plainExamVo = convertADEDrugFromModelToView(adrDrug);
+					aDRVo.getDrug1().add(plainExamVo);
+				}
+			}
+			condition = new HashMap<String, Object>();
+			condition.put("id", adrCase.getId());
+			condition.put("drugType", 2);
+			List<ADRDrug> combineDrugs = cRFMapper.getADRDrugList(condition);
+			if (doubtDrugs != null){
+				for (ADRDrug adrDrug : combineDrugs){
+					PlainExamVo plainExamVo = convertADEDrugFromModelToView(adrDrug);
+					aDRVo.getDrug2().add(plainExamVo);
+				}
+			}
 			FormEnumObject endingObj = new FormEnumObject(adrCase.getEndingStr(), FormEnumValue.ADR_ENDING);
 			aDRVo.setEnding(convertContentToID(endingObj));
 			FormEnumObject ethicObj = new FormEnumObject(adrCase.getEthicStr(), FormEnumValue.ETHIC);
@@ -815,6 +832,10 @@ public class ConvertorService {
 		
 		return aDRVo;
 	}
+
+
+
+
 
 	public DoubtRecordGetVo convertDoubtRecordFromModelToView(DoubtRecord record) {
 		// TODO Auto-generated method stub
@@ -915,6 +936,37 @@ public class ConvertorService {
 	}
 
 
+
+	public ADRDrug convertADEDrugFromViewToModel(PlainExamVo plainExamVo,
+			String no) {
+		// TODO Auto-generated method stub
+		ADRDrug adrDrug = null;
+		try {
+				if (plainExamVo != null){
+					adrDrug = new ADRDrug();
+					BeanUtils.copyProperties(adrDrug, plainExamVo);
+				}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return adrDrug;
+	}
+
+	private PlainExamVo convertADEDrugFromModelToView(ADRDrug adrDrug) {
+		// TODO Auto-generated method stub
+		PlainExamVo plainExamVo = null;
+		try {
+				if (adrDrug != null){
+					plainExamVo = new PlainExamVo();
+					BeanUtils.copyProperties(plainExamVo, adrDrug);
+				}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return plainExamVo;
+	}
 
 
 

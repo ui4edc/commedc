@@ -195,13 +195,13 @@ es.Views.Form40 = Backbone.View.extend({
             return false;
         }
         
-        console.log("crf/save单次合并用药.do-请求", data);
+        console.log("crf/saveOneDrugCombination.do-请求", data);
         
         util.ajax.run({
-            url: "crf/save单次合并用药.do",
+            url: "crf/saveOneDrugCombination.do",
             data: data,
             success: function(response) {
-                console.log("crf/save单次合并用药.do-响应:", response);
+                console.log("crf/saveOneDrugCombination.do-响应:", response);
                 
                 block.attr({id: response.id});
                 var table = esui.get("Drug"),
@@ -247,13 +247,13 @@ es.Views.Form40 = Backbone.View.extend({
            drugId: id
         };
         
-        console.log("crf/del单次合并用药.do-请求:", data);
+        console.log("crf/deleteOneDrugCombination.do-请求:", data);
         
         util.ajax.run({
-            url: "crf/del单次合并用药.do",
+            url: "crf/deleteOneDrugCombination.do",
             data: data,
             success: function(response) {
-                console.log("crf/del单次合并用药.do-响应:", response);
+                console.log("crf/deleteOneDrugCombination.do-响应:", response);
                 
                 esui.dispose("Start" + no);
                 esui.dispose("End" + no);

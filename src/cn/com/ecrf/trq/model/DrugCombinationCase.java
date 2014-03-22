@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class DrugCombinationCase {
 	//id
-	private int seq;
+	private int id;
+	private int drugId;
 	//观察表编号
 	private String no;
 	//通用名
@@ -22,12 +23,11 @@ public class DrugCombinationCase {
 	//给药频次
 	private String frequency;
 	
-	
-	public int getSeq() {
-		return seq;
+	public int getDrugId() {
+		return drugId;
 	}
-	public void setSeq(int seq) {
-		this.seq = seq;
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
 	}
 	public String getNo() {
 		return no;
@@ -76,6 +76,12 @@ public class DrugCombinationCase {
 	}
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

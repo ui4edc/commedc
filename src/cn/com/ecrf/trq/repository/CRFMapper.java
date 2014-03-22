@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.ecrf.trq.model.ADRCase;
+import cn.com.ecrf.trq.model.ADRDrug;
 import cn.com.ecrf.trq.model.BodyExamCase;
 import cn.com.ecrf.trq.model.CRFFormEnum;
 import cn.com.ecrf.trq.model.DiseaseInfoCase;
@@ -109,7 +110,7 @@ public interface CRFMapper {
 
 	public void insertADR(ADRCase aDRCase);
 
-	public void deleteDrugCombination(String no);
+	public void deleteDrugCombination(int drugId);
 
 	public void deletePatientInfo(int id);
 
@@ -179,6 +180,14 @@ public interface CRFMapper {
 	public void insertECGExam(ECGExamCase eCGExamCase);
 
 	public List<ADEStat> getADEStatByHospital(Map<String, Object> condition);
+
+	public void deleteADRDrug(Map<String, Object> condition);
+
+	public void updateADRDrug(ADRDrug adrDrug);
+
+	public void insertADRDrug(ADRDrug adrDrug);
+
+	public List<ADRDrug> getADRDrugList(Map<String, Object> condition);
 	
 
 
