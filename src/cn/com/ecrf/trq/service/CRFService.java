@@ -571,6 +571,31 @@ public class CRFService {
 		}
 		return result;
 	}
+	//批量提交
+	public Map<String, Object> batchCommit(String id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> result = null;
+		try{
+			if (StringUtils.isNotBlank(id)){
+				String[] idArray = id.split(",");
+				for (String str : idArray){
+					int key = Integer.parseInt(str);
+					PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(key);
+					CRFUserSign dbUserSign = userSignMapper.getUserSignByNo(patientInfoCase.getNo());
+					if (dbUserSign.getLockStatus() == 0)
+						dbUserSign.setLockStatus(LockStatusUtils.submit);
+					dbUserSign.setCroSignTime(new Date());
+					//dbUserSign.setCroName(userName);
+					userSignMapper.updateUserSign(dbUserSign);
+				}
+			}
+			result = AjaxReturnUtils.generateAjaxReturn(true, null);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
+		}
+		return result;
+	}
 
 	public Map<String, Object> saveDiseaseInfo(DiseaseInfoVo diseaseInfoVo) {
 		// TODO Auto-generated method stub
@@ -1003,8 +1028,25 @@ public class CRFService {
 				PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(doubtRecordSubmitVo.getId());
 				userSign.setNo(patientInfoCase.getNo());
 				userSign.setLockStatus(LockStatusUtils.pass);
-				userSign.setCrmSignTime(new Date());
-				userSignMapper.updateUserSign(userSign);
+				Subject subject = SecurityUtils.getSubject();
+				String userName = (String) subject.getPrincipal();
+				List<Role> roles = roleMapper.getRoleByUserName(userName);
+				String roleName = null;
+				if (roles != null && roles.size() > 0){
+					roleName = roles.get(0).getRoleName();
+				}
+				if ("CRO".equalsIgnoreCase(roleName) || "LCRO".equalsIgnoreCase(roleName)){
+
+				}else if ("CRM".equalsIgnoreCase(roleName)){
+					userSign.setCrmName(userName);
+					userSign.setCrmSignTime(new Date());
+					userSignMapper.updateUserSign(userSign);
+				}else if ("DM".equalsIgnoreCase(roleName)){
+					userSign.setDmName(userName);
+					userSign.setDmSignTime(new Date());
+					userSignMapper.updateUserSign(userSign);
+				}
+				
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 		}catch(Exception e){
@@ -1413,6 +1455,8 @@ public class CRFService {
 		}
 		return result;
 	}
+
+	
 
 
 

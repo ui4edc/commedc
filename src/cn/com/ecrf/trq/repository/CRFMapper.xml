@@ -927,6 +927,9 @@
 		drugId=#{drugId}
 	</update>
 	<insert id="insertADRDrug" parameterType="cn.com.ecrf.trq.model.ADRDrug">
+		<selectKey resultType="Integer" order="AFTER" keyProperty="drugId">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
 		insert into crf_adr_drug(no,drugId,drugType,f1,f2,f3,f4,f5,f6,f7,f8,f9) 
 		values(#{no},#{drugId},#{drugType},#{f1},#{f2},#{f3},#{f4},#{f5},#{f6},#{f7},#{f8},#{f9});
 	</insert>

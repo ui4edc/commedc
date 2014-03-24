@@ -18,7 +18,7 @@
        ,crm_name=#{crmName}
     </if>
     <if test="crmSignTime != null" >
-       ,crm_signname=#{crmSignTime}
+       ,crm_signtime=#{crmSignTime}
     </if>
     <if test="dmName != null" >
        ,dm_name=#{dmName}

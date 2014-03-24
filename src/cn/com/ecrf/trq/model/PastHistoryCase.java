@@ -139,6 +139,10 @@ public class PastHistoryCase {
 	public void setTnb(int tnb) {
 		this.tnb = tnb;
 	}
+
+
+
+	
 	
 	
 

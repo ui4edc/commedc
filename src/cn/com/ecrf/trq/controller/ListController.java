@@ -58,4 +58,14 @@ public class ListController {
 		return result;
 	}
 	
+	@RequestMapping(value="/list/batchCommit", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> batchCommit(HttpServletRequest request) { 
+		String crf = request.getParameter("crf");
+		String id = request.getParameter("id");
+		
+		Map<String, Object> result = cRFService.batchCommit(id);
+		return result;
+	}
+	
 }

@@ -672,29 +672,7 @@ public class ConvertorService {
 					e.printStackTrace();
 				}
 			}
-			FormEnumObject bloodObj = new FormEnumObject(adrVo.getBlood(), null, FormEnumValue.YES_NO);
-			aDRCase.setBloodStr(convertIDToContent(bloodObj));
-			FormEnumObject careerObj = new FormEnumObject(adrVo.getCareer(), adrVo.getCareertxt(), FormEnumValue.CAREER);
-			aDRCase.setCareerStr(convertIDToContent(careerObj));
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			
-/*			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
-			if (adrVo.getDrug1() != null && adrVo.getDrug1().size() > 0)
-				aDRCase.setDrug1Str(util.convertFromList(adrVo.getDrug1()));
-			if (adrVo.getDrug2() != null && adrVo.getDrug2().size() > 0)
-				aDRCase.setDrug2Str(util.convertFromList(adrVo.getDrug2()));*/
-			FormEnumObject endingObj = new FormEnumObject(adrVo.getEnding(), adrVo.getEndingtxt(), FormEnumValue.ADR_RESULT);
-			aDRCase.setEndingStr(convertIDToContent(endingObj));
-			FormEnumObject ethicObj = new FormEnumObject(adrVo.getEthic(), null, FormEnumValue.ETHIC);
-			aDRCase.setEthicStr(convertIDToContent(ethicObj));
-			FormEnumObject evaluateObj = new FormEnumObject(adrVo.getEvaluate(), null, FormEnumValue.ADR_EVALUATE);
-			aDRCase.setEvaluateStr(convertIDToContent(evaluateObj));
-			FormEnumObject familyadrObj = new FormEnumObject(adrVo.getFamilyadr(), adrVo.getFamilyadrtxt(), FormEnumValue.YES_NO_UNKNOWN);
-			aDRCase.setFamilyadrStr(convertIDToContent(familyadrObj));
-			FormEnumObject historyadrObj = new FormEnumObject(adrVo.getHistoryadr(), adrVo.getHistoryadrtxt(), FormEnumValue.YES_NO_UNKNOWN);
-			aDRCase.setHistoryadrStr(convertIDToContent(historyadrObj));
-			FormEnumObject relationshipObj = new FormEnumObject(adrVo.getRelationship(), null, FormEnumValue.ADR_RELATIONSHIP);
-			aDRCase.setRelationshipStr(convertIDToContent(relationshipObj));
 			if (StringUtils.isNotBlank(adrVo.getDeathDate())){
 				try {
 					Date deathDateDate = sdf.parse(adrVo.getDeathDate());
@@ -713,6 +691,30 @@ public class ConvertorService {
 					e.printStackTrace();
 				}
 			}
+			FormEnumObject bloodObj = new FormEnumObject(adrVo.getBlood(), null, FormEnumValue.YES_NO);
+			aDRCase.setBloodStr(convertIDToContent(bloodObj));
+			FormEnumObject careerObj = new FormEnumObject(adrVo.getCareer(), adrVo.getCareertxt(), FormEnumValue.CAREER);
+			aDRCase.setCareerStr(convertIDToContent(careerObj));
+			
+			
+/*			JSONUtils<PlainExamVo> util = new JSONUtils<PlainExamVo>(PlainExamVo.class);
+			if (adrVo.getDrug1() != null && adrVo.getDrug1().size() > 0)
+				aDRCase.setDrug1Str(util.convertFromList(adrVo.getDrug1()));
+			if (adrVo.getDrug2() != null && adrVo.getDrug2().size() > 0)
+				aDRCase.setDrug2Str(util.convertFromList(adrVo.getDrug2()));*/
+			FormEnumObject endingObj = new FormEnumObject(adrVo.getEnding(), adrVo.getEndingtxt(), FormEnumValue.ADR_RESULT);
+			aDRCase.setEndingStr(convertIDToContent(endingObj));
+			FormEnumObject ethicObj = new FormEnumObject(adrVo.getEthic(), null, FormEnumValue.ETHIC);
+			aDRCase.setEthicStr(convertIDToContent(ethicObj));
+			FormEnumObject evaluateObj = new FormEnumObject(adrVo.getEvaluate(), null, FormEnumValue.ADR_EVALUATE);
+			aDRCase.setEvaluateStr(convertIDToContent(evaluateObj));
+			FormEnumObject familyadrObj = new FormEnumObject(adrVo.getFamilyadr(), adrVo.getFamilyadrtxt(), FormEnumValue.YES_NO_UNKNOWN);
+			aDRCase.setFamilyadrStr(convertIDToContent(familyadrObj));
+			FormEnumObject historyadrObj = new FormEnumObject(adrVo.getHistoryadr(), adrVo.getHistoryadrtxt(), FormEnumValue.YES_NO_UNKNOWN);
+			aDRCase.setHistoryadrStr(convertIDToContent(historyadrObj));
+			FormEnumObject relationshipObj = new FormEnumObject(adrVo.getRelationship(), null, FormEnumValue.ADR_RELATIONSHIP);
+			aDRCase.setRelationshipStr(convertIDToContent(relationshipObj));
+			
 			FormEnumObject sexObj = new FormEnumObject(adrVo.getSex(), null, FormEnumValue.SEX);
 			aDRCase.setSexStr(convertIDToContent(sexObj));
 			FormEnumObject typeObj = new FormEnumObject(adrVo.getType(), null, FormEnumValue.ADR_TYPE);
@@ -775,6 +777,7 @@ public class ConvertorService {
 			if (doubtDrugs != null){
 				for (ADRDrug adrDrug : doubtDrugs){
 					PlainExamVo plainExamVo = convertADEDrugFromModelToView(adrDrug);
+					plainExamVo.setId(Integer.parseInt(plainExamVo.getDrugId()));
 					aDRVo.getDrug1().add(plainExamVo);
 				}
 			}
@@ -785,6 +788,7 @@ public class ConvertorService {
 			if (doubtDrugs != null){
 				for (ADRDrug adrDrug : combineDrugs){
 					PlainExamVo plainExamVo = convertADEDrugFromModelToView(adrDrug);
+					plainExamVo.setId(Integer.parseInt(plainExamVo.getDrugId()));
 					aDRVo.getDrug2().add(plainExamVo);
 				}
 			}
@@ -945,6 +949,15 @@ public class ConvertorService {
 				if (plainExamVo != null){
 					adrDrug = new ADRDrug();
 					BeanUtils.copyProperties(adrDrug, plainExamVo);
+					adrDrug.setNo(no);
+					try{
+						List<DictRow> dictRows = getItemDict(plainExamVo.getF3(), DictUtils.drug);
+						if (dictRows == null || dictRows.size() < 1){
+							insertItemDict(plainExamVo.getF3(), DictUtils.drug);
+						}
+					}catch(Exception e){
+						e.printStackTrace();
+					}
 				}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
