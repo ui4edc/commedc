@@ -243,13 +243,13 @@ es.Views.Form60 = Backbone.View.extend({
            esui.Dialog.alert({title: "提示", content: "请选择药师是否进行相关干预"});
            return;
        }
-       if (data.intervention == 1 && data.interventiontxt == "") {
-           esui.Dialog.alert({title: "提示", content: "请填写药师如何进行干预"});
-           return;
-       } else if (data.intervention == 1){ //intervention=1, interverntiontxt not null
-           
-       }else{
-    	   data.interventiontxt = "";
+       if (data.intervention == 1) {
+            if (data.interventiontxt == "") {
+                esui.Dialog.alert({title: "提示", content: "请填写药师如何进行干预"});
+                return;
+            }
+       } else {
+           data.interventiontxt = "";
        }
        var floatPattern = /^\d+(\.\d+)?$/;
        if (data.treatmentCost != "" && !floatPattern.test(data.treatmentCost)) {

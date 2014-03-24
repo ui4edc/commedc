@@ -627,13 +627,13 @@ es.Views.Form70 = Backbone.View.extend({
            drugId: id
         };
         
-        console.log("crf/del单次并用药品.do-请求:", data);
+        console.log("crf/deleteOneCombineDrugInADE.do-请求:", data);
         
         util.ajax.run({
-            url: "crf/del单次并用药品.do",
+            url: "crf/deleteOneCombineDrugInADE.do",
             data: data,
             success: function(response) {
-                console.log("crf/del单次并用药品.do-响应:", response);
+                console.log("crf/deleteOneCombineDrugInADE.do-响应:", response);
                 
                 esui.dispose("MergeF7" + no);
                 esui.dispose("MergeF8" + no);
@@ -809,44 +809,6 @@ es.Views.Form70 = Backbone.View.extend({
        if (data.info.indexOf("7") == -1) {
            data.info7txt = "";
        }
-       
-       /*for (var i = 0, n = data.drug1.length; i < n; i++) {
-           var item = data.drug1[i], seq = i + 1;
-           if (item.f1 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品批准文号"});
-               return false;
-           }
-           if (item.f2 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品商品名称"});
-               return false;
-           }
-           if (item.f3 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品通用名称"});
-               return false;
-           }
-           if (item.f4 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品生产厂家"});
-               return false;
-           }
-           if (item.f5 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品生产批号"});
-               return false;
-           }
-           if (item.f6 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品用法用量"});
-               return false;
-           }
-           var start = T.date.parse(item.f7).getTime(),
-               end = T.date.parse(item.f8).getTime();
-           if (start > end) {
-               esui.Dialog.alert({title: "提示", content: "第" + seq + "个怀疑药品用药开始时间不能晚于用药停止时间"});
-               return;
-           }
-           if (item.f9 == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写第 " + seq + " 个怀疑药品用药原因"});
-               return false;
-           }
-       }*/
        
        if (data.adr == "") {
            esui.Dialog.alert({title: "提示", content: "请选择不良反应/事件名称"});

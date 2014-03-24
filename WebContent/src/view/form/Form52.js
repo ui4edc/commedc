@@ -172,12 +172,15 @@ es.Views.Form52 = Backbone.View.extend({
             disabled: "",
             save: [1]
         }));
-        var option = {};
-        option["E" + number + "ExamDate" + no] = {
+        var option = {},
+            id = "E" + number + "ExamDate" + no;
+        
+        option[id] = {
             range: CRF_RANGE,
             value: T.date.format(new Date(), "yyyy-MM-dd")
         };
         esui.init(this.el, option);
+        esui.get(id).onchange = function(value) {esui.get(id).setValueAsDate(value);};
     },
     
     addE1: function(e) {
