@@ -576,17 +576,31 @@ public class CRFService {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
 		try{
+			Subject subject = SecurityUtils.getSubject();
+			String userName = (String) subject.getPrincipal();
+			List<Role> roles = roleMapper.getRoleByUserName(userName);
+			String roleName = null;
+			if (roles != null && roles.size() > 0){
+				roleName = roles.get(0).getRoleName();
+			}
 			if (StringUtils.isNotBlank(id)){
 				String[] idArray = id.split(",");
 				for (String str : idArray){
 					int key = Integer.parseInt(str);
 					PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(key);
 					CRFUserSign dbUserSign = userSignMapper.getUserSignByNo(patientInfoCase.getNo());
-					if (dbUserSign.getLockStatus() == 0)
-						dbUserSign.setLockStatus(LockStatusUtils.submit);
-					dbUserSign.setCroSignTime(new Date());
-					//dbUserSign.setCroName(userName);
-					userSignMapper.updateUserSign(dbUserSign);
+					if ("CRM".equalsIgnoreCase(roleName)){
+						dbUserSign.setLockStatus(LockStatusUtils.pass);
+						dbUserSign.setCrmSignTime(new Date());
+						dbUserSign.setCrmName(userName);
+						userSignMapper.updateUserSign(dbUserSign);
+					}else if ("DM".equalsIgnoreCase(roleName)){
+						dbUserSign.setLockStatus(LockStatusUtils.pass);
+						dbUserSign.setDmSignTime(new Date());
+						dbUserSign.setDmName(userName);
+						userSignMapper.updateUserSign(dbUserSign);
+					}
+					
 				}
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);

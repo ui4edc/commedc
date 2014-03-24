@@ -34,7 +34,7 @@
   <delete id="deleteUserSign" parameterType="string">
   	delete from crf_user_sign where no=#{no}
   </delete>
-  <select id="getUserSignByNo" parameterType="cn.com.ecrf.trq.model.CRFUserSign">
+  <select id="getUserSignByNo" parameterType="string" resultType="cn.com.ecrf.trq.model.CRFUserSign">
   	select 
   		no as no,
   		lockstatus as lockStatus,

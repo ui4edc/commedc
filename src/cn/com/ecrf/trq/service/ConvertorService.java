@@ -376,6 +376,14 @@ public class ConvertorService {
 			if (drugUseVo != null){
 				drugUseCase = new DrugUseCase();
 				BeanUtils.copyProperties(drugUseCase, drugUseVo);
+				try{
+					List<DictRow> dictRows = getItemDict(drugUseVo.getWay3Name(), DictUtils.path);
+					if (dictRows == null || dictRows.size() < 1){
+						insertItemDict(drugUseVo.getWay3Name(), DictUtils.path);
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 				JSONUtils<BanDrug> util = new JSONUtils<BanDrug>(BanDrug.class);
 				if (drugUseVo.getBanDrug()!= null && drugUseVo.getBanDrug().size() > 0){
 					drugUseCase.setBanDruglb(util.convertFromList(drugUseVo.getBanDrug()));
@@ -480,6 +488,10 @@ public class ConvertorService {
 			List<DictRow> dictRows = getItemDict(drugInstanceObject.getName(), DictUtils.drug);
 			if (dictRows == null || dictRows.size() < 1){
 				insertItemDict(drugInstanceObject.getName(), DictUtils.drug);
+			}
+			dictRows = getItemDict(drugInstanceObject.getWay(), DictUtils.path);
+			if (dictRows == null || dictRows.size() < 1){
+				insertItemDict(drugInstanceObject.getWay(), DictUtils.path);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
