@@ -68,11 +68,15 @@ es.Views.Dict = Backbone.View.extend({
             this.render();
         };
         
+        var me = this;
         this.$("#ctrltextItem").autocomplete({
             source: function(request, response) {
                 util.ajax.run({
                     url: "dict/getBaseList.do",
-                    data: {keyword: $.trim(request.term)},
+                    data: {
+                        keyword: $.trim(request.term),
+                        id: me.dictId
+                    },
                     success: function(data) {
                         console.log("dict/getBaseList.do", data);
                         
