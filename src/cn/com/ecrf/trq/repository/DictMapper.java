@@ -11,7 +11,7 @@ public interface DictMapper {
 
 	List<DictSnapshot> getUnDealDictList();
 	List<DictRow> getDictRowList(int id);
-	List<DictRow> getBasicList(String name);
+	List<DictRow> getBasicList(Map<String, Object> condition);
 	void addItemToBase(Map<String, Object> condition);
 	List<StaticDict> getStaticDict(StaticDict staticDict);
 	void insertDictRow(DictRow dictRow);

@@ -13,7 +13,6 @@ public class FormEnumValue {
 	public static final String SJYB = "sjyb";
 	public static final String DONE = "done";
 	public static final String CAREER = "adr_career";
-	public static final String ADR_ENDING = "adr_ending";
 	public static final String DM_ENDING = "dm_ending";
 	public static final String ADR_TYPE = "adr_type";
 	public static final String ADR_RELATE ="adr_relate";//相关重要信息

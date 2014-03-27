@@ -672,6 +672,7 @@
 			history as history,
 			adr as adr,
 			adrtxt as adrtxt,
+			ban	as ban,
 			banColor as banColor,
 			bantxt as bantxt,
 			banDruglb as banDruglb,
@@ -711,7 +712,11 @@
 			way2Speed as way2Speed,
 			way3Name as way3Name,
 			way3Speed as way3Speed,
-			way3Unit as way3Unit
+			way3Unit as way3Unit,
+			nextGroup as nextGroup,
+			nextGroupName as nextGroupName,
+			useSolvent as useSolvent, 
+			location as location
 		from crf_druguse_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no 
 		<if test="drugUseId != null">
       		and ph.seq=#{drugUseId}
@@ -723,25 +728,25 @@
      	<selectKey resultType="Integer" order="AFTER" keyProperty="drugUseId">
 			SELECT LAST_INSERT_ID()
 		</selectKey>  
-	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, banColor, bantxt, banDruglb,
-	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gSolvent2Dose, gpSolvent1Dose,
+	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, ban, banColor, bantxt, banDruglb,
+	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gpSolvent, gSolvent2Dose, gpSolvent1Dose,
 	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
 	    prepareTime, prepareTimeUd, sameBottle, sameGroup, solvent, solventDose, solventName, solventPercent,
 	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,nextGroup, nextGroupName, useSolvent, location)
-	    values (#{no}, #{drugUseId}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, 
-	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gSolvent2Dose}, #{gpSolvent1Dose},
+	    values (#{no}, #{drugUseId}, #{history}, #{adr}, #{adrtxt}, #{ban}, #{banColor}, #{bantxt}, #{banDruglb}, 
+	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gpSolvent}, #{gSolvent2Dose}, #{gpSolvent1Dose},
 	    #{gpSolvent3Dose}, #{gpSolvent3Name},#{gpSolvent3Percent}, #{hasBan}, #{hasFood}, #{hasInjection}, #{injectionlb}, 
 	    #{prepareTime}, #{prepareTimeUd}, #{sameBottle}, #{sameGroup},#{solvent}, #{solventDose}, #{solventName}, #{solventPercent},
 	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit},#{nextGroup}, #{nextGroupName}, #{useSolvent}, #{location});
 	</insert>
 	<insert id="insertDrugUseInfoWithDrugUseId" parameterType="cn.com.ecrf.trq.model.DrugUseCase"> 
-	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, banColor, bantxt, banDruglb,
-	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gSolvent2Dose, gpSolvent1Dose,
+	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, ban, banColor, bantxt, banDruglb,
+	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gpSolvent, gSolvent2Dose, gpSolvent1Dose,
 	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
 	    prepareTime, prepareTimeUd, sameBottle, sameGroup, solvent, solventDose, solventName, solventPercent,
 	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,nextGroup, nextGroupName, useSolvent, location)
-	    values (#{no}, #{drugUseId}, #{history}, #{adr}, #{adrtxt}, #{banColor}, #{bantxt}, #{banDruglb}, 
-	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gSolvent2Dose}, #{gpSolvent1Dose},
+	    values (#{no}, #{drugUseId}, #{history}, #{adr}, #{adrtxt}, #{ban}, #{banColor}, #{bantxt}, #{banDruglb}, 
+	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gpSolvent}, #{gSolvent2Dose}, #{gpSolvent1Dose},
 	    #{gpSolvent3Dose}, #{gpSolvent3Name},#{gpSolvent3Percent}, #{hasBan}, #{hasFood}, #{hasInjection}, #{injectionlb}, 
 	    #{prepareTime}, #{prepareTimeUd}, #{sameBottle}, #{sameGroup},#{solvent}, #{solventDose}, #{solventName}, #{solventPercent},
 	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit},#{nextGroup}, #{nextGroupName}, #{useSolvent}, #{location});
@@ -750,9 +755,9 @@
 	<update id="updateDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase" >
 		update crf_druguse_info set
 		history=#{history}, adr=#{adr},
-		adrtxt=#{adrtxt}, banColor=#{banColor}, bantxt=#{bantxt},banDruglb=#{banDruglb},
+		adrtxt=#{adrtxt}, ban=#{ban}, banColor=#{banColor}, bantxt=#{bantxt},banDruglb=#{banDruglb},
 		batchNumber=#{batchNumber}, bottlelb=#{bottlelb},dose=#{dose}, endDate=#{endDate}, endH=#{endH}, endM=#{endM}, food=#{food}, foodtxt=#{foodtxt}, 
-		gSolvent2Dose=#{gSolvent2Dose}, gpSolvent1Dose=#{gpSolvent1Dose},
+		gpSolvent=#{gpSolvent}, gSolvent2Dose=#{gSolvent2Dose}, gpSolvent1Dose=#{gpSolvent1Dose},
 	    gpSolvent3Dose=#{gpSolvent3Dose}, gpSolvent3Name=#{gpSolvent3Name}, gpSolvent3Percent=#{gpSolvent3Percent}, hasBan=#{hasBan}, hasFood=#{hasFood}, hasInjection=#{hasInjection}, injectionlb=#{injectionlb},
 	    prepareTime=#{prepareTime}, prepareTimeUd=#{prepareTimeUd}, sameBottle=#{sameBottle}, sameGroup=#{sameGroup}, solvent=#{solvent}, solventDose=#{solventDose}, solventName=#{solventName}, solventPercent=#{solventPercent},
 	    startDate=#{startDate}, startH=#{startH}, startM=#{startM}, way=#{way}, way1Speed=#{way1Speed}, way1Time=#{way1Time}, way2Speed=#{way2Speed}, way3Name=#{way3Name}, way3Speed=#{way3Speed}, way3Unit=#{way3Unit}, 

@@ -804,7 +804,7 @@ public class ConvertorService {
 					aDRVo.getDrug2().add(plainExamVo);
 				}
 			}
-			FormEnumObject endingObj = new FormEnumObject(adrCase.getEndingStr(), FormEnumValue.ADR_ENDING);
+			FormEnumObject endingObj = new FormEnumObject(adrCase.getEndingStr(), FormEnumValue.ADR_RESULT);
 			aDRVo.setEnding(convertContentToID(endingObj));
 			FormEnumObject ethicObj = new FormEnumObject(adrCase.getEthicStr(), FormEnumValue.ETHIC);
 			aDRVo.setEthic(convertContentToID(ethicObj));
@@ -814,9 +814,6 @@ public class ConvertorService {
 			aDRVo.setFamilyadr(convertContentToID(familyadrObj));
 			FormEnumObject historyadrObj = new FormEnumObject(adrCase.getHistoryadrStr(), FormEnumValue.YES_NO_UNKNOWN);
 			aDRVo.setHistoryadr(convertContentToID(historyadrObj));
-			aDRVo.setInfo(aDRVo.getInfo());
-			aDRVo.setInfo6txt(aDRVo.getInfo6txt());
-			aDRVo.setInfo7txt(aDRVo.getInfo7txt());
 			FormEnumObject relationshipObj = new FormEnumObject(adrCase.getRelationshipStr(), FormEnumValue.ADR_RELATIONSHIP);
 			aDRVo.setRelationship(convertContentToID(relationshipObj));
 			if (adrCase.getDeathDateDate() != null){

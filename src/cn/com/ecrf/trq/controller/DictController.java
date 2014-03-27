@@ -53,7 +53,7 @@ public class DictController {
 	@RequestMapping(value="/dict/getBaseList", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> listBaseDict(ParameterType parameterType, HttpServletRequest request) {
-		List<DictRow> bases = dictService.getBaseDict(parameterType.getKeyword());
+		List<DictRow> bases = dictService.getBaseDict(parameterType.getKeyword(), parameterType.getId());
 		Map<String, Object> result = AjaxReturnUtils.generateAjaxReturn(true, null, bases, bases.size());
 		return result;
 	}

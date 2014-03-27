@@ -758,8 +758,8 @@ public class CRFService {
 		try{
 			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(drugInstanceObject.getId());
 			DrugCombinationCase drugCombinationCase =  convertorService.convertDrugCombinationCaseFromViewToModel(drugInstanceObject, patientInfoCase.getNo());
-			//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
-			//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间"); 
+			validDateRange(drugCombinationCase.getStartDate(), drugInstanceObject.getId(), "开始时间");
+			validDateRange(drugCombinationCase.getEndDate(), drugInstanceObject.getId(), "结束时间"); 
 			
 			if (drugCombinationCase.getDrugId() > 0){
 				cRFMapper.updateDrugCombination(drugCombinationCase);
@@ -817,6 +817,7 @@ public class CRFService {
 			ADRCase aDRCase =  convertorService.convertADRFromViewToModel(adrVo);
 			ADRCase dbCase = cRFMapper.getADR(adrVo.getId());
 			validDateRange(aDRCase.getAdrDateDate(), adrVo.getId(), "不良反应/事件发生时间");
+			validDateRange(aDRCase.getReportDateDate(), adrVo.getId(), "报告日期");
 			if (dbCase != null && dbCase.getNo() != null)
 				cRFMapper.updateADR(aDRCase);
 			else {
@@ -1362,8 +1363,9 @@ public class CRFService {
 		try{
 			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(plainExamVo.getId());
 			ADRDrug adrDrug =  convertorService.convertADEDrugFromViewToModel(plainExamVo, patientInfoCase.getNo());
-			//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
-			//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间"); 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			validDateRange(sdf.parse(adrDrug.getF7()), plainExamVo.getId(), "开始时间");
+			validDateRange(sdf.parse(adrDrug.getF8()), plainExamVo.getId(), "结束时间"); 
 			adrDrug.setDrugType(1);
 			if (adrDrug.getDrugId() > 0){
 				cRFMapper.updateADRDrug(adrDrug);
@@ -1434,8 +1436,9 @@ public class CRFService {
 		try{
 			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(plainExamVo.getId());
 			ADRDrug adrDrug =  convertorService.convertADEDrugFromViewToModel(plainExamVo, patientInfoCase.getNo());
-			//validDateRange(drugCombinationCase.getStartDate(), drugCombinationVo.getId(), "开始时间");
-			//validDateRange(drugCombinationCase.getEndDate(), drugCombinationVo.getId(), "结束时间"); 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			validDateRange(sdf.parse(adrDrug.getF7()), plainExamVo.getId(), "开始时间");
+			validDateRange(sdf.parse(adrDrug.getF8()), plainExamVo.getId(), "结束时间"); 
 			adrDrug.setDrugType(2);
 			if (adrDrug.getDrugId() > 0){
 				cRFMapper.updateADRDrug(adrDrug);

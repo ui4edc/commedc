@@ -7,27 +7,28 @@
 			   d.name as name,
 			   count(i.type) as untreated
 		from dt_dictname d left join dt_itemdict i
-		on d.name=i.type
+		on d.name=i.type and i.fk_base_id=0
 		group by d.abbr
 	</select>
 	<select id="getDictRowList" resultType="cn.com.ecrf.trq.model.dict.DictRow" parameterType="int">
 		select 	i.id as id,
 				i.name as name,
 				i.abbr as abbr,
-				b.id   as baseItemId,
-				b.name as baseItemName,
-				b.abbr as baseItemAbbr
-		from dt_dictname d,dt_itemdict i left join dt_basedict b
-		on i.fk_base_id=b.id
+				s.id   as baseItemId,
+				s.name as baseItemName,
+				s.abbr as baseItemAbbr
+		from dt_dictname d,dt_itemdict i left join dt_staticdict s
+		on i.fk_base_id=s.id
 		where i.type=d.name and d.id=#{id}
 	</select>
-	<select id="getBasicList" resultType="cn.com.ecrf.trq.model.dict.DictRow" parameterType="string">
+	<select id="getBasicList" resultType="cn.com.ecrf.trq.model.dict.DictRow" parameterType="map">
 		select 	
 				b.id   as baseItemId,
 				b.name as baseItemName,
 				b.abbr as baseItemAbbr
-		from dt_basedict b
-		where b.name like '%'||#{name}||'%' or b.abbr like '%'||#{name}||'%'
+		from dt_staticdict b, dt_dictname d
+		where b.abbr like #{keyword} and d.id=#{id} and d.name=b.type 
+		order by b.abbr
 	</select>
 	<update id="addItemToBase" parameterType="map">
 		update dt_itemdict set fk_base_id=#{baseItemId} where id=#{selectedItemId}

@@ -25,6 +25,8 @@ public class DrugUseCase {
 	
 	private String adrtxt;
 	
+	private int ban;
+	
 	private String banColor;
 	
 	private String bantxt;
@@ -48,9 +50,10 @@ public class DrugUseCase {
 	private String food;
 	
 	private String foodtxt;
-	private String gSolvent2Dose;
+	
 	private int gpSolvent;
 	private	String gpSolvent1Dose;
+	private String gSolvent2Dose;
 	private String	gpSolvent3Dose;
 	private String	gpSolvent3Name;
 	private String	gpSolvent3Percent;
@@ -380,6 +383,12 @@ public class DrugUseCase {
 	}
 	public void setUseSolvent(int useSolvent) {
 		this.useSolvent = useSolvent;
+	}
+	public int getBan() {
+		return ban;
+	}
+	public void setBan(int ban) {
+		this.ban = ban;
 	}
 	
 	
