@@ -381,15 +381,19 @@ public class CRFService {
 	public Map<String, Object> getBasicInfo(String id) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
+		PatientInfoVo patientInfoVo = null;
 		try{
 			PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(Integer.parseInt(id));
-			PatientInfoVo patientInfoVo = convertorService.convertPatientFromModelToView(patientInfoCase);
+			if (patientInfoCase.getBirthday() == null) {//means just create the patient, no other information
+							
+			}else{
+				patientInfoVo = convertorService.convertPatientFromModelToView(patientInfoCase);
+			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, patientInfoVo);
 		}catch(Exception e){
 			e.printStackTrace();
 			result = AjaxReturnUtils.generateAjaxReturn(false, null);
 		}
-		
 		return result;
 	}
 
@@ -435,9 +439,11 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			PersonAllergicHistoryCase personAllergicHistoryCase = cRFMapper.getPersonHistory(Integer.parseInt(id));
-			PersonalHistoryVo personalHistoryVo = new PersonalHistoryVo();
-			if (personAllergicHistoryCase != null)
+			PersonalHistoryVo personalHistoryVo = null;
+			if (personAllergicHistoryCase != null){
+				personalHistoryVo = new PersonalHistoryVo();
 				personalHistoryVo = convertorService.convertPersonHistoryFromModelToView(personAllergicHistoryCase);
+			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, personalHistoryVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -670,8 +676,8 @@ public class CRFService {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			//validDateRange(startDate, drugUseVo.getId(), "用药开始时间");
-			//validDateRange(endDate, drugUseVo.getId(), "用药结束时间");
+			validDateRange(startDate, drugUseVo.getId(), "用药开始时间");
+			validDateRange(endDate, drugUseVo.getId(), "用药结束时间");
 			if (dbCase != null && dbCase.getNo() != null && dbCase.getDrugUseId() > 0){
 				cRFMapper.updateDrugUseInfo(drugUseCase);
 				cRFMapper.updateAllDrugUseInfo(drugUseCase);
@@ -880,23 +886,24 @@ public class CRFService {
 	public Map<String, Object> getDrugCombinationInfo(String id, String no) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
+		DrugCombinationVo drugCombinationVo = null;
 		try{
-			DrugCombinationVo drugCombinationVo = new DrugCombinationVo();
 			PatientInfoCase patientInfo = cRFMapper.getBasicInfo(Integer.parseInt(id));
 			DrugCombinationBase drugCombinationBase = cRFMapper.getDrugCombinationBase(patientInfo.getNo());
 			if (drugCombinationBase != null){
+				drugCombinationVo = new DrugCombinationVo();
 				drugCombinationVo.setHasDrug(drugCombinationBase.getHasDrug());
+				List<DrugCombinationCase> drugCombinationCases = cRFMapper.getDrugCombinationList(Integer.parseInt(id));
+				
+				drugCombinationVo.setId(Integer.parseInt(id));
+				drugCombinationVo.setNo(no);
+				List<DrugInstanceObject> drugInstanceObjects = new ArrayList<DrugInstanceObject>();
+				for (int i=0;drugCombinationCases!=null && i<drugCombinationCases.size();i++){
+					DrugInstanceObject drugInstanceObject = convertorService.convertDrugCombinationCaseFromModelToView(drugCombinationCases.get(i));
+					drugInstanceObjects.add(drugInstanceObject);
+				}
+				drugCombinationVo.setDrug(drugInstanceObjects);
 			}
-			List<DrugCombinationCase> drugCombinationCases = cRFMapper.getDrugCombinationList(Integer.parseInt(id));
-			
-			drugCombinationVo.setId(Integer.parseInt(id));
-			drugCombinationVo.setNo(no);
-			List<DrugInstanceObject> drugInstanceObjects = new ArrayList<DrugInstanceObject>();
-			for (int i=0;drugCombinationCases!=null && i<drugCombinationCases.size();i++){
-				DrugInstanceObject drugInstanceObject = convertorService.convertDrugCombinationCaseFromModelToView(drugCombinationCases.get(i));
-				drugInstanceObjects.add(drugInstanceObject);
-			}
-			drugCombinationVo.setDrug(drugInstanceObjects);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null, drugCombinationVo);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1219,7 +1226,8 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			BodyExamCase bodyExamCase = convertorService.convertBodyExamFromViewToModel(bodyExamVo);
-			validDateRange(bodyExamCase.getExamDateDate(), bodyExamCase.getId(), "检查日期");
+			if (bodyExamCase.getExamDateDate() != null)
+				validDateRange(bodyExamCase.getExamDateDate(), bodyExamCase.getId(), "检查日期");
 			BodyExamCase dbCase = cRFMapper.getBodyExam(bodyExamCase.getId());
 			if (dbCase != null && dbCase.getNo() != null){
 				cRFMapper.updateBodyExam(bodyExamCase);
@@ -1259,7 +1267,8 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			ECGExamCase eCGExamCase = convertorService.convertECGExamFromViewToModel(eCGExamVo);
-			validDateRange(eCGExamCase.getExamDateDate(), eCGExamCase.getId(), "检查日期");
+			if (eCGExamCase.getExamDateDate() != null)
+				validDateRange(eCGExamCase.getExamDateDate(), eCGExamCase.getId(), "检查日期");
 			ECGExamCase dbCase = cRFMapper.getECGExam(eCGExamCase.getId());			
 			if (dbCase != null && dbCase.getId() > 0){
 				cRFMapper.updateECGExam(eCGExamCase);
@@ -1283,7 +1292,8 @@ public class CRFService {
 		try{	
 			LabExamCase labExamCase = convertorService.convertDrugUseExamFromViewToModel(drugUseExamVo);
 			validateDateRangeFromLabExam(drugUseExamVo);
-			validDateRange(labExamCase.getExamDateDate(), labExamCase.getId(), "送检日期");
+			if (labExamCase.getExamDateDate() != null)
+				validDateRange(labExamCase.getExamDateDate(), labExamCase.getId(), "送检日期");
 			LabExamCase dbCase = cRFMapper.getLabExamCase(labExamCase.getId());
 			if (dbCase != null && dbCase.getNo() != null){
 				cRFMapper.updateLabExamCase(labExamCase);
