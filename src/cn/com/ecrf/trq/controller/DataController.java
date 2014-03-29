@@ -20,6 +20,7 @@ import cn.com.ecrf.trq.service.DataService;
 import cn.com.ecrf.trq.utils.AjaxReturnUtils;
 import cn.com.ecrf.trq.utils.ViewCSV;
 import cn.com.ecrf.trq.utils.ViewExcel;
+import cn.com.ecrf.trq.vo.data.ExportVo;
 
 @Controller
 public class DataController {
@@ -45,14 +46,14 @@ public class DataController {
 		String crf = request.getParameter("crf");
 		String id = request.getParameter("id");
 		int fileTypeNum = Integer.parseInt(fileType);
+		List<ExportVo> list = dataService.getExportDataByIds(id);
+	    Map model = new HashMap();   
+	    model.put("list", list);   
 		if (fileTypeNum == 0){
 			/*String fileName = "下载的文件名.xsl";
 			response.setHeader("Content-Type","application/octet-stream");
 			response.setHeader("Content-disposition","attachment;filename="+fileName);*/
-			List list = new ArrayList();   
-		    Map model = new HashMap();   
-		    
-		    model.put("list", list);   
+			
 		    ViewExcel viewExcel = new ViewExcel();   
 		    try {
 		    	HSSFWorkbook workbook = new HSSFWorkbook();  
@@ -63,11 +64,6 @@ public class DataController {
 			}
 		    return new ModelAndView(viewExcel, model); 
 		}else if (fileTypeNum == 1){
-			List list = new ArrayList();   
-		    Map model = new HashMap();   
-		    list.add("test1");   
-		    list.add("test2");   
-		    model.put("list", list);   
 		    ViewCSV viewCSV = new ViewCSV();   
 		    try {
 				viewCSV.render(model, request, response);

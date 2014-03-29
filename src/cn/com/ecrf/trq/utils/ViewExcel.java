@@ -19,7 +19,9 @@ import org.apache.shiro.util.StringUtils;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import cn.com.ecrf.trq.model.PatientInfoCase;
+import cn.com.ecrf.trq.model.PersonAllergicHistoryCase;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
+import cn.com.ecrf.trq.vo.data.ExportVo;
 /**
 * 生成excel视图，可用excel工具打开或者保存
 * 由ViewController的return new ModelAndView(viewExcel, model)生成
@@ -28,7 +30,7 @@ import cn.com.ecrf.trq.vo.PatientInfoVo;
 */
 public class ViewExcel extends AbstractExcelView {   
    
-    public void buildExcelDocument(Map model, HSSFWorkbook workbook,   
+    /*public void buildExcelDocument(Map model, HSSFWorkbook workbook,   
             HttpServletRequest request, HttpServletResponse response)   
             throws Exception {   
     	String filename = "export.xls";//设置下载时客户端Excel的名称       
@@ -38,7 +40,7 @@ public class ViewExcel extends AbstractExcelView {
         sheet.setDefaultColumnWidth((short) 12);   
   
         HSSFCell cell = getCell(sheet, 0, 0);   
-        setText(cell, "Spring Excel test");   
+        setText(cell, "观察表导出");   
   
         //HSSFCellStyle dateStyle = workbook.createCellStyle();   
         //dateStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("mm/dd/yyyy"));   
@@ -57,6 +59,66 @@ public class ViewExcel extends AbstractExcelView {
         for (short i = 0; i < lists.size(); i++) {   
         	sheetRow4.createCell(i).setCellValue(lists.get(i)); 
         }   
+        OutputStream ouputStream = response.getOutputStream();   
+        workbook.write(ouputStream);       
+        ouputStream.flush();       
+        ouputStream.close();
+  
+    }*/
+	
+	public void buildExcelDocument(Map model, HSSFWorkbook workbook,   
+            HttpServletRequest request, HttpServletResponse response)   
+            throws Exception {   
+    	String filename = "export.xls";//设置下载时客户端Excel的名称       
+        response.setContentType("application/vnd.ms-excel");       
+        response.setHeader("Content-disposition", "attachment;filename=" + filename);    
+        HSSFSheet sheet = workbook.createSheet("list");   
+        sheet.setDefaultColumnWidth((short) 12);   
+        List<ExportVo> list = (List<ExportVo>)model.get("list");
+        HSSFRow sheetRow = sheet.createRow(0); 
+        sheetRow.createCell(0).setCellValue("观察表编号");
+        sheetRow.createCell(1).setCellValue("姓名缩写");
+        sheetRow.createCell(2).setCellValue("出生日期");
+        sheetRow.createCell(3).setCellValue("年龄");
+        sheetRow.createCell(4).setCellValue("民族");
+        sheetRow.createCell(5).setCellValue("性别");
+        sheetRow.createCell(6).setCellValue("体重");
+        sheetRow.createCell(7).setCellValue("身高");
+        sheetRow.createCell(8).setCellValue("用药科室");
+        sheetRow.createCell(9).setCellValue("入院日期");
+        sheetRow.createCell(10).setCellValue("出院日期");
+        sheetRow.createCell(11).setCellValue("医疗费用方式");
+        //
+        sheetRow.createCell(12).setCellValue("吸烟史");
+        sheetRow.createCell(13).setCellValue("饮酒史");
+        sheetRow.createCell(14).setCellValue("食物过敏史");
+        sheetRow.createCell(15).setCellValue("过敏食物名称及表现");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for (int i=0;i<list.size();i++){
+        	sheetRow = sheet.createRow(i+1);  
+        	PatientInfoCase patientInfoCase = list.get(i).getPatientInfoCase();
+        	sheetRow.createCell(0).setCellValue(patientInfoCase.getNo());
+            sheetRow.createCell(1).setCellValue(patientInfoCase.getAbbr());
+            sheetRow.createCell(2).setCellValue(sdf.format(patientInfoCase.getBirthday()));
+            sheetRow.createCell(3).setCellValue(patientInfoCase.getAge());
+            sheetRow.createCell(4).setCellValue(patientInfoCase.getEthic());
+            sheetRow.createCell(5).setCellValue(patientInfoCase.getSex());
+            sheetRow.createCell(6).setCellValue(patientInfoCase.getWeight()+"kg");
+            sheetRow.createCell(7).setCellValue(patientInfoCase.getHeight()+"cm");
+            sheetRow.createCell(8).setCellValue(patientInfoCase.getYyks());
+            sheetRow.createCell(9).setCellValue(sdf.format(patientInfoCase.getRyrq()));
+            sheetRow.createCell(10).setCellValue(sdf.format(patientInfoCase.getCyrq()));
+            sheetRow.createCell(11).setCellValue(patientInfoCase.getYlfyfs());
+            //
+            PersonAllergicHistoryCase personAllergicHistoryCase = list.get(i).getPersonAllergicHistoryCase();
+            
+            sheetRow.createCell(12).setCellValue(personAllergicHistoryCase.getSmoke());
+            sheetRow.createCell(13).setCellValue(personAllergicHistoryCase.getDrink());
+            sheetRow.createCell(14).setCellValue(personAllergicHistoryCase.getFood());
+            sheetRow.createCell(15).setCellValue(personAllergicHistoryCase.getFoodlb());
+        	
+        }
+        
         OutputStream ouputStream = response.getOutputStream();   
         workbook.write(ouputStream);       
         ouputStream.flush();       

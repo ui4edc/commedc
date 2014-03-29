@@ -605,8 +605,14 @@ public class CRFService {
 						dbUserSign.setDmSignTime(new Date());
 						dbUserSign.setDmName(userName);
 						userSignMapper.updateUserSign(dbUserSign);
+					}else {//CRO or LCRO
+						if (dbUserSign.getLockStatus() < LockStatusUtils.submit){
+							dbUserSign.setLockStatus(LockStatusUtils.submit);
+							dbUserSign.setCroSignTime(new Date());
+							dbUserSign.setCroName(userName);
+							userSignMapper.updateUserSign(dbUserSign);
+						}
 					}
-					
 				}
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
