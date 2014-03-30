@@ -1051,7 +1051,7 @@ public class CRFService {
 			doubtRecord.setFlag(1);
 			doubtRecordMapper.saveDoubtRecord(doubtRecord);
 			List<DoubtRecord> records = doubtRecordMapper.getUndealDoubtRecord(doubtRecordSubmitVo.getId());
-			if (records == null || records.size() == 0){
+			/*if (records == null || records.size() == 0){
 				CRFUserSign userSign = new CRFUserSign();
 				PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(doubtRecordSubmitVo.getId());
 				userSign.setNo(patientInfoCase.getNo());
@@ -1075,7 +1075,7 @@ public class CRFService {
 					userSignMapper.updateUserSign(userSign);
 				}
 				
-			}
+			}*/
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 		}catch(Exception e){
 			e.printStackTrace();

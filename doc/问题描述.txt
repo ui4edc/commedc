@@ -164,3 +164,6 @@ bug
 3.ADE info6txt,info7txt从后台返回后没绑定
 fixed
 4.ADE报告时间,死亡时间要不要检查(黄寅)
+
+2014.03.30
+1.批量删除，批量提交接口增加一个type,也就是getPatientList接口里面的type，见接口
