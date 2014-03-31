@@ -329,7 +329,8 @@ es.Views.Supervise = Backbone.View.extend({
                     });
                     var data = {
                         crf: esui.get("CRF").isChecked(),
-                        id: id.join(",")
+                        id: id.join(","),
+                        type: es.main.args.type
                     };
                     
                     console.log("list/batchDelete.do-请求", data);
@@ -369,7 +370,8 @@ es.Views.Supervise = Backbone.View.extend({
             });
             var data = {
                 crf: esui.get("CRF").isChecked(),
-                id: id.join(",")
+                id: id.join(","),
+                type: es.main.args.type
             };
             
             console.log("list/batchCommit.do-请求", data);
