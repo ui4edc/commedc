@@ -332,7 +332,7 @@ public class CRFController {
 	
 	@RequestMapping(value="/crf/saveBodyExam", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> saveBodyExam(BodyExamVo bodyExamVo, HttpServletRequest request) {
+	public Map<String, Object> saveBodyExam(@RequestBody BodyExamVo bodyExamVo, HttpServletRequest request) {
 		Map<String, Object> result = cRFService.saveBodyExam(bodyExamVo);
 		return result;
 	}

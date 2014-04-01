@@ -49,6 +49,7 @@ import cn.com.ecrf.trq.vo.PastHistoryVo;
 import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
 import cn.com.ecrf.trq.vo.crf.BanDrug;
+import cn.com.ecrf.trq.vo.lab.BodyExamInstanceVo;
 import cn.com.ecrf.trq.vo.lab.BodyExamVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.ECGExamVo;
@@ -870,10 +871,9 @@ public class ConvertorService {
 				if (bodyExamCase != null){
 					bodyExamVo = new BodyExamVo();
 					BeanUtils.copyProperties(bodyExamVo,bodyExamCase);
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					if (bodyExamCase.getExamDateDate() != null){
-						bodyExamVo.setExamDate(sdf.format(bodyExamCase.getExamDateDate()));
-					}
+					JSONUtils<BodyExamInstanceVo> util = new JSONUtils<BodyExamInstanceVo>(BodyExamInstanceVo.class);
+					if (StringUtils.isNotBlank(bodyExamCase.getExamlb()))
+						bodyExamVo.setExam(util.convertFromString(bodyExamCase.getExamlb()));
 				}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
@@ -888,17 +888,14 @@ public class ConvertorService {
 		try {
 				bodyExamCase = new BodyExamCase();
 				BeanUtils.copyProperties(bodyExamCase, bodyExamVo);
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				if (StringUtils.isNotBlank(bodyExamVo.getExamDate())){
-					bodyExamCase.setExamDateDate(sdf.parse(bodyExamVo.getExamDate()));
+				JSONUtils<BodyExamInstanceVo> util = new JSONUtils<BodyExamInstanceVo>(BodyExamInstanceVo.class);
+				if (bodyExamVo.getExam() != null && bodyExamVo.getExam().size() > 0){
+					bodyExamCase.setExamlb(util.convertFromList(bodyExamVo.getExam()));
 				}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return bodyExamCase;
 	}
 

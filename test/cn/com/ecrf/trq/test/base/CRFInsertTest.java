@@ -188,6 +188,6 @@ public class CRFInsertTest extends SpringControllerTest{
 	
 	@Test
 	public void testDeleteCRF(){
-		cRFService.batchDelete("5");
+		cRFService.batchDelete("5",3);
 	}
 }

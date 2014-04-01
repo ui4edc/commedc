@@ -1,6 +1,7 @@
 package cn.com.ecrf.trq.vo.list;
 
 public class ListConditionVo {
+	private String id;
 	private boolean crf;
 	private String abbr;
 	private String no;
@@ -121,6 +122,12 @@ public class ListConditionVo {
 	}
 	public void setDoubtDateTo(String doubtDateTo) {
 		this.doubtDateTo = doubtDateTo;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	

@@ -9,6 +9,19 @@
   	insert into crf_doubt(doubtId, id, no, doubt_time, flag, doubter, fieldid, description, menuid)
   	values(#{doubtId}, #{id}, #{no}, now(), #{flag}, #{doubter}, #{fieldId}, #{description}, #{menuId});
   </insert>
+  <select id="getDoubtRecordByCondition" parameterType="cn.com.ecrf.trq.model.DoubtRecord" resultType="cn.com.ecrf.trq.model.DoubtRecord">
+  	select doubtId as doubtId,
+  			d.id as id,
+  		   d.no as no,
+  		   d.doubt_time as doubtDate,
+  		   d.commit_time as commitDate,
+  		   d.flag as flag,
+  		   d.doubter as doubter,
+  		   d.fieldid as fieldId,
+  		   d.description as description,
+  		   d.menuid as menuId
+  	from crf_doubt d, crf_patient_info p where p.id=#{id} and p.no=d.no and flag=#{flag} order by doubt_time desc
+  </select>
   <select id="getDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord" resultType="cn.com.ecrf.trq.model.DoubtRecord">
   	select doubtId as doubtId,
   			d.id as id,

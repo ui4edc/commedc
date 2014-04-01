@@ -321,12 +321,9 @@
 			p.id as id,
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
-			us.progress as progress,
-		 	d.doubter as doubter,
-			count(1) as doubtNumber,
-			d.doubt_time as doubtDate
-		 from crf_patient_info p, crf_user_sign us, crf_doubt d where 
-		 p.no=us.no and d.no=p.no
+			us.progress as progress
+		 from crf_patient_info p, crf_user_sign us where 
+		 p.no=us.no and us.lockstatus=#{lockStatus}
 		 <if test="abbr != null and abbr != ''" >
         	and p.abbr=#{abbr}
       	</if>
@@ -344,17 +341,6 @@
       	</if>
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
-      	</if>
-      	<choose>
-			<when test="undealed == true">
-				and d.flag=0
-			</when>
-		    <otherwise>
-		    	and d.flag=1    
-            </otherwise>    
-		</choose>
-      	<if test="undealed == true">
-      		and d.flag=0
       	</if>
       	group by p.no
       	<choose>
@@ -458,10 +444,8 @@
 			p.no as no,
 			us.cro_createtime as createDate,
 			us.cro_updatetime as lastModified,
-			us.progress as progress,
-		 	d.doubter as doubter,
-			count(1) as doubtNumber
-		 from crf_patient_info p, crf_user_sign us, ac_user cro, ac_user crm, ac_organization o left join crf_doubt d on d.no=p.no
+			us.progress as progress
+		 from crf_patient_info p, crf_user_sign us, ac_user cro, ac_user crm, ac_organization o 
 		 where us.lockstatus=#{lockStatus} and p.no=us.no
 		  and us.cro_name=cro.user_name and cro.fk_organization_id=o.id and o.fk_crmuser_id=crm.id and crm.user_name=#{userName}
 		 <if test="abbr != null and abbr != ''" >
@@ -479,14 +463,6 @@
       	<if test="lastModifiedFrom != null" >
         	and us.cro_updatetime>=#{lastModifiedFrom} and #{lastModifiedTo}>=us.cro_updatetime
       	</if>
-      	<choose>
-			<when test="undealed == true">
-				and d.flag=0
-			</when>
-		    <otherwise>
-		    	and d.flag=1    
-            </otherwise>    
-		</choose>
       	group by p.no
       	<choose>
 		    <when test="orderBy == 'no'">
@@ -1015,17 +991,18 @@
 				b.rate as rate,
 				b.ssy as ssy,
 				b.szy as szy,
-				b.temperature as temperature
+				b.temperature as temperature,
+				b.examlb as examlb
 		from crf_bodyexam_info b, crf_patient_info p where p.no=b.no and p.id=#{id}
 	</select>
 	<update id="updateBodyExam" parameterType="cn.com.ecrf.trq.model.BodyExamCase">
 		update crf_bodyexam_info set 
 			no=#{no},done=#{done},examDate=#{examDateDate},breathe=#{breathe},rate=#{rate},
-			ssy=#{ssy},szy=#{szy},temperature=#{temperature} where no=#{no}
+			ssy=#{ssy},szy=#{szy},temperature=#{temperature}, examlb=#{examlb} where no=#{no}
 	</update>
 	<insert id="insertBodyExam" parameterType="cn.com.ecrf.trq.model.BodyExamCase">
-		insert into crf_bodyexam_info(no,done,examDate,breathe,rate,ssy,szy,temperature)
-		values(#{no},#{done},#{examDateDate},#{breathe},#{rate},#{ssy},#{szy},#{temperature});
+		insert into crf_bodyexam_info(no,done,examDate,breathe,rate,ssy,szy,temperature,examlb)
+		values(#{no},#{done},#{examDateDate},#{breathe},#{rate},#{ssy},#{szy},#{temperature},#{examlb});
 	</insert>
 	<select id="getECGExam" parameterType="int" resultType="cn.com.ecrf.trq.model.ECGExamCase">
 		select 	p.id as id,

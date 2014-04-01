@@ -21,4 +21,6 @@ public interface DoubtRecordMapper {
 
 	void deleteDoubtRecord(String no);
 
+	List<DoubtRecord> getDoubtRecordByCondition(DoubtRecord doubtRecord);
+
 }

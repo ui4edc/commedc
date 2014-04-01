@@ -21,6 +21,9 @@ public class BodyExamCase {
 	private String szy;
 	
 	private String temperature;
+	
+	private String examlb;
+	
 
 	public int getId() {
 		return id;
@@ -92,6 +95,14 @@ public class BodyExamCase {
 
 	public void setTemperature(String temperature) {
 		this.temperature = temperature;
+	}
+
+	public String getExamlb() {
+		return examlb;
+	}
+
+	public void setExamlb(String examlb) {
+		this.examlb = examlb;
 	}
 	
 	

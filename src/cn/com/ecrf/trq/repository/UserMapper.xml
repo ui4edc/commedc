@@ -146,7 +146,7 @@
 	r.role_desc as roleDesc,
 	u2.id as adminUserId,
 	u2.display_name as adminUserName,
-	r.role_name as roleName
+	r.role_desc as roleName
     from ac_user u left join ac_organization o on o.id=u.fk_organization_id left join ac_role r on u.fk_role_id=r.id
     left join ac_user u2 on o.id=u2.fk_organization_id and u2.fk_role_id in (select id from ac_role where role_name='LCRO')
     <if test="limitStart != null" >

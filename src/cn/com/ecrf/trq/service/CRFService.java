@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -73,6 +75,7 @@ import cn.com.ecrf.trq.vo.PatientInfoVo;
 import cn.com.ecrf.trq.vo.PersonalHistoryVo;
 import cn.com.ecrf.trq.vo.crf.FieldDictVo;
 import cn.com.ecrf.trq.vo.dict.StaticDictVo;
+import cn.com.ecrf.trq.vo.lab.BodyExamInstanceVo;
 import cn.com.ecrf.trq.vo.lab.BodyExamVo;
 import cn.com.ecrf.trq.vo.lab.DrugUseExamVo;
 import cn.com.ecrf.trq.vo.lab.ECGExamVo;
@@ -150,6 +153,7 @@ public class CRFService {
 				break;
 			case 2:
 				list = cRFMapper.getDoutSummaryList(sqlCondition);
+				addDoubtStatIntoResult(list, condition);
 				total = cRFMapper.getTotalPatientNum(sqlCondition);
 				break;
 			case 3: 
@@ -169,9 +173,11 @@ public class CRFService {
 			case 5:
 				if ("CRM".equalsIgnoreCase(roleName)){
 					list = cRFMapper.getDoutSummaryListByCRM(sqlCondition);
+					addDoubtStatIntoResult(list, condition);
 					total = cRFMapper.getTotalPatientNumByCRM(sqlCondition);
 				}else if ("DM".equalsIgnoreCase(roleName)){
 					list = cRFMapper.getDoutSummaryList(sqlCondition);
+					addDoubtStatIntoResult(list, condition);
 					total = cRFMapper.getTotalPatientNum(sqlCondition);
 				}
 				break;
@@ -196,9 +202,11 @@ public class CRFService {
 			case 8: 
 				if ("CRM".equalsIgnoreCase(roleName)){
 					list = cRFMapper.getDoutSummaryList(sqlCondition);
+					addDoubtStatIntoResult(list, condition);
 					total = cRFMapper.getTotalPatientNum(sqlCondition);
 				}else if ("DM".equalsIgnoreCase(roleName)){
 					list = cRFMapper.getDoutSummaryList(sqlCondition);
+					addDoubtStatIntoResult(list, condition);
 					total = cRFMapper.getTotalPatientNum(sqlCondition);
 				}
 				break;
@@ -547,27 +555,36 @@ public class CRFService {
 		return result;
 	}
 
-	public Map<String, Object> batchDelete(String id) {
+	public Map<String, Object> batchDelete(String id, int type) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
 		try{
-			if (StringUtils.isNotBlank(id)){
-				String[] idArray = id.split(",");
-				for (String str : idArray){
-					int key = Integer.parseInt(str);
-					PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(key);
-					String no = patientInfoCase.getNo();
-					cRFMapper.deletePatientInfo(key);
-					userSignMapper.deleteUserSign(no);
-					cRFMapper.deleteADR(no);
-					cRFMapper.deleteDiseaseInfo(no);
-					cRFMapper.deleteDrugCombinationList(no);
-					cRFMapper.deleteDrugUseInfoByNo(no);
-					cRFMapper.deleteLabExamCase(no);
-					cRFMapper.deletePastHistory(no);
-					cRFMapper.deletePersonHistory(no);
-					cRFMapper.deleteDrugSummary(no);
-					doubtRecordMapper.deleteDoubtRecord(no);
+			if (type >= 0){
+				int typeValue = type;
+				if (typeValue == 0 || typeValue == 1 || typeValue == 4 || typeValue == 5 || typeValue ==6){
+					//0,1 - cro draft, submit    4,5,6 - crm and dm undeal, doubt, pass
+					if (StringUtils.isNotBlank(id)){
+						String[] idArray = id.split(",");
+						for (String str : idArray){
+							int key = Integer.parseInt(str);
+							PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(key);
+							String no = patientInfoCase.getNo();
+							cRFMapper.deletePatientInfo(key);
+							userSignMapper.deleteUserSign(no);
+							cRFMapper.deleteADR(no);
+							cRFMapper.deleteDiseaseInfo(no);
+							cRFMapper.deleteDrugCombinationList(no);
+							cRFMapper.deleteDrugUseInfoByNo(no);
+							cRFMapper.deleteLabExamCase(no);
+							cRFMapper.deletePastHistory(no);
+							cRFMapper.deletePersonHistory(no);
+							cRFMapper.deleteDrugSummary(no);
+							doubtRecordMapper.deleteDoubtRecord(no);
+						}
+					}
+				}else if (typeValue == 2 || typeValue == 3){
+					//2,3 cro doubt, pass
+					
 				}
 			}
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
@@ -578,7 +595,7 @@ public class CRFService {
 		return result;
 	}
 	//批量提交
-	public Map<String, Object> batchCommit(String id) {
+	public Map<String, Object> batchCommit(String id, int type) {
 		// TODO Auto-generated method stub
 		Map<String, Object> result = null;
 		try{
@@ -589,29 +606,60 @@ public class CRFService {
 			if (roles != null && roles.size() > 0){
 				roleName = roles.get(0).getRoleName();
 			}
-			if (StringUtils.isNotBlank(id)){
-				String[] idArray = id.split(",");
-				for (String str : idArray){
-					int key = Integer.parseInt(str);
-					PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(key);
-					CRFUserSign dbUserSign = userSignMapper.getUserSignByNo(patientInfoCase.getNo());
-					if ("CRM".equalsIgnoreCase(roleName)){
-						dbUserSign.setLockStatus(LockStatusUtils.pass);
-						dbUserSign.setCrmSignTime(new Date());
-						dbUserSign.setCrmName(userName);
-						userSignMapper.updateUserSign(dbUserSign);
-					}else if ("DM".equalsIgnoreCase(roleName)){
-						dbUserSign.setLockStatus(LockStatusUtils.pass);
-						dbUserSign.setDmSignTime(new Date());
-						dbUserSign.setDmName(userName);
-						userSignMapper.updateUserSign(dbUserSign);
-					}else {//CRO or LCRO
-						if (dbUserSign.getLockStatus() < LockStatusUtils.submit){
-							dbUserSign.setLockStatus(LockStatusUtils.submit);
-							dbUserSign.setCroSignTime(new Date());
-							dbUserSign.setCroName(userName);
-							userSignMapper.updateUserSign(dbUserSign);
-						}
+			if (type >= 0){
+				int typeValue = type;
+				if (StringUtils.isNotBlank(id)){
+					String[] idArray = id.split(",");
+					for (String str : idArray){
+						int key = Integer.parseInt(str);
+						PatientInfoCase patientInfoCase = cRFMapper.getBasicInfo(key);
+						CRFUserSign dbUserSign = userSignMapper.getUserSignByNo(patientInfoCase.getNo());
+						if ("CRM".equalsIgnoreCase(roleName)){
+							if (typeValue == 4){
+								dbUserSign.setLockStatus(LockStatusUtils.pass);
+								dbUserSign.setCrmSignTime(new Date());
+								dbUserSign.setCrmName(userName);
+								userSignMapper.updateUserSign(dbUserSign);
+							}else if (typeValue == 5){
+								List<DoubtRecord> doubtRecords = doubtRecordMapper.getUndealDoubtRecord(key);
+								if (doubtRecords != null && doubtRecords.size() > 0){
+									result = AjaxReturnUtils.generateAjaxReturn(false, patientInfoCase.getNo() +" 还有质疑未解决");
+									return result;
+								}else{
+									dbUserSign.setLockStatus(LockStatusUtils.pass);
+									dbUserSign.setCrmSignTime(new Date());
+									dbUserSign.setCrmName(userName);
+									userSignMapper.updateUserSign(dbUserSign);
+								}
+							}
+						}else if ("DM".equalsIgnoreCase(roleName)){
+							if (typeValue == 4){
+								dbUserSign.setLockStatus(LockStatusUtils.pass);
+								dbUserSign.setDmSignTime(new Date());
+								dbUserSign.setDmName(userName);
+								userSignMapper.updateUserSign(dbUserSign);
+							}else if (typeValue == 5){
+								List<DoubtRecord> doubtRecords = doubtRecordMapper.getUndealDoubtRecord(key);
+								if (doubtRecords != null && doubtRecords.size() > 0){
+									result = AjaxReturnUtils.generateAjaxReturn(false, patientInfoCase.getNo() +" 还有质疑未解决");
+									return result;
+								}else{
+									dbUserSign.setLockStatus(LockStatusUtils.pass);
+									dbUserSign.setDmSignTime(new Date());
+									dbUserSign.setDmName(userName);
+									userSignMapper.updateUserSign(dbUserSign);
+								}
+							}
+						}else {//CRO or LCRO
+							if (typeValue == 0){
+								if (dbUserSign.getLockStatus() < LockStatusUtils.submit){
+									dbUserSign.setLockStatus(LockStatusUtils.submit);
+									dbUserSign.setCroSignTime(new Date());
+									dbUserSign.setCroName(userName);
+									userSignMapper.updateUserSign(dbUserSign);
+								}
+							}
+						}		
 					}
 				}
 			}
@@ -872,11 +920,40 @@ public class CRFService {
 				userSign.setDmName(userName);
 			}else{
 				CRFUserSign dbUserSign = userSignMapper.getUserSignByNo(patientInfoCase.getNo());
-				if (dbUserSign.getLockStatus() == 0)
-					dbUserSign.setLockStatus(LockStatusUtils.submit);
-				userSign.setLockStatus(dbUserSign.getLockStatus());
-				userSign.setCroSignTime(new Date());
-				userSign.setCroName(userName);
+				if (dbUserSign.getLockStatus() < LockStatusUtils.submit){
+					PersonAllergicHistoryCase  personAllergicHistoryCase  = cRFMapper.getPersonHistory(id);
+					PastHistoryCase patientHistoryCase = cRFMapper.getPastHistory(id);
+					DiseaseInfoCase diseaseInfoCase = cRFMapper.getDiseaseInfo(id);
+					Map<String, Object> condition = new HashMap<String, Object>();
+					condition.put("id", id);
+					List<DrugUseCase> drugUseCases = cRFMapper.getDrugUseInfo(condition);
+					DrugCombinationBase drugCombinationBase = cRFMapper.getDrugCombinationBase(patientInfoCase.getNo());
+					BodyExamCase bodyExamCase = cRFMapper.getBodyExam(id);
+					LabExamCase labExamCase = cRFMapper.getLabExamCase(id);			
+					ECGExamCase eCGExamCase = cRFMapper.getECGExam(id);
+					DrugSummaryCase drugSummaryCase = cRFMapper.getDrugSummary(id);
+					ADRCase aDRCase = cRFMapper.getADR(id);
+					if (patientInfoCase.getBirthday() == null
+							|| personAllergicHistoryCase == null
+							|| diseaseInfoCase == null
+							|| (drugUseCases == null || drugUseCases.size() == 0)
+							|| drugCombinationBase == null
+							|| bodyExamCase == null
+							|| eCGExamCase == null
+							|| drugSummaryCase == null
+							|| (drugSummaryCase.getHasAdr() == 1 && aDRCase == null)){
+						result = AjaxReturnUtils.generateAjaxReturn(false, "观察表未填写完整，不能提交！");
+						return result;
+					}else{
+						dbUserSign.setLockStatus(LockStatusUtils.submit);
+						userSign.setLockStatus(dbUserSign.getLockStatus());
+						userSign.setCroSignTime(new Date());
+						userSign.setCroName(userName);
+					}
+					
+				}
+					
+				
 			}
 			userSignMapper.updateUserSign(userSign);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
@@ -1232,8 +1309,15 @@ public class CRFService {
 		Map<String, Object> result = null;
 		try{
 			BodyExamCase bodyExamCase = convertorService.convertBodyExamFromViewToModel(bodyExamVo);
-			if (bodyExamCase.getExamDateDate() != null)
-				validDateRange(bodyExamCase.getExamDateDate(), bodyExamCase.getId(), "检查日期");
+			if (bodyExamVo.getExam() != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				for (BodyExamInstanceVo instanceVo : bodyExamVo.getExam()){
+					Date examDate = sdf.parse(instanceVo.getExamDate());
+					if (examDate != null)
+						validDateRange(examDate, bodyExamCase.getId(), "检查日期");
+				}
+			}
+			
 			BodyExamCase dbCase = cRFMapper.getBodyExam(bodyExamCase.getId());
 			if (dbCase != null && dbCase.getNo() != null){
 				cRFMapper.updateBodyExam(bodyExamCase);
@@ -1490,7 +1574,40 @@ public class CRFService {
 	}
 
 	
-
+	private void addDoubtStatIntoResult(List<ListReturn> list, ListConditionVo condition){
+		if (list != null && list.size() > 0){
+			for (ListReturn result1 : list){
+				DoubtRecord doubtRecord = new DoubtRecord();
+				doubtRecord.setId(result1.getId());
+				int flag = condition.isUndealed() ? 0 : 1;
+				doubtRecord.setFlag(flag);
+				result1.setDoubter("");
+				List<DoubtRecord> records = doubtRecordMapper.getDoubtRecordByCondition(doubtRecord);
+				if (records != null && records.size() > 0){
+					result1.setDoubtNumber(records.size());
+					result1.setDoubtDate(records.get(0).getDoubtDate());
+					Map<String, String> doubterMap = new HashMap<String, String>();
+					for (DoubtRecord record : records){
+						if (StringUtils.isNotBlank(record.getDoubter()) && !doubterMap.containsKey(record.getDoubter())){
+							doubterMap.put(record.getDoubter(), record.getDoubter());
+						}
+					}
+					Set<String> keys = doubterMap.keySet();
+					Iterator it = keys.iterator();
+					String allDoubters = "";
+					while (it.hasNext()){
+						String doubter = (String)it.next();
+						if (!StringUtils.isNotBlank(allDoubters)){
+							allDoubters = doubter;
+						}else{
+							allDoubters = allDoubters+","+doubter;
+						}
+					}
+					result1.setDoubter(allDoubters);
+				}
+			}
+		}
+	}
 
 
 	
