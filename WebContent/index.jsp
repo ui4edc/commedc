@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>痰热清上市后临床再评价系统</title>
+<title>痰热清上市后再评价的真实世界研究信息系统</title>
 <link rel="stylesheet" type="text/css" href="asset/css/all.css"/>
 </head>
 

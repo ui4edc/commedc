@@ -1,5 +1,5 @@
 /*
- * 实验检查-入院检查
+ * 实验检查-体格检查
  * 
  * @author: Ricky
  */
@@ -8,7 +8,8 @@ es.Views.Form51 = Backbone.View.extend({
     el: ".crf-form",
     
     events: {
-        
+        "click .add-btn": "add",
+        "click .del-btn": "del"
     },
     
     initialize: function() {
@@ -32,23 +33,32 @@ es.Views.Form51 = Backbone.View.extend({
         
         var me = this;
         $.Mustache.load("asset/tpl/form/form51.html").done(function() {
+            var disabled = es.main.editable ? "" : "disabled:true";
+            
             me.$el.mustache("tpl-form51", {
                 data: data.data,
-                disabled: es.main.editable ? "" : "disabled:true",
+                disabled: disabled,
                 save: es.main.editable ? [1] : []
             });
+            
+            me.$(".exam").prepend($.Mustache.render("tpl-form51-exam", {
+                data: data.data.exam,
+                disabled: disabled,
+                save: es.main.editable ? [1] : []
+            }));
+            me.examCount = data.data.exam.length;
+            
             me.initCtrl(data.data);
         });
     },
     
     initCtrl: function(data) {
         //赋值
-        esui.init(document.body, {
-            ExamDate: {
-                range: CRF_RANGE,
-                value: data.examDate
-            }
+        var option = {};
+        $.each(data.exam, function(index, val) {
+            option["ExamDate" + val.no] = {range: CRF_RANGE, value: val.examDate};
         });
+        esui.init(document.body, option);
         
         var me = this;
         
@@ -60,7 +70,13 @@ es.Views.Form51 = Backbone.View.extend({
         //事件
         esui.get("Done1").onclick = function() {me.$(".exam").show();};
         esui.get("Done2").onclick = function() {me.$(".exam").hide();};
-        esui.get("ExamDate").onchange = function(value) {esui.get("ExamDate").setValueAsDate(value);};
+        $.each(data.exam, function(index, val) {
+            var examDate = esui.get("ExamDate" + val.no);
+            examDate.onchange = function(value) {examDate.setValueAsDate(value);};
+            if (!es.main.editable) {
+                examDate.disable();
+            }
+        });
         
         if (es.main.canDoubt) {
             esui.get("DoubtOK").onclick = es.main.doubtCRF;
@@ -68,9 +84,29 @@ es.Views.Form51 = Backbone.View.extend({
         if (es.main.editable) {
             esui.get("Save").onclick = this.save;
         }
-        if (!es.main.editable) {
-            esui.get("ExamDate").disable();
-        }
+    },
+    
+    add: function(e) {
+        var no = ++this.examCount;
+        $(e.target).parent().before($.Mustache.render("tpl-form51-exam", {
+            data: [{no: no}],
+            disabled: "",
+            save: [1]
+        }));
+        var option = {},
+            id = "ExamDate" + no;
+        option[id] = {
+            range: CRF_RANGE,
+            value: T.date.format(new Date(), "yyyy-MM-dd")
+        };
+        esui.init(this.el, option);
+        esui.get(id).onchange = function(value) {esui.get(id).setValueAsDate(value);};
+    },
+    
+    del: function(e) {
+        var block = $(e.target).parent().parent();
+        esui.dispose("ExamDate" + block.attr("no"));
+        block.remove();
     },
     
     save: function() {
@@ -81,46 +117,55 @@ es.Views.Form51 = Backbone.View.extend({
            no: me.model.get("data").no,
            
            done: parseInt(esui.get("Done1").getGroup().getValue(), 10),
-           examDate: esui.get("ExamDate").getValue(),
-           temperature: $.trim(esui.get("Temperature").getValue()),
-           breathe: $.trim(esui.get("Breathe").getValue()),
-           ssy: $.trim(esui.get("Ssy").getValue()),
-           szy: $.trim(esui.get("Szy").getValue()),
-           rate: $.trim(esui.get("Rate").getValue())
+           exam: []
        };
+       
+       $.each(me.$(".exam-block"), function(index, val) {
+           var no = $(val).attr("no");
+           data.exam.push({
+               examDate: esui.get("ExamDate" + no).getValue(),
+               temperature: $.trim(esui.get("Temperature" + no).getValue()),
+               breathe: $.trim(esui.get("Breathe" + no).getValue()),
+               ssy: $.trim(esui.get("Ssy" + no).getValue()),
+               szy: $.trim(esui.get("Szy" + no).getValue()),
+               rate: $.trim(esui.get("Rate" + no).getValue())
+           });
+       });
        
        //验证
        if (isNaN(data.done)) {
            esui.Dialog.alert({title: "提示", content: "请选择是否做了体格检查"});
            return;
        } else if (data.done == 2) {
-           data.examDate = null;
-           data.temperature = "";
-           data.breathe = "";
-           data.ssy = "";
-           data.szy = "";
-           data.rate = "";
+           data.exam = [];
        } else {
+           if (data.exam.length == 0) {
+               esui.Dialog.alert({title: "提示", content: "请填写体格检查"});
+               return;
+           }
            var floatPattern = /^\d+(\.\d+)?$/;
-           if (!floatPattern.test(data.temperature)) {
-               esui.Dialog.alert({title: "提示", content: "请填写体温"});
-               return;
-           }
-           if (!floatPattern.test(data.breathe)) {
-               esui.Dialog.alert({title: "提示", content: "请填写呼吸"});
-               return;
-           }
-           if (!floatPattern.test(data.ssy)) {
-               esui.Dialog.alert({title: "提示", content: "请填写收缩压"});
-               return;
-           }
-           if (!floatPattern.test(data.szy)) {
-               esui.Dialog.alert({title: "提示", content: "请填写舒张压"});
-               return;
-           }
-           if (!floatPattern.test(data.rate)) {
-               esui.Dialog.alert({title: "提示", content: "请填写心率"});
-               return;
+           for (var i = 0, n = data.exam.length; i < n; i++) {
+               var item = data.exam[i], no = i + 1;
+               if (!floatPattern.test(item.temperature)) {
+                   esui.Dialog.alert({title: "提示", content: "请填写第" + no + "个体温"});
+                   return;
+               }
+               if (!floatPattern.test(item.breathe)) {
+                   esui.Dialog.alert({title: "提示", content: "请填写第" + no + "个呼吸"});
+                   return;
+               }
+               if (!floatPattern.test(item.ssy)) {
+                   esui.Dialog.alert({title: "提示", content: "请填写第" + no + "个收缩压"});
+                   return;
+               }
+               if (!floatPattern.test(item.szy)) {
+                   esui.Dialog.alert({title: "提示", content: "请填写第" + no + "个舒张压"});
+                   return;
+               }
+               if (!floatPattern.test(item.rate)) {
+                   esui.Dialog.alert({title: "提示", content: "请填写第" + no + "个心率"});
+                   return;
+               }
            }
        }
        

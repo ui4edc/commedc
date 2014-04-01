@@ -206,16 +206,16 @@ es.Views.Form60 = Backbone.View.extend({
            return;
        }
        if (isNaN(data.hasAdr)) {
-           esui.Dialog.alert({title: "提示", content: "请选择是否出现过敏反映症状"});
+           esui.Dialog.alert({title: "提示", content: "请选择是否出现过敏反应症状"});
            return;
        }
        if (data.hasAdr == 1) {
            if (data.adr == "") {
-               esui.Dialog.alert({title: "提示", content: "请选择过敏反映症状"});
+               esui.Dialog.alert({title: "提示", content: "请选择过敏反应症状"});
                return;
            }
            if (data.adr.indexOf("7") != -1 && data.adrtxt == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写其他过敏反映症状"});
+               esui.Dialog.alert({title: "提示", content: "请填写其他过敏反应症状"});
                return;
            }
            if (data.adr.indexOf("7") == -1) {
@@ -232,7 +232,7 @@ es.Views.Form60 = Backbone.View.extend({
            data.adrtxt = "";
        }
        if (isNaN(data.hasOtherAdr)) {
-           esui.Dialog.alert({title: "提示", content: "请选择是否出现其他不良反映事件"});
+           esui.Dialog.alert({title: "提示", content: "请选择是否出现其他不良反应/事件"});
            return;
        }
        if (isNaN(data.unreasonable)) {

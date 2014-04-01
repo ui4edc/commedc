@@ -6,30 +6,11 @@
     <input type="radio" hidefocus="true" title="未做" name="done" value="2" ui="type:Radio;id:Done2;{{disabled}}" />
 </div>
 <div class="exam" style="display:none">
+{{#save}}
 <div class="row">
-    <span class="label">检查日期</span>
-    <div ui="type:Calendar;id:ExamDate;{{disabled}}"></div>
+    <a href="javascript:void(0)" hidefocus="true" class="add-btn">添加一行</a>
 </div>
-<div class="row">
-    <span class="label">体温</span>
-    <input type="text" class="en" value="{{data.temperature}}" ui="type:TextInput;id:Temperature;width:100;{{disabled}}" /> <span>℃</span>
-</div>
-<div class="row">
-    <span class="label">呼吸</span>
-    <input type="text" class="en" value="{{data.breathe}}" ui="type:TextInput;id:Breathe;width:100;{{disabled}}" /> <span>次/分</span>
-</div>
-<div class="row">
-    <span class="label">收缩压</span>
-    <input type="text" class="en" value="{{data.ssy}}" ui="type:TextInput;id:Ssy;width:100;{{disabled}}" /> <span>mmHg</span>
-</div>
-<div class="row">
-    <span class="label">舒张压</span>
-    <input type="text" class="en" value="{{data.szy}}" ui="type:TextInput;id:Szy;width:100;{{disabled}}" /> <span>mmHg</span>
-</div>
-<div class="row">
-    <span class="label">心率</span>
-    <input type="text" class="en" value="{{data.rate}}" ui="type:TextInput;id:Rate;width:100;{{disabled}}" /> <span>次/分</span>
-</div>
+{{/save}}
 </div>
 
 {{#save}}
@@ -37,4 +18,40 @@
     <div ui="type:Button;id:Save;skin:largeem">保 存</div>
 </div>
 {{/save}}
+</script>
+
+<script id="tpl-form51-exam" type="text/html">
+{{#data}}
+<div class="exam-block" no="{{no}}">
+    <div class="row sub">
+        <span class="label">检查日期</span>
+        <div ui="type:Calendar;id:ExamDate{{no}};{{disabled}}"></div>
+    </div>
+    <div class="row sub">
+        <span class="label">体温</span>
+        <input type="text" class="en" value="{{temperature}}" ui="type:TextInput;id:Temperature{{no}};width:100;{{disabled}}" /> <span>℃</span>
+    </div>
+    <div class="row sub">
+        <span class="label">呼吸</span>
+        <input type="text" class="en" value="{{breathe}}" ui="type:TextInput;id:Breathe{{no}};width:100;{{disabled}}" /> <span>次/分</span>
+    </div>
+    <div class="row sub">
+        <span class="label">收缩压</span>
+        <input type="text" class="en" value="{{ssy}}" ui="type:TextInput;id:Ssy{{no}};width:100;{{disabled}}" /> <span>mmHg</span>
+    </div>
+    <div class="row sub">
+        <span class="label">舒张压</span>
+        <input type="text" class="en" value="{{szy}}" ui="type:TextInput;id:Szy{{no}};width:100;{{disabled}}" /> <span>mmHg</span>
+    </div>
+    <div class="row sub">
+        <span class="label">心率</span>
+        <input type="text" class="en" value="{{rate}}" ui="type:TextInput;id:Rate{{no}};width:100;{{disabled}}" /> <span>次/分</span>
+    </div>
+    {{#save}}
+    <div class="row sub">
+        <a href="javascript:void(0)" hidefocus="true" class="del-btn">删除此行</a>
+    </div>
+    {{/save}}
+</div>
+{{/data}}
 </script>

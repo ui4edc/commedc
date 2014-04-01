@@ -71,6 +71,12 @@ es.Views.Form13 = Backbone.View.extend({
         if (data.disease != "") {
             $.each(data.disease.split(","), function(index, val) {
                 esui.get("DiseaseType" + val).setChecked(true);
+                if (val == "1") {
+                    me.$(".heart-disease").show();
+                }
+                if (val == "2") {
+                    me.$(".brain-disease").show();
+                }
                 if (val == "7") {
                     me.$("#ctrlselectTNBType").show();
                 }
@@ -106,6 +112,20 @@ es.Views.Form13 = Backbone.View.extend({
         esui.get("ADisease1").onclick = function() {me.$(".a-disease").show();};
         esui.get("ADisease2").onclick = function() {me.$(".a-disease").hide();};
         esui.get("ADisease3").onclick = function() {me.$(".a-disease").hide();};
+        esui.get("DiseaseType1").onclick = function() {
+            if (esui.get("DiseaseType1").isChecked()) {
+                me.$(".heart-disease").show();
+            } else {
+                me.$(".heart-disease").hide();
+            }
+        };
+        esui.get("DiseaseType2").onclick = function() {
+            if (esui.get("DiseaseType2").isChecked()) {
+                me.$(".brain-disease").show();
+            } else {
+                me.$(".brain-disease").hide();
+            }
+        };
         esui.get("DiseaseType1_1").onclick = function() {
             if (esui.get("DiseaseType1_1").isChecked()) {
                 me.$(".heart").show();
@@ -167,32 +187,47 @@ es.Views.Form13 = Backbone.View.extend({
                esui.Dialog.alert({title: "提示", content: "请选择常见疾病"});
                return;
            }
-           if (data.disease1.indexOf("1") != -1 && data.gxb == 0) {
-               esui.Dialog.alert({title: "提示", content: "请选择冠心病心功能分级"});
+           if (data.disease.indexOf("1") != -1) {
+               if (data.disease1 == "") {
+                   esui.Dialog.alert({title: "提示", content: "请选择心血管疾病"});
+                   return;
+               } else {
+                   if (data.disease1.indexOf("1") != -1) {
+                       if (data.gxb == 0) {
+                           esui.Dialog.alert({title: "提示", content: "请选择冠心病心功能分级"});
+                           return;
+                       }
+                   } else {
+                       data.gxb = 0;
+                   }
+                   if (data.disease1.indexOf("2") != -1) {
+                       if (data.gxy == 0) {
+                           esui.Dialog.alert({title: "提示", content: "请选择高血压分级"});
+                           return;
+                       }
+                   } else {
+                       data.gxy = 0;
+                   }
+               }
+           }
+           if (data.disease.indexOf("2") != -1 && data.disease2 == "") {
+               esui.Dialog.alert({title: "提示", content: "请选择脑血管疾病"});
                return;
            }
-           if (data.disease1.indexOf("1") == -1) {
-               data.gxb = 0;
-           }
-           if (data.disease1.indexOf("2") != -1 && data.gxy == 0) {
-               esui.Dialog.alert({title: "提示", content: "请选择高血压分级"});
-               return;
-           }
-           if (data.disease1.indexOf("2") == -1) {
-               data.gxy = 0;
-           }
-           if (data.disease.indexOf("7") != -1 && data.tnb == 0) {
-               esui.Dialog.alert({title: "提示", content: "请选择糖尿病类型"});
-               return;
-           }
-           if (data.disease.indexOf("7") == -1) {
+           if (data.disease.indexOf("7") != -1) {
+               if (data.tnb == 0) {
+                   esui.Dialog.alert({title: "提示", content: "请选择糖尿病类型"});
+                   return;
+               }
+           } else {
                data.tnb = 0;
            }
-           if (data.disease.indexOf("8") != -1 && data.diseasetxt == "") {
-               esui.Dialog.alert({title: "提示", content: "请填写其他常见疾病"});
-               return;
-           }
-           if (data.disease.indexOf("8") == -1) {
+           if (data.disease.indexOf("8") != -1) {
+               if (data.diseasetxt == "") {
+                   esui.Dialog.alert({title: "提示", content: "请填写其他常见疾病"});
+                   return;
+               }
+           } else {
                data.diseasetxt = "";
            }
        }

@@ -1,5 +1,5 @@
 /*
- * 实验检查-入院检查
+ * 实验检查-体格检查
  * 
  * @author: Ricky
  */
@@ -9,12 +9,7 @@ es.Models.Form51 = Backbone.Model.extend({
         data: null,
         def: {
 			done: null,
-			examDate: T.date.format(new Date(), "yyyy-MM-dd"),
-			temperature: null,
-			breathe: null,
-			ssy: null,
-			szy: null,
-			rate: null
+			exam: []
 		}
     },
     
@@ -35,6 +30,9 @@ es.Models.Form51 = Backbone.Model.extend({
                 } else {
                     me.first = false;
                 }
+                $.each(response.data.exam, function(index, val) {
+                    val.no = index + 1;
+                });
                 me.set({data: response});
             },
             mock: MOCK,
