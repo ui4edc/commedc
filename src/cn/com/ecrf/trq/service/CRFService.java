@@ -653,10 +653,22 @@ public class CRFService {
 						}else {//CRO or LCRO
 							if (typeValue == 0){
 								if (dbUserSign.getLockStatus() < LockStatusUtils.submit){
+									boolean isFinished = isCRFFinish(patientInfoCase);
+									if (!isFinished){
+										result = AjaxReturnUtils.generateAjaxReturn(false, "观察表 "+patientInfoCase.getNo()+" 未填写完整，不能提交！");
+										return result;
+									}
 									dbUserSign.setLockStatus(LockStatusUtils.submit);
 									dbUserSign.setCroSignTime(new Date());
 									dbUserSign.setCroName(userName);
 									userSignMapper.updateUserSign(dbUserSign);
+								}else if (dbUserSign.getLockStatus() == LockStatusUtils.doubt){
+									//本来要修改全部质疑记录为已解决的，但是还是决定挨个确定的好
+									List<DoubtRecord> doubtRecords = doubtRecordMapper.getUndealDoubtRecord(key);
+									if (doubtRecords != null && doubtRecords.size() > 0){
+										result = AjaxReturnUtils.generateAjaxReturn(false, patientInfoCase.getNo() +" 还有质疑未解决");
+										return result;
+									}
 								}
 							}
 						}		
@@ -911,37 +923,30 @@ public class CRFService {
 				roleName = roles.get(0).getRoleName();
 			}
 			if ("CRM".equalsIgnoreCase(roleName)){
+				List<DoubtRecord> doubtRecords = doubtRecordMapper.getUndealDoubtRecord(id);
+				if (doubtRecords != null && doubtRecords.size() > 0){
+					result = AjaxReturnUtils.generateAjaxReturn(false, "观察表还有质疑未解决，不能提交！");
+					return result;
+				}
 				userSign.setLockStatus(LockStatusUtils.pass);
 				userSign.setCrmSignTime(new Date());
 				userSign.setCrmName(userName);
+				userSignMapper.updateUserSign(userSign);
 			}else if ("DM".equalsIgnoreCase(roleName)){
+				List<DoubtRecord> doubtRecords = doubtRecordMapper.getUndealDoubtRecord(id);
+				if (doubtRecords != null && doubtRecords.size() > 0){
+					result = AjaxReturnUtils.generateAjaxReturn(false, "观察表还有质疑未解决，不能提交！");
+					return result;
+				}
 				userSign.setLockStatus(LockStatusUtils.pass);
 				userSign.setDmSignTime(new Date());
 				userSign.setDmName(userName);
-			}else{
+				userSignMapper.updateUserSign(userSign);
+			}else{//CRO or LCRO
 				CRFUserSign dbUserSign = userSignMapper.getUserSignByNo(patientInfoCase.getNo());
 				if (dbUserSign.getLockStatus() < LockStatusUtils.submit){
-					PersonAllergicHistoryCase  personAllergicHistoryCase  = cRFMapper.getPersonHistory(id);
-					PastHistoryCase patientHistoryCase = cRFMapper.getPastHistory(id);
-					DiseaseInfoCase diseaseInfoCase = cRFMapper.getDiseaseInfo(id);
-					Map<String, Object> condition = new HashMap<String, Object>();
-					condition.put("id", id);
-					List<DrugUseCase> drugUseCases = cRFMapper.getDrugUseInfo(condition);
-					DrugCombinationBase drugCombinationBase = cRFMapper.getDrugCombinationBase(patientInfoCase.getNo());
-					BodyExamCase bodyExamCase = cRFMapper.getBodyExam(id);
-					LabExamCase labExamCase = cRFMapper.getLabExamCase(id);			
-					ECGExamCase eCGExamCase = cRFMapper.getECGExam(id);
-					DrugSummaryCase drugSummaryCase = cRFMapper.getDrugSummary(id);
-					ADRCase aDRCase = cRFMapper.getADR(id);
-					if (patientInfoCase.getBirthday() == null
-							|| personAllergicHistoryCase == null
-							|| diseaseInfoCase == null
-							|| (drugUseCases == null || drugUseCases.size() == 0)
-							|| drugCombinationBase == null
-							|| bodyExamCase == null
-							|| eCGExamCase == null
-							|| drugSummaryCase == null
-							|| (drugSummaryCase.getHasAdr() == 1 && aDRCase == null)){
+					boolean isFinished = isCRFFinish(patientInfoCase);
+					if (!isFinished){
 						result = AjaxReturnUtils.generateAjaxReturn(false, "观察表未填写完整，不能提交！");
 						return result;
 					}else{
@@ -949,13 +954,17 @@ public class CRFService {
 						userSign.setLockStatus(dbUserSign.getLockStatus());
 						userSign.setCroSignTime(new Date());
 						userSign.setCroName(userName);
+						userSignMapper.updateUserSign(userSign);
 					}
-					
+				}else if (dbUserSign.getLockStatus() == LockStatusUtils.doubt){
+					//本来要说全部提交的，但是全部提交也没有用，质疑时一个个解决的，用来判断是不是全部解决了倒是不错的主意
+					List<DoubtRecord> doubtRecords = doubtRecordMapper.getUndealDoubtRecord(id);
+					if (doubtRecords != null && doubtRecords.size() > 0){
+						result = AjaxReturnUtils.generateAjaxReturn(false, "观察表还有质疑未解决，不能提交！");
+						return result;
+					}
 				}
-					
-				
 			}
-			userSignMapper.updateUserSign(userSign);
 			result = AjaxReturnUtils.generateAjaxReturn(true, null);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -965,6 +974,37 @@ public class CRFService {
 	}
 
 	
+
+	private boolean isCRFFinish(PatientInfoCase patientInfoCase) {
+		// TODO Auto-generated method stub
+		boolean isFinished = true;
+		int id = patientInfoCase.getId();
+		PersonAllergicHistoryCase  personAllergicHistoryCase  = cRFMapper.getPersonHistory(id);
+		PastHistoryCase patientHistoryCase = cRFMapper.getPastHistory(id);
+		DiseaseInfoCase diseaseInfoCase = cRFMapper.getDiseaseInfo(id);
+		Map<String, Object> condition = new HashMap<String, Object>();
+		condition.put("id", id);
+		List<DrugUseCase> drugUseCases = cRFMapper.getDrugUseInfo(condition);
+		DrugCombinationBase drugCombinationBase = cRFMapper.getDrugCombinationBase(patientInfoCase.getNo());
+		BodyExamCase bodyExamCase = cRFMapper.getBodyExam(id);
+		LabExamCase labExamCase = cRFMapper.getLabExamCase(id);			
+		ECGExamCase eCGExamCase = cRFMapper.getECGExam(id);
+		DrugSummaryCase drugSummaryCase = cRFMapper.getDrugSummary(id);
+		ADRCase aDRCase = cRFMapper.getADR(id);
+		if (patientInfoCase.getBirthday() == null
+				|| patientHistoryCase == null
+				|| personAllergicHistoryCase == null
+				|| diseaseInfoCase == null
+				|| (drugUseCases == null || drugUseCases.size() == 0)
+				|| drugCombinationBase == null
+				|| bodyExamCase == null
+				|| eCGExamCase == null
+				|| drugSummaryCase == null
+				|| (drugSummaryCase.getHasAdr() == 1 && aDRCase == null)){
+			isFinished = false;
+		}
+		return isFinished;
+	}
 
 	public Map<String, Object> getDrugCombinationInfo(String id, String no) {
 		// TODO Auto-generated method stub
@@ -1579,8 +1619,8 @@ public class CRFService {
 			for (ListReturn result1 : list){
 				DoubtRecord doubtRecord = new DoubtRecord();
 				doubtRecord.setId(result1.getId());
-				int flag = condition.isUndealed() ? 0 : 1;
-				doubtRecord.setFlag(flag);
+				/*int flag = condition.isUndealed() ? 0 : 1;
+				doubtRecord.setFlag(flag);*/
 				result1.setDoubter("");
 				List<DoubtRecord> records = doubtRecordMapper.getDoubtRecordByCondition(doubtRecord);
 				if (records != null && records.size() > 0){

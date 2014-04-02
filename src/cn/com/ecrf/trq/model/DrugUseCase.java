@@ -63,6 +63,8 @@ public class DrugUseCase {
 	private String injectionlb;
 	private int nextGroup;
 	private String nextGroupName;
+	private int prevGroup;
+	private String prevGroupName;
 	private int location;
 	private String prepareTime;
 	private boolean prepareTimeUd;
@@ -389,6 +391,18 @@ public class DrugUseCase {
 	}
 	public void setBan(int ban) {
 		this.ban = ban;
+	}
+	public int getPrevGroup() {
+		return prevGroup;
+	}
+	public void setPrevGroup(int prevGroup) {
+		this.prevGroup = prevGroup;
+	}
+	public String getPrevGroupName() {
+		return prevGroupName;
+	}
+	public void setPrevGroupName(String prevGroupName) {
+		this.prevGroupName = prevGroupName;
 	}
 	
 	

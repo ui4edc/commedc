@@ -8,6 +8,7 @@ public class DoubtRecordGetVo {
 	private String doubtDate;
 	private String doubter;
 	private String description;
+	private int flag;
 	
 	public String getDoubtField() {
 		return doubtField;
@@ -39,6 +40,12 @@ public class DoubtRecordGetVo {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public int getFlag() {
+		return flag;
+	}
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 	
 	

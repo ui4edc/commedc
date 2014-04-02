@@ -190,6 +190,16 @@
       	<if test="crf == false">
       		and p.no in (select no from crf_adr_info)
       	</if>
+    	<if test="lockStatus == 30">
+    		<choose>
+			    <when test="undealed == true">
+			       and p.no in (select no from crf_doubt where flag=0 group by no having count(no)>0)
+			    </when>
+			    <otherwise>
+			       and p.no not in (select distinct a.no from crf_doubt a, crf_doubt b where a.flag=1 and a.no=b.no and b.flag=0)
+			    </otherwise>
+		 </choose>
+    	</if>
 		<choose>
 			<when test="progressType == 1">
 				and us.progress >= #{progress}
@@ -225,6 +235,16 @@
       	<if test="crf == false">
       		and p.no in (select no from crf_adr_info)
       	</if>
+      	<if test="lockStatus == 30">
+    		<choose>
+			    <when test="undealed == true">
+			       and p.no in (select no from crf_doubt where flag=0 group by no having count(no)>0)
+			    </when>
+			    <otherwise>
+			       and p.no not in (select distinct a.no from crf_doubt a, crf_doubt b where a.flag=1 and a.no=b.no and b.flag=0)
+			    </otherwise>
+		 </choose>
+    	</if>
 		<choose>
 			<when test="progressType == 1">
 				and us.progress >= #{progress}
@@ -333,6 +353,14 @@
       	<if test="crf == false">
       		and p.no in (select no from crf_adr_info)
       	</if>
+      	<choose>
+		    <when test="undealed == true">
+		       and p.no in (select no from crf_doubt where flag=0 group by no having count(no)>0)
+		    </when>
+		    <otherwise>
+		       and p.no not in (select distinct a.no from crf_doubt a, crf_doubt b where a.flag=1 and a.no=b.no and b.flag=0)
+		    </otherwise>
+		</choose>
       	<if test="userName != null and roleName!='DM'">
       		and us.cro_name=#{userName}
       	</if>
@@ -457,6 +485,14 @@
       	<if test="crf == false">
       		and p.no in (select no from crf_adr_info)
       	</if>
+      	<choose>
+		    <when test="undealed == true">
+		       and p.no in (select no from crf_doubt where flag=0 group by no having count(no)>0)
+		    </when>
+		    <otherwise>
+		      and p.no not in (select distinct a.no from crf_doubt a, crf_doubt b where a.flag=1 and a.no=b.no and b.flag=0)
+		    </otherwise>
+		</choose>
       	<if test="createDateFrom != null" >
         	and us.cro_createtime>=#{createDateFrom} and #{createDateTo}>=us.cro_createtime
       	</if>
@@ -692,7 +728,9 @@
 			nextGroup as nextGroup,
 			nextGroupName as nextGroupName,
 			useSolvent as useSolvent, 
-			location as location
+			location as location,
+			prevGroup as prevGroup,
+			prevGroupName as prevGroupName		
 		from crf_druguse_info ph, crf_patient_info pi where pi.id=#{id} and pi.no=ph.no 
 		<if test="drugUseId != null">
       		and ph.seq=#{drugUseId}
@@ -708,24 +746,26 @@
 	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gpSolvent, gSolvent2Dose, gpSolvent1Dose,
 	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
 	    prepareTime, prepareTimeUd, sameBottle, sameGroup, solvent, solventDose, solventName, solventPercent,
-	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,nextGroup, nextGroupName, useSolvent, location)
+	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,nextGroup, nextGroupName, useSolvent, location, prevGroup, prevGroupName)
 	    values (#{no}, #{drugUseId}, #{history}, #{adr}, #{adrtxt}, #{ban}, #{banColor}, #{bantxt}, #{banDruglb}, 
 	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gpSolvent}, #{gSolvent2Dose}, #{gpSolvent1Dose},
 	    #{gpSolvent3Dose}, #{gpSolvent3Name},#{gpSolvent3Percent}, #{hasBan}, #{hasFood}, #{hasInjection}, #{injectionlb}, 
 	    #{prepareTime}, #{prepareTimeUd}, #{sameBottle}, #{sameGroup},#{solvent}, #{solventDose}, #{solventName}, #{solventPercent},
-	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit},#{nextGroup}, #{nextGroupName}, #{useSolvent}, #{location});
+	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit},#{nextGroup}, #{nextGroupName}, #{useSolvent}, #{location}
+	     #{prevGroup},#{prevGroupName});
 	</insert>
 	<insert id="insertDrugUseInfoWithDrugUseId" parameterType="cn.com.ecrf.trq.model.DrugUseCase"> 
 	    insert into crf_druguse_info (no, seq, history, adr, adrtxt, ban, banColor, bantxt, banDruglb,
 	    batchNumber, bottlelb,dose, endDate, endH, endM, food, foodtxt, gpSolvent, gSolvent2Dose, gpSolvent1Dose,
 	    gpSolvent3Dose, gpSolvent3Name, gpSolvent3Percent, hasBan, hasFood, hasInjection, injectionlb,
 	    prepareTime, prepareTimeUd, sameBottle, sameGroup, solvent, solventDose, solventName, solventPercent,
-	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,nextGroup, nextGroupName, useSolvent, location)
+	    startDate, startH, startM, way, way1Speed, way1Time, way2Speed, way3Name, way3Speed, way3Unit,nextGroup, nextGroupName, useSolvent, location,prevGroup, prevGroupName)
 	    values (#{no}, #{drugUseId}, #{history}, #{adr}, #{adrtxt}, #{ban}, #{banColor}, #{bantxt}, #{banDruglb}, 
 	    #{batchNumber}, #{bottlelb},#{dose}, #{endDate}, #{endH}, #{endM}, #{food}, #{foodtxt}, #{gpSolvent}, #{gSolvent2Dose}, #{gpSolvent1Dose},
 	    #{gpSolvent3Dose}, #{gpSolvent3Name},#{gpSolvent3Percent}, #{hasBan}, #{hasFood}, #{hasInjection}, #{injectionlb}, 
 	    #{prepareTime}, #{prepareTimeUd}, #{sameBottle}, #{sameGroup},#{solvent}, #{solventDose}, #{solventName}, #{solventPercent},
-	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit},#{nextGroup}, #{nextGroupName}, #{useSolvent}, #{location});
+	     #{startDate}, #{startH}, #{startM}, #{way},#{way1Speed}, #{way1Time}, #{way2Speed}, #{way3Name}, #{way3Speed}, #{way3Unit},#{nextGroup}, #{nextGroupName}, #{useSolvent}, #{location},
+	     #{prevGroup}, #{prevGroupName});
 	</insert>
 	
 	<update id="updateDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase" >
@@ -737,7 +777,7 @@
 	    gpSolvent3Dose=#{gpSolvent3Dose}, gpSolvent3Name=#{gpSolvent3Name}, gpSolvent3Percent=#{gpSolvent3Percent}, hasBan=#{hasBan}, hasFood=#{hasFood}, hasInjection=#{hasInjection}, injectionlb=#{injectionlb},
 	    prepareTime=#{prepareTime}, prepareTimeUd=#{prepareTimeUd}, sameBottle=#{sameBottle}, sameGroup=#{sameGroup}, solvent=#{solvent}, solventDose=#{solventDose}, solventName=#{solventName}, solventPercent=#{solventPercent},
 	    startDate=#{startDate}, startH=#{startH}, startM=#{startM}, way=#{way}, way1Speed=#{way1Speed}, way1Time=#{way1Time}, way2Speed=#{way2Speed}, way3Name=#{way3Name}, way3Speed=#{way3Speed}, way3Unit=#{way3Unit}, 
-	    nextGroup=#{nextGroup}, nextGroupName=#{nextGroupName}, useSolvent=#{useSolvent}, location=#{location}
+	    nextGroup=#{nextGroup}, nextGroupName=#{nextGroupName}, useSolvent=#{useSolvent}, location=#{location},prevGroup=#{prevGroup}, prevGroupName=#{prevGroupName}
   		where no=#{no} and seq=#{drugUseId}
 	</update>
 	<update id="updateAllDrugUseInfo" parameterType="cn.com.ecrf.trq.model.DrugUseCase">

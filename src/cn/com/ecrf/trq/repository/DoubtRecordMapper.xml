@@ -20,7 +20,8 @@
   		   d.fieldid as fieldId,
   		   d.description as description,
   		   d.menuid as menuId
-  	from crf_doubt d, crf_patient_info p where p.id=#{id} and p.no=d.no and flag=#{flag} order by doubt_time desc
+  	from crf_doubt d, crf_patient_info p where p.id=#{id} and p.no=d.no 
+  	 order by doubt_time desc
   </select>
   <select id="getDoubtRecord" parameterType="cn.com.ecrf.trq.model.DoubtRecord" resultType="cn.com.ecrf.trq.model.DoubtRecord">
   	select doubtId as doubtId,
@@ -34,7 +35,7 @@
   		   v.name as fieldName,
   		   description as description,
   		   d.menuid as menuId
-  	from crf_doubt d, dt_crfstage_var v where v.menuid=d.menuid and d.menuid=#{menuId} and d.id=#{id} and d.fieldid=v.fieldid and flag!=1
+  	from crf_doubt d, dt_crfstage_var v where v.menuid=d.menuid and d.menuid=#{menuId} and d.id=#{id} and d.fieldid=v.fieldid
   </select>
    <select id="getUndealDoubtRecord" parameterType="int" resultType="cn.com.ecrf.trq.model.DoubtRecord">
   	 select doubtId as doubtId,
@@ -63,7 +64,7 @@
   <select id="getDoubtSumm" parameterType="int" resultType="cn.com.ecrf.trq.model.DoubtRecord">
   	select menuid as menuId, 
   		   count(1) as unDeal
-  	from crf_doubt where flag=0 and id=#{id} group by menuid
+  	from crf_doubt where id=#{id} group by menuid
   </select>
   <delete id="deleteDoubtRecord" parameterType="string">
   	delete from crf_doubt where no=#{no}

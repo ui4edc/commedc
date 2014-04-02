@@ -861,6 +861,7 @@ public class ConvertorService {
 		doubtRecordVo.setDoubter(record.getDoubter());
 		doubtRecordVo.setDoubtField(record.getFieldName());
 		doubtRecordVo.setDoubtId(record.getDoubtId());
+		doubtRecordVo.setFlag(record.getFlag());
 		return doubtRecordVo;
 	}
 
