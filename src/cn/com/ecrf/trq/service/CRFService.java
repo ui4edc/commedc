@@ -45,6 +45,7 @@ import cn.com.ecrf.trq.model.dict.DictRow;
 import cn.com.ecrf.trq.model.dict.StaticDict;
 import cn.com.ecrf.trq.model.list.ListCondition;
 import cn.com.ecrf.trq.model.list.ListReturn;
+import cn.com.ecrf.trq.repository.AuditLogMapper;
 import cn.com.ecrf.trq.repository.CRFMapper;
 import cn.com.ecrf.trq.repository.ConfigurationMapper;
 import cn.com.ecrf.trq.repository.DictMapper;
@@ -106,6 +107,8 @@ public class CRFService {
 	private UserMapper userMapper;
 	@Autowired
 	private ConfigurationMapper configurationMapper;
+	@Autowired
+	private AuditLogMapper auditLogMapper;
 	
 	public ListNotifyVo getNotifyInfo() {
 		// TODO Auto-generated method stub
@@ -999,8 +1002,7 @@ public class CRFService {
 				|| drugCombinationBase == null
 				|| bodyExamCase == null
 				|| eCGExamCase == null
-				|| drugSummaryCase == null
-				|| (drugSummaryCase.getHasAdr() == 1 && aDRCase == null)){
+				|| drugSummaryCase == null){
 			isFinished = false;
 		}
 		return isFinished;
@@ -1019,7 +1021,7 @@ public class CRFService {
 				List<DrugCombinationCase> drugCombinationCases = cRFMapper.getDrugCombinationList(Integer.parseInt(id));
 				
 				drugCombinationVo.setId(Integer.parseInt(id));
-				drugCombinationVo.setNo(no);
+				drugCombinationVo.setNo(drugCombinationBase.getNo());
 				List<DrugInstanceObject> drugInstanceObjects = new ArrayList<DrugInstanceObject>();
 				for (int i=0;drugCombinationCases!=null && i<drugCombinationCases.size();i++){
 					DrugInstanceObject drugInstanceObject = convertorService.convertDrugCombinationCaseFromModelToView(drugCombinationCases.get(i));
@@ -1074,6 +1076,8 @@ public class CRFService {
 				adrVo.setSex(patientInfoVo.getSex());
 				adrVo.setEthic(patientInfoVo.getEthic());
 				adrVo.setWeight(patientInfoVo.getWeight());
+				adrVo.setNo(patientInfoCase.getNo());
+				//convertorService.convertDrugCombinationToADR(patientInfoCase.getId(), adrVo);
 				/*if (drugSummaryCase.getHasAdr() == 1)
 					convertorService.convertFromDrugSummaryToAdr(drugSummaryCase, adrVo);*/
 			}

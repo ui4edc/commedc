@@ -990,6 +990,31 @@ public class ConvertorService {
 
 
 
+	public void convertDrugCombinationToADR(int id, ADRVo adrVo) {
+		// TODO Auto-generated method stub
+		 List<DrugCombinationCase> drugCombinations = cRFMapper.getDrugCombinationList(id);
+		 if (drugCombinations != null && drugCombinations.size() > 0){
+			 if (adrVo.getDrug2() == null)
+				 adrVo.setDrug2(new ArrayList<PlainExamVo>());
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 for (DrugCombinationCase drugCombination : drugCombinations){
+				 if (StringUtils.isNotBlank(drugCombination.getName())){
+					 PlainExamVo plainExamVo = new PlainExamVo();
+					 plainExamVo.setF3(drugCombination.getName());
+					 if (drugCombination.getStartDate() != null)
+						 plainExamVo.setF7(sdf.format(drugCombination.getStartDate()));
+					 if (drugCombination.getEndDate() != null)
+						 plainExamVo.setF8(sdf.format(drugCombination.getEndDate()));
+				 }
+			 }
+		 }
+		 
+			 
+		 
+	}
+
+
+
 
 
 

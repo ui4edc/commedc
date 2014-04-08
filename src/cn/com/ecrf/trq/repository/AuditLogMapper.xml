@@ -6,7 +6,7 @@
   	<selectKey resultType="Integer" order="AFTER" keyProperty="id">
 		SELECT LAST_INSERT_ID()
 	</selectKey>
-  	insert into userbehavior(id, no, username, action, insertTime, ipaddress, broswer,description)
-  	values(#{id}, #{no}, #{action}, now(), #{ipAddress}, #{broswer}, #{description});
+  	insert into ac_userbehavior(id, no, username, action, insertTime, ipaddress, broswer,description)
+  	values(#{id}, #{no}, #{userName}, #{action}, now(), #{ipAddress}, #{broswer}, #{description});
   </insert>
 </mapper>

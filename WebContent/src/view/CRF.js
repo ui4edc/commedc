@@ -351,7 +351,11 @@ es.Views.CRF = Backbone.View.extend({
                     field: "op",
                     title: "操作",
                     content: function(item) {
-                        return '<a href="javascript:void(0)" class="fix" onclick="es.main.fixDoubt(' + item.doubtId + ', this)">解决</a>';
+                    	if (item.flag == 0){
+                    		return '<a href="javascript:void(0)" class="fix" onclick="es.main.fixDoubt(' + item.doubtId + ', this)">解决</a>';
+                    	}else{
+                    		return '已解决';
+                    	}
                     }
                 }
             ];

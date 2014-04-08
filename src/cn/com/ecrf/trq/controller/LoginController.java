@@ -1,5 +1,6 @@
 package cn.com.ecrf.trq.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cn.com.ecrf.trq.model.Organization;
 import cn.com.ecrf.trq.model.Role;
 import cn.com.ecrf.trq.model.User;
+import cn.com.ecrf.trq.model.UserBehaviorLog;
+import cn.com.ecrf.trq.repository.AuditLogMapper;
 import cn.com.ecrf.trq.service.UserService;
 import cn.com.ecrf.trq.utils.AjaxReturnValue;
 import cn.com.ecrf.trq.utils.CipherUtil;
@@ -36,6 +39,8 @@ public class LoginController {
 	private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AuditLogMapper auditLogMapper;
 	
 	@RequestMapping("/")
 	public String home(HttpServletRequest request) {
@@ -95,11 +100,21 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "/logout")   
-    public String logout() {  
+    public String logout(HttpServletRequest request) {  
   
         Subject currentUser = SecurityUtils.getSubject();  
-        
-        currentUser.logout();  
+        String userName = (String)currentUser.getPrincipal();
+        currentUser.logout();
+        try{
+        	UserBehaviorLog log = new UserBehaviorLog();
+    		log.setInsertTime(new Date());
+    		log.setUserName(userName);
+    		log.setIpAddress(request.getRemoteHost());
+    		log.setAction("logout");
+    		auditLogMapper.insertUserBehaviorLog(log);
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
         return "redirect:/login.do";
     }  
     
@@ -148,6 +163,12 @@ public class LoginController {
   				}
   			}
   			System.out.println("result: " + result);
+  			UserBehaviorLog log = new UserBehaviorLog();
+  			log.setInsertTime(new Date());
+  			log.setUserName(username);
+  			log.setIpAddress(request.getRemoteHost());
+  			log.setAction("login");
+  			auditLogMapper.insertUserBehaviorLog(log);
   			return "redirect:/index.do";
   		} catch (Exception e) {
   			logger.error(e.getMessage());

@@ -10,6 +10,7 @@ public class UserBehaviorLog {
 	private String broswer;
 	private Date insertTime;
 	private String description;
+	private String action;
 	
 	public int getId() {
 		return id;
@@ -52,6 +53,12 @@ public class UserBehaviorLog {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
 	}
 	
 	

@@ -107,10 +107,12 @@ es.Views.Form40 = Backbone.View.extend({
             if (!es.main.editable) {
                 end.disable();
             }
-            esui.get("Save" + val.no).onclick = function() {
-                var block = $(this.main).parent().parent();
-                me.saveDrug(block);
-            };
+            if (es.main.editable){
+            	esui.get("Save" + val.no).onclick = function() {
+                    var block = $(this.main).parent().parent();
+                    me.saveDrug(block);
+                };
+            }
             $("#ctrltextName" + val.no).autocomplete({source: util.getSuggestion("drug")});
             $("#ctrltextWay" + val.no).autocomplete({source: util.getSuggestion("way")});
         });
