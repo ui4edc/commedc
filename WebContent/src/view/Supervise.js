@@ -8,7 +8,8 @@ es.Views.Supervise = Backbone.View.extend({
     el: "#Main",
     
     events: {
-        "click .tabbar a": "switchList"
+        "click .tabbar a": "switchList",
+        "click .link a": "download"
     },
     
     initialize: function() {
@@ -306,6 +307,28 @@ es.Views.Supervise = Backbone.View.extend({
             this.pageRendered = true;
         }
         this.$(".row-count").text("共 " + total + " 条");
+    },
+    
+    download: function(e) {
+        var selected = $(".ui-table-row-selected .detail");
+        if (selected.length == 0) {
+            esui.Dialog.alert({
+                title: "批量导出",
+                content: "请选择要导出的观察表。"
+            });
+        } else {
+            var id = [],
+                me = $(e.target);
+            $.each(selected, function(index, val) {
+                id.push(parseInt(val.id, 10));
+            });
+            var downloadUrl = $("#BasePath").val() + "data/export.do?" + T.url.jsonToQuery({
+                type: me.attr("class") == "excel" ? 0 : 1,
+                crf: this.args.crf,
+                id: id.join(",")
+            });
+            window.open(downloadUrl);
+        }
     },
     
     /*
