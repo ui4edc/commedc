@@ -232,8 +232,7 @@ public class UserControler {
     		result = AjaxReturnUtils.generateAjaxReturn(true, null);
     	}catch(Exception e){
     		logger.error(e.getMessage());
-    		result = AjaxReturnUtils.generateAjaxReturn(false, "添加用户失败");
-
+    		result = AjaxReturnUtils.generateAjaxReturn(false, e.getMessage());
     	}
     	return result;
     }

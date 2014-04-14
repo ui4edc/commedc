@@ -45,7 +45,7 @@ public interface UserMapper {
 
 	int getUserNum();
 
-	List<User> findAdminUsers();
+	List<User> findAdminUsers(Map<String, Object> condition);
 
 	List<User> findCRMUsers();
 

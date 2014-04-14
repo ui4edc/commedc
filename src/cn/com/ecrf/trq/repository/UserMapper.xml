@@ -160,6 +160,9 @@
 	u.display_name as displayName, 
 	u.fk_organization_id as organizationId 
     from ac_user u, ac_role r where u.fk_role_id=r.id and r.role_name='LCRO'
+    <if test="roleName == LCRO">
+    	and u.fk_organization_id in (select fk_organization_id from ac_user where user_name=#{userName})
+    </if>
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize} 
      </if>

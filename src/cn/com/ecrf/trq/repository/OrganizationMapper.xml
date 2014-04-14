@@ -69,6 +69,9 @@
     	u2.user_name as adminUserName,
     	u.user_name as crmUserName
     from ac_organization o left join ac_user u on o.fk_crmuser_id=u.id left join ac_user u2 on o.fk_adminuser_id=u2.id
+    <if test="roleName == LCRO">
+    	and o.id in (select fk_organization_id from ac_user where user_name=#{userName})
+    </if>
     <if test="limitStart != null and limitSize != null" >
     	LIMIT #{limitStart},#{limitSize}
     </if>

@@ -56,13 +56,32 @@ public class UserService {
 			Organization organization = organizationMapper.getOrganizationById(id);
 			user.setOrganizationName(organization.getName());
 		}*/
+		if (user.getRoleId() == 0){
+			throw new Exception("请选择权限");
+		}
 		Role role = roleMapper.getRoleById(user.getRoleId());
+		if ("LCRO".equalsIgnoreCase(role.getRoleName()) || "CRO".equalsIgnoreCase(role.getRoleName())){
+			if (user.getOrganizationId() == 0){
+				throw new Exception("录入员和分中心管理员必须制定中心名称");
+			}
+		}
 		if ("LCRO".equalsIgnoreCase(role.getRoleName())){
+			if (user.getAdminUserId() > 0){
+				throw new Exception("分中心管理员不需要直属管理员，请去掉直属管理员选择");
+			}
 			List<User> adminUsers = userMapper.getAdminUserByOrganizationId(user.getOrganizationId());
 			if (adminUsers != null && adminUsers.size() > 0){
 				if (adminUsers.get(0).getId() != user.getId()){
 					throw new Exception("已经有一个医院管理员，如欲替换，请先修改 "+adminUsers.get(0).getUserName()+" 的权限");
 				}
+			}
+		}
+		if ("CRM".equalsIgnoreCase(role.getRoleName()) || "DM".equalsIgnoreCase(role.getRoleName())){
+			if (user.getAdminUserId() > 0){
+				throw new Exception("监察员和管理员不需要直属管理员，请去掉直属管理员选择");
+			}
+			if (user.getOrganizationId() > 0){
+				throw new Exception("监察员和管理员不隶属于某个中心，请去掉中心名称选择");
 			}
 		}
 		if (user.getId() <= 0){
@@ -161,6 +180,11 @@ public class UserService {
 			condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize);
 			condition.put(AjaxReturnValue.limitSize, pageSize);
 		}
+		String roleName = getRoleName();
+		Subject subject = SecurityUtils.getSubject();
+		String userName = (String) subject.getPrincipal();
+		condition.put("userName", userName);
+		condition.put("roleName", roleName);
 		List<Organization> organizations =  organizationMapper.findOrganizations(condition);
 		if (organizations != null){
 			for (Organization organization : organizations){
@@ -216,7 +240,13 @@ public class UserService {
 		Map<String, Object> condition = new HashMap<String, Object>();
 /*		condition.put(AjaxReturnValue.limitStart, (pageNo-1)*pageSize+1);
 		condition.put(AjaxReturnValue.limitSize, pageSize);*/
-		return roleMapper.findRoles(condition);
+		String roleName = getRoleName();
+		Subject subject = SecurityUtils.getSubject();
+		String userName = (String) subject.getPrincipal();
+		condition.put("userName", userName);
+		condition.put("roleName", roleName);
+		List<Role> roles = roleMapper.findRoles(condition);
+		return roles;
 	}
 
 	public Map<String, Object> changePassword(String oldPassword, String newPassword) {
@@ -266,7 +296,13 @@ public class UserService {
 
 	public List<UserDescriptionVo> getAdminUserList() {
 		// TODO Auto-generated method stub
-		List<User> users = userMapper.findAdminUsers();
+		String roleName = getRoleName();
+		Subject subject = SecurityUtils.getSubject();
+		String userName = (String) subject.getPrincipal();
+		Map<String, Object> condition = new HashMap<String, Object>();
+		condition.put("userName", userName);
+		condition.put("roleName", roleName);
+		List<User> users = userMapper.findAdminUsers(condition);
 		List<UserDescriptionVo> userVos = new ArrayList<UserDescriptionVo>();
 		if (users != null){
 			for (User user : users){
@@ -298,6 +334,17 @@ public class UserService {
 		// TODO Auto-generated method stub
 		Organization organization = organizationMapper.findUserOrganization(userId);
 		return organization;
+	}
+	
+	private String getRoleName(){
+		Subject subject = SecurityUtils.getSubject();
+		String userName = (String) subject.getPrincipal();
+		List<Role> roles = roleMapper.getRoleByUserName(userName);
+		String roleName = null;
+		if (roles != null && roles.size() > 0){
+			roleName = roles.get(0).getRoleName();
+		}
+		return roleName;
 	}
 
 }

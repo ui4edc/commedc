@@ -45,6 +45,9 @@
     select 
     <include refid="Base_Column_List" />
     from ac_role
+    <if test="roleName == LCRO">
+    	where role_name="CRO"
+    </if>
     <if test="limitStart != null" >
      LIMIT #{limitStart},#{limitSize}
      </if> 
